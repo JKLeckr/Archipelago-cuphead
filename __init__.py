@@ -242,9 +242,8 @@ class CupheadWorld(World):
         total_triple_coins = max(total_triple_coins - start_3coins, 0)
         total_double_coins = max(total_double_coins - start_2coins, 0)
         total_single_coins = max(total_single_coins - start_coins, 0)
-        total_coin_items = total_single_coins + total_double_coins + total_triple_coins
 
-        while total_coin_items >= leftover_locations:
+        while (total_single_coins + total_double_coins + total_triple_coins) >= leftover_locations:
             if total_single_coins >= 3:
                 total_single_coins -= 3
                 total_triple_coins += 1
