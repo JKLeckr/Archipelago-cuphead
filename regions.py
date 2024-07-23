@@ -1,5 +1,4 @@
-from typing import Optional, Callable
-from BaseClasses import MultiWorld, Region, Entrance, LocationProgressType
+from BaseClasses import MultiWorld, Region, LocationProgressType
 from .settings import WorldSettings
 from .regiondefs import define_regions
 from .locations import CupheadLocation, LocationData
@@ -23,26 +22,19 @@ def create_regions(multiworld: MultiWorld, player: int, locations: dict[str, Loc
                         location = CupheadLocation(player, loc_name, loc_id, region, event, progress_type, True) # TODO: Update show_in_spoilers later
                         region.locations.append(location)
                     else:
-                        print("NOTE: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
+                        print("WARNING: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
             multiworld.regions.append(region)
 
-    # Connect Regions
-    def _connect_regions(source: str, target: str, rule: Optional[Callable] = None):
-        src = multiworld.get_region(source, player)
-        tgt = multiworld.get_region(target, player)
-        name = source + " -> " + target
-        #print("Connecting "+name)
-        connection = Entrance(player, name, src)
-        if rule:
-            connection.access_rule = rule
-        src.exits.append(connection)
-        connection.connect(tgt)
     # Connect Region Targets
     for regc in compile_regions:
         if regc and regc.connect_to:
             for target in regc.connect_to:
                 if target:
-                    _connect_regions(regc.name, target.name, target.rule)
+                    src = multiworld.get_region(regc.name, player)
+                    tgt = multiworld.get_region(target.name, player)
+                    name = regc.name + " -> " + target.name
+                    #print("Connecting "+name)
+                    src.connect(tgt, name, target.rule)
 
 def list_regions_names(regions: list[Region]) -> list[str]:
     return [x.name for x in regions if x]

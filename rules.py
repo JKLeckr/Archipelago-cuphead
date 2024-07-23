@@ -1,4 +1,4 @@
-from BaseClasses import MultiWorld, Location
+from BaseClasses import MultiWorld, Location, Entrance, Region
 from worlds.generic.Rules import set_rule, forbid_item
 from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
@@ -9,7 +9,7 @@ class RuleData:
     player: int
     use_dlc: bool
     total_coins: int
-    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]]):
+    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]], entrance_reg: dict[str,list[Entrance]]):
         self.multiworld = multiworld
         self.player = player
         self.use_dlc = settings.use_dlc
@@ -19,6 +19,8 @@ class RuleData:
         return self.multiworld.get_entrance(exit+" -> "+entrance, self.player)
     def get_location(self, location: str) -> Location:
         return self.multiworld.get_location(location, self.player)
+    def get_region(self, region: str) -> Region:
+        return self.multiworld.get_region(region, self.player)
 
 def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]]):
     rdata = RuleData(multiworld, player, settings, total_coins, shop_map)
@@ -87,5 +89,6 @@ def set_shop_cost_rule(rdata: RuleData, shop_index: int, player: int, shop_costs
     cost = 0
     for i in range(shop_index+1):
         cost += shop_costs[i]
-    location = LocationNames.world_inkwell + LocationNames._nums_[shop_index]
-    set_rule(rdata.get_entrance(location, LocationNames.level_shops[shop_index]), lambda state: state.has(ItemNames.item_coin, player, cost))
+    region = rdata.get_region(LocationNames.level_shops[shop_index])
+    for entrance in region.entrances:
+        set_rule(entrance, lambda state: state.has(ItemNames.item_coin, player, cost))

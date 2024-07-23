@@ -17,7 +17,7 @@ class RegionData:
 
 def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map: dict[str, str], shop_locations: dict[str,list[str]], settings: WorldSettings) -> list[RegionData]:
     using_dlc = settings.use_dlc
-    freemove_islands = settings.freemove_isles
+    freemove_isles = settings.freemove_isles
     contract_requirements = settings.contract_requirements
     dlc_ingredient_requirements = settings.dlc_ingredient_requirements
     agrade_quest = settings.agrade_quest
@@ -44,7 +44,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             _locations = list(_level_map(name).locations)
             if add_locations:
                 _locations += add_locations
-            super().__init__(name, _locations, connect_to if not freemove_islands or ignore_freemove_islands else None)
+            super().__init__(name, _locations, connect_to if not freemove_isles or ignore_freemove_islands else None)
 
     region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)])
     region_house = RegionData(LocationNames.level_house, None, [
@@ -77,30 +77,30 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
         ] + ([
             LevelTarget(LocationNames.level_boss_flower),
             LevelTarget(LocationNames.level_rungun_tree),
-        ] if require_secret_shortcuts or freemove_islands else []) + ([
+        ] if require_secret_shortcuts or freemove_isles else []) + ([
             Target(LocationNames.world_inkwell_2,
-                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[0]))),
+                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[0]))) if freemove_isles else None,
             LevelTarget(LocationNames.level_boss_frogs), LevelTarget(LocationNames.level_boss_plane_blimp),
             Target(LocationNames.level_mausoleum_i)
-        ] if freemove_islands else [])),
+        ] if freemove_isles else [])),
         RegionData(LocationNames.world_inkwell_2, [
             LocationNames.loc_npc_canteen,
             LocationNames.loc_quest_4mel,
         ], [
-            Target(LocationNames.level_shop2),
+            Target(LocationNames.level_shop2) if freemove_isles else None,
             LevelTarget(LocationNames.level_boss_baroness), LevelTarget(LocationNames.level_boss_clown), LevelTarget(LocationNames.level_boss_plane_genie)
         ] + ([
             Target(LocationNames.world_inkwell_3,
-                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[1]))),
+                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[1]))) if freemove_isles else None,
             LevelTarget(LocationNames.level_boss_plane_bird), LevelTarget(LocationNames.level_boss_dragon),
             LevelTarget(LocationNames.level_rungun_circus), LevelTarget(LocationNames.level_rungun_funhouse),
             LevelTarget(LocationNames.level_mausoleum_ii), Target(LocationNames.loc_event_isle2_shortcut)
-        ] if freemove_islands else [])),
+        ] if freemove_isles else [])),
         RegionData(LocationNames.world_inkwell_3, None, [
-            Target(LocationNames.level_shop3),
+            Target(LocationNames.level_shop3) if freemove_isles else None,
             LevelTarget(LocationNames.level_boss_bee), LevelTarget(LocationNames.level_boss_pirate)
         ] + ([
-            Target(LocationNames.world_inkwell_hell),
+            Target(LocationNames.world_inkwell_hell) if freemove_isles else None,
             LevelTarget(LocationNames.level_boss_plane_robot),
             LevelTarget(LocationNames.level_rungun_mountain),
             LevelTarget(LocationNames.level_boss_sallystageplay),
@@ -110,7 +110,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LevelTarget(LocationNames.level_rungun_harbour),
             LevelTarget(LocationNames.level_mausoleum_iii),
             Target(LocationNames.loc_quest_ludwig),
-        ] if freemove_islands else [])),
+        ] if freemove_isles else [])),
         RegionData(LocationNames.world_inkwell_hell, [LocationNames.loc_coin_isleh_secret], [
             Target(LocationNames.level_boss_kingdice,
                 lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[2]) and level_rule_plane(state,player)))]),
@@ -126,7 +126,6 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             Target(LocationNames.level_dlc_chesscastle),
             LevelTarget(LocationNames.level_dlc_boss_oldman),
             LevelTarget(LocationNames.level_dlc_boss_rumrunners),
-            #Target(LocationNames.level_dlc_shop),
         ] + ([
             LevelTarget(LocationNames.level_dlc_boss_plane_cowboy),
             LevelTarget(LocationNames.level_dlc_boss_snowcult),
@@ -134,7 +133,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             #LevelTarget(LocationNames.level_dlc_graveyard),
             LevelTarget(LocationNames.level_dlc_boss_saltbaker,
                 lambda state: (state.has(ItemNames.item_dlc_ingredient, player, dlc_ingredient_requirements))),
-        ] if freemove_islands else [])),
+        ] if freemove_isles else [])),
     ] if using_dlc else []
 
     region_isle1 =  [
@@ -148,7 +147,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             [LevelTarget(LocationNames.level_mausoleum_i)]),
         LevelRegionData(LocationNames.level_boss_flower, [LocationNames.loc_event_isle1_secret_prereq5], [
             Target(LocationNames.world_inkwell_2,
-                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[0])))]),
+                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[0]))) if not freemove_isles else None]),
         LevelRegionData(LocationNames.level_rungun_tree, None, [Target(LocationNames.level_mausoleum_i)]),
         LevelRegionData(LocationNames.level_rungun_forest, None, [Target(LocationNames.level_mausoleum_i)]),
         LevelRegionData(LocationNames.level_mausoleum_i, None, None)
@@ -163,16 +162,26 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LevelTarget(LocationNames.level_boss_dragon),
             LevelTarget(LocationNames.level_rungun_funhouse),
             Target(LocationNames.loc_event_isle2_shortcut),
-            Target(LocationNames.world_inkwell_3, lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[1])))]),
+            Target(LocationNames.world_inkwell_3,
+                lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[1]))) if not freemove_isles else None]),
         LevelRegionData(LocationNames.level_boss_plane_bird, None, [LevelTarget(LocationNames.level_mausoleum_ii)]),
         LevelRegionData(LocationNames.level_boss_dragon, [
             LocationNames.loc_quest_4parries,
-        ], [LevelTarget(LocationNames.level_mausoleum_ii)]),
+        ], [
+            LevelTarget(LocationNames.level_mausoleum_ii),
+            Target(LocationNames.level_shop2),
+        ]),
         LevelRegionData(LocationNames.level_rungun_circus, [
             LocationNames.loc_event_quest_4mel_4th,
             LocationNames.loc_quest_ginger,
-        ], [LevelTarget(LocationNames.level_mausoleum_ii)]),
-        LevelRegionData(LocationNames.level_rungun_funhouse, [LocationNames.loc_coin_isle2_secret], [LevelTarget(LocationNames.level_mausoleum_ii)]),
+        ], [
+            LevelTarget(LocationNames.level_mausoleum_ii),
+            Target(LocationNames.level_shop2),
+        ]),
+        LevelRegionData(LocationNames.level_rungun_funhouse, [LocationNames.loc_coin_isle2_secret], [
+            LevelTarget(LocationNames.level_mausoleum_ii),
+            Target(LocationNames.level_shop2),
+        ]),
         LevelRegionData(LocationNames.level_mausoleum_ii, [
             LocationNames.loc_quest_lucien,
         ], None),
@@ -183,7 +192,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LevelTarget(LocationNames.level_rungun_funhouse),
             LevelTarget(LocationNames.level_boss_plane_bird),
             LevelTarget(LocationNames.level_rungun_circus),
-        ] if require_secret_shortcuts and not freemove_islands else None)
+        ] if require_secret_shortcuts and not freemove_isles else None)
     ]
     region_isle3 = [
         LevelRegionData(LocationNames.level_boss_bee, None, [
