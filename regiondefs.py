@@ -20,7 +20,7 @@ Rule = Callable[[CollectionState, int], bool]
 def rule_has(item: str, count: int = 1) -> Rule:
     return lambda state, player: state.has(item, player, count)
 
-# Determines if a region or target is enabled
+# Deps determine if a region or target is enabled
 def dep_and(a: Dep, b: Dep) -> Dep:
     return lambda w: a(w) and b(w)
 def dep_not(a: Dep) -> Dep:
@@ -225,19 +225,24 @@ region_isle3 = [
         LevelTarget(LocationNames.level_rungun_harbour),
         Target(LocationNames.loc_quest_pacifist, None, dep_pacifist_quest),
     ]),
-    LevelRegionData(LocationNames.level_boss_plane_robot, None, [LevelTarget(LocationNames.level_boss_sallystageplay)]),
+    LevelRegionData(LocationNames.level_boss_plane_robot, None, [
+        LevelTarget(LocationNames.level_boss_sallystageplay),
+        Target(LocationNames.loc_quest_wolfgang, None, dep_wolfgang_quest)
+    ]),
     LevelRegionData(LocationNames.level_boss_plane_mermaid, [LocationNames.loc_coin_isle3_secret], [
-        LevelTarget(LocationNames.level_boss_sallystageplay)]),
-    LevelRegionData(LocationNames.level_boss_sallystageplay, [
-        LocationNames.loc_quest_wolfgang
-    ], [
+        LevelTarget(LocationNames.level_boss_sallystageplay),
+        Target(LocationNames.loc_quest_wolfgang, None, dep_wolfgang_quest)
+    ]),
+    LevelRegionData(LocationNames.level_boss_sallystageplay, None, [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
         LevelTarget(LocationNames.level_boss_train),
+        Target(LocationNames.level_shop3), # FIXME: Verify that this connection is legit
         Target(LocationNames.loc_quest_15agrades, None, dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_mouse, None, [
         LevelTarget(LocationNames.level_boss_sallystageplay), # FIXME: Verify that this connection is legit
+        Target(LocationNames.loc_quest_wolfgang, None, dep_wolfgang_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_train, None, [Target(LocationNames.world_inkwell_hell)]),
     LevelRegionData(LocationNames.level_rungun_harbour, None, [
@@ -253,6 +258,9 @@ region_isle3 = [
         Target(LocationNames.loc_quest_15agrades, None, dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_mausoleum_iii, None, None),
+    RegionData(LocationNames.loc_quest_wolfgang, [
+        LocationNames.loc_quest_wolfgang
+    ], None, dep_wolfgang_quest),
     RegionData(LocationNames.loc_quest_ludwig, [
         LocationNames.loc_quest_ludwig,
         LocationNames.loc_event_music

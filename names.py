@@ -2,6 +2,7 @@
 class LocationNames:
     # Prefixes
     _loc_event_ = "Event "
+    _reg_group_ = "RGroup "
 
     # Postfixes
     _num1_ = " One"
@@ -102,6 +103,9 @@ class LocationNames:
     level_tutorial = "Tutorial"
     level_plane_tutorial = "Plane Tutorial"
     level_dlc_tutorial = "Recipe for Ms. Chalice"
+
+    # Region Groups
+    # (None)
 
     # World Defs
     world_inkwell = "Inkwell Isle"
