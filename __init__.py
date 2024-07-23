@@ -57,7 +57,7 @@ class CupheadWorld(World):
         coin_amounts = self.get_coin_amounts()
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        self.resolve_precollected_items()
+        #self.resolve_precollected_items()
 
         self.active_items: dict[str,ItemData] = items.setup_items(self.wsettings)
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wsettings)

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DefaultOnToggle, Range, Choice, Option, DeathLink, PerGameCommonOptions
+from Options import Toggle, DefaultOnToggle, Range, Choice, DeathLink, PerGameCommonOptions
 
 class DeliciousLastCourse(Toggle):
     """
