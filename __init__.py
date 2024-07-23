@@ -57,8 +57,6 @@ class CupheadWorld(World):
         coin_amounts = self.get_coin_amounts()
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        #self.resolve_precollected_items()
-
         self.active_items: dict[str,ItemData] = items.setup_items(self.wsettings)
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wsettings)
         #Tests.test_duplicates(self.active_locations)
@@ -119,12 +117,11 @@ class CupheadWorld(World):
 
         #TODO: Handle start_inventory correctly
 
-        starter_items = self.multiworld.precollected_items[self.player]
         #starter_items.append(self.create_item(ItemNames.item_charm_heart))
         #print(len(starter_items))
-        starter_items_names = [x.name for x in starter_items]
+        starter_items_names = [x.name for x in self.multiworld.precollected_items[self.player]]
         def append_starter_items(item: Item):
-            starter_items.append(item)
+            self.multiworld.push_precollected(item)
             starter_items_names.append(item.name)
 
         # Locked Items
@@ -315,20 +312,6 @@ class CupheadWorld(World):
                     for location in self.active_levels[level].locations:
                         hint_dict.update({location.id: (" ->> " + self.level_shuffle_map[level] + " at " + level)})
             hint_data.update({self.player: hint_dict})
-
-    def resolve_precollected_items(self) -> None:
-        starter_items = self.multiworld.precollected_items[self.player]
-        starter_items_names = [x.name for x in starter_items]
-        # Convert coin bundles into single coins
-        for item in starter_items_names:
-            if item in (ItemNames.item_coin2, ItemNames.item_coin3):
-                index = starter_items_names.index(item)
-                count = 2 if item == ItemNames.item_coin2 else 3
-                starter_items.pop(index)
-                starter_items_names.pop(index)
-                for _ in range(count):
-                    starter_items.insert(index, self.create_item(ItemNames.item_coin))
-                    starter_items_names.insert(index, ItemNames.item_coin)
 
     def set_rules(self) -> None:
         rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins)
