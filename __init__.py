@@ -34,7 +34,7 @@ class CupheadWorld(World):
     options_dataclass = CupheadOptions
     options: CupheadOptions
     version = 0
-    required_client_version = (0, 4, 2)
+    required_client_version = (0, 4, 4)
 
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id
@@ -84,7 +84,7 @@ class CupheadWorld(World):
             "version": self.version,
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
-            **self.options.as_dict("use_dlc", "expert_mode", "freemove_isles", "boss_grade_checks", "rungun_grade_checks")
+            **self.options.as_dict("use_dlc", "expert_mode", "freemove_isles", "boss_grade_checks", "rungun_grade_checks", "deathlink")
         }
         return slot_data
 
