@@ -24,11 +24,11 @@ def create_region(world: CupheadWorld, regc: RegionData):
     player = world.player
     region = Region(regc.name, player, multiworld, None)
     if regc.region_type == DefType.LEVEL:
-        _locations = list(level_map(world, regc.name).locations)
+        _locations = level_map(world, regc.name).locations
         #print(regc.name+"[B] :")
         #debug.print_list(_locations)
         if regc.locations:
-            _locations += regc.locations
+            _locations = _locations + regc.locations
     else:
         _locations = regc.locations
     #print(regc.name+"[A] :")
