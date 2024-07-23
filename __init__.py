@@ -190,44 +190,13 @@ class CupheadWorld(World):
             append_starter_items(self.create_item(start_weapon))
             weapons.remove(start_weapon)
 
-        # Coins
-        coins = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
-        coin_amounts = self.get_coin_amounts()
-        total_single_coins = coin_amounts[0]
-        total_double_coins = coin_amounts[1]
-        total_triple_coins = coin_amounts[2]
-        total_coins = self.total_coins
+        # Item names for coins
+        coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
-        # Starter Coins
-        start_coins = 0
-        for item in starter_items_names:
-            if item == coins[0]:
-                start_coins += 1
-            elif item == coins[1]:
-                start_coins += 2
-            elif item == coins[2]:
-                start_coins += 3
-
-        total_coins -= start_coins
-
-        start_3coins = min(start_coins // 3, total_triple_coins)
-        start_coins -= start_3coins * 3
-        start_2coins = min(start_coins // 2, total_double_coins)
-        start_coins -= start_2coins * 2
-
-        total_triple_coins = max(total_triple_coins - start_3coins, 0)
-        total_double_coins = max(total_double_coins - start_2coins, 0)
-        total_single_coins = max(total_single_coins - start_coins, 0)
-
-        # Add Coins
-        itempool += [self.create_item(coins[0]) for _ in range(total_single_coins)]
-        itempool += [self.create_item(coins[1]) for _ in range(total_double_coins)]
-        itempool += [self.create_item(coins[2]) for _ in range(total_triple_coins)]
-
-        essential_items = [y for y in Items.item_essential.keys() if y not in coins] + (list(Items.item_essential.keys()) if self.use_dlc else [])
+        essential_items = [y for y in Items.item_essential.keys() if y not in coin_items] + (list(Items.item_essential.keys()) if self.use_dlc else [])
         charms = list(Items.item_charms.keys()) + (list(Items.item_dlc_charms.keys()) if self.use_dlc else [])
 
-        # Add the other non-filler items
+        # Add the other non-filler items before the coins
         def _fill_pool(items: list[str]) -> list[CupheadItem]:
             _itempool = []
             for item in items:
@@ -243,6 +212,57 @@ class CupheadWorld(World):
         itempool += _fill_pool(Items.item_super.keys())
         if self.wsettings.randomize_abilities:
             itempool += _fill_pool(Items.item_abilities.keys())
+
+        # Coins
+        coin_amounts = self.get_coin_amounts()
+        total_single_coins = coin_amounts[0]
+        total_double_coins = coin_amounts[1]
+        total_triple_coins = coin_amounts[2]
+        total_coins = self.total_coins
+
+        # Starter Coins
+        start_coins = 0
+        for item in starter_items_names:
+            if item == coin_items[0]:
+                start_coins += 1
+            elif item == coin_items[1]:
+                start_coins += 2
+            elif item == coin_items[2]:
+                start_coins += 3
+
+        total_coins -= start_coins
+
+        leftover_locations = total_locations - len(itempool) - self.wsettings.filler_item_buffer
+
+        start_3coins = min(start_coins // 3, total_triple_coins)
+        start_coins -= start_3coins * 3
+        start_2coins = min(start_coins // 2, total_double_coins)
+        start_coins -= start_2coins * 2
+
+        total_triple_coins = max(total_triple_coins - start_3coins, 0)
+        total_double_coins = max(total_double_coins - start_2coins, 0)
+        total_single_coins = max(total_single_coins - start_coins, 0)
+        total_coin_items = total_single_coins + total_double_coins + total_triple_coins
+
+        while total_coin_items >= leftover_locations:
+            if total_single_coins >= 3:
+                total_single_coins -= 3
+                total_triple_coins += 1
+            elif total_double_coins >= 1 and total_single_coins >= 1:
+                total_single_coins -= 1
+                total_double_coins -= 1
+                total_triple_coins += 1
+            elif total_double_coins >= 3:
+                total_double_coins -= 3
+                total_triple_coins += 2
+            else:
+                print("Error: Cannot resolve coins!")
+                break
+
+        # Add Coins
+        itempool += [self.create_item(coin_items[0]) for _ in range(total_single_coins)]
+        itempool += [self.create_item(coin_items[1]) for _ in range(total_double_coins)]
+        itempool += [self.create_item(coin_items[2]) for _ in range(total_triple_coins)]
 
         leftover_locations = total_locations - len(itempool)
         if (leftover_locations<0):

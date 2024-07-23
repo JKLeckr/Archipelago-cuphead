@@ -33,6 +33,7 @@ class WorldSettings:
     contract_requirements: tuple[int,int,int]
     dlc_ingredient_requirements: int
     require_secret_shortcuts: bool
+    filler_item_buffer: int
 
     def __init__(self, multiworld: MultiWorld, player: int) -> None:
         self.use_dlc = multiworld.use_dlc[player]
@@ -58,6 +59,7 @@ class WorldSettings:
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True
+        self.filler_item_buffer = 0
     def get_boss_grade_checks(self) -> GradeCheckMode:
         return GradeCheckMode(self._boss_grade_checks)
     def get_rungun_grade_checks(self) -> GradeCheckMode:
