@@ -1,4 +1,3 @@
-# ItemNames en
 from . import LocationNames
 
 # Prefixes

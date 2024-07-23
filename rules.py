@@ -1,8 +1,8 @@
 from BaseClasses import MultiWorld, Location
 from worlds.generic.Rules import set_rule, forbid_item
-from .Locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
+from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
-from .Settings import WorldSettings
+from .settings import WorldSettings
 
 class RuleData:
     multiworld: MultiWorld

@@ -1,9 +1,9 @@
 from typing import Optional, Callable
 from BaseClasses import MultiWorld, Region, Entrance, LocationProgressType
-from .Settings import WorldSettings
-from .RegionDefs import define_regions
-from .Locations import CupheadLocation, LocationData
-from .Levels import LevelData
+from .settings import WorldSettings
+from .regiondefs import define_regions
+from .locations import CupheadLocation, LocationData
+from .levels import LevelData
 
 def create_regions(multiworld: MultiWorld, player: int, locations: dict[str, LocationData], levels: dict[str, LevelData], level_shuffle_map: dict[str, str], settings: WorldSettings) -> None:
     compile_regions = define_regions(player, levels, level_shuffle_map, settings)

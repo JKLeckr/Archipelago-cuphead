@@ -1,7 +1,7 @@
 from typing import NamedTuple, Optional
 from BaseClasses import Item, ItemClassification
 from .names import ItemNames
-from .Settings import WorldSettings
+from .settings import WorldSettings
 
 class CupheadItem(Item):
     game: str = "Cuphead"

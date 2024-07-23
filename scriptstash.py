@@ -1,9 +1,9 @@
 ## ScriptStash: A place for discarded code that might be useful in the future
 
 from BaseClasses import MultiWorld
-from .Names import ItemNames, LocationNames
-from .Levels import LevelData
-from . import Items
+from .names import ItemNames, LocationNames
+from .levels import LevelData
+from . import items
 
 using_dlc = False
 
@@ -41,9 +41,9 @@ def create_weapontiers(multiworld: MultiWorld, player: int, starting_weapons: li
     res: dict[int,list[str]] = {}
     start_weapons = starting_weapons if starting_weapons else []
     weapons = []
-    [weapons.append(x) for x in Items.item_weapons.keys() if (x not in start_weapons)]
+    [weapons.append(x) for x in items.item_weapons.keys() if (x not in start_weapons)]
     if use_dlc:
-        [weapons.append(x) for x in Items.item_dlc_weapons.keys() if (x not in start_weapons)]
+        [weapons.append(x) for x in items.item_dlc_weapons.keys() if (x not in start_weapons)]
     res.update({0: start_weapons})
     rand.shuffle(weapons)
     weapons_per_tier = -(len(weapons)//-tiers)
@@ -55,10 +55,10 @@ def create_weapongates(multiworld: MultiWorld, player: int, weapon_tiers: dict[i
     use_dlc = multiworld.game_content[player] == "delicious_last_course"
     rand = multiworld.random
     res: dict[str,tuple(str,str)] = {}
-    weapons = list(Items.item_weapons.keys())
+    weapons = list(items.item_weapons.keys())
     used_weapons = []
     if use_dlc:
-        weapons.append(Items.item_dlc_weapons.keys())
+        weapons.append(items.item_dlc_weapons.keys())
     for level in levels.keys:
         weapon_pool = []
         if levels[level].is_starter:

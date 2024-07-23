@@ -2,9 +2,9 @@ from typing import NamedTuple, Optional, Callable
 from random import Random
 from BaseClasses import CollectionState
 from .names import LocationNames, ItemNames
-from .Locations import LocationData
-from .Settings import WorldSettings
-from .Auxiliary import scrub_list
+from .locations import LocationData
+from .settings import WorldSettings
+from .auxiliary import scrub_list
 
 class LevelData(NamedTuple):
     world_location: Optional[str]

@@ -3,12 +3,12 @@ from typing import TextIO, Dict, Any
 from BaseClasses import Item, Tutorial, CollectionState, ItemClassification
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
-from .Auxiliary import count_in_list
-from .Settings import WorldSettings
-from .Items import CupheadItem, ItemData
-from .Locations import LocationData
-from .Levels import LevelData
-from . import Debug, Options, Items, Locations, Levels, Regions, Rules
+from .auxiliary import count_in_list
+from .settings import WorldSettings
+from .items import CupheadItem, ItemData
+from .locations import LocationData
+from .levels import LevelData
+from . import debug, items, levels, locations, options, regions, rules
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -29,15 +29,15 @@ class CupheadWorld(World):
     """
     game: str = "Cuphead"
     web = CupheadWebWorld()
-    option_definitions = Options.cuphead_options
+    option_definitions = options.cuphead_options
     version = 0
     required_client_version = (0, 4, 2)
 
-    item_name_to_id = Items.name_to_id
-    location_name_to_id = Locations.name_to_id
+    item_name_to_id = items.name_to_id
+    location_name_to_id = locations.name_to_id
 
-    item_names = set(Items.items_all.keys())
-    location_names = set(Locations.locations_all.keys())
+    item_names = set(items.items_all.keys())
+    location_names = set(locations.locations_all.keys())
 
     wsettings: WorldSettings = None
 
@@ -56,24 +56,24 @@ class CupheadWorld(World):
 
         self.resolve_precollected_items()
 
-        self.active_items: dict[str,ItemData] = Items.setup_items(self.wsettings)
-        self.active_locations: dict[str,LocationData] = Locations.setup_locations(self.wsettings)
+        self.active_items: dict[str,ItemData] = items.setup_items(self.wsettings)
+        self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wsettings)
         #Tests.test_duplicates(self.active_locations)
-        self.active_levels: dict[str,LevelData] = Levels.setup_levels(self.wsettings,self.active_locations)
+        self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wsettings,self.active_locations)
         self.level_shuffle_map: dict[str,str] = {}
         if self.level_shuffle:
-            self.level_shuffle_map: dict[str,str] = Levels.setup_level_shuffle_map(self.random, self.wsettings)
+            self.level_shuffle_map: dict[str,str] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
         # Group Items
         self.item_name_groups = {}
         for item in self.active_items.keys():
-            if item in Items.item_weapons or (self.use_dlc and item in Items.item_dlc_weapons):
+            if item in items.item_weapons or (self.use_dlc and item in items.item_dlc_weapons):
                 self.item_name_groups.update({"weapons": item})
-            if item in Items.item_charms or (self.use_dlc and item in Items.item_dlc_charms):
+            if item in items.item_charms or (self.use_dlc and item in items.item_dlc_charms):
                 self.item_name_groups.update({"charms": item})
-            if item in Items.item_super:
+            if item in items.item_super:
                 self.item_name_groups.update({"super": item})
-            if item in Items.item_abilities or item in Items.item_abilities_aim:
+            if item in items.item_abilities or item in items.item_abilities_aim:
                 self.item_name_groups.update({"abilities": item})
 
     def fill_slot_data(self) -> Dict[str, Any]:
@@ -82,18 +82,18 @@ class CupheadWorld(World):
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map
         }
-        for option_name in Options.cuphead_options:
+        for option_name in options.cuphead_options:
             option = getattr(self.multiworld, option_name)[self.player]
             slot_data[option_name] = option.value
 
         return slot_data
 
     def create_regions(self) -> None:
-        Regions.create_regions(self.multiworld, self.player, self.active_locations, self.active_levels, self.level_shuffle_map, self.wsettings)
+        regions.create_regions(self.multiworld, self.player, self.active_locations, self.active_levels, self.level_shuffle_map, self.wsettings)
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
     def create_item(self, name: str, force_classification: ItemClassification = None) -> Item:
-        data = Items.items_all[name]
+        data = items.items_all[name]
 
         if force_classification:
             classification = force_classification
@@ -136,17 +136,17 @@ class CupheadWorld(World):
         if self.wsettings.wolfgang_quest:
             self.create_locked_item(ItemNames.item_event_music, LocationNames.loc_event_music)
         if self.wsettings.agrade_quest:
-            self.create_locked_items(ItemNames.item_event_agrade, Locations.locations_event_agrade)
+            self.create_locked_items(ItemNames.item_event_agrade, locations.locations_event_agrade)
         if self.wsettings.pacifist_quest:
-            self.create_locked_items(ItemNames.item_event_pacifist, Locations.location_level_rungun_event_pacifist)
+            self.create_locked_items(ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
         self.create_locked_item(ItemNames.item_goal_devilko, LocationNames.loc_level_boss_devil)
 
         if self.use_dlc:
             self.create_locked_item(ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
             #self.create_locked_item(ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
             self.create_locked_item(ItemNames.item_goal_dlc_saltbakerko, LocationNames.loc_level_dlc_boss_saltbaker)
-            self.create_locked_items(ItemNames.item_event_agrade, Locations.locations_dlc_event_agrade)
-            self.create_locked_items(ItemNames.item_event_dlc_boss_chaliced, Locations.locations_dlc_event_boss_chaliced)
+            self.create_locked_items(ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
+            self.create_locked_items(ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
 
         total_locations = len([x.name for x in self.multiworld.get_locations(self.player) if not x.event])
         unfilled_locations = len([x.name for x in self.multiworld.get_unfilled_locations(self.player)])
@@ -179,10 +179,10 @@ class CupheadWorld(World):
             7: ItemNames.item_weapon_dlc_converge,
             8: ItemNames.item_weapon_dlc_twistup,
         }
-        weapons = {x for x in set(Items.item_weapons.keys()) if x not in starter_items_names}
+        weapons = {x for x in set(items.item_weapons.keys()) if x not in starter_items_names}
         start_weapon_index = self.start_weapon
         if self.use_dlc:
-            weapons.update(Items.item_dlc_weapons.keys())
+            weapons.update(items.item_dlc_weapons.keys())
         elif start_weapon_index>5:
             start_weapon_index = rand.randint(0,5)
         start_weapon = weapon_dict[start_weapon_index]
@@ -193,8 +193,8 @@ class CupheadWorld(World):
         # Item names for coins
         coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
-        essential_items = [y for y in Items.item_essential.keys() if y not in coin_items] + (list(Items.item_essential.keys()) if self.use_dlc else [])
-        charms = list(Items.item_charms.keys()) + (list(Items.item_dlc_charms.keys()) if self.use_dlc else [])
+        essential_items = [y for y in items.item_essential.keys() if y not in coin_items] + (list(items.item_essential.keys()) if self.use_dlc else [])
+        charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if self.use_dlc else [])
 
         # Add the other non-filler items before the coins
         def _fill_pool(items: list[str]) -> list[CupheadItem]:
@@ -209,9 +209,9 @@ class CupheadWorld(World):
         itempool += _fill_pool(essential_items)
         itempool += _fill_pool(weapons)
         itempool += _fill_pool(charms)
-        itempool += _fill_pool(Items.item_super.keys())
+        itempool += _fill_pool(items.item_super.keys())
         if self.wsettings.randomize_abilities:
-            itempool += _fill_pool(Items.item_abilities.keys())
+            itempool += _fill_pool(items.item_abilities.keys())
 
         # Coins
         coin_amounts = self.get_coin_amounts()
@@ -272,7 +272,7 @@ class CupheadWorld(World):
 
         if self.wsettings.traps>0:
             trap_count = math.ceil(self.traps / filler_count * 100)
-            itempool += [self.create_item(rand.choice(tuple(Items.item_trap.keys()))) for _ in range(trap_count)]
+            itempool += [self.create_item(rand.choice(tuple(items.item_trap.keys()))) for _ in range(trap_count)]
             filler_count -= trap_count
 
         #print(len(self.multiworld.precollected_items[self.player]))
@@ -303,7 +303,7 @@ class CupheadWorld(World):
             return super().collect(state, item)
 
     def get_filler_item_name(self) -> str:
-        return self.random.choice(tuple(Items.item_filler.keys()))
+        return self.random.choice(tuple(items.item_filler.keys()))
 
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
         if self.level_shuffle:
@@ -329,5 +329,5 @@ class CupheadWorld(World):
                     starter_items_names.insert(index, ItemNames.item_coin)
 
     def set_rules(self) -> None:
-        Rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins)
+        rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins)
         pass

@@ -1,7 +1,7 @@
 from typing import NamedTuple, Optional, Callable
 from .names import LocationNames, ItemNames
-from .Settings import WorldSettings
-from .Levels import LevelData, level_rule_plane
+from .settings import WorldSettings
+from .levels import LevelData, level_rule_plane
 
 class Target(NamedTuple):
     name: str

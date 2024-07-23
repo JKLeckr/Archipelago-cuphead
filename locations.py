@@ -1,7 +1,7 @@
 from typing import NamedTuple, Optional
 from BaseClasses import Location, LocationProgressType
 from .names import LocationNames
-from .Settings import WorldSettings, GradeCheckMode
+from .settings import WorldSettings, GradeCheckMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"
