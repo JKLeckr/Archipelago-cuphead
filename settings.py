@@ -1,5 +1,4 @@
 from enum import IntEnum
-from BaseClasses import MultiWorld
 from Options import PerGameCommonOptions
 
 class GradeCheckMode(IntEnum):

@@ -1,4 +1,3 @@
-import typing
 from dataclasses import dataclass
 from Options import Toggle, DefaultOnToggle, Range, Choice, Option, DeathLink, PerGameCommonOptions
 
