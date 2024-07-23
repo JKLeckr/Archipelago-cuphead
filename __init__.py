@@ -83,13 +83,9 @@ class CupheadWorld(World):
         slot_data = {
             "version": self.version,
             "levels": list(self.active_levels.keys()),
-            "level_shuffle_map": self.level_shuffle_map
+            "level_shuffle_map": self.level_shuffle_map,
+            **self.options.as_dict("use_dlc", "expert_mode", "freemove_isles")
         }
-        cuphead_options = [x for x in dir(CupheadOptions) if not x.startswith("_")]
-        for option_name in cuphead_options:
-            option = getattr(self.options, option_name)
-            slot_data[option_name] = option
-
         return slot_data
 
     def create_regions(self) -> None:
