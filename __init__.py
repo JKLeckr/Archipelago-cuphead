@@ -333,4 +333,4 @@ class CupheadWorld(World):
 
     def set_rules(self) -> None:
         rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins)
-        visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
+        #visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
