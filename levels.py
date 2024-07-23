@@ -13,7 +13,7 @@ class LevelData(NamedTuple):
 
 # Level Rules
 def level_rule_plane(state: CollectionState, player: int) -> bool:
-    return state.has(ItemNames.item_progressive_plane, player, 1)
+    return state.has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs}, player)
 def level_dlc_rule_relic(state: CollectionState, player: int) -> bool:
     return state.has(ItemNames.item_charm_dlc_broken_relic, player, 1)
 
@@ -96,7 +96,7 @@ level_boss = {
         LocationNames.loc_level_boss_kingdice_topgrade,
         LocationNames.loc_level_boss_kingdice_event_agrade,
         LocationNames.loc_level_boss_kingdice_dlc_chaliced,
-    ]),
+    ], level_rule_plane),
     LocationNames.level_boss_plane_blimp: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_plane_blimp,
         LocationNames.loc_level_boss_plane_blimp_topgrade,

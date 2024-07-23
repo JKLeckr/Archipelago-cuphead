@@ -285,7 +285,6 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
         RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
     ]
     region_dlc_isle4 = [
-        # Setup regions later
         RegionData(LocationNames.level_dlc_tutorial, [
             LocationNames.loc_level_dlc_tutorial,
             LocationNames.loc_level_dlc_tutorial_coin,
