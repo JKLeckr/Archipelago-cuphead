@@ -5,11 +5,12 @@ from Utils import visualize_regions
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
 from .auxiliary import count_in_list
+from .options import CupheadOptions
 from .settings import WorldSettings
 from .items import CupheadItem, ItemData
 from .locations import LocationData
 from .levels import LevelData
-from . import debug, items, levels, locations, options, regions, rules
+from . import debug, items, levels, locations, regions, rules
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -30,7 +31,8 @@ class CupheadWorld(World):
     """
     game: str = "Cuphead"
     web = CupheadWebWorld()
-    option_definitions = options.cuphead_options
+    options_dataclass = CupheadOptions
+    options: CupheadOptions
     version = 0
     required_client_version = (0, 4, 2)
 
@@ -44,7 +46,7 @@ class CupheadWorld(World):
 
     def generate_early(self) -> None:
         # Settings (See Settings.py)
-        self.wsettings = WorldSettings(self.multiworld, self.player)
+        self.wsettings = WorldSettings(self.options)
 
         self.topology_present = not self.wsettings.freemove_isles
 
@@ -83,8 +85,9 @@ class CupheadWorld(World):
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map
         }
-        for option_name in options.cuphead_options:
-            option = getattr(self.multiworld, option_name)[self.player]
+        cuphead_options = [x for x in dir(CupheadOptions) if not x.startswith("_")]
+        for option_name in cuphead_options:
+            option = getattr(self.options, option_name)
             slot_data[option_name] = option
 
         return slot_data

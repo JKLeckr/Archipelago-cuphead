@@ -1,5 +1,6 @@
 from enum import IntEnum
 from BaseClasses import MultiWorld
+from Options import PerGameCommonOptions
 
 class GradeCheckMode(IntEnum):
     disabled = 0
@@ -35,27 +36,27 @@ class WorldSettings:
     require_secret_shortcuts: bool
     filler_item_buffer: int
 
-    def __init__(self, multiworld: MultiWorld, player: int) -> None:
-        self.use_dlc = multiworld.use_dlc[player]
-        self.start_weapon = int(multiworld.start_weapon[player])
-        self.level_shuffle = multiworld.level_shuffle[player]
-        #self.shop_shuffle = multiworld.shop_shuffle[player]
-        self.freemove_isles = multiworld.freemove_isles[player]
-        self.weapon_gate = False #multiworld.weapon_gate[player]
-        self.randomize_abilities = multiworld.randomize_abilities[player]
-        self._boss_grade_checks = int(multiworld.boss_grade_checks[player])
-        self._rungun_grade_checks = int(multiworld.rungun_grade_checks[player])
-        self.dlc_boss_chalice_checks = False #multiworld.dlc_boss_chalice_checks[player]
+    def __init__(self, options: PerGameCommonOptions) -> None:
+        self.use_dlc = options.use_dlc
+        self.start_weapon = int(options.start_weapon)
+        self.level_shuffle = options.level_shuffle
+        #self.shop_shuffle = options.shop_shuffle
+        self.freemove_isles = options.freemove_isles
+        self.weapon_gate = False #options.weapon_gate
+        self.randomize_abilities = options.randomize_abilities
+        self._boss_grade_checks = int(options.boss_grade_checks)
+        self._rungun_grade_checks = int(options.rungun_grade_checks)
+        self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
         self.lucien_quest = True
-        self.agrade_quest = multiworld.agrade_quest[player]
-        self.pacifist_quest = multiworld.pacifist_quest[player]
+        self.agrade_quest = options.agrade_quest
+        self.pacifist_quest = options.pacifist_quest
         self.ludwig_quest = True
         self.wolfgang_quest = True
-        self.dlc_cactusgirl_quest = False #multiworld.dlc_cactusgirl_quest[player]
-        self.traps = multiworld.traps[player]
+        self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
+        self.traps = options.traps
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True

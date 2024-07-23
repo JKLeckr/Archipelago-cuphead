@@ -1,5 +1,6 @@
 import typing
-from Options import Toggle, DefaultOnToggle, Range, Choice, Option, DeathLink
+from dataclasses import dataclass
+from Options import Toggle, DefaultOnToggle, Range, Choice, Option, DeathLink, PerGameCommonOptions
 
 class DeliciousLastCourse(Toggle):
     """
@@ -118,21 +119,21 @@ class Traps(Range):
     range_end = 100
     default = 0
 
-cuphead_options: typing.Dict[str, type[Option]] = {
-    "use_dlc": DeliciousLastCourse,
-    "expert_mode": ExpertMode,
-    "start_weapon": StartWeapon,
-    "level_shuffle": LevelShuffle,
-    "freemove_isles": FreeMoveIsles,
-    #"weapon_gate": WeaponGate,
-    "randomize_abilities": RandomizeAbilities,
-    #"randomize_abilities_aim": RandomizeAimAbilities,
-    "boss_grade_checks": BossGradeChecks,
-    "rungun_grade_checks": RunGunGradeChecks,
-    #"dlc_boss_chalice_checks": DlcBossChaliceChecks,
-    "agrade_quest": AGradeQuest,
-    "pacifist_quest": PacifistQuest,
-    #"dlc_cactusgirl_quest": DlcCactusGirlQuest,
-    "traps": Traps,
-    "deathlink": DeathLink,
-}
+@dataclass
+class CupheadOptions(PerGameCommonOptions):
+    use_dlc: DeliciousLastCourse
+    expert_mode: ExpertMode
+    start_weapon: StartWeapon
+    level_shuffle: LevelShuffle
+    freemove_isles: FreeMoveIsles
+    #weapon_gate: WeaponGate
+    randomize_abilities: RandomizeAbilities
+    #randomize_abilities_aim: RandomizeAimAbilities
+    boss_grade_checks: BossGradeChecks
+    rungun_grade_checks: RunGunGradeChecks
+    #dlc_boss_chalice_checks: DlcBossChaliceChecks
+    agrade_quest: AGradeQuest
+    pacifist_quest: PacifistQuest
+    #dlc_cactusgirl_quest: DlcCactusGirlQuest
+    traps: Traps
+    deathlink: DeathLink
