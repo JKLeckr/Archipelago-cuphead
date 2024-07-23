@@ -181,7 +181,10 @@ region_isle2 = [
         LevelTarget(LocationNames.level_rungun_funhouse),
         Target(LocationNames.loc_event_isle2_shortcut),
         Target(LocationNames.world_inkwell_3, None, dep_not(dep_freemove))]),
-    LevelRegionData(LocationNames.level_boss_plane_bird, None, [LevelTarget(LocationNames.level_mausoleum_ii)]),
+    LevelRegionData(LocationNames.level_boss_plane_bird, None, [
+        LevelTarget(LocationNames.level_mausoleum_ii),
+        Target(LocationNames.level_shop2),
+    ]),
     LevelRegionData(LocationNames.level_boss_dragon, [
         LocationNames.loc_quest_4parries,
     ], [

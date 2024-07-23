@@ -34,7 +34,8 @@ class CupheadWorld(World):
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
     options: CupheadOptions
-    version = 0.0
+    version = 0.1
+    id_version = 0
     required_client_version = (0, 4, 6)
     debug = False
 
@@ -93,6 +94,7 @@ class CupheadWorld(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data = {
             "version": 0,
+            "id_version": self.id_version,
             "world_version": self.version,
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
