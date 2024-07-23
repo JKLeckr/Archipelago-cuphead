@@ -1,10 +1,16 @@
 from __future__ import annotations
 import typing
 from typing import NamedTuple, Optional, Callable
+from enum import IntEnum
 from .names import LocationNames, ItemNames
 from .levels import LevelData, level_rule_plane
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
+
+class Type(IntEnum):
+    SIMPLE = 0,
+    LEVEL = 1,
+    WORLD = 2,
 
 class Target(NamedTuple):
     name: str
@@ -18,63 +24,16 @@ class RegionData:
         self.locations = locations
         self.connect_to = connect_to
 
-def define_regions(world: CupheadWorld) -> list[RegionData]:
-    w = world
-    player = w.player
-    settings = w.wsettings
-    levels = w.active_levels
-    level_shuffle_map = w.level_shuffle_map
-    shop_locations = w.shop_locations
-    using_dlc = settings.use_dlc
-    freemove_isles = settings.freemove_isles
-    contract_requirements = settings.contract_requirements
-    dlc_ingredient_requirements = settings.dlc_ingredient_requirements
-    agrade_quest = settings.agrade_quest
-    pacifist_quest = settings.pacifist_quest
-    wolfgang_quest = settings.wolfgang_quest
-    dlc_cactusgirl_quest = settings.dlc_cactusgirl_quest
-    require_secret_shortcuts = settings.require_secret_shortcuts
+region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)])
+region_house = RegionData(LocationNames.level_house, None, [
+    Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)])
 
-    # Overrides for Levels (to automatically account for level shuffling)
-    def _level_map(level: str) -> LevelData:
-        if level not in levels:
-            return LevelData(None,[])
-        if level in level_shuffle_map:
-            return levels[level_shuffle_map[level]]
-        else:
-            return levels[level]
-    class LevelTarget(Target):
-        def __new__(cls, name: str, add_rule: Optional[Callable] = None) -> Target:
-            _rule = _level_map(name).rule
-            _add_rule = add_rule if add_rule else lambda state: True
-            return super().__new__(cls, name, (lambda state: _rule(state,player) and _add_rule(state)) if _rule else None)
-    class LevelRegionData(RegionData):
-        def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, ignore_freemove_islands: bool = False) -> None:
-            _locations = list(_level_map(name).locations)
-            if add_locations:
-                _locations += add_locations
-            super().__init__(name, _locations, connect_to if not freemove_isles or ignore_freemove_islands else None)
+region_house_level_tutorial = RegionData(LocationNames.level_tutorial, [
+    LocationNames.loc_level_tutorial,
+    LocationNames.loc_level_tutorial_coin,
+], None)
 
-    region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)])
-    region_house = RegionData(LocationNames.level_house, None, [
-        Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)])
-
-    region_house_level_tutorial = RegionData(LocationNames.level_tutorial, [
-        LocationNames.loc_level_tutorial,
-        LocationNames.loc_level_tutorial_coin,
-    ], None)
-
-    region_shops = []
-    region_dlc_shops = []
-
-    for shop_name, locs in shop_locations.items():
-        shop_region = RegionData(shop_name, locs, None)
-        if shop_name == LocationNames.level_dlc_shop4:
-            region_dlc_shops.append(shop_region)
-        else:
-            region_shops.append(shop_region)
-
-    region_worlds = [
+region_worlds = [
         RegionData(LocationNames.world_inkwell_1, [
             LocationNames.loc_npc_mac,
             LocationNames.loc_coin_isle1_secret,
@@ -123,8 +82,8 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
         RegionData(LocationNames.world_inkwell_hell, [LocationNames.loc_coin_isleh_secret], [
             Target(LocationNames.level_boss_kingdice,
                 lambda state: (state.has(ItemNames.item_contract, player, contract_requirements[2]) and level_rule_plane(state,player)))]),
-    ]
-    region_dlc_worlds = [
+]
+region_dlc_worlds = [
         RegionData(LocationNames.world_dlc_inkwell_4, [
             LocationNames.loc_event_dlc_start,
             LocationNames.loc_dlc_npc_newscat,
@@ -143,9 +102,9 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
             LevelTarget(LocationNames.level_dlc_boss_saltbaker,
                 lambda state: (state.has(ItemNames.item_dlc_ingredient, player, dlc_ingredient_requirements))),
         ] if freemove_isles else [])),
-    ] if using_dlc else []
+] if using_dlc else []
 
-    region_isle1 =  [
+region_isle1 =  [
         LevelRegionData(LocationNames.level_boss_veggies, [LocationNames.loc_event_isle1_secret_prereq1],
             [LevelTarget(LocationNames.level_boss_frogs)]),
         LevelRegionData(LocationNames.level_boss_slime, [LocationNames.loc_event_isle1_secret_prereq2],
@@ -160,8 +119,8 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
         LevelRegionData(LocationNames.level_rungun_tree, None, [Target(LocationNames.level_mausoleum_i)]),
         LevelRegionData(LocationNames.level_rungun_forest, None, [Target(LocationNames.level_mausoleum_i)]),
         LevelRegionData(LocationNames.level_mausoleum_i, None, None)
-    ]
-    region_isle2 = [
+]
+region_isle2 = [
         LevelRegionData(LocationNames.level_boss_baroness, None, [
             LevelTarget(LocationNames.level_boss_plane_bird),
             LevelTarget(LocationNames.level_rungun_circus),
@@ -202,8 +161,8 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
             LevelTarget(LocationNames.level_boss_plane_bird),
             LevelTarget(LocationNames.level_rungun_circus),
         ] if require_secret_shortcuts and not freemove_isles else None)
-    ]
-    region_isle3 = [
+]
+region_isle3 = [
         LevelRegionData(LocationNames.level_boss_bee, None, [
             LevelTarget(LocationNames.level_boss_plane_robot),
             LevelTarget(LocationNames.level_rungun_mountain),
@@ -245,12 +204,12 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
         RegionData(LocationNames.loc_quest_15agrades, [LocationNames.loc_quest_15agrades], None) if agrade_quest else None,
         RegionData(LocationNames.loc_quest_pacifist, [LocationNames.loc_quest_pacifist], None) if pacifist_quest else None,
     ]
-    region_isleh = [
+region_isleh = [
         LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], True),
         #LevelRegionData(LocationNames.level_boss_devil, None, None),
         RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
-    ]
-    region_dlc_isle4 = [
+]
+region_dlc_isle4 = [
         RegionData(LocationNames.level_dlc_tutorial, [
             LocationNames.loc_level_dlc_tutorial,
             LocationNames.loc_level_dlc_tutorial_coin,
@@ -280,8 +239,8 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
             LevelTarget(LocationNames.level_dlc_chesscastle_pawn)
         ]),
         RegionData(LocationNames.loc_dlc_quest_cactusgirl, [LocationNames.loc_dlc_quest_cactusgirl], None) if dlc_cactusgirl_quest else None,
-    ] if using_dlc else []
-    region_dlc_chesscastle = [
+]
+region_dlc_chesscastle = [
         # Setup Regions later
         LevelRegionData(LocationNames.level_dlc_chesscastle_pawn, None, [LevelTarget(LocationNames.level_dlc_chesscastle_knight)]),
         LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)]),
@@ -289,10 +248,57 @@ def define_regions(world: CupheadWorld) -> list[RegionData]:
         LevelRegionData(LocationNames.level_dlc_chesscastle_rook, None, [LevelTarget(LocationNames.level_dlc_chesscastle_queen)]),
         LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run)]),
         LevelRegionData(LocationNames.level_dlc_chesscastle_run, None)
-    ] if using_dlc else []
-    region_dlc_special = [
+]
+region_dlc_special = [
         # Add Logic Regions and connections to curse_complete
-    ] if using_dlc else []
+]
+
+def define_regions(world: CupheadWorld) -> list[RegionData]:
+    w = world
+    player = w.player
+    settings = w.wsettings
+    levels = w.active_levels
+    level_shuffle_map = w.level_shuffle_map
+    shop_locations = w.shop_locations
+    using_dlc = settings.use_dlc
+    freemove_isles = settings.freemove_isles
+    contract_requirements = settings.contract_requirements
+    dlc_ingredient_requirements = settings.dlc_ingredient_requirements
+    agrade_quest = settings.agrade_quest
+    pacifist_quest = settings.pacifist_quest
+    wolfgang_quest = settings.wolfgang_quest
+    dlc_cactusgirl_quest = settings.dlc_cactusgirl_quest
+    require_secret_shortcuts = settings.require_secret_shortcuts
+
+    # Overrides for Levels (to automatically account for level shuffling)
+    def _level_map(level: str) -> LevelData:
+        if level not in levels:
+            return LevelData(None,[])
+        if level in level_shuffle_map:
+            return levels[level_shuffle_map[level]]
+        else:
+            return levels[level]
+    class LevelTarget(Target):
+        def __new__(cls, name: str, add_rule: Optional[Callable] = None) -> Target:
+            _rule = _level_map(name).rule
+            _add_rule = add_rule if add_rule else lambda state: True
+            return super().__new__(cls, name, (lambda state: _rule(state,player) and _add_rule(state)) if _rule else None)
+    class LevelRegionData(RegionData):
+        def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, ignore_freemove_islands: bool = False) -> None:
+            _locations = list(_level_map(name).locations)
+            if add_locations:
+                _locations += add_locations
+            super().__init__(name, _locations, connect_to if not freemove_isles or ignore_freemove_islands else None)
+
+    region_shops = []
+    region_dlc_shops = []
+
+    for shop_name, locs in shop_locations.items():
+        shop_region = RegionData(shop_name, locs, None)
+    if shop_name == LocationNames.level_dlc_shop4:
+        region_dlc_shops.append(shop_region)
+    else:
+        region_shops.append(shop_region)
 
     total_regions: list[RegionData] = [
         region_begin,
