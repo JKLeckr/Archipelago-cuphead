@@ -84,7 +84,7 @@ class CupheadWorld(World):
             "version": self.version,
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
-            **self.options.as_dict("use_dlc", "expert_mode", "freemove_isles")
+            **self.options.as_dict("use_dlc", "expert_mode", "freemove_isles", "boss_grade_checks", "rungun_grade_checks")
         }
         return slot_data
 
