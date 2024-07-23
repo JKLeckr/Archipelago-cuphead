@@ -104,7 +104,7 @@ item_trap = {
     ItemNames.item_trap_fingerjam: ItemData(id(36), ItemClassification.trap, 0),
     ItemNames.item_trap_slowfire: ItemData(id(37), ItemClassification.trap, 0),
     ItemNames.item_trap_superdrain: ItemData(id(38), ItemClassification.trap, 0),
-    ItemNames.item_trap_inktrap: ItemData(id(39), ItemClassification.trap, 0),
+    #ItemNames.item_trap_inktrap: ItemData(id(39), ItemClassification.trap, 0),
 }
 
 item_special = {
