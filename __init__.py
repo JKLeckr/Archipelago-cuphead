@@ -139,7 +139,7 @@ class CupheadWorld(World):
                 shop_region += _shop_charms[charm_index:(charm_index+ccount)]
                 weapon_index+=wcount
                 charm_index+=ccount
-            shop_locations[LocationNames.level_shops[i]] = shop_region
+            shop_locations[LocationNames.level_shops[i]] = shop_region ## TODO: Rename to shop sets
         return shop_locations
 
     def create_regions(self) -> None:
@@ -380,7 +380,7 @@ class CupheadWorld(World):
         for shop, locs in self.shop_locations.items():
             if shop != LocationNames.level_dlc_shop4 or self.use_dlc:
                 for loc in locs:
-                    hint_dict[self.location_name_to_id[loc]] = " at " + shop
+                    hint_dict[self.location_name_to_id[loc]] = " at " + shop ## TODO: Use Shop Sets
         hint_data.update({self.player: hint_dict})
 
     def set_rules(self) -> None:
