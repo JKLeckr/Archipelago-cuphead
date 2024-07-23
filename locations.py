@@ -24,7 +24,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Locations
-# Next ids: 126, 56
+# Next ids: 129, 56
 # Level Locations
 location_level_tutorial = {
     LocationNames.loc_level_tutorial: LocationData(id(0)),
@@ -394,6 +394,12 @@ location_dlc_world_quest = {
     LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(55)),
 }
 
+location_level_boss_secret = {
+    LocationNames.loc_level_boss_veggies_secret: LocationData(id(126)),
+    LocationNames.loc_level_boss_plane_genie_secret: LocationData(id(127)),
+    LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(128)),
+}
+
 # Special Locations
 location_special = {
     #LocationNames.loc_event_firstweapon: LocationData(None),
@@ -492,12 +498,16 @@ def setup_locations(settings: WorldSettings):
     boss_grade_checks = settings.get_boss_grade_checks()
     rungun_grade_checks = settings.get_rungun_grade_checks()
     if boss_grade_checks>0:
-        locations.update({**location_level_boss_topgrade, **(location_level_boss_final_topgrade if use_dlc else dict({}))})
+        locations.update(location_level_boss_topgrade)
+        if use_dlc:
+            locations.update(location_level_boss_final_topgrade)
     if rungun_grade_checks>0:
         if rungun_grade_checks==GradeCheckMode.a_grade or rungun_grade_checks==GradeCheckMode.aplus_grade:
-            locations.update({**location_level_rungun_agrade})
+            locations.update(location_level_rungun_agrade)
         elif rungun_grade_checks==GradeCheckMode.pacifist:
-            locations.update({**location_level_rungun_pacifist})
+            locations.update(location_level_rungun_pacifist)
+    if settings.boss_secret_checks:
+        locations.update(location_level_boss_secret)
 
     # Switches
     def _add_location(name: str, location_dict: dict[str,LocationData]) -> None:

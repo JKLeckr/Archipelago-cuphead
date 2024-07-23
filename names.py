@@ -119,6 +119,7 @@ class LocationNames:
     loc_level_dlc_tutorial_coin = level_dlc_tutorial + " Coin"
 
     loc_level_boss_veggies = level_boss_veggies + " Complete"
+    loc_level_boss_veggies_secret = level_boss_veggies + " Secret Complete"
     loc_level_boss_veggies_topgrade = level_boss_veggies + " Top Grade"
     loc_level_boss_veggies_dlc_chaliced = level_boss_veggies + " Chalice Complete"
     loc_level_boss_veggies_event_defeat = _loc_event_ + level_boss_veggies + " Defeated"
@@ -179,6 +180,7 @@ class LocationNames:
     loc_level_boss_mouse_event_agrade = _loc_event_ + level_boss_mouse + " Grade A"
     loc_level_boss_mouse_event_dlc_chaliced = _loc_event_ + level_boss_mouse + " Chalice Defeated"
     loc_level_boss_sallystageplay = level_boss_sallystageplay + " Complete"
+    loc_level_boss_sallystageplay_secret = level_boss_sallystageplay + " Secret Complete"
     loc_level_boss_sallystageplay_topgrade = level_boss_sallystageplay + " Top Grade"
     loc_level_boss_sallystageplay_dlc_chaliced = level_boss_sallystageplay + " Chalice Complete"
     loc_level_boss_sallystageplay_event_defeat = _loc_event_ + level_boss_sallystageplay + " Defeated"
@@ -239,6 +241,7 @@ class LocationNames:
     loc_level_boss_plane_blimp_event_agrade = _loc_event_ + level_boss_plane_blimp + " Grade A"
     loc_level_boss_plane_blimp_event_dlc_chaliced = _loc_event_ + level_boss_plane_blimp + " Chalice Defeated"
     loc_level_boss_plane_genie = level_boss_plane_genie + " Complete"
+    loc_level_boss_plane_genie_secret = level_boss_plane_genie + " Secret Complete"
     loc_level_boss_plane_genie_topgrade = level_boss_plane_genie + " Top Grade"
     loc_level_boss_plane_genie_dlc_chaliced = level_boss_plane_genie + " Chalice Complete"
     loc_level_boss_plane_genie_event_defeat = _loc_event_ + level_boss_plane_genie + " Defeated"

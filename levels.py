@@ -22,6 +22,7 @@ level_boss = {
     LocationNames.level_boss_veggies: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_veggies,
         LocationNames.loc_level_boss_veggies_topgrade,
+        LocationNames.loc_level_boss_veggies_secret,
         LocationNames.loc_level_boss_veggies_event_agrade,
         LocationNames.loc_level_boss_veggies_dlc_chaliced,
     ], None),
@@ -82,6 +83,7 @@ level_boss = {
     LocationNames.level_boss_sallystageplay: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_sallystageplay,
         LocationNames.loc_level_boss_sallystageplay_topgrade,
+        LocationNames.loc_level_boss_sallystageplay_secret,
         LocationNames.loc_level_boss_sallystageplay_event_agrade,
         LocationNames.loc_level_boss_sallystageplay_dlc_chaliced,
     ]),
@@ -106,6 +108,7 @@ level_boss = {
     LocationNames.level_boss_plane_genie: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_plane_genie,
         LocationNames.loc_level_boss_plane_genie_topgrade,
+        LocationNames.loc_level_boss_plane_genie_secret,
         LocationNames.loc_level_boss_plane_genie_event_agrade,
         LocationNames.loc_level_boss_plane_genie_dlc_chaliced,
     ], level_rule_plane),

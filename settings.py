@@ -20,6 +20,7 @@ class WorldSettings:
     traps: int
     _boss_grade_checks: int
     _rungun_grade_checks: int
+    boss_secret_checks: bool
     dlc_boss_chalice_checks: bool
     fourparries_quest: bool
     ginger_quest: bool
@@ -45,6 +46,7 @@ class WorldSettings:
         self.randomize_abilities = options.randomize_abilities
         self._boss_grade_checks = int(options.boss_grade_checks)
         self._rungun_grade_checks = int(options.rungun_grade_checks)
+        self.boss_secret_checks = False
         self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks
         self.fourparries_quest = True
         self.ginger_quest = True
