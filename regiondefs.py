@@ -282,7 +282,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
     region_isleh = [
         LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], True),
         #LevelRegionData(LocationNames.level_boss_devil, None, None),
-        RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]),
+        RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
     ]
     region_dlc_isle4 = [
         # Setup regions later
@@ -309,7 +309,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             Target(LocationNames.loc_dlc_quest_cactusgirl)  if dlc_cactusgirl_quest else None,
         ]),
         #LevelRegionData(LocationNames.level_dlc_boss_saltbaker, None),
-        RegionData(LocationNames.level_dlc_boss_saltbaker, [LocationNames.loc_event_dlc_goal_saltbaker]),
+        RegionData(LocationNames.level_dlc_boss_saltbaker, [LocationNames.loc_event_dlc_goal_saltbaker]), #FIXME: Temp
         #LevelRegionData(LocationNames.level_dlc_graveyard, None),
         RegionData(LocationNames.level_dlc_chesscastle, None, [
             LevelTarget(LocationNames.level_dlc_chesscastle_pawn)

@@ -46,3 +46,5 @@ def create_regions(multiworld: MultiWorld, player: int, locations: dict[str, Loc
 
 def list_regions_names(regions: list[Region]) -> list[str]:
     return [x.name for x in regions if x]
+def list_multiworld_regions_names(multiworld: MultiWorld) -> list[str]:
+    return list_regions_names(multiworld.regions)

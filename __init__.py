@@ -1,6 +1,7 @@
 import math
 from typing import TextIO, Dict, Any
 from BaseClasses import Item, Tutorial, CollectionState, ItemClassification
+from Utils import visualize_regions
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
 from .auxiliary import count_in_list
@@ -84,12 +85,14 @@ class CupheadWorld(World):
         }
         for option_name in options.cuphead_options:
             option = getattr(self.multiworld, option_name)[self.player]
-            slot_data[option_name] = option.value
+            slot_data[option_name] = option
 
         return slot_data
 
     def create_regions(self) -> None:
         regions.create_regions(self.multiworld, self.player, self.active_locations, self.active_levels, self.level_shuffle_map, self.wsettings)
+        #print(self.multiworld.get_locations(self.player))
+        #print(regions.list_multiworld_regions_names(self.multiworld))
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
     def create_item(self, name: str, force_classification: ItemClassification = None) -> Item:
@@ -330,4 +333,4 @@ class CupheadWorld(World):
 
     def set_rules(self) -> None:
         rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins)
-        pass
+        visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")

@@ -448,9 +448,9 @@ locations_dlc = {
 }
 locations_dlc_boss_chaliced = {
     **location_level_boss_dlc_chaliced,
-    **location_level_boss_final_dlc_chaliced,
+    #**location_level_boss_final_dlc_chaliced,
     **location_level_dlc_boss_dlc_chaliced,
-    **location_level_dlc_boss_final_dlc_chaliced,
+    #**location_level_dlc_boss_final_dlc_chaliced,
 }
 locations_dlc_topgrade = {
     **location_level_dlc_boss_topgrade,
@@ -462,9 +462,9 @@ locations_dlc_event_agrade = {
 }
 locations_dlc_event_boss_chaliced = {
     **location_level_boss_event_dlc_chaliced,
-    **location_level_boss_final_event_dlc_chaliced,
+    #**location_level_boss_final_event_dlc_chaliced,
     **location_level_dlc_boss_event_dlc_chaliced,
-    **location_level_dlc_boss_final_event_dlc_chaliced,
+    #**location_level_dlc_boss_final_event_dlc_chaliced,
 }
 
 locations_all = {
@@ -528,7 +528,7 @@ def setup_locations(settings: WorldSettings):
     if use_dlc:
         locations.update({**locations_dlc, **(locations_dlc_event_agrade if settings.agrade_quest else {})})
         if boss_grade_checks>0:
-            locations.update({**location_level_dlc_boss_topgrade, **location_level_dlc_boss_final_topgrade})
+            locations.update({**location_level_dlc_boss_topgrade})
         if settings.dlc_boss_chalice_checks:
             locations.update({**locations_dlc_boss_chaliced})
         if settings.dlc_cactusgirl_quest:
