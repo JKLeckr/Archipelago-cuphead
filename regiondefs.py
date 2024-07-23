@@ -1,8 +1,10 @@
 from __future__ import annotations
+import typing
 from typing import NamedTuple, Optional, Callable
 from .names import LocationNames, ItemNames
-from .settings import WorldSettings
 from .levels import LevelData, level_rule_plane
+if typing.TYPE_CHECKING:
+    from . import CupheadWorld
 
 class Target(NamedTuple):
     name: str
@@ -16,7 +18,13 @@ class RegionData:
         self.locations = locations
         self.connect_to = connect_to
 
-def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map: dict[str, str], shop_locations: dict[str,list[str]], settings: WorldSettings) -> list[RegionData]:
+def define_regions(world: CupheadWorld) -> list[RegionData]:
+    w = world
+    player = w.player
+    settings = w.wsettings
+    levels = w.active_levels
+    level_shuffle_map = w.level_shuffle_map
+    shop_locations = w.shop_locations
     using_dlc = settings.use_dlc
     freemove_isles = settings.freemove_isles
     contract_requirements = settings.contract_requirements

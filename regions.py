@@ -1,12 +1,28 @@
 from __future__ import annotations
+import typing
 from BaseClasses import MultiWorld, Region, LocationProgressType
-from .settings import WorldSettings
 from .regiondefs import define_regions
-from .locations import CupheadLocation, LocationData
 from .levels import LevelData
+from .locations import CupheadLocation
+if typing.TYPE_CHECKING:
+    from . import CupheadWorld
 
-def create_regions(multiworld: MultiWorld, player: int, locations: dict[str, LocationData], levels: dict[str, LevelData], level_shuffle_map: dict[str, str], shop_locations: dict[str,list[int]], settings: WorldSettings) -> None:
-    compile_regions = define_regions(player, levels, level_shuffle_map, shop_locations, settings)
+def level_map(world: CupheadWorld, level: str) -> LevelData:
+    levels = world.active_levels
+    level_shuffle_map = world.level_shuffle_map
+    if level not in levels:
+        return LevelData(None,[])
+    if level in level_shuffle_map:
+        return levels[level_shuffle_map[level]]
+    else:
+        return levels[level]
+
+def create_regions(world: CupheadWorld) -> None:
+    player = world.player
+    multiworld = world.multiworld
+    locations = world.active_locations
+
+    compile_regions = define_regions(world)
 
     # Create Regions
     for regc in compile_regions:

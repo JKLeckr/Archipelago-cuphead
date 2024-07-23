@@ -137,7 +137,7 @@ class CupheadWorld(World):
         return shop_locations
 
     def create_regions(self) -> None:
-        regions.create_regions(self.multiworld, self.player, self.active_locations, self.active_levels, self.level_shuffle_map, self.shop_locations, self.wsettings)
+        regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
@@ -372,5 +372,5 @@ class CupheadWorld(World):
         hint_data.update({self.player: hint_dict})
 
     def set_rules(self) -> None:
-        rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins, self.shop_map)
+        rules.set_rules(self)
         #visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
