@@ -178,7 +178,7 @@ class LocationNames:
     loc_level_boss_devil = level_boss_devil + " Complete"
     loc_level_boss_devil_topgrade = level_boss_devil + " Top Grade"
     loc_level_boss_devil_dlc_chaliced = level_boss_devil + " Chalice Complete"
-    loc_level_boss_devil_event_defeat = _loc_event_ + level_boss_devil + " Defeated"
+    loc_level_boss_devil_event_defeated = _loc_event_ + level_boss_devil + " Defeated"
     loc_level_boss_devil_event_agrade = _loc_event_ + level_boss_devil + " Grade A"
     loc_level_boss_devil_event_dlc_chaliced = _loc_event_ + level_boss_devil + " Chalice Defeated"
     loc_level_dlc_boss_oldman = level_dlc_boss_oldman + " Complete"
@@ -208,7 +208,7 @@ class LocationNames:
     loc_level_dlc_boss_saltbaker = level_dlc_boss_saltbaker + " Complete"
     loc_level_dlc_boss_saltbaker_topgrade = level_dlc_boss_saltbaker + " Top Grade"
     loc_level_dlc_boss_saltbaker_dlc_chaliced = level_dlc_boss_saltbaker + " Chalice Complete"
-    loc_level_dlc_boss_saltbaker_event_defeat = _loc_event_ + level_dlc_boss_saltbaker + " Defeated"
+    loc_level_dlc_boss_saltbaker_event_defeated = _loc_event_ + level_dlc_boss_saltbaker + " Defeated"
     loc_level_dlc_boss_saltbaker_event_agrade = _loc_event_ + level_dlc_boss_saltbaker + " Grade A"
     loc_level_dlc_boss_saltbaker_event_dlc_chaliced = _loc_event_ + level_dlc_boss_saltbaker + " Chalice Defeated"
     loc_level_boss_plane_blimp = level_boss_plane_blimp + " Complete"
@@ -409,6 +409,7 @@ class LocationNames:
     loc_event_isle2_shortcut = _loc_event_ + world_inkwell_2 + " Shortcut"
     loc_event_quest_4mel_4th = _loc_event_ + "Barbershop Quartet 4th Member"
     loc_event_music = _loc_event_ + "Change Music"
+    loc_event_dlc_start = _loc_event_ + "DLC Start"
     loc_event_dlc_curse_complete = _loc_event_ + "Divine Relic"
 
     loc_event_firstweapon = _loc_event_ + "First Weapon"
@@ -461,7 +462,7 @@ class ItemNames:
     item_ability_parry = "Parry"
     item_ability_dash = "Dash"
     item_ability_duck = "Duck"
-    item_ability_plain_shrink = "Plane Shrink"
+    item_ability_plane_shrink = "Plane Shrink"
     item_ability_plane_parry = "Plane Parry"
 
     item_ability_aim_left = "Aim Left"
@@ -482,6 +483,7 @@ class ItemNames:
     item_plane_gun = "Plane Gun"
     item_plane_bombs = "Plane Bombs"
     item_contract = "Contract"
+    item_dlc_boat = "Boat"
     item_dlc_ingredient = "Ingredient"
 
     # Traps

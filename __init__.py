@@ -139,12 +139,12 @@ class CupheadWorld(World):
             self.create_locked_items(ItemNames.item_event_agrade, locations.locations_event_agrade)
         if self.wsettings.pacifist_quest:
             self.create_locked_items(ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
-        self.create_locked_item(ItemNames.item_event_goal_devilko, LocationNames.loc_level_boss_devil)
+        self.create_locked_item(ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
         if self.use_dlc:
             self.create_locked_item(ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
             #self.create_locked_item(ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
-            self.create_locked_item(ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_level_dlc_boss_saltbaker)
+            self.create_locked_item(ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
             self.create_locked_items(ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
             self.create_locked_items(ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
 

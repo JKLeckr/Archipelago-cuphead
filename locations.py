@@ -401,7 +401,9 @@ location_special = {
     LocationNames.loc_event_quest_4mel_4th: LocationData(None),
     LocationNames.loc_event_music: LocationData(None),
 }
-location_dlc_special = {}
+location_dlc_special = {
+    LocationNames.loc_event_dlc_start: LocationData(None),
+}
 
 # Goal Locations
 location_goal = {
@@ -414,7 +416,7 @@ location_dlc_goal = {
 locations_base = {
     **location_level_tutorial,
     **location_level_boss,
-    **location_level_boss_final, #FIXME
+    #**location_level_boss_final,
     **location_level_rungun,
     **location_level_mausoleum,
     **location_shop,
@@ -424,18 +426,19 @@ locations_base = {
 }
 locations_topgrade = {
     **location_level_boss_topgrade,
+    ##**location_level_boss_final_topgrade,
     **location_level_rungun_agrade,
     **location_level_rungun_pacifist,
 }
 locations_event_agrade = {
     **location_level_boss_event_agrade,
-    **location_level_boss_final_event_agrade,
+    #**location_level_boss_final_event_agrade,
     **location_level_rungun_event_agrade,
 }
 locations_dlc = {
     **location_level_dlc_tutorial,
     **location_level_dlc_boss,
-    **location_level_boss_final, #FIXME
+    #**location_level_dlc_boss_final,
     **location_level_dlc_chesscastle,
     **location_level_dlc_special,
     **location_shop_dlc,
@@ -447,15 +450,15 @@ locations_dlc_boss_chaliced = {
     **location_level_boss_dlc_chaliced,
     **location_level_boss_final_dlc_chaliced,
     **location_level_dlc_boss_dlc_chaliced,
-    **location_level_dlc_boss_final_dlc_chaliced
+    **location_level_dlc_boss_final_dlc_chaliced,
 }
 locations_dlc_topgrade = {
     **location_level_dlc_boss_topgrade,
-    **location_level_boss_final_topgrade,
+    #**location_level_dlc_boss_final_topgrade,
 }
 locations_dlc_event_agrade = {
     **location_level_dlc_boss_event_agrade,
-    **location_level_dlc_boss_final_event_agrade,
+    #**location_level_dlc_boss_final_event_agrade,
 }
 locations_dlc_event_boss_chaliced = {
     **location_level_boss_event_dlc_chaliced,
@@ -520,6 +523,7 @@ def setup_locations(settings: WorldSettings):
     if settings.pacifist_quest:
         locations.update({**location_level_rungun_event_pacifist})
         _add_location(LocationNames.loc_quest_pacifist,location_world_quest)
+    locations.update({**location_goal})
 
     if use_dlc:
         locations.update({**locations_dlc, **(locations_dlc_event_agrade if settings.agrade_quest else {})})
@@ -530,6 +534,7 @@ def setup_locations(settings: WorldSettings):
         if settings.dlc_cactusgirl_quest:
             locations.update({**locations_dlc_event_boss_chaliced})
             _add_location(LocationNames.loc_dlc_quest_cactusgirl,location_dlc_world_quest)
+        locations.update({**location_dlc_goal})
     return locations
 
 name_to_id = {name: data.id for name, data in locations_all.items() if data.id}
