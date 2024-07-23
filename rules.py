@@ -9,7 +9,7 @@ class RuleData:
     player: int
     use_dlc: bool
     total_coins: int
-    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: tuple[tuple[int]]):
+    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]]):
         self.multiworld = multiworld
         self.player = player
         self.use_dlc = settings.use_dlc
@@ -20,7 +20,7 @@ class RuleData:
     def get_location(self, location: str) -> Location:
         return self.multiworld.get_location(location, self.player)
 
-def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: tuple[tuple[int]]):
+def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]]):
     rdata = RuleData(multiworld, player, settings, total_coins, shop_map)
     use_dlc = rdata.use_dlc
 

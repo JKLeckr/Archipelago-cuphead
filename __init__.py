@@ -70,7 +70,7 @@ class CupheadWorld(World):
             self.level_shuffle_map: dict[str,str] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
         # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-        self.shop_map: tuple[tuple[int]] = ((1,2), (2,2), (2,2), (3,2)) if not self.use_dlc else ((2,2), (2,2), (2,2), (2,2))
+        self.shop_map: list[tuple[int]] = [(1,2), (2,2), (2,2), (3,2)] if not self.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
         self.shop_locations: dict[str,list[str]] = self.get_shop_locations()
 
         # Group Items
@@ -163,7 +163,7 @@ class CupheadWorld(World):
         rand = self.random
         itempool: list[CupheadItem] = []
 
-        #TODO: Handle start_inventory correctly
+        #TODO: Handle start_inventory
 
         #starter_items.append(self.create_item(ItemNames.item_charm_heart))
         #print(len(starter_items))
