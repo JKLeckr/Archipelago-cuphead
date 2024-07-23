@@ -307,12 +307,12 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
 
     for lev,data in {**level_boss, **level_boss_final, **level_rungun}.items():
         levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
-    levels.update({**level_mausoleum})
+    levels.update(level_mausoleum)
 
     if use_dlc:
         for lev,data in {**level_dlc_boss, **level_dlc_boss_final}.items():
             levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
-        levels.update({**level_dlc_special})
+        levels.update(level_dlc_special)
 
     return levels
 

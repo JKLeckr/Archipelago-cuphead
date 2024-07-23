@@ -105,7 +105,9 @@ item_trap = {
     ItemNames.item_level_trap_fingerjam: ItemData(id(36), ItemClassification.trap, 0),
     ItemNames.item_level_trap_slowfire: ItemData(id(37), ItemClassification.trap, 0),
     ItemNames.item_level_trap_superdrain: ItemData(id(38), ItemClassification.trap, 0),
-    #ItemNames.item_level_trap_envirotrap: ItemData(id(39), ItemClassification.trap, 0),
+}
+item_trap_special = {
+    ItemNames.item_level_trap_envirotrap: ItemData(id(39), ItemClassification.trap, 0),
 }
 
 item_special = {
@@ -149,13 +151,14 @@ items_all = {
     **items_base,
     **items_dlc,
     **item_abilities,
-    **item_trap
+    **item_trap,
+    **item_trap_special
 }
 
 def setup_items(settings: WorldSettings):
     items: dict[str,ItemData] = {**items_base}
     if settings.use_dlc:
-        items.update({**items_dlc})
+        items.update(items_dlc)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
             items[ItemNames.item_charm_dlc_cookie].type = ItemClassification.progression
     if settings.weapon_gate:
@@ -167,9 +170,11 @@ def setup_items(settings: WorldSettings):
             if w in items.keys():
                 items[w].type = ItemClassification.progression
     if settings.randomize_abilities:
-        items.update({**item_abilities})
+        items.update(item_abilities)
     if settings.traps>0:
-        items.update({**item_trap})
+        items.update(item_trap)
+        if settings.envirotraps:
+            items.update(item_trap_special[ItemNames.item_level_trap_envirotrap])
     return items
 
 name_to_id = {name: data.id for name, data in items_all.items() if data.id}

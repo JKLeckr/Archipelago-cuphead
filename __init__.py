@@ -34,7 +34,7 @@ class CupheadWorld(World):
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
     options: CupheadOptions
-    version = 0
+    version = 0.0
     required_client_version = (0, 4, 6)
 
     item_name_to_id = items.name_to_id
@@ -88,7 +88,8 @@ class CupheadWorld(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data = {
-            "version": self.version,
+            "version": 0,
+            "world_version": self.version,
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop_map,
@@ -315,9 +316,12 @@ class CupheadWorld(World):
         # Filler Items and Traps
         filler_count = leftover_locations
 
+        trap_items = set(items.item_trap.keys())
+        if self.wsettings.envirotraps:
+            trap_items.add(ItemNames.item_level_trap_envirotrap)
         if self.wsettings.traps>0:
             trap_count = math.ceil(self.traps / filler_count * 100)
-            itempool += [self.create_item(rand.choice(tuple(items.item_trap.keys()))) for _ in range(trap_count)]
+            itempool += [self.create_item(rand.choice(trap_items)) for _ in range(trap_count)]
             filler_count -= trap_count
 
         #print(len(self.multiworld.precollected_items[self.player]))

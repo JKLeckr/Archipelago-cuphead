@@ -401,15 +401,6 @@ location_level_boss_secret = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(128)),
 }
 
-location_achievement = {}
-location_achievement_secret = {}
-location_achievement_hard = {}
-location_achievement_hard_secret = {}
-location_dlc_achievement = {}
-location_dlc_achievement_secret = {}
-location_dlc_achievement_hard = {}
-location_dlc_achievement_hard_secret = {}
-
 # Special Locations
 location_special = {
     #LocationNames.loc_event_firstweapon: LocationData(None),
@@ -538,23 +529,25 @@ def setup_locations(settings: WorldSettings):
         _add_location(LocationNames.loc_quest_wolfgang,location_world_quest)
         _add_location(LocationNames.loc_event_music,location_special)
     if settings.agrade_quest:
-        locations.update({**locations_event_agrade})
+        locations.update(locations_event_agrade)
         _add_location(LocationNames.loc_quest_15agrades,location_world_quest)
     if settings.pacifist_quest:
-        locations.update({**location_level_rungun_event_pacifist})
+        locations.update(location_level_rungun_event_pacifist)
         _add_location(LocationNames.loc_quest_pacifist,location_world_quest)
-    locations.update({**location_goal})
+    locations.update(location_goal)
 
     if use_dlc:
-        locations.update({**locations_dlc, **(locations_dlc_event_agrade if settings.agrade_quest else {})})
+        locations.update(locations_dlc)
+        if settings.agrade_quest:
+            locations.update(locations_dlc_event_agrade)
         if boss_grade_checks>0:
-            locations.update({**location_level_dlc_boss_topgrade})
+            locations.update(location_level_dlc_boss_topgrade)
         if settings.dlc_boss_chalice_checks:
-            locations.update({**locations_dlc_boss_chaliced})
+            locations.update(locations_dlc_boss_chaliced)
         if settings.dlc_cactusgirl_quest:
-            locations.update({**locations_dlc_event_boss_chaliced})
+            locations.update(locations_dlc_event_boss_chaliced)
             _add_location(LocationNames.loc_dlc_quest_cactusgirl,location_dlc_world_quest)
-        locations.update({**location_dlc_goal})
+        locations.update(location_dlc_goal)
     return locations
 
 name_to_id = {name: data.id for name, data in locations_all.items() if data.id}

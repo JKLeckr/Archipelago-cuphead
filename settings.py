@@ -19,6 +19,7 @@ class WorldSettings:
     weapon_gate: bool
     randomize_abilities: bool
     traps: int
+    envirotraps: bool
     _boss_grade_checks: int
     _rungun_grade_checks: int
     boss_secret_checks: bool
@@ -32,7 +33,6 @@ class WorldSettings:
     ludwig_quest: bool
     wolfgang_quest: bool
     dlc_cactusgirl_quest: bool
-    achievement_checks: int
     contract_requirements: tuple[int,int,int]
     dlc_ingredient_requirements: int
     require_secret_shortcuts: bool
@@ -59,8 +59,8 @@ class WorldSettings:
         self.ludwig_quest = True
         self.wolfgang_quest = True
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
-        self.achievement_checks = 0
         self.traps = options.traps
+        self.envirotraps = False
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True

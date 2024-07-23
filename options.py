@@ -15,7 +15,7 @@ class ExpertMode(Toggle):
 class StartWeapon(Choice):
     """
     Weapon to start with
-    NOTE: If DLC is not enabled, picking DLC weapons will pick a random weapon instead
+    NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead
     """
     display_name = "Start Weapon"
     option_peashooter = 0
@@ -50,8 +50,11 @@ class WeaponGate(Toggle):
     """
     display_name = "Weapon Gate"
 
-class RandomizeAbilities(DefaultOnToggle):
-    """Randomize essential abilities like Duck, Perry, Dash, etc."""
+class RandomizeAbilities(Toggle):
+    """
+    --NOT YET IMPLEMENTED--
+    Randomize essential abilities like Duck, Perry, Dash, etc.
+    """
     display_name = "Randomize Abilities"
 
 class RandomizeAimAbilities(Toggle):
