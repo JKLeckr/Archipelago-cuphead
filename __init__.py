@@ -45,6 +45,10 @@ class CupheadWorld(World):
     wsettings: WorldSettings = None
 
     def generate_early(self) -> None:
+        # Sanitize start_weapon
+        if not self.options.use_dlc and int(self.options.start_weapon)>5:
+            self.options.start_weapon = self.random.randint(0,5)
+
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)
 
@@ -181,12 +185,9 @@ class CupheadWorld(World):
         weapons = {x for x in set(items.item_weapons.keys()) if x not in starter_items_names}
         start_weapon_index = self.start_weapon
         if self.use_dlc:
-            weapons.update(items.item_dlc_weapons.keys())
-        elif start_weapon_index>5:
-            start_weapon_index = rand.randint(0,5)
+            weapons.update({x for x in set(items.item_dlc_weapons.keys()) if x not in starter_items_names})
         start_weapon = weapon_dict[start_weapon_index]
-        if start_weapon not in starter_items_names:
-            append_starter_items(self.create_item(start_weapon))
+        if start_weapon in weapons:
             weapons.remove(start_weapon)
 
         # Item names for coins
@@ -213,7 +214,7 @@ class CupheadWorld(World):
             itempool += _fill_pool(items.item_abilities.keys())
 
         # Coins
-        coin_amounts = self.get_coin_amounts()
+        coin_amounts = self.get_coin_amounts() ## TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop
         total_single_coins = coin_amounts[0]
         total_double_coins = coin_amounts[1]
         total_triple_coins = coin_amounts[2]
