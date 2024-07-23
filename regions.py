@@ -5,8 +5,8 @@ from .regiondefs import define_regions
 from .locations import CupheadLocation, LocationData
 from .levels import LevelData
 
-def create_regions(multiworld: MultiWorld, player: int, locations: dict[str, LocationData], levels: dict[str, LevelData], level_shuffle_map: dict[str, str], settings: WorldSettings) -> None:
-    compile_regions = define_regions(player, levels, level_shuffle_map, settings)
+def create_regions(multiworld: MultiWorld, player: int, locations: dict[str, LocationData], levels: dict[str, LevelData], level_shuffle_map: dict[str, str], shop_locations: dict[str,list[int]], settings: WorldSettings) -> None:
+    compile_regions = define_regions(player, levels, level_shuffle_map, shop_locations, settings)
 
     # Create Regions
     for regc in compile_regions:

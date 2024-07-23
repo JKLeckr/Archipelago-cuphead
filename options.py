@@ -3,6 +3,7 @@ from Options import Toggle, DefaultOnToggle, Range, Choice, DeathLink, PerGameCo
 
 class DeliciousLastCourse(Toggle):
     """
+    --DLC NOT FULLY IMPLEMENTED!--
     Whether or not to use Delicious Last Course content (Requires owning the DLC)
     """
     display_name = "DLC"
@@ -29,11 +30,17 @@ class StartWeapon(Choice):
     default = 0
 
 class LevelShuffle(Toggle):
-    """Shuffles the Boss and Run n' Gun levels"""
+    """
+    --NOT YET IMPLEMENTED--
+    Shuffles the Boss and Run n' Gun levels
+    """
     display_name = "Level Shuffle"
 
 class FreeMoveIsles(Toggle):
-    """Allows all the bosses on each island to be freely accessible without completing a previous level first"""
+    """
+    --NOT STABLE--
+    Allows all the bosses on each island to be freely accessible without completing a previous level first
+    """
     display_name = "Free Move Islands"
 
 class WeaponGate(Toggle):

@@ -9,18 +9,19 @@ class RuleData:
     player: int
     use_dlc: bool
     total_coins: int
-    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int):
+    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: tuple[tuple[int]]):
         self.multiworld = multiworld
         self.player = player
         self.use_dlc = settings.use_dlc
         self.total_coins = total_coins
+        self.shop_map = shop_map
     def get_entrance(self, exit: str, entrance: str) -> Location:
         return self.multiworld.get_entrance(exit+" -> "+entrance, self.player)
     def get_location(self, location: str) -> Location:
         return self.multiworld.get_location(location, self.player)
 
-def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int):
-    rdata = RuleData(multiworld, player, settings, total_coins)
+def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: tuple[tuple[int]]):
+    rdata = RuleData(multiworld, player, settings, total_coins, shop_map)
     use_dlc = rdata.use_dlc
 
     set_rule(rdata.get_location(LocationNames.loc_coin_isle1_secret), lambda state: state.has(ItemNames.item_event_isle1_secret_prereq, player, 5))
@@ -34,7 +35,6 @@ def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, tota
         set_rule(rdata.get_location(LocationNames.loc_quest_pacifist), lambda state: state.has(ItemNames.item_event_pacifist, player, 6))
     if settings.wolfgang_quest:
         set_rule(rdata.get_location(LocationNames.loc_quest_wolfgang), lambda state: state.has(ItemNames.item_event_music, player))
-    set_rule(rdata.get_entrance(LocationNames.world_inkwell_1, LocationNames.level_shop), lambda state: state.has(ItemNames.item_coin, player, total_coins))
     set_shop_rules(rdata) # This will be fully implemented later. There is currently flaws in the logic right now.
 
     if use_dlc:
@@ -58,38 +58,34 @@ def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, tota
 def set_shop_rules(rdata: RuleData):
     player = rdata.player
     use_dlc = rdata.use_dlc
+    total_coins = rdata.total_coins
+    shop_map = rdata.shop_map
 
     shop_items = {**location_shop, **(location_shop_dlc if use_dlc else {})}
     coins = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
-     # Prevent putting money in the shop
+    # Prevent putting money in the shop
     for shop_item in shop_items.keys():
         [forbid_item(rdata.get_location(shop_item), x, player) for x in coins]
 
-    # Set Rules for items to be bought
-    #item_costs: dict[str,tuple[int,int]] = {
-    #    LocationNames.loc_shop_weapon1: (4, 18), # Format: (cost, group total requirement in world progression)
-    #    LocationNames.loc_shop_weapon2: (4, 18),
-    #    LocationNames.loc_shop_weapon3: (4, 18),
-    #    LocationNames.loc_shop_weapon4: (4, 36 if use_dlc else 32),
-    #    LocationNames.loc_shop_weapon5: (4, 36 if use_dlc else 32),
+    # Set coin requirements for the shops
+    shop_costs: list[int] = [0, 0, 0, 0]
 
-    #    LocationNames.loc_shop_dlc_weapon6: (4, 36),
-    #    LocationNames.loc_shop_dlc_weapon7: (4, 52),
-    #    LocationNames.loc_shop_dlc_weapon8: (4, 52),
+    for i in range(len(shop_map)):
+        shop_costs[i] = (shop_map[i][0]*4) + (shop_map[i][1]*3)
 
-    #    LocationNames.loc_shop_charm1: (3, 18),
-    #    LocationNames.loc_shop_charm2: (3, 18),
-    #    LocationNames.loc_shop_charm3: (3, 36 if use_dlc else 32),
-    #    LocationNames.loc_shop_charm4: (3, 36 if use_dlc else 32),
-    #    LocationNames.loc_shop_charm5: (5, 52 if use_dlc else 40),
-    #    LocationNames.loc_shop_charm6: (3, 52 if use_dlc else 40),
+    total_cost = shop_costs[0] + shop_costs[1] + shop_costs[2] + (shop_costs[3] if use_dlc else 0)
 
-    #    LocationNames.loc_shop_dlc_charm7: (3, 56),
-    #    LocationNames.loc_shop_dlc_charm8: (1, 56),
-    #}
+    if total_cost > total_coins:
+        raise Exception(f"Error: Total cost is {total_cost}, but there are {total_coins} coins!")
+        # TODO: Add a resolution if this occurs
 
-    #for item in shop_items.keys():
-    #    set_rule(multiworld.get_entrance(LocationNames.level_shop+" -> "+item, player), lambda state,item=item: state.has(ItemNames.item_coin, player, item_costs[item][1]))
+    for i in range(4 if use_dlc else 3):
+        set_shop_cost_rule(rdata, i, player, shop_costs)
 
-# TODO: Add rules for the shop items (complicated)
+def set_shop_cost_rule(rdata: RuleData, shop_index: int, player: int, shop_costs: list[int]):
+    cost = 0
+    for i in range(shop_index+1):
+        cost += shop_costs[i]
+    location = LocationNames.world_inkwell + LocationNames._nums_[shop_index]
+    set_rule(rdata.get_entrance(location, LocationNames.level_shops[shop_index]), lambda state: state.has(ItemNames.item_coin, player, cost))

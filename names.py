@@ -3,6 +3,19 @@ class LocationNames:
     # Prefixes
     _loc_event_ = "Event "
 
+    # Postfixes
+    _num1_ = " One"
+    _num2_ = " Two"
+    _num3_ = " Three"
+    _num4_ = " Four"
+    _nums_ = (_num1_, _num2_, _num3_, _num4_)
+    _isle_ = " Isle"
+    _isle1_ = _isle_ + _num1_
+    _isle2_ = _isle_ + _num2_
+    _isle3_ = _isle_ + _num3_
+    _isle4_ = _isle_ + _num4_
+    _isles_ = (_isle1_, _isle2_, _isle3_, _isle4_)
+
     # Level Defs
     level_house = "The Elder Kettle"
 
@@ -77,18 +90,26 @@ class LocationNames:
     level_dlc_chesscastle_run = level_dlc_chesscastle + " Full Run"
 
     level_shop = "Porkrind's Emporium"
-    level_dlc_shop = level_shop + " Isle Four"
+    level_shop1 = level_shop + _isle1_
+    level_shop2 = level_shop + _isle2_
+    level_shop3 = level_shop + _isle3_
+    level_base_shops = (level_shop1, level_shop2, level_shop3)
+    level_dlc_shop4 = level_shop + _isle4_
+    level_dlc_shop = level_dlc_shop4
+    level_dlc_shops = (level_dlc_shop4,)
+    level_shops = level_base_shops + level_dlc_shops
 
     level_tutorial = "Tutorial"
     level_plane_tutorial = "Plane Tutorial"
     level_dlc_tutorial = "Recipe for Ms. Chalice"
 
     # World Defs
-    world_inkwell_1 = "Inkwell Isle One"
-    world_inkwell_2 = "Inkwell Isle Two"
-    world_inkwell_3 = "Inkwell Isle Three"
+    world_inkwell = "Inkwell Isle"
+    world_inkwell_1 = world_inkwell + _num1_
+    world_inkwell_2 = world_inkwell + _num2_
+    world_inkwell_3 = world_inkwell + _num3_
     world_inkwell_hell = "Inkwell Hell"
-    world_dlc_inkwell_4 = "Inkwell Isle Four"
+    world_dlc_inkwell_4 = world_inkwell + _num4_
 
     # Location Defs
     loc_level_tutorial = level_tutorial + " Complete"
@@ -378,6 +399,13 @@ class LocationNames:
     loc_shop_dlc_charm7_bought = loc_shop_dlc_charm7 + " Bought"
     loc_shop_dlc_charm8 = level_shop + " Charm 8"
     loc_shop_dlc_charm8_bought = loc_shop_dlc_charm8 + " Bought"
+    loc_shop_base_weapons = (loc_shop_weapon1, loc_shop_weapon2, loc_shop_weapon3, loc_shop_weapon4, loc_shop_weapon5)
+    loc_shop_dlc_weapons = (loc_shop_dlc_weapon6, loc_shop_dlc_weapon7, loc_shop_dlc_weapon8)
+    loc_shop_weapons = loc_shop_base_weapons + loc_shop_dlc_weapons
+    loc_shop_base_charms = (loc_shop_charm1, loc_shop_charm2, loc_shop_charm3, loc_shop_charm4, loc_shop_charm5, loc_shop_charm6)
+    loc_shop_dlc_charms = (loc_shop_dlc_charm7, loc_shop_dlc_charm8)
+    loc_shop_charms = loc_shop_base_charms + loc_shop_dlc_charms
+    loc_shop_items = loc_shop_weapons + loc_shop_charms
 
     loc_npc_mac = "Mac"
     loc_npc_canteen = "Canteen Hughes"

@@ -15,7 +15,7 @@ class RegionData:
         self.locations = locations
         self.connect_to = connect_to
 
-def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map: dict[str, str], settings: WorldSettings) -> list[RegionData]:
+def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map: dict[str, str], shop_locations: dict[str,list[str]], settings: WorldSettings) -> list[RegionData]:
     using_dlc = settings.use_dlc
     freemove_islands = settings.freemove_isles
     contract_requirements = settings.contract_requirements
@@ -55,81 +55,22 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
         LocationNames.loc_level_tutorial_coin,
     ], None)
 
-    region_shop = RegionData(LocationNames.level_shop, None, [
-        Target(LocationNames.loc_shop_weapon1), Target(LocationNames.loc_shop_weapon2), Target(LocationNames.loc_shop_weapon3),
-        Target(LocationNames.loc_shop_weapon4), Target(LocationNames.loc_shop_weapon5), Target(LocationNames.loc_shop_charm1),
-        Target(LocationNames.loc_shop_charm2), Target(LocationNames.loc_shop_charm3), Target(LocationNames.loc_shop_charm4),
-        Target(LocationNames.loc_shop_charm5),  Target(LocationNames.loc_shop_charm6),
-        Target(LocationNames.loc_shop_dlc_weapon6) if using_dlc else None, Target(LocationNames.loc_shop_dlc_weapon7) if using_dlc else None,
-        Target(LocationNames.loc_shop_dlc_weapon8) if using_dlc else None, Target(LocationNames.loc_shop_dlc_charm7) if using_dlc else None,
-        Target(LocationNames.loc_shop_dlc_charm8) if using_dlc else None,
-    ])
-    #region_dlc_shop = RegionData(LocationNames.level_dlc_shop, None, [
-    #    Target(LocationNames.loc_shop_dlc_weapon6), Target(LocationNames.loc_shop_dlc_weapon7), Target(LocationNames.loc_shop_dlc_weapon8),
-    #    Target(LocationNames.loc_shop_dlc_charm7), Target(LocationNames.loc_shop_dlc_charm8), Target(LocationNames.loc_shop_weapon1),
-    #    Target(LocationNames.loc_shop_weapon2), Target(LocationNames.loc_shop_weapon3), Target(LocationNames.loc_shop_weapon4),
-    #    Target(LocationNames.loc_shop_weapon5),
-    #])
-    region_shop_items = [
-        RegionData(LocationNames.loc_shop_weapon1, [
-            LocationNames.loc_shop_weapon1,
-            #LocationNames.loc_shop_weapon1_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_weapon2, [
-            LocationNames.loc_shop_weapon2,
-            #LocationNames.loc_shop_weapon2_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_weapon3, [
-            LocationNames.loc_shop_weapon3,
-            #LocationNames.loc_shop_weapon3_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_weapon4, [
-            LocationNames.loc_shop_weapon4,
-            #LocationNames.loc_shop_weapon4_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_weapon5, [
-            LocationNames.loc_shop_weapon5,
-            #LocationNames.loc_shop_weapon5_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_charm1, [
-            LocationNames.loc_shop_charm1,
-            #LocationNames.loc_shop_charm1_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_charm2, [
-            LocationNames.loc_shop_charm2,
-            #LocationNames.loc_shop_charm2_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_charm3, [
-            LocationNames.loc_shop_charm3,
-            #LocationNames.loc_shop_charm3_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_charm4, [
-            LocationNames.loc_shop_charm4,
-            #LocationNames.loc_shop_charm4_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_charm5, [
-            LocationNames.loc_shop_charm5,
-            #LocationNames.loc_shop_charm5_bought
-        ], None),
-        RegionData(LocationNames.loc_shop_charm6, [
-            LocationNames.loc_shop_charm6,
-            #LocationNames.loc_shop_charm6_bought
-        ], None),
-    ]
-    region_dlc_shop_items = [
-        RegionData(LocationNames.loc_shop_dlc_weapon6, [LocationNames.loc_shop_dlc_weapon6, LocationNames.loc_shop_dlc_weapon6_bought], None),
-        RegionData(LocationNames.loc_shop_dlc_weapon7, [LocationNames.loc_shop_dlc_weapon7, LocationNames.loc_shop_dlc_weapon7_bought], None),
-        RegionData(LocationNames.loc_shop_dlc_weapon8, [LocationNames.loc_shop_dlc_weapon8, LocationNames.loc_shop_dlc_weapon8_bought], None),
-        RegionData(LocationNames.loc_shop_dlc_charm7, [LocationNames.loc_shop_dlc_charm7, LocationNames.loc_shop_dlc_charm7_bought], None),
-        RegionData(LocationNames.loc_shop_dlc_charm8, [LocationNames.loc_shop_dlc_charm8, LocationNames.loc_shop_dlc_charm8_bought], None),
-    ] if using_dlc else []
+    region_shops = []
+    region_dlc_shops = []
+
+    for shop_name, locs in shop_locations.items():
+        shop_region = RegionData(shop_name, locs, None)
+        if shop_name == LocationNames.level_dlc_shop4:
+            region_dlc_shops.append(shop_region)
+        else:
+            region_shops.append(shop_region)
 
     region_worlds = [
         RegionData(LocationNames.world_inkwell_1, [
             LocationNames.loc_npc_mac,
             LocationNames.loc_coin_isle1_secret,
         ], [
-            Target(LocationNames.level_shop),
+            Target(LocationNames.level_shop1),
             Target(LocationNames.world_dlc_inkwell_4,
                 lambda state: (state.has(ItemNames.item_event_dlc_boataccess, player))) if using_dlc else None,
             LevelTarget(LocationNames.level_boss_veggies), LevelTarget(LocationNames.level_boss_slime), LevelTarget(LocationNames.level_rungun_forest),
@@ -146,6 +87,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LocationNames.loc_npc_canteen,
             LocationNames.loc_quest_4mel,
         ], [
+            Target(LocationNames.level_shop2),
             LevelTarget(LocationNames.level_boss_baroness), LevelTarget(LocationNames.level_boss_clown), LevelTarget(LocationNames.level_boss_plane_genie)
         ] + ([
             Target(LocationNames.world_inkwell_3,
@@ -155,6 +97,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LevelTarget(LocationNames.level_mausoleum_ii), Target(LocationNames.loc_event_isle2_shortcut)
         ] if freemove_islands else [])),
         RegionData(LocationNames.world_inkwell_3, None, [
+            Target(LocationNames.level_shop3),
             LevelTarget(LocationNames.level_boss_bee), LevelTarget(LocationNames.level_boss_pirate)
         ] + ([
             Target(LocationNames.world_inkwell_hell),
@@ -179,6 +122,7 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LocationNames.loc_dlc_coin_isle4_secret,
         ], [
             Target(LocationNames.level_dlc_tutorial),
+            Target(LocationNames.level_dlc_shop4),
             Target(LocationNames.level_dlc_chesscastle),
             LevelTarget(LocationNames.level_dlc_boss_oldman),
             LevelTarget(LocationNames.level_dlc_boss_rumrunners),
@@ -332,15 +276,11 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
         region_begin,
         region_house,
         region_house_level_tutorial,
-        region_shop,
-    ]
-    total_regions += region_worlds + region_isle1 + region_isle2 + region_isle3 + region_isleh + region_shop_items
+    ] + region_shops
+    total_regions += region_worlds + region_isle1 + region_isle2 + region_isle3 + region_isleh
 
-    total_dlc_regions = [
-        #region_dlc_shop,
-        region_dlc_shop_items,
-    ]
+    total_dlc_regions = [] + region_dlc_shops
     if using_dlc:
-        total_regions += total_dlc_regions + region_dlc_worlds + region_dlc_isle4 + region_dlc_chesscastle + region_dlc_special + region_dlc_shop_items
+        total_regions += total_dlc_regions + region_dlc_worlds + region_dlc_isle4 + region_dlc_chesscastle + region_dlc_special
 
     return total_regions

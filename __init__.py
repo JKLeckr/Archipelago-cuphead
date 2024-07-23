@@ -69,6 +69,10 @@ class CupheadWorld(World):
         if self.level_shuffle:
             self.level_shuffle_map: dict[str,str] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
+        # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
+        self.shop_map: tuple[tuple[int]] = ((1,2), (2,2), (2,2), (3,2)) if not self.use_dlc else ((2,2), (2,2), (2,2), (2,2))
+        self.shop_locations: dict[str,list[str]] = self.get_shop_locations()
+
         # Group Items
         self.item_name_groups = {}
         for item in self.active_items.keys():
@@ -86,12 +90,52 @@ class CupheadWorld(World):
             "version": self.version,
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
+            "shop_map": self.shop_map,
             **self.options.as_dict("use_dlc", "expert_mode", "start_weapon", "freemove_isles", "boss_grade_checks", "rungun_grade_checks", "deathlink")
         }
         return slot_data
 
+    def get_shop_locations(self) -> dict[str,list[str]]:
+        _shop_weapons = [
+            LocationNames.loc_shop_weapon1,
+            LocationNames.loc_shop_weapon2,
+            LocationNames.loc_shop_weapon3,
+            LocationNames.loc_shop_weapon4,
+            LocationNames.loc_shop_weapon5,
+            LocationNames.loc_shop_dlc_weapon6,
+            LocationNames.loc_shop_dlc_weapon7,
+            LocationNames.loc_shop_dlc_weapon8
+        ]
+        _shop_charms = [
+            LocationNames.loc_shop_charm1,
+            LocationNames.loc_shop_charm2,
+            LocationNames.loc_shop_charm3,
+            LocationNames.loc_shop_charm4,
+            LocationNames.loc_shop_charm5,
+            LocationNames.loc_shop_charm6,
+            LocationNames.loc_shop_dlc_charm7,
+            LocationNames.loc_shop_dlc_charm8
+        ]
+
+        shop_locations: dict[str,list[str]] = {}
+        weapon_index = 0
+        charm_index = 0
+        for i in range(4):
+            shop_region: list[str] = []
+            if (i == 3):
+                shop_region += _shop_weapons[weapon_index:]+_shop_charms[charm_index:]
+            else:
+                wcount = min(self.shop_map[i][0], len(_shop_weapons)-weapon_index)
+                ccount = min(self.shop_map[i][1], len(_shop_charms)-charm_index)
+                shop_region += _shop_weapons[weapon_index:(weapon_index+wcount)]
+                shop_region += _shop_charms[charm_index:(charm_index+ccount)]
+                weapon_index+=wcount
+                charm_index+=ccount
+            shop_locations[LocationNames.level_shops[i]] = shop_region
+        return shop_locations
+
     def create_regions(self) -> None:
-        regions.create_regions(self.multiworld, self.player, self.active_locations, self.active_levels, self.level_shuffle_map, self.wsettings)
+        regions.create_regions(self.multiworld, self.player, self.active_locations, self.active_levels, self.level_shuffle_map, self.shop_locations, self.wsettings)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
@@ -291,8 +335,12 @@ class CupheadWorld(World):
 
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if self.level_shuffle and len(self.level_shuffle_map)>0:
-            spoiler_handle.write("\n\nLevel Shuffle Map:\n")
-            spoiler_handle.write('\n'.join([(x[0] + '->' + x[1]) for x in self.level_shuffle_map.items()]) + '\n\n')
+            spoiler_handle.write("\nLevel Shuffle Map:\n\n")
+            spoiler_handle.write('\n'.join([f"{x} -> {y}" for x, y in self.level_shuffle_map.items()]) + '\n')
+        spoiler_handle.write("\nShop Items:\n\n")
+        spoiler_handle.write('\n'.join([
+            (x + ':\n' + '\n'.join([f" {z}" for z in y])) for x, y in self.shop_locations.items() if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
+        ]))
 
     def collect(self, state: CollectionState, item: Item) -> bool:
         if item.name in {ItemNames.item_coin2, ItemNames.item_coin3}:
@@ -306,14 +354,18 @@ class CupheadWorld(World):
         return self.random.choice(tuple(items.item_filler.keys()))
 
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
+        hint_dict: Dict[int, str] = {}
         if self.level_shuffle:
-            hint_dict: Dict[int, str] = {}
-            for level in self.level_shuffle_map.items():
-                if level in self.active_locations.keys():
-                    for location in self.active_levels[level].locations:
-                        hint_dict.update({location.id: (" ->> " + self.level_shuffle_map[level] + " at " + level)})
-            hint_data.update({self.player: hint_dict})
+            for level, map in self.level_shuffle_map.items():
+                if level in self.active_locations.keys() and level != map:
+                    for loc in self.active_levels[level].locations:
+                        hint_dict[self.location_name_to_id[loc]] = " ->> " + self.level_shuffle_map[level] + " at " + level
+        for shop, locs in self.shop_locations.items():
+            if shop != LocationNames.level_dlc_shop4 or self.use_dlc:
+                for loc in locs:
+                    hint_dict[self.location_name_to_id[loc]] = " at " + shop
+        hint_data.update({self.player: hint_dict})
 
     def set_rules(self) -> None:
-        rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins)
+        rules.set_rules(self.multiworld, self.player, self.wsettings, self.total_coins, self.shop_map)
         #visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
