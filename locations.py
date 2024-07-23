@@ -403,10 +403,18 @@ location_special = {
 }
 location_dlc_special = {}
 
+# Goal Locations
+location_goal = {
+    LocationNames.loc_event_goal_devil: LocationData(None),
+}
+location_dlc_goal = {
+    LocationNames.loc_event_dlc_goal_saltbaker: LocationData(None),
+}
+
 locations_base = {
     **location_level_tutorial,
     **location_level_boss,
-    **location_level_boss_final,
+    **location_level_boss_final, #FIXME
     **location_level_rungun,
     **location_level_mausoleum,
     **location_shop,
@@ -427,7 +435,7 @@ locations_event_agrade = {
 locations_dlc = {
     **location_level_dlc_tutorial,
     **location_level_dlc_boss,
-    **location_level_boss_final,
+    **location_level_boss_final, #FIXME
     **location_level_dlc_chesscastle,
     **location_level_dlc_special,
     **location_shop_dlc,
@@ -463,6 +471,7 @@ locations_all = {
     **location_level_rungun_event_pacifist,
     **location_world_quest,
     **location_special,
+    **location_goal,
     **locations_dlc,
     **locations_dlc_topgrade,
     **locations_dlc_boss_chaliced,
@@ -470,6 +479,7 @@ locations_all = {
     **locations_dlc_event_boss_chaliced,
     **location_dlc_world_quest,
     **location_dlc_special,
+    **location_dlc_goal,
     **location_level_dicepalace,
 }
 

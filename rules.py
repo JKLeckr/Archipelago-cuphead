@@ -50,9 +50,9 @@ def set_rules(multiworld: MultiWorld, player: int, settings: WorldSettings, tota
                      lambda state: state.has_all(set(locations_dlc_event_boss_chaliced.keys()), player))
 
     multiworld.completion_condition[player] = (
-        lambda state: state.has_all({ItemNames.item_goal_devilko, ItemNames.item_goal_dlc_saltbakerko}, player)
+        lambda state: state.has_all({ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko}, player)
     ) if use_dlc else (
-        lambda state: state.has(ItemNames.item_goal_devilko, player)
+        lambda state: state.has(ItemNames.item_event_goal_devilko, player)
     )
 
 def set_shop_rules(rdata: RuleData):

@@ -119,8 +119,8 @@ item_dlc_special = {
     #ItemNames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
 }
 
-item_goal = {ItemNames.item_goal_devilko: ItemData(id(40), ItemClassification.progression, 0),} #FIXME: Make this an event item
-item_dlc_goal = {ItemNames.item_goal_dlc_saltbakerko: ItemData(dlc_id(10), ItemClassification.progression, 0),} #FIXME: Make this an event item
+item_goal = {ItemNames.item_event_goal_devilko: ItemData(None, ItemClassification.progression, 0),} #FIXME: Make this an event item
+item_dlc_goal = {ItemNames.item_event_goal_dlc_saltbakerko: ItemData(None, ItemClassification.progression, 0),} #FIXME: Make this an event item
 
 items_base = {
     **item_filler,

@@ -414,6 +414,9 @@ class LocationNames:
     loc_event_firstweapon = _loc_event_ + "First Weapon"
     loc_event_dlc_boatarrival = _loc_event_ + "Boat Arrives"
 
+    loc_event_goal_devil = "Devil Goal"
+    loc_event_dlc_goal_saltbaker = "Saltbaker Goal"
+
 ############################################# ITEM NAMES #############################################
 class ItemNames:
     # Prefixes
@@ -500,5 +503,5 @@ class ItemNames:
     item_event_dlc_boss_chaliced = _item_event_ + "Boss Chalice Defeated"
 
     # Goals
-    item_goal_devilko = "The Devil's Surrender"
-    item_goal_dlc_saltbakerko = "Chef Saltbaker's Surrender"
+    item_event_goal_devilko = "The Devil's Surrender"
+    item_event_goal_dlc_saltbakerko = "Chef Saltbaker's Surrender"
