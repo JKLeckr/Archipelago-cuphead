@@ -74,6 +74,9 @@ class CupheadWorld(World):
         self.shop_map: list[tuple[int]] = [(2,2), (2,2), (1,2), (3,2)] if not self.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
         self.shop_locations: dict[str,list[str]] = self.get_shop_locations()
 
+        self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
+        self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
+
         # Group Items
         self.item_name_groups = {}
         for item in self.active_items.keys():

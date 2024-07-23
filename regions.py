@@ -1,7 +1,7 @@
 from __future__ import annotations
 import typing
 from BaseClasses import MultiWorld, Region, LocationProgressType
-from .regiondefs import define_regions
+from .regiondefs import get_regions, Rule
 from .levels import LevelData
 from .locations import CupheadLocation
 if typing.TYPE_CHECKING:
@@ -11,7 +11,7 @@ def level_map(world: CupheadWorld, level: str) -> LevelData:
     levels = world.active_levels
     level_shuffle_map = world.level_shuffle_map
     if level not in levels:
-        return LevelData(None,[])
+        return LevelData(None, [])
     if level in level_shuffle_map:
         return levels[level_shuffle_map[level]]
     else:
@@ -22,7 +22,22 @@ def create_regions(world: CupheadWorld) -> None:
     multiworld = world.multiworld
     locations = world.active_locations
 
-    compile_regions = define_regions(world)
+    compile_regions = get_regions(world)
+
+    '''
+    # Overrides for Levels (to automatically account for level shuffling)
+    class LevelTarget(Target):
+        def __new__(cls, name: str, add_rule: Optional[Callable] = None) -> Target:
+            _rule = _level_map(name).rule
+            _add_rule = add_rule if add_rule else lambda state: True
+            return super().__new__(cls, name, (lambda state: _rule(state,player) and _add_rule(state)) if _rule else None)
+    class LevelRegionData(RegionData):
+        def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, ignore_freemove_islands: bool = False) -> None:
+            _locations = list(_level_map(name).locations)
+            if add_locations:
+                _locations += add_locations
+            super().__init__(name, _locations, connect_to if not freemove_isles or ignore_freemove_islands else None)
+    '''
 
     # Create Regions
     for regc in compile_regions:
@@ -41,6 +56,8 @@ def create_regions(world: CupheadWorld) -> None:
                     else:
                         print("WARNING: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
             multiworld.regions.append(region)
+        else:
+            print("WARNING: For \"compile_regions\": region \"is None!\"")
 
     # Connect Region Targets
     for regc in compile_regions:

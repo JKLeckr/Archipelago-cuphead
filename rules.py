@@ -18,17 +18,29 @@ def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> N
     set_loc_rule(world, loc, rule_has(item, world.player, count))
 def set_loc_rule(world: CupheadWorld, loc: str, rule: Callable[[CollectionState], bool] = None) -> None:
     set_rule(get_location(world, loc), rule)
+def set_region_rules(world: CupheadWorld, region_name: str, rule: Callable[[CollectionState], bool]):
+    region = get_region(world, region_name)
+    for entrance in region.entrances:
+        set_rule(entrance, rule)
 
-def rule_has(item: str, player: int, count: int = 1) -> Callable[[CollectionState], bool]:
-    return lambda state: state.has(item, player, count)
-def rule_has_all(items: Iterable[str], player: int) -> Callable[[CollectionState], bool]:
-    return lambda state: state.has_all(items, player)
+def rule_has(world: CupheadWorld, item: str, count: int = 1) -> Callable[[CollectionState], bool]:
+    return lambda state: state.has(item, world.player, count)
+def rule_has_all(world: CupheadWorld, items: Iterable[str]) -> Callable[[CollectionState], bool]:
+    return lambda state: state.has_all(items, world.player)
+def rule_has_any(world: CupheadWorld, items: Iterable[str]) -> Callable[[CollectionState], bool]:
+    return lambda state: state.has_any(items, world.player)
 
 def set_rules(world: CupheadWorld):
     w = world
-    player = w.player
     settings = w.wsettings
     use_dlc = w.use_dlc
+    contract_reqs = settings.contract_requirements
+    ingredient_reqs = settings.dlc_ingredient_requirements
+
+    set_region_rules(w, LocationNames.world_inkwell_2, rule_has(w, ItemNames.item_contract, contract_reqs[0]))
+    set_region_rules(w, LocationNames.world_inkwell_3, rule_has(w, ItemNames.item_contract, contract_reqs[1]))
+    set_region_rules(w, LocationNames.level_boss_kingdice, rule_has(w, ItemNames.item_contract, contract_reqs[2]) and rule_has_any)
+    set_shop_rules(w)
 
     set_item_rule(w, LocationNames.loc_coin_isle1_secret, ItemNames.item_event_isle1_secret_prereq, 5)
     if settings.fourmel_quest:
@@ -41,9 +53,9 @@ def set_rules(world: CupheadWorld):
         set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
     if settings.wolfgang_quest:
         set_item_rule(w, LocationNames.loc_quest_wolfgang, ItemNames.item_event_music)
-    set_shop_rules(world)
 
     if use_dlc:
+        set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
         if settings.dlc_boss_chalice_checks:
             for _loc in locations_dlc_boss_chaliced.keys():
                 set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
@@ -54,9 +66,9 @@ def set_rules(world: CupheadWorld):
             set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
 
     w.multiworld.completion_condition[w.player] = (
-        rule_has_all({ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko}, player)
+        rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
     ) if use_dlc else (
-        rule_has(ItemNames.item_event_goal_devilko, player)
+        rule_has(w, ItemNames.item_event_goal_devilko)
     )
 
 def set_shop_rules(world: CupheadWorld):
