@@ -2,7 +2,8 @@ from __future__ import annotations
 import typing
 from typing import Callable, Iterable
 from BaseClasses import Location, Region, CollectionState
-from worlds.generic.Rules import set_rule, forbid_item
+from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
+from .items import item_filler
 from .levels import level_rule_plane
 from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
@@ -84,9 +85,13 @@ def set_shop_rules(world: CupheadWorld):
     shop_items = {**location_shop, **(location_shop_dlc if use_dlc else {})}
     coins = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
-    # Prevent putting money in the shop
+    # Prevent certain items from appearing in the shop
     for shop_item in shop_items.keys():
-        [forbid_item(get_location(w, shop_item), x, player) for x in coins]
+        _loc = get_location(w, shop_item)
+        # Prevent putting money in the shop
+        [forbid_item(_loc, x, player) for x in coins]
+        # Prevent putting local filler items in the shop
+        forbid_items_for_player(_loc, {x for x in item_filler.keys()}, player)
 
     # Set coin requirements for the shops
     shop_costs: list[int] = [0, 0, 0, 0]

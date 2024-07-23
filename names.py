@@ -459,6 +459,7 @@ class ItemNames:
     _item_event_ = "Event "
 
     # Junk
+    item_level_generic = "Present"
     item_level_extrahealth = "+1 Health"
     item_level_superrecharge = "Super Recharge"
 

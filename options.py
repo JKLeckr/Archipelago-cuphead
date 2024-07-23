@@ -4,18 +4,20 @@ from Options import Toggle, DefaultOnToggle, Range, Choice, DeathLink, PerGameCo
 class DeliciousLastCourse(Toggle):
     """
     --DLC NOT FULLY IMPLEMENTED!--
-    Whether or not to use Delicious Last Course content (Requires owning the DLC)
+    Set whether or not to use Delicious Last Course content (Requires owning the DLC).
     """
     display_name = "DLC"
 
 class ExpertMode(Toggle):
-    """Sets the boss difficulty to expert"""
+    """
+    Set the boss difficulty to expert.
+    """
     display_name = "Expert Mode"
 
 class StartWeapon(Choice):
     """
-    Weapon to start with
-    NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead
+    Choose weapon to start with.
+    NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
     """
     display_name = "Start Weapon"
     option_peashooter = 0
@@ -32,21 +34,21 @@ class StartWeapon(Choice):
 class LevelShuffle(Toggle):
     """
     --NOT YET IMPLEMENTED--
-    Shuffles the Boss and Run n' Gun levels
+    Shuffle the Boss and Run n' Gun levels.
     """
     display_name = "Level Shuffle"
 
 class FreeMoveIsles(Toggle):
     """
     --NOT STABLE--
-    Allows all the bosses on each island to be freely accessible without completing a previous level first
+    Allow all the bosses on each island to be freely accessible without completing a previous level first.
     """
     display_name = "Free Move Islands"
 
 class WeaponGate(Toggle):
     """
     --NOT YET IMPLEMENTED--
-    Adds a weapon gate which only allows specific weapons for each fight
+    Add a weapon gate which only allows specific weapons for each fight.
     """
     display_name = "Weapon Gate"
 
@@ -60,14 +62,15 @@ class RandomizeAbilities(Toggle):
 class RandomizeAimAbilities(Toggle):
     """
     --NOT YET IMPLEMENTED--
-    Randomize aiming abilities. You will start with only top-right
+    Randomize aiming abilities.
+    You will start with only top-right.
     """
     display_name = "Randomize Aim Abilities"
 
 class BossGradeChecks(Choice):
     """
-    Enable grade checks for Boss Levels
-    NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled
+    Enable grade checks for Boss Levels.
+    NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
     """
     display_name = "Boss Grade Checks"
     option_disabled = 0
@@ -78,8 +81,8 @@ class BossGradeChecks(Choice):
 
 class RunGunGradeChecks(Choice):
     """
-    Enable grade checks for Run n' Gun levels
-    Pacifist: Beat the level without killing any monsters (not easy)
+    Enable grade checks for Run n' Gun levels.
+    Pacifist: Beat the level without killing any monsters (not easy).
     """
     display_name = "Run n' Gun Grade Checks"
     option_disabled = 0
@@ -92,30 +95,30 @@ class RunGunGradeChecks(Choice):
 class DlcBossChaliceChecks(Toggle):
     """
     -DLC ONLY-
-    Enable checks for defeating each boss as Ms. Chalice
+    Enable checks for defeating each boss as Ms. Chalice.
     """
     display_name = "[DLC] Boss Chalice Checks"
 
 class AGradeQuest(DefaultOnToggle):
     """
-    Enable the 15 A-Grade Quest check
-    This means that you will have to beat 15 levels with at least an A-Grade in order to get this check
+    Enable the 15 A-Grade Quest check.
+    This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
     """
     display_name = "15 A-Grade Quest"
 
 class PacifistQuest(Toggle):
     """
-    Enable the Pacifist Quest check
-    This means that you will have to beat all 6 Run n' Gun levels without killing any monsters in order to get this check (not easy)
+    Enable the Pacifist Quest check.
+    This means that you will have to beat all 6 Run n' Gun levels without killing any monsters in order to get this check (not easy).
     """
     display_name = "Pacifist Quest"
 
 class DlcCactusGirlQuest(Toggle):
     """
     -DLC ONLY-
-    Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check
-    This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check
-    You can talk to the Cactus Girl to know which bosses you need to defeat still
+    Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
+    This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
+    You can talk to the Cactus Girl to know which bosses you need to defeat still.
     """
     display_name = "[DLC] Cactus Girl Quest"
 

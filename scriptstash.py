@@ -93,3 +93,13 @@ def create_weapongates(multiworld: MultiWorld, player: int, weapon_tiers: dict[i
                 _locations += add_locations
             super().__init__(name, _locations, connect_to if not freemove_isles or ignore_freemove_islands else None)
 '''
+
+'''
+class MysteryLevelItems(Toggle):
+    """
+    Replace all filler items and traps with presents.
+    Presents hold a random filler item or trap (if enabled).
+    For those who like uncertainty.
+    """
+    display_name = "Mystery Filler Items"
+'''

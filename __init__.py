@@ -36,7 +36,7 @@ class CupheadWorld(World):
     options: CupheadOptions
     version = 0.1
     id_version = 0
-    required_client_version = (0, 4, 6)
+    required_client_version = (0, 5, 0)
     debug = False
 
     item_name_to_id = items.name_to_id
@@ -160,6 +160,32 @@ class CupheadWorld(World):
 
         return new_item
 
+    def create_pool_items(self, items: list[str], precollected: list[str]) -> list[CupheadItem]:
+        _itempool = []
+        for item in items:
+            qty = self.active_items[item].quantity - count_in_list(item, precollected)
+            if qty<0:
+                print("WARNING: \""+item+"\" has quantity of "+str(qty)+"!")
+            if self.active_items[item].id and qty>0:
+                _itempool += [self.create_item(item) for _ in range(qty)]
+        return _itempool
+    def create_filler_items(self, filler_count: int) -> list[Item]:
+        rand = self.random
+        _itempool: list[Item] = []
+        if filler_count > 0:
+            trap_count = math.ceil(self.wsettings.traps / filler_count * 100)
+            if self.wsettings.traps>0:
+                trap_items = set(items.item_trap.keys())
+                if self.wsettings.envirotraps:
+                    trap_items.add(ItemNames.item_level_trap_envirotrap)
+                _itempool += [self.create_item(rand.choice(trap_items)) for _ in range(trap_count)]
+                filler_count -= trap_count
+
+            #print(len(self.multiworld.precollected_items[self.player]))
+            _itempool += [self.create_item(self.get_filler_item_name()) for _ in range(filler_count)]
+
+        return _itempool
+
     def create_locked_item(self, name: str, location: str, force_classification: ItemClassification = None) -> None:
         self.multiworld.get_location(location, self.player).place_locked_item(self.create_item(name, force_classification))
     def create_locked_items(self, name: str, locations: set[str], force_classification: ItemClassification = None) -> None:
@@ -168,17 +194,16 @@ class CupheadWorld(World):
                 self.create_locked_item(name, loc, force_classification)
 
     def create_items(self) -> None:
-        rand = self.random
         itempool: list[CupheadItem] = []
 
         #TODO: Handle start_inventory
 
         #starter_items.append(self.create_item(ItemNames.item_charm_heart))
         #print(len(starter_items))
-        starter_items_names = [x.name for x in self.multiworld.precollected_items[self.player]]
+        precollected_item_names = [x.name for x in self.multiworld.precollected_items[self.player]]
         def append_starter_items(item: Item):
             self.multiworld.push_precollected(item)
-            starter_items_names.append(item.name)
+            precollected_item_names.append(item.name)
 
         # Locked Items
         for i in range(1,6):
@@ -234,10 +259,10 @@ class CupheadWorld(World):
             7: ItemNames.item_weapon_dlc_converge,
             8: ItemNames.item_weapon_dlc_twistup,
         }
-        weapons = {x for x in set(items.item_weapons.keys()) if x not in starter_items_names}
+        weapons = {x for x in set(items.item_weapons.keys()) if x not in precollected_item_names}
         start_weapon_index = self.start_weapon
         if self.use_dlc:
-            weapons.update({x for x in set(items.item_dlc_weapons.keys()) if x not in starter_items_names})
+            weapons.update({x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names})
         start_weapon = weapon_dict[start_weapon_index]
         if start_weapon in weapons:
             weapons.remove(start_weapon)
@@ -249,21 +274,12 @@ class CupheadWorld(World):
         charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if self.use_dlc else [])
 
         # Add the other non-filler items before the coins
-        def _fill_pool(items: list[str]) -> list[CupheadItem]:
-            _itempool = []
-            for item in items:
-                qty = self.active_items[item].quantity - count_in_list(item, starter_items_names)
-                if qty<0:
-                    print("WARNING: \""+item+"\" has quantity of "+str(qty)+"!")
-                if self.active_items[item].id and qty>0:
-                    _itempool += [self.create_item(item) for _ in range(qty)]
-            return _itempool
-        itempool += _fill_pool(essential_items)
-        itempool += _fill_pool(weapons)
-        itempool += _fill_pool(charms)
-        itempool += _fill_pool(items.item_super.keys())
+        itempool += self.create_pool_items(essential_items, precollected_item_names)
+        itempool += self.create_pool_items(weapons, precollected_item_names)
+        itempool += self.create_pool_items(charms, precollected_item_names)
+        itempool += self.create_pool_items(items.item_super.keys(), precollected_item_names)
         if self.wsettings.randomize_abilities:
-            itempool += _fill_pool(items.item_abilities.keys())
+            itempool += self.create_pool_items(items.item_abilities.keys(), precollected_item_names)
 
         # Coins
         coin_amounts = self.get_coin_amounts() ## TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop
@@ -274,7 +290,7 @@ class CupheadWorld(World):
 
         # Starter Coins
         start_coins = 0
-        for item in starter_items_names:
+        for item in precollected_item_names:
             if item == coin_items[0]:
                 start_coins += 1
             elif item == coin_items[1]:
@@ -321,18 +337,8 @@ class CupheadWorld(World):
 
         # Filler Items and Traps
         filler_count = leftover_locations
-
-        trap_items = set(items.item_trap.keys())
-        if self.wsettings.envirotraps:
-            trap_items.add(ItemNames.item_level_trap_envirotrap)
-        if self.wsettings.traps>0:
-            trap_count = math.ceil(self.traps / filler_count * 100)
-            itempool += [self.create_item(rand.choice(trap_items)) for _ in range(trap_count)]
-            filler_count -= trap_count
-
-        #print(len(self.multiworld.precollected_items[self.player]))
-
-        itempool += [self.create_item(self.get_filler_item_name()) for _ in range(filler_count)]
+        if filler_count>0:
+            itempool += self.create_filler_items(filler_count)
 
         #print("itempool size: "+str(len(itempool)))
         self.multiworld.itempool += itempool
