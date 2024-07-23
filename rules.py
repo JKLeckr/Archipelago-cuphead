@@ -1,4 +1,4 @@
-from BaseClasses import MultiWorld, Location, Entrance, Region
+from BaseClasses import MultiWorld, Location, Region
 from worlds.generic.Rules import set_rule, forbid_item
 from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
@@ -9,7 +9,7 @@ class RuleData:
     player: int
     use_dlc: bool
     total_coins: int
-    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]], entrance_reg: dict[str,list[Entrance]]):
+    def __init__(self, multiworld: MultiWorld, player: int, settings: WorldSettings, total_coins: int, shop_map: list[tuple[int]]):
         self.multiworld = multiworld
         self.player = player
         self.use_dlc = settings.use_dlc

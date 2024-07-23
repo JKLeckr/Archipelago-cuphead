@@ -214,15 +214,19 @@ def define_regions(player: int, levels: dict[str, LevelData], level_shuffle_map:
             LevelTarget(LocationNames.level_mausoleum_iii),
             LevelTarget(LocationNames.level_boss_train),
             Target(LocationNames.loc_quest_15agrades) if agrade_quest else None]),
-        LevelRegionData(LocationNames.level_boss_mouse, None, None),
+        LevelRegionData(LocationNames.level_boss_mouse, None, [
+            LevelTarget(LocationNames.level_boss_sallystageplay), # FIXME: Verify that this connection is legit
+        ]),
         LevelRegionData(LocationNames.level_boss_train, None, [Target(LocationNames.world_inkwell_hell)]),
         LevelRegionData(LocationNames.level_rungun_harbour, None, [
             LevelTarget(LocationNames.level_boss_mouse),
             LevelTarget(LocationNames.level_mausoleum_iii),
+            Target(LocationNames.level_shop3),
             Target(LocationNames.loc_quest_15agrades) if agrade_quest else None]),
         LevelRegionData(LocationNames.level_rungun_mountain, None, [
             LevelTarget(LocationNames.level_boss_mouse),
             LevelTarget(LocationNames.level_mausoleum_iii),
+            Target(LocationNames.level_shop3),
             Target(LocationNames.loc_quest_15agrades) if agrade_quest else None]),
         LevelRegionData(LocationNames.level_mausoleum_iii, None, None),
         RegionData(LocationNames.loc_quest_ludwig, [
