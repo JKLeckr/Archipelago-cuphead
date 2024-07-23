@@ -400,6 +400,15 @@ location_level_boss_secret = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(128)),
 }
 
+location_achievement = {}
+location_achievement_secret = {}
+location_achievement_hard = {}
+location_achievement_hard_secret = {}
+location_dlc_achievement = {}
+location_dlc_achievement_secret = {}
+location_dlc_achievement_hard = {}
+location_dlc_achievement_hard_secret = {}
+
 # Special Locations
 location_special = {
     #LocationNames.loc_event_firstweapon: LocationData(None),

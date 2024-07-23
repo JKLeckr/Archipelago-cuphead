@@ -31,6 +31,7 @@ class WorldSettings:
     ludwig_quest: bool
     wolfgang_quest: bool
     dlc_cactusgirl_quest: bool
+    achievement_checks: int
     contract_requirements: tuple[int,int,int]
     dlc_ingredient_requirements: int
     require_secret_shortcuts: bool
@@ -57,6 +58,7 @@ class WorldSettings:
         self.ludwig_quest = True
         self.wolfgang_quest = True
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
+        self.achievement_checks = 0
         self.traps = options.traps
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
