@@ -34,7 +34,7 @@ class CupheadWorld(World):
     options_dataclass = CupheadOptions
     options: CupheadOptions
     version = 0
-    required_client_version = (0, 4, 4)
+    required_client_version = (0, 4, 6)
 
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id
