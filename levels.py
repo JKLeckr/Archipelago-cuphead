@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import NamedTuple, Optional, Callable
 from random import Random
 from BaseClasses import CollectionState

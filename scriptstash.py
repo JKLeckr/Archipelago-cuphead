@@ -1,5 +1,6 @@
 ## ScriptStash: A place for discarded code that might be useful in the future
 
+from __future__ import annotations
 from BaseClasses import MultiWorld
 from .names import ItemNames, LocationNames
 from .levels import LevelData

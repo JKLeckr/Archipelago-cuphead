@@ -1,3 +1,4 @@
+from __future__ import annotations
 from BaseClasses import MultiWorld, Location, Region
 from worlds.generic.Rules import set_rule, forbid_item
 from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced

@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import NamedTuple, Optional, Callable
 from .names import LocationNames, ItemNames
 from .settings import WorldSettings

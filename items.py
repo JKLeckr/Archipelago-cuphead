@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Item, ItemClassification
 from .names import ItemNames

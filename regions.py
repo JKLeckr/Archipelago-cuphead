@@ -1,3 +1,4 @@
+from __future__ import annotations
 from BaseClasses import MultiWorld, Region, LocationProgressType
 from .settings import WorldSettings
 from .regiondefs import define_regions
