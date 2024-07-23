@@ -297,7 +297,7 @@ class CupheadWorld(World):
     def collect(self, state: CollectionState, item: Item) -> bool:
         if item.name in {ItemNames.item_coin2, ItemNames.item_coin3}:
             amount = 3 if item.name == ItemNames.item_coin3 else 2
-            state.prog_items[ItemNames.item_coin, self.player] += amount
+            state.prog_items[self.player][ItemNames.item_coin] += amount
             return True
         else:
             return super().collect(state, item)
