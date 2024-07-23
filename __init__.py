@@ -11,7 +11,7 @@ from .settings import WorldSettings
 from .items import CupheadItem, ItemData
 from .locations import LocationData
 from .levels import LevelData
-from . import debug, items, levels, locations, regions, rules
+from . import items, levels, locations, regions, rules
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -36,6 +36,7 @@ class CupheadWorld(World):
     options: CupheadOptions
     version = 0.0
     required_client_version = (0, 4, 6)
+    debug = False
 
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id

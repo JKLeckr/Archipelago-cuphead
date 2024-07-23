@@ -1,22 +1,26 @@
 from __future__ import annotations
 import typing
-from typing import NamedTuple, Optional, Callable
-from enum import IntEnum
+from typing import Optional, Callable
+from enum import IntEnum, IntFlag
 from BaseClasses import CollectionState
 from .names import LocationNames, ItemNames
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
+    Dep = Callable[[CupheadWorld], bool]
 
 class DefType(IntEnum):
     SIMPLE = 0,
     LEVEL = 1,
+
+class DefFlags(IntFlag):
+    NONE = 0,
+    LV_IGNORE_FREEMOVE = 1,
 
 Rule = Callable[[CollectionState, int], bool]
 def rule_has(item: str, count: int = 1) -> Rule:
     return lambda state, player: state.has(item, player, count)
 
 # Determines if a region or target is enabled
-Dep = Callable[[CupheadWorld], bool]
 def dep_and(a: Dep, b: Dep) -> Dep:
     return lambda w: a(w) and b(w)
 def dep_not(a: Dep) -> Dep:
@@ -40,35 +44,36 @@ def dep_wolfgang_quest(w: CupheadWorld) -> bool:
 def dep_dlc_cactusgirl_quest(w: CupheadWorld) -> bool:
     return w.wsettings.dlc_cactusgirl_quest
 
-class Target(NamedTuple):
+class Target:
     name: str
-    rule: Optional[Rule] = None
-    depends: Optional[Dep] = None
+    rule: Optional[Rule]
+    depends: Dep
     tgt_type: DefType
-    def __new__(cls, name: str, rule: Optional[Rule] = None, depends: Optional[Dep] = None, tgt_type: DefType = DefType.SIMPLE) -> Target:
-        cls.name = name
-        cls.rule = rule
-        cls.depends = depends
-        cls.tgt_type = tgt_type
-        return cls
+    def __init__(self, name: str, rule: Optional[Rule] = None, depends: Optional[Dep] = None, tgt_type: DefType = DefType.SIMPLE):
+        self.name = name
+        self.rule = rule
+        self.depends = depends if depends else dep_none
+        self.tgt_type = tgt_type
 class RegionData:
     name: str
     locations: list[str]
     connect_to: list[Target]
-    depends: Optional[Dep]
+    depends: Dep
     region_type: DefType
-    def __init__(self, name: str, locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, region_type: DefType = DefType.SIMPLE) -> None:
+    flags: DefFlags
+    def __init__(self, name: str, locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, region_type: DefType = DefType.SIMPLE, flags: DefFlags = 0):
         self.name = name
         self.locations = locations
         self.connect_to = connect_to
-        self.depends = depends
+        self.depends = depends if depends else dep_none
         self.region_type = region_type
+        self.flags = flags
 class LevelTarget(Target):
-    def __new__(cls, name: str, add_rule: Optional[Rule] = None, depends: Optional[Dep] = None) -> Target:
-        return super().__new__(cls, name, add_rule, depends, DefType.LEVEL)
+    def __init__(self, name: str, add_rule: Optional[Rule] = None, depends: Optional[Dep] = None):
+        super().__init__(name, add_rule, depends, DefType.LEVEL)
 class LevelRegionData(RegionData):
-    def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None) -> None:
-        super().__init__(name, add_locations, connect_to, depends, DefType.LEVEL)
+    def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, flags: DefFlags = 0):
+        super().__init__(name, add_locations, connect_to, depends, DefType.LEVEL, flags)
 
 region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)])
 region_house = RegionData(LocationNames.level_house, None, [
@@ -301,11 +306,12 @@ region_dlc_special = [
     # Add Logic Regions and connections to curse_complete
 ]
 
-regions_base = [
+regions_start = [
     region_begin,
     region_house,
     region_house_level_tutorial,
-] + region_worlds + region_isle1 + region_isle2 + region_isle3 + region_isleh
+]
+regions_base = region_worlds + region_isle1 + region_isle2 + region_isle3 + region_isleh
 regions_dlc = region_dlc_worlds + region_dlc_isle4 + region_dlc_chesscastle #+ region_dlc_special
 
 def get_regions(world: CupheadWorld) -> list[RegionData]:
@@ -317,13 +323,16 @@ def get_regions(world: CupheadWorld) -> list[RegionData]:
 
     for shop_name, locs in shop_locations.items():
         shop_region = RegionData(shop_name, locs, None)
-    if shop_name == LocationNames.level_dlc_shop4:
-        region_dlc_shops.append(shop_region)
-    else:
-        region_shops.append(shop_region)
+        if shop_name == LocationNames.level_dlc_shop4:
+            region_dlc_shops.append(shop_region)
+        else:
+            region_shops.append(shop_region)
 
-    total_regions = regions_base + region_shops
+    total_regions = regions_start + region_shops + regions_base
     if using_dlc:
-        total_regions += regions_dlc + region_dlc_shops
+        total_regions += region_dlc_shops + regions_dlc
 
     return total_regions
+
+def list_regiondata_locations(region: RegionData) -> list[str]:
+    return [loc for loc in region.locations] if region.locations else []

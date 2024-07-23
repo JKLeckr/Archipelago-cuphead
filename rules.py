@@ -3,6 +3,7 @@ import typing
 from typing import Callable, Iterable
 from BaseClasses import Location, Region, CollectionState
 from worlds.generic.Rules import set_rule, forbid_item
+from .levels import level_rule_plane
 from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
 if typing.TYPE_CHECKING:
@@ -15,7 +16,7 @@ def get_location(world: CupheadWorld, location: str) -> Location:
 def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
 def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
-    set_loc_rule(world, loc, rule_has(item, world.player, count))
+    set_loc_rule(world, loc, rule_has(world, item, count))
 def set_loc_rule(world: CupheadWorld, loc: str, rule: Callable[[CollectionState], bool] = None) -> None:
     set_rule(get_location(world, loc), rule)
 def set_region_rules(world: CupheadWorld, region_name: str, rule: Callable[[CollectionState], bool]):
@@ -24,14 +25,15 @@ def set_region_rules(world: CupheadWorld, region_name: str, rule: Callable[[Coll
         set_rule(entrance, rule)
 
 def rule_has(world: CupheadWorld, item: str, count: int = 1) -> Callable[[CollectionState], bool]:
-    return lambda state: state.has(item, world.player, count)
+    return lambda state, player=world.player: state.has(item, player, count)
 def rule_has_all(world: CupheadWorld, items: Iterable[str]) -> Callable[[CollectionState], bool]:
-    return lambda state: state.has_all(items, world.player)
+    return lambda state, player=world.player: state.has_all(items, player)
 def rule_has_any(world: CupheadWorld, items: Iterable[str]) -> Callable[[CollectionState], bool]:
-    return lambda state: state.has_any(items, world.player)
+    return lambda state, player=world.player: state.has_any(items, player)
 
 def set_rules(world: CupheadWorld):
     w = world
+    player = w.player
     settings = w.wsettings
     use_dlc = w.use_dlc
     contract_reqs = settings.contract_requirements
@@ -39,7 +41,8 @@ def set_rules(world: CupheadWorld):
 
     set_region_rules(w, LocationNames.world_inkwell_2, rule_has(w, ItemNames.item_contract, contract_reqs[0]))
     set_region_rules(w, LocationNames.world_inkwell_3, rule_has(w, ItemNames.item_contract, contract_reqs[1]))
-    set_region_rules(w, LocationNames.level_boss_kingdice, rule_has(w, ItemNames.item_contract, contract_reqs[2]) and rule_has_any)
+    set_region_rules(w, LocationNames.level_boss_kingdice,
+                     lambda state: state.has(ItemNames.item_contract, player, contract_reqs[2]) and level_rule_plane)
     set_shop_rules(w)
 
     set_item_rule(w, LocationNames.loc_coin_isle1_secret, ItemNames.item_event_isle1_secret_prereq, 5)
