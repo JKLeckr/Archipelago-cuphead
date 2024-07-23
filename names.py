@@ -521,7 +521,7 @@ class ItemNames:
     item_level_trap_fingerjam = "Finger Jam Trap"
     item_level_trap_slowfire = "Slow Fingers Trap"
     item_level_trap_superdrain = "Super Meter Drain Trap"
-    item_level_trap_inktrap = "Ink Trap"
+    item_level_trap_envirotrap = "Envirotrap"
 
     # Events
     item_event_boss_defeated = _item_event_ + "Boss Defeated"
