@@ -40,10 +40,11 @@ item_super_ii = "Super Art II"
 item_super_iii = "Super Art III"
 
 # Abilities
-item_ability_parry = "Perry"
+item_ability_parry = "Parry"
 item_ability_dash = "Dash"
 item_ability_duck = "Duck"
-item_ability_planeshrink = "Plane Shrink"
+item_ability_plain_shrink = "Plane Shrink"
+item_ability_plane_parry = "Plane Parry"
 
 item_ability_aim_left = "Aim Left"
 item_ability_aim_right = "Aim Right"
@@ -59,6 +60,9 @@ item_coin = "Coin"
 item_coin2 = "2 Coins"
 item_coin3 = "3 Coins"
 item_progressive_plane = "Progressive Plane"
+item_plane = "Plane"
+item_plane_gun = "Plane Gun"
+item_plane_bombs = "Plane Bombs"
 item_contract = "Contract"
 item_dlc_ingredient = "Ingredient"
 

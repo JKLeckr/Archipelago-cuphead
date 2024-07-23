@@ -30,6 +30,7 @@ item_essential = {
     ItemNames.item_coin: ItemData(id(2), ItemClassification.progression_skip_balancing, 0),
     ItemNames.item_coin2: ItemData(id(3), ItemClassification.progression_skip_balancing, 0),
     ItemNames.item_coin3: ItemData(id(4), ItemClassification.progression_skip_balancing, 0),
+    # TODO: seperate shrink, normal, and bomb.
     ItemNames.item_progressive_plane: ItemData(id(5), ItemClassification.progression, 2),  # TODO: Figure out how to handle "shrink" with plane
     ItemNames.item_contract: ItemData(id(6), ItemClassification.progression_skip_balancing, 17),
 }
