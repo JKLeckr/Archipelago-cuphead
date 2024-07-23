@@ -455,8 +455,8 @@ class ItemNames:
     _item_event_ = "Event "
 
     # Junk
-    item_extrahealth = "+1 Health"
-    item_superrecharge = "Super Recharge"
+    item_level_extrahealth = "+1 Health"
+    item_level_superrecharge = "Super Recharge"
 
     # Weapons
     item_weapon = "Weapon"
@@ -518,10 +518,10 @@ class ItemNames:
     item_dlc_ingredient = "Ingredient"
 
     # Traps
-    item_trap_fingerjam = "Finger Jam Trap"
-    item_trap_slowfire = "Slow Fingers Trap"
-    item_trap_superdrain = "Super Meter Drain Trap"
-    item_trap_inktrap = "Ink Trap"
+    item_level_trap_fingerjam = "Finger Jam Trap"
+    item_level_trap_slowfire = "Slow Fingers Trap"
+    item_level_trap_superdrain = "Super Meter Drain Trap"
+    item_level_trap_inktrap = "Ink Trap"
 
     # Events
     item_event_boss_defeated = _item_event_ + "Boss Defeated"

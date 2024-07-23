@@ -22,8 +22,8 @@ def dlc_id(i: int): return base_dlc_id+i
 # Items
 # Next ids: 40, 8
 item_filler = {
-    ItemNames.item_extrahealth: ItemData(id(0), ItemClassification.filler, 0),
-    ItemNames.item_superrecharge: ItemData(id(1), ItemClassification.filler, 0),
+    ItemNames.item_level_extrahealth: ItemData(id(0), ItemClassification.filler, 0),
+    ItemNames.item_level_superrecharge: ItemData(id(1), ItemClassification.filler, 0),
 }
 
 item_essential = {
@@ -101,10 +101,10 @@ item_abilities_aim = {
 }
 
 item_trap = {
-    ItemNames.item_trap_fingerjam: ItemData(id(36), ItemClassification.trap, 0),
-    ItemNames.item_trap_slowfire: ItemData(id(37), ItemClassification.trap, 0),
-    ItemNames.item_trap_superdrain: ItemData(id(38), ItemClassification.trap, 0),
-    #ItemNames.item_trap_inktrap: ItemData(id(39), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_fingerjam: ItemData(id(36), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_slowfire: ItemData(id(37), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_superdrain: ItemData(id(38), ItemClassification.trap, 0),
+    #ItemNames.item_level_trap_inktrap: ItemData(id(39), ItemClassification.trap, 0),
 }
 
 item_special = {
