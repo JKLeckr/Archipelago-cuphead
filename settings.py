@@ -56,8 +56,7 @@ class WorldSettings:
         self.lucien_quest = True
         self.agrade_quest = options.agrade_quest
         self.pacifist_quest = options.pacifist_quest
-        self.ludwig_quest = True
-        self.wolfgang_quest = True
+        self.music_quest = False
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
         self.traps = options.traps
         self.envirotraps = False

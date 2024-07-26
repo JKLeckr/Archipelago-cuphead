@@ -422,8 +422,9 @@ class LocationNames:
     loc_quest_lucien = "Lucien Quest"
     loc_quest_pacifist = "Pacifist Quest"
     loc_quest_15agrades = "15+ Grade-A Quest"
-    loc_quest_ludwig = "Ludwig Quest"
-    loc_quest_wolfgang = "Wolfgang Quest"
+    loc_quest_music = "Music Quest"
+    loc_quest_ludwig = "Ludwig"
+    loc_quest_wolfgang = "Wolfgang"
 
     loc_coin_isle1_secret = world_inkwell_1 + " Secret Coin"
     loc_coin_isle2_secret = world_inkwell_2 + " Secret Coin"
@@ -443,7 +444,9 @@ class LocationNames:
     loc_event_isle1_secret_prereq5 = loc_event_isle1_secret_prereq + " 5"
     loc_event_isle2_shortcut = _loc_event_ + world_inkwell_2 + " Shortcut"
     loc_event_quest_4mel_4th = _loc_event_ + "Barbershop Quartet 4th Member"
-    loc_event_music = _loc_event_ + "Change Music"
+    loc_event_quest_ludwig = _loc_event_ + "Ludwig Quest"
+    loc_event_quest_wolfgang = _loc_event_ + "Wolfgang Quest"
+    loc_event_music = _loc_event_ + "Piano Music"
     loc_event_dlc_start = _loc_event_ + "DLC Start"
     loc_event_dlc_curse_complete = _loc_event_ + "Divine Relic"
 
@@ -536,6 +539,8 @@ class ItemNames:
     item_event_quest_4mel_4th = _item_event_ + LocationNames.loc_event_quest_4mel_4th
     item_event_agrade = _item_event_ + "A Grade"
     item_event_pacifist = _item_event_ + "P Grade"
+    item_event_ludwig = _item_event_ + "Lugwig"
+    item_event_wolfgang = _item_event_ + "Wolfgang"
     item_event_music = _item_event_ + "Music Changed"
     item_event_dlc_start = _item_event_ + "DLC Start"
     item_event_dlc_boataccess = _item_event_ + "Boat Access"

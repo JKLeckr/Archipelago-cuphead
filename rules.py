@@ -55,8 +55,8 @@ def set_rules(world: CupheadWorld):
         set_item_rule(w, LocationNames.loc_quest_15agrades, ItemNames.item_event_agrade, 15)
     if settings.pacifist_quest:
         set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
-    if settings.wolfgang_quest:
-        set_item_rule(w, LocationNames.loc_quest_wolfgang, ItemNames.item_event_music)
+    if settings.music_quest:
+        set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
 
     if use_dlc:
         set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))

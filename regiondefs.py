@@ -39,8 +39,8 @@ def dep_agrade_quest(w: CupheadWorld) -> bool:
     return w.wsettings.agrade_quest
 def dep_pacifist_quest(w: CupheadWorld) -> bool:
     return w.wsettings.pacifist_quest
-def dep_wolfgang_quest(w: CupheadWorld) -> bool:
-    return w.wsettings.wolfgang_quest
+def dep_music_quest(w: CupheadWorld) -> bool:
+    return w.wsettings.music_quest
 def dep_dlc_cactusgirl_quest(w: CupheadWorld) -> bool:
     return w.wsettings.dlc_cactusgirl_quest
 
@@ -218,7 +218,7 @@ region_isle3 = [
     LevelRegionData(LocationNames.level_boss_bee, None, [
         LevelTarget(LocationNames.level_boss_plane_robot),
         LevelTarget(LocationNames.level_rungun_mountain),
-        Target(LocationNames.loc_quest_ludwig, None, dep_wolfgang_quest)
+        Target(LocationNames.loc_quest_ludwig, None, dep_music_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_pirate, None, [
         LevelTarget(LocationNames.level_boss_plane_mermaid),
@@ -227,11 +227,11 @@ region_isle3 = [
     ]),
     LevelRegionData(LocationNames.level_boss_plane_robot, None, [
         LevelTarget(LocationNames.level_boss_sallystageplay),
-        Target(LocationNames.loc_quest_wolfgang, None, dep_wolfgang_quest)
+        Target(LocationNames.loc_quest_wolfgang, None, dep_music_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_plane_mermaid, [LocationNames.loc_coin_isle3_secret], [
         LevelTarget(LocationNames.level_boss_sallystageplay),
-        Target(LocationNames.loc_quest_wolfgang, None, dep_wolfgang_quest)
+        Target(LocationNames.loc_quest_wolfgang, None, dep_music_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_sallystageplay, None, [
         LevelTarget(LocationNames.level_boss_mouse),
@@ -242,7 +242,7 @@ region_isle3 = [
     ]),
     LevelRegionData(LocationNames.level_boss_mouse, None, [
         LevelTarget(LocationNames.level_boss_sallystageplay), # FIXME: Verify that this connection is legit
-        Target(LocationNames.loc_quest_wolfgang, None, dep_wolfgang_quest)
+        Target(LocationNames.loc_quest_wolfgang, None, dep_music_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_train, None, [Target(LocationNames.world_inkwell_hell)]),
     LevelRegionData(LocationNames.level_rungun_harbour, None, [
@@ -259,12 +259,11 @@ region_isle3 = [
     ]),
     LevelRegionData(LocationNames.level_mausoleum_iii, None, None),
     RegionData(LocationNames.loc_quest_wolfgang, [
-        LocationNames.loc_quest_wolfgang
-    ], None, dep_wolfgang_quest),
+        LocationNames.loc_quest_music
+    ], None, dep_music_quest),
     RegionData(LocationNames.loc_quest_ludwig, [
-        LocationNames.loc_quest_ludwig,
-        LocationNames.loc_event_music
-    ], None, dep_wolfgang_quest),
+        LocationNames.loc_event_quest_ludwig,
+    ], None, dep_music_quest),
     RegionData(LocationNames.loc_quest_15agrades, [LocationNames.loc_quest_15agrades], None, dep_agrade_quest),
     RegionData(LocationNames.loc_quest_pacifist, [LocationNames.loc_quest_pacifist], None, dep_pacifist_quest),
 ]

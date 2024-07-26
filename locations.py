@@ -25,7 +25,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Locations
-# Next ids: 129, 56
+# Next ids: 128, 56
 # Level Locations
 location_level_tutorial = {
     LocationNames.loc_level_tutorial: LocationData(id(0)),
@@ -379,8 +379,7 @@ location_world_quest = {
     LocationNames.loc_quest_lucien: LocationData(id(121)),
     LocationNames.loc_quest_pacifist: LocationData(id(122)),
     LocationNames.loc_quest_15agrades: LocationData(id(123)),
-    LocationNames.loc_quest_ludwig: LocationData(id(124)),
-    LocationNames.loc_quest_wolfgang: LocationData(id(125)),
+    LocationNames.loc_quest_music: LocationData(id(124)),
 }
 location_dlc_world = {
     #LocationNames.loc_dlc_cookie: LocationData(dlc_id(51)),
@@ -396,9 +395,9 @@ location_dlc_world_quest = {
 }
 
 location_level_boss_secret = {
-    LocationNames.loc_level_boss_veggies_secret: LocationData(id(126)),
-    LocationNames.loc_level_boss_plane_genie_secret: LocationData(id(127)),
-    LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(128)),
+    LocationNames.loc_level_boss_veggies_secret: LocationData(id(125)),
+    LocationNames.loc_level_boss_plane_genie_secret: LocationData(id(126)),
+    LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
 }
 
 # Special Locations
@@ -406,7 +405,9 @@ location_special = {
     #LocationNames.loc_event_firstweapon: LocationData(None),
     LocationNames.loc_event_isle2_shortcut: LocationData(None),
     LocationNames.loc_event_quest_4mel_4th: LocationData(None),
-    LocationNames.loc_event_music: LocationData(None),
+    LocationNames.loc_event_quest_ludwig: LocationData(None),
+    #LocationNames.loc_event_quest_wolfgang: LocationData(None),
+    #LocationNames.loc_event_music: LocationData(None),
 }
 location_dlc_special = {
     LocationNames.loc_event_dlc_start: LocationData(None),
@@ -523,11 +524,10 @@ def setup_locations(settings: WorldSettings):
         _add_location(LocationNames.loc_event_quest_4mel_4th,location_special)
     if settings.lucien_quest:
         _add_location(LocationNames.loc_quest_lucien,location_world_quest)
-    if settings.ludwig_quest:
-        _add_location(LocationNames.loc_quest_ludwig,location_world_quest)
-    if settings.wolfgang_quest:
-        _add_location(LocationNames.loc_quest_wolfgang,location_world_quest)
-        _add_location(LocationNames.loc_event_music,location_special)
+    if settings.music_quest:
+        _add_location(LocationNames.loc_quest_music,location_world_quest)
+        _add_location(LocationNames.loc_event_quest_ludwig,location_world_quest)
+        _add_location(LocationNames.loc_event_quest_wolfgang,location_world_quest)
     if settings.agrade_quest:
         locations.update(locations_event_agrade)
         _add_location(LocationNames.loc_quest_15agrades,location_world_quest)

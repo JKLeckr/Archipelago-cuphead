@@ -213,8 +213,9 @@ class CupheadWorld(World):
             self.create_locked_item(ItemNames.item_event_isle2_shortcut, LocationNames.loc_event_isle2_shortcut)
         if self.wsettings.fourmel_quest:
             self.create_locked_item(ItemNames.item_event_quest_4mel_4th, LocationNames.loc_event_quest_4mel_4th)
-        if self.wsettings.wolfgang_quest:
-            self.create_locked_item(ItemNames.item_event_music, LocationNames.loc_event_music)
+        if self.wsettings.music_quest:
+            self.create_locked_item(ItemNames.item_event_ludwig, LocationNames.loc_event_quest_ludwig)
+            #self.create_locked_item(ItemNames.item_event_wolfgang, LocationNames.loc_event_quest_wolfgang)
         if self.wsettings.agrade_quest:
             self.create_locked_items(ItemNames.item_event_agrade, locations.locations_event_agrade)
         if self.wsettings.pacifist_quest:

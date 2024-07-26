@@ -121,7 +121,9 @@ item_special = {
     ItemNames.item_event_quest_4mel_4th: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_agrade: ItemData(None, ItemClassification.progression_skip_balancing, 0),
     ItemNames.item_event_pacifist: ItemData(None, ItemClassification.progression_skip_balancing, 0),
-    ItemNames.item_event_music: ItemData(None, ItemClassification.progression, 0),
+    ItemNames.item_event_ludwig: ItemData(None, ItemClassification.progression, 0),
+    ItemNames.item_event_wolfgang: ItemData(None, ItemClassification.progression, 0),
+    #ItemNames.item_event_music: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_skip_balancing, 0),
 }
 item_dlc_special = {
