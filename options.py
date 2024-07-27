@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DefaultOnToggle, Range, Choice, DeathLink, PerGameCommonOptions
+from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions
 
 class DeliciousLastCourse(Toggle):
     """
@@ -130,6 +130,14 @@ class Traps(Range):
     range_start = 0
     range_end = 100
     default = 0
+
+class DeathLink(Toggle):
+    """
+    --NOT YET IMPLEMENTED--
+    When you die, everyone dies. Of course the reverse is true too.
+    In Cuphead, this only applies while you are in a level.
+    """
+    display_name = "Death Link"
 
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
