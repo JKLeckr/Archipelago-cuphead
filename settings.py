@@ -30,8 +30,7 @@ class WorldSettings:
     lucien_quest: bool
     agrade_quest: bool
     pacifist_quest: bool
-    ludwig_quest: bool
-    wolfgang_quest: bool
+    music_quest: bool
     dlc_cactusgirl_quest: bool
     contract_requirements: tuple[int,int,int]
     dlc_ingredient_requirements: int
@@ -53,7 +52,7 @@ class WorldSettings:
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
-        self.lucien_quest = True
+        self.lucien_quest = False
         self.agrade_quest = options.agrade_quest
         self.pacifist_quest = options.pacifist_quest
         self.music_quest = False
