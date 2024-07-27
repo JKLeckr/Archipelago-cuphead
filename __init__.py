@@ -99,7 +99,7 @@ class CupheadWorld(World):
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop_map,
-            **self.options.as_dict("use_dlc", "expert_mode", "start_weapon", "freemove_isles", "boss_grade_checks", "rungun_grade_checks", "deathlink")
+            **self.options.as_dict("use_dlc", "expert_mode", "start_weapon", "freemove_isles", "boss_grade_checks", "rungun_grade_checks", "agrade_quest", "pacifist_quest", "deathlink")
         }
         return slot_data
 
