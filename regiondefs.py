@@ -39,6 +39,8 @@ def dep_agrade_quest(w: CupheadWorld) -> bool:
     return w.wsettings.agrade_quest
 def dep_pacifist_quest(w: CupheadWorld) -> bool:
     return w.wsettings.pacifist_quest
+def dep_lucien_quest(w: CupheadWorld) -> bool:
+    return w.wsettings.lucien_quest
 def dep_music_quest(w: CupheadWorld) -> bool:
     return w.wsettings.music_quest
 def dep_dlc_cactusgirl_quest(w: CupheadWorld) -> bool:
@@ -204,7 +206,8 @@ region_isle2 = [
     ]),
     LevelRegionData(LocationNames.level_mausoleum_ii, [
         LocationNames.loc_quest_lucien,
-    ], None),
+    ], None, dep_lucien_quest),
+    LevelRegionData(LocationNames.level_mausoleum_ii, None, None, dep_not(dep_lucien_quest)),
     RegionData(LocationNames.loc_event_isle2_shortcut, [
         LocationNames.loc_event_isle2_shortcut
     ], [
