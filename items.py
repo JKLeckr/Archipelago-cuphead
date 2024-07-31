@@ -109,9 +109,10 @@ item_trap = {
     ItemNames.item_level_trap_fingerjam: ItemData(id(38), ItemClassification.trap, 0),
     ItemNames.item_level_trap_slowfire: ItemData(id(39), ItemClassification.trap, 0),
     ItemNames.item_level_trap_superdrain: ItemData(id(40), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_reversal: ItemData(id(41), ItemClassification.trap, 0)
 }
 item_trap_special = {
-    ItemNames.item_level_trap_envirotrap: ItemData(id(41), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_envirotrap: ItemData(id(42), ItemClassification.trap, 0),
 }
 
 item_special = {

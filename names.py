@@ -528,8 +528,9 @@ class ItemNames:
 
     # Traps
     item_level_trap_fingerjam = "Finger Jam Trap"
-    item_level_trap_slowfire = "Slow Fingers Trap"
-    item_level_trap_superdrain = "Super Meter Drain Trap"
+    item_level_trap_slowfire = "Slow Fire Trap"
+    item_level_trap_superdrain = "Super Drain Trap"
+    item_level_trap_reversal = "Reversal Trap"
     item_level_trap_envirotrap = "Envirotrap"
 
     # Events
