@@ -80,16 +80,22 @@ class CupheadWorld(World):
         self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
 
         # Group Items
-        self.item_name_groups = {}
+        nitem_name_groups: dict[str, set[str]] = {
+            "Weapon": set(),
+            "Charm": set(),
+            "Super": set(),
+            "Ability": set(),
+        }
         for item in self.active_items.keys():
             if item in items.item_weapons or (self.use_dlc and item in items.item_dlc_weapons):
-                self.item_name_groups.update({"weapons": item})
+                nitem_name_groups["Weapon"].update(item)
             if item in items.item_charms or (self.use_dlc and item in items.item_dlc_charms):
-                self.item_name_groups.update({"charms": item})
+                nitem_name_groups["Charm"].update(item)
             if item in items.item_super:
-                self.item_name_groups.update({"super": item})
+                nitem_name_groups["Super"].update(item)
             if item in items.item_abilities or item in items.item_abilities_aim:
-                self.item_name_groups.update({"abilities": item})
+                nitem_name_groups["Ability"].update(item)
+        self.item_name_groups = {x: y for x,y in nitem_name_groups.items() if len(y)>0}
 
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data = {
