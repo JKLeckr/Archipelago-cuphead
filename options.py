@@ -99,7 +99,7 @@ class DlcBossChaliceChecks(Toggle):
     """
     display_name = "[DLC] Boss Chalice Checks"
 
-class AGradeQuest(DefaultOnToggle):
+class AGradeQuest(Toggle): # TODO: Maybe make this on by default later.
     """
     Enable the 15 A-Grade Quest check.
     This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
