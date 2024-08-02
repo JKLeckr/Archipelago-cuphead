@@ -49,8 +49,8 @@ class CupheadWorld(World):
 
     def generate_early(self) -> None:
         # Sanitize start_weapon
-        if not self.options.use_dlc and int(self.options.start_weapon)>5:
-            self.options.start_weapon = self.random.randint(0,5)
+        if not self.options.use_dlc and int(self.options.start_weapon.value)>5:
+            self.options.start_weapon.value = self.random.randint(0,5)
 
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)
@@ -105,8 +105,20 @@ class CupheadWorld(World):
             "levels": list(self.active_levels.keys()),
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop_map,
-            **self.options.as_dict("use_dlc", "expert_mode", "start_weapon", "freemove_isles", "boss_grade_checks", "rungun_grade_checks", "agrade_quest", "pacifist_quest", "deathlink")
         }
+        slot_data_options = (
+            "use_dlc",
+            "expert_mode",
+            "start_weapon",
+            "freemove_isles",
+            "boss_grade_checks",
+            "rungun_grade_checks",
+            "agrade_quest",
+            "pacifist_quest",
+            "deathlink"
+        )
+        for option in slot_data_options:
+            slot_data.update(self.options.as_dict(option))
         return slot_data
 
     def get_shop_locations(self) -> dict[str,list[str]]:
