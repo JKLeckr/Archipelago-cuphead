@@ -395,11 +395,11 @@ class CupheadWorld(World):
             for level, map in self.level_shuffle_map.items():
                 if level in self.active_locations.keys() and level != map:
                     for loc in self.active_levels[level].locations:
-                        hint_dict[self.location_name_to_id[loc]] = " ->> " + self.level_shuffle_map[level] + " at " + level
+                        hint_dict[self.location_name_to_id[loc]] = self.level_shuffle_map[level] + " at " + level
         for shop, locs in self.shop_locations.items():
             if shop != LocationNames.level_dlc_shop4 or self.use_dlc:
                 for loc in locs:
-                    hint_dict[self.location_name_to_id[loc]] = " at " + shop ## TODO: Use Shop Sets
+                    hint_dict[self.location_name_to_id[loc]] = shop ## TODO: Use Shop Sets
         hint_data.update({self.player: hint_dict})
 
     def set_rules(self) -> None:
