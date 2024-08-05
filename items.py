@@ -83,8 +83,8 @@ item_dlc_shop = {
 
 item_super = {
     ItemNames.item_super_i: ItemData(id(22), ItemClassification.useful),
-    ItemNames.item_super_ii: ItemData(id(23), ItemClassification.useful,0),
-    ItemNames.item_super_iii: ItemData(id(24), ItemClassification.useful,0),
+    ItemNames.item_super_ii: ItemData(id(23), ItemClassification.useful),
+    ItemNames.item_super_iii: ItemData(id(24), ItemClassification.useful),
 }
 
 item_abilities = {
