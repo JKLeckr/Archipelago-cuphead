@@ -2,7 +2,7 @@
 
 *Archipelago World Created by JKLeckr*
 
-Client Mod: [CupheadArchipelagoMod](https://github.com/JKLeckr/CupheadArchipelagoMod)
+Client Mod: [CupheadArchipelago](https://github.com/JKLeckr/CupheadArchipelagoMod)
 
 This is the Archipelago world for Cuphead.
 
