@@ -40,8 +40,7 @@ class LevelShuffle(Toggle):
 
 class FreeMoveIsles(Toggle):
     """
-    --NOT STABLE--
-    Allow all the bosses on each island to be freely accessible without completing a previous level first.
+    Allow all the levels on each island to be freely accessible without completing a previous level first.
     """
     display_name = "Free Move Islands"
 
