@@ -24,7 +24,6 @@ class CupheadWebWorld(WebWorld):
         ["JKLeckr"]
     )
     tutorials = [setup_en]
-    bug_report_page = "https://gitlab.com/JKLeckr/CupheadArchipelagoMod/-/issues"
 
 class CupheadWorld(World):
     """
@@ -111,6 +110,7 @@ class CupheadWorld(World):
             "expert_mode",
             "start_weapon",
             "freemove_isles",
+            "randomize_abilities",
             "boss_grade_checks",
             "rungun_grade_checks",
             "agrade_quest",

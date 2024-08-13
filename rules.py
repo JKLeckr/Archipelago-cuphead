@@ -1,12 +1,12 @@
 from __future__ import annotations
 import typing
-from typing import Callable, Iterable
-from BaseClasses import Location, Region, CollectionState
+from BaseClasses import Location, Region
 from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
 from .levels import level_rule_plane
 from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
+from .rulebase import Rule, rule_has, rule_has_all
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
@@ -18,19 +18,12 @@ def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
 def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
     set_loc_rule(world, loc, rule_has(world, item, count))
-def set_loc_rule(world: CupheadWorld, loc: str, rule: Callable[[CollectionState], bool] = None) -> None:
+def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule = None) -> None:
     set_rule(get_location(world, loc), rule)
-def set_region_rules(world: CupheadWorld, region_name: str, rule: Callable[[CollectionState], bool]):
+def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
         set_rule(entrance, rule)
-
-def rule_has(world: CupheadWorld, item: str, count: int = 1) -> Callable[[CollectionState], bool]:
-    return lambda state, player=world.player: state.has(item, player, count)
-def rule_has_all(world: CupheadWorld, items: Iterable[str]) -> Callable[[CollectionState], bool]:
-    return lambda state, player=world.player: state.has_all(items, player)
-def rule_has_any(world: CupheadWorld, items: Iterable[str]) -> Callable[[CollectionState], bool]:
-    return lambda state, player=world.player: state.has_any(items, player)
 
 def set_rules(world: CupheadWorld):
     w = world

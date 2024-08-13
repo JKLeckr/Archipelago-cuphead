@@ -1,7 +1,7 @@
 from __future__ import annotations
 import typing
 from BaseClasses import MultiWorld, Region
-from .regiondefs import DefType, RegionData, Rule, get_regions
+from .regiondefs import DefType, RegionData, RegionRule, get_regions
 from .levels import LevelData
 from .locations import CupheadLocation
 #from . import debug
@@ -47,7 +47,7 @@ def create_region(world: CupheadWorld, regc: RegionData):
                  print("WARNING: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
     multiworld.regions.append(region)
 
-def get_rule_def(a: Rule, b: Rule = None) -> Rule:
+def get_rule_def(a: RegionRule, b: RegionRule = None) -> RegionRule:
     if b:
         return lambda s, p: a(s, p) and b(s, p)
     else:
@@ -61,7 +61,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData):
             if target.depends(world):
                 if regc.region_type == DefType.LEVEL:
                     _ruleb = target.rule
-                    _rulea = level_map(world, regc.name).rule
+                    _rulea = level_map(world, regc.name).rule()
                 else:
                     _ruleb = None
                     _rulea = target.rule

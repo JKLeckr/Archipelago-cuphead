@@ -2,8 +2,8 @@ from __future__ import annotations
 import typing
 from typing import Optional, Callable
 from enum import IntEnum, IntFlag
-from BaseClasses import CollectionState
 from .names import LocationNames, ItemNames
+from .rulebase import RegionRule, region_rule_has
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
     Dep = Callable[[CupheadWorld], bool]
@@ -16,9 +16,8 @@ class DefFlags(IntFlag):
     NONE = 0,
     LV_IGNORE_FREEMOVE = 1,
 
-Rule = Callable[[CollectionState, int], bool]
-def rule_has(item: str, count: int = 1) -> Rule:
-    return lambda state, player: state.has(item, player, count)
+def rule_has(item: str, count: int = 1) -> RegionRule:
+    return region_rule_has(item, count)
 
 # Deps determine if a region or target is enabled
 def dep_and(a: Dep, b: Dep) -> Dep:
@@ -48,10 +47,10 @@ def dep_dlc_cactusgirl_quest(w: CupheadWorld) -> bool:
 
 class Target:
     name: str
-    rule: Optional[Rule]
+    rule: Optional[RegionRule]
     depends: Dep
     tgt_type: DefType
-    def __init__(self, name: str, rule: Optional[Rule] = None, depends: Optional[Dep] = None, tgt_type: DefType = DefType.SIMPLE):
+    def __init__(self, name: str, rule: Optional[RegionRule] = None, depends: Optional[Dep] = None, tgt_type: DefType = DefType.SIMPLE):
         self.name = name
         self.rule = rule
         self.depends = depends if depends else dep_none
@@ -71,7 +70,7 @@ class RegionData:
         self.region_type = region_type
         self.flags = flags
 class LevelTarget(Target):
-    def __init__(self, name: str, add_rule: Optional[Rule] = None, depends: Optional[Dep] = None):
+    def __init__(self, name: str, add_rule: Optional[RegionRule] = None, depends: Optional[Dep] = None):
         super().__init__(name, add_rule, depends, DefType.LEVEL)
 class LevelRegionData(RegionData):
     def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, flags: DefFlags = 0):

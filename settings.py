@@ -12,6 +12,7 @@ class GradeCheckMode(IntEnum):
 # These are settings stored and accessed by other classes
 class WorldSettings:
     use_dlc: bool
+    hard_logic: bool
     start_weapon: int
     level_shuffle: bool
     #shop_shuffle: bool
@@ -39,6 +40,7 @@ class WorldSettings:
 
     def __init__(self, options: PerGameCommonOptions) -> None:
         self.use_dlc = options.use_dlc
+        self.hard_logic = False #options.hard_logic
         self.start_weapon = int(options.start_weapon)
         self.level_shuffle = options.level_shuffle
         #self.shop_shuffle = options.shop_shuffle

@@ -1,22 +1,26 @@
 from __future__ import annotations
 from typing import NamedTuple, Optional, Callable
 from random import Random
-from BaseClasses import CollectionState
 from .names import LocationNames, ItemNames
 from .locations import LocationData
 from .settings import WorldSettings
 from .auxiliary import scrub_list
+from .rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_has_all, region_rule_has_any
 
 class LevelData(NamedTuple):
     world_location: Optional[str]
     locations: list[str] = None
-    rule: Optional[Callable[[CollectionState, int], bool]] = None
+    rule: Callable[[], RegionRule] = lambda: region_rule_none()
 
 # Level Rules
-def level_rule_plane(state: CollectionState, player: int) -> bool:
-    return state.has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs}, player)
-def level_dlc_rule_relic(state: CollectionState, player: int) -> bool:
-    return state.has(ItemNames.item_charm_dlc_broken_relic, player, 1)
+def level_rule_plane() -> RegionRule:
+    return region_rule_has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs})
+def level_rule_dash() -> RegionRule:
+    return region_rule_has(ItemNames.item_ability_dash)
+def level_rule_pirate() -> RegionRule:
+    return region_rule_has_any({ItemNames.item_ability_duck, ItemNames.item_ability_parry})
+def level_dlc_rule_relic() -> RegionRule:
+    return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
 
 # Levels
 level_boss = {
@@ -26,19 +30,19 @@ level_boss = {
         LocationNames.loc_level_boss_veggies_secret,
         LocationNames.loc_level_boss_veggies_event_agrade,
         LocationNames.loc_level_boss_veggies_dlc_chaliced,
-    ], None),
+    ]), # No rules
     LocationNames.level_boss_slime: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_slime,
         LocationNames.loc_level_boss_slime_topgrade,
         LocationNames.loc_level_boss_slime_event_agrade,
         LocationNames.loc_level_boss_slime_dlc_chaliced,
-    ], None),
+    ]), # No rules
     LocationNames.level_boss_frogs: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_frogs,
         LocationNames.loc_level_boss_frogs_topgrade,
         LocationNames.loc_level_boss_frogs_event_agrade,
         LocationNames.loc_level_boss_frogs_dlc_chaliced,
-    ], None),
+    ]), # No rules
     LocationNames.level_boss_flower: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_flower,
         LocationNames.loc_level_boss_flower_topgrade,

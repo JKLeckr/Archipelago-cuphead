@@ -8,6 +8,28 @@ class DeliciousLastCourse(Toggle):
     """
     display_name = "DLC"
 
+class Mode(Choice):
+    """
+    --ONLY DEFAULT CHOICE WORKS--
+    Set the mode of the randomizer which includes goal.
+    NOTE: Setting dlc
+    """
+    display_name = "Mode"
+    option_beat_devil = 0
+    option_dlc_beat_devil = 1
+    option_dlc_beat_saltbaker = 2
+    option_dlc_beat_both = 3
+    option_dlc_beat_saltbaker_isle4_only = 4
+    default = 0
+
+class HardLogic(Toggle):
+    """
+    Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
+    Examples include requiring jumping into pits to get across gaps and requiring avoiding King Dice bosses that
+    requires certain abilities to beat King Dice in logic.
+    """
+    display_name = "Hard Logic"
+
 class ExpertMode(Toggle):
     """
     Set the boss difficulty to expert.
@@ -141,6 +163,7 @@ class DeathLink(Toggle):
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
     use_dlc: DeliciousLastCourse
+    #hard_logic: HardLogic
     expert_mode: ExpertMode
     start_weapon: StartWeapon
     level_shuffle: LevelShuffle
