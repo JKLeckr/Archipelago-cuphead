@@ -38,6 +38,7 @@ item_essential = {
     ItemNames.item_plane_bombs: ItemData(id(7), ItemClassification.progression),
     ItemNames.item_plane_super: ItemData(id(8), ItemClassification.useful),
     ItemNames.item_contract: ItemData(id(9), ItemClassification.progression_skip_balancing, 17),
+    # TODO: maxhealth upgrade here
 }
 item_dlc_essential = {
     ItemNames.item_dlc_boat: ItemData(dlc_id(0), ItemClassification.progression, 5),

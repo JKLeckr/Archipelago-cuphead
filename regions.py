@@ -56,12 +56,13 @@ def get_rule_def(a: RegionRule, b: RegionRule = None) -> RegionRule:
 def connect_region_targets(world: CupheadWorld, regc: RegionData):
     multiworld = world.multiworld
     player = world.player
+    wsettings = world.wsettings
     for target in regc.connect_to:
         if target:
-            if target.depends(world):
+            if target.depends(wsettings):
                 if regc.region_type == DefType.LEVEL:
                     _ruleb = target.rule
-                    _rulea = level_map(world, regc.name).rule()
+                    _rulea = level_map(world, regc.name).rule(wsettings)
                 else:
                     _ruleb = None
                     _rulea = target.rule
@@ -83,7 +84,7 @@ def create_regions(world: CupheadWorld) -> None:
     # Create Regions
     for regc in compile_regions:
         if regc:
-            if regc.depends(world):
+            if regc.depends(world.wsettings):
                 create_region(world, regc)
             #else: # if debug
             #    print("Skipping Region "+regc.name)

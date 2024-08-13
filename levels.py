@@ -7,20 +7,22 @@ from .settings import WorldSettings
 from .auxiliary import scrub_list
 from .rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_has_all, region_rule_has_any
 
+# Level Rules
+def level_rule_none(settings: WorldSettings) -> RegionRule:
+    return region_rule_none()
+def level_rule_plane(settings: WorldSettings) -> RegionRule:
+    return region_rule_has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs})
+def level_rule_dash(settings: WorldSettings) -> RegionRule:
+    return region_rule_has(ItemNames.item_ability_dash)
+def level_rule_pirate(settings: WorldSettings) -> RegionRule:
+    return region_rule_has_any({ItemNames.item_ability_duck, ItemNames.item_ability_parry})
+def level_dlc_rule_relic(settings: WorldSettings) -> RegionRule:
+    return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
+
 class LevelData(NamedTuple):
     world_location: Optional[str]
     locations: list[str] = None
-    rule: Callable[[], RegionRule] = lambda: region_rule_none()
-
-# Level Rules
-def level_rule_plane() -> RegionRule:
-    return region_rule_has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs})
-def level_rule_dash() -> RegionRule:
-    return region_rule_has(ItemNames.item_ability_dash)
-def level_rule_pirate() -> RegionRule:
-    return region_rule_has_any({ItemNames.item_ability_duck, ItemNames.item_ability_parry})
-def level_dlc_rule_relic() -> RegionRule:
-    return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
+    rule: Callable[[WorldSettings], RegionRule] = level_rule_none
 
 # Levels
 level_boss = {
@@ -78,7 +80,7 @@ level_boss = {
         LocationNames.loc_level_boss_pirate_topgrade,
         LocationNames.loc_level_boss_pirate_event_agrade,
         LocationNames.loc_level_boss_pirate_dlc_chaliced,
-    ]),
+    ], level_rule_pirate),
     LocationNames.level_boss_mouse: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_mouse,
         LocationNames.loc_level_boss_mouse_topgrade,
@@ -103,7 +105,7 @@ level_boss = {
         LocationNames.loc_level_boss_kingdice_topgrade,
         LocationNames.loc_level_boss_kingdice_event_agrade,
         LocationNames.loc_level_boss_kingdice_dlc_chaliced,
-    ], level_rule_plane),
+    ], level_rule_plane), # Has special rules set in rules.py
     LocationNames.level_boss_plane_blimp: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_plane_blimp,
         LocationNames.loc_level_boss_plane_blimp_topgrade,

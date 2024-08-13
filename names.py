@@ -523,6 +523,7 @@ class ItemNames:
     item_plane_bombs = "Plane Bombs"
     item_plane_super = "Plane Super"
     item_contract = "Contract"
+    item_healthupgrade = "+1 Max Health"
     item_dlc_boat = "Boat"
     item_dlc_ingredient = "Ingredient"
 

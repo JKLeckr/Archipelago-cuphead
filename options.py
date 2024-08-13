@@ -143,6 +143,26 @@ class DlcCactusGirlQuest(Toggle):
     """
     display_name = "[DLC] Cactus Girl Quest"
 
+class StartMaxHealth(Range):
+    """
+    Set starting max health.
+    NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+    """
+    display_name = "Starting Max Health"
+    range_start = 1
+    range_end = 4
+    default = 3
+
+class MaxHealthUpgrades(Range):
+    """
+    Set number of max health upgrades in the pool.
+    NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+    """
+    display_name = "Max Health Upgrades"
+    range_start = 0
+    range_end = 5
+    default = 0
+
 class Traps(Range):
     """
     Set Trap percentage for filler items.
@@ -163,7 +183,6 @@ class DeathLink(Toggle):
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
     use_dlc: DeliciousLastCourse
-    #hard_logic: HardLogic
     expert_mode: ExpertMode
     start_weapon: StartWeapon
     level_shuffle: LevelShuffle
