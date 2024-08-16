@@ -4,9 +4,9 @@ from BaseClasses import Location, Region
 from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
 from .levels import level_rule_plane
-from .locations import location_shop, location_shop_dlc, locations_dlc_boss_chaliced, locations_dlc_event_boss_chaliced
 from .names import ItemNames, LocationNames
 from .rulebase import Rule, rule_has, rule_has_all
+from . import locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
@@ -39,6 +39,8 @@ def set_rules(world: CupheadWorld):
                      lambda state: state.has(ItemNames.item_contract, player, contract_reqs[2]) and level_rule_plane)
     set_shop_rules(w)
 
+    set_level_rules(w)
+
     set_item_rule(w, LocationNames.loc_coin_isle1_secret, ItemNames.item_event_isle1_secret_prereq, 5)
     if settings.fourmel_quest:
         set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
@@ -54,12 +56,12 @@ def set_rules(world: CupheadWorld):
     if use_dlc:
         set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
         if settings.dlc_boss_chalice_checks:
-            for _loc in locations_dlc_boss_chaliced.keys():
+            for _loc in locations.locations_dlc_boss_chaliced.keys():
                 set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
         if settings.dlc_cactusgirl_quest:
-            for _loc in locations_dlc_event_boss_chaliced.keys():
+            for _loc in locations.locations_dlc_event_boss_chaliced.keys():
                 set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
-            chaliced_events = set(locations_dlc_event_boss_chaliced.keys())
+            chaliced_events = set(locations.locations_dlc_event_boss_chaliced.keys())
             set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
 
     w.multiworld.completion_condition[w.player] = (
@@ -68,6 +70,21 @@ def set_rules(world: CupheadWorld):
         rule_has(w, ItemNames.item_event_goal_devilko)
     )
 
+def set_level_rules(world: CupheadWorld):
+    w = world
+    boss_grade_checks = w.wsettings.get_boss_grade_checks()
+    rungun_grade_checks = w.wsettings.get_rungun_grade_checks()
+    if w.wsettings.randomize_abilities:
+        if boss_grade_checks > 0:
+            for _loc in locations.location_level_boss_topgrade:
+                set_item_rule(w, _loc, ItemNames.item_ability_parry)
+            if w.wsettings.use_dlc:
+                for _loc in locations.location_level_dlc_boss_topgrade:
+                    set_item_rule(w, _loc, ItemNames.item_ability_parry)
+        if rungun_grade_checks > 0 and rungun_grade_checks < 5:
+            for _loc in locations.location_level_rungun_agrade:
+                set_item_rule(w, _loc, ItemNames.item_ability_parry)
+
 def set_shop_rules(world: CupheadWorld):
     w = world
     player = w.player
@@ -75,7 +92,7 @@ def set_shop_rules(world: CupheadWorld):
     total_coins = w.total_coins
     shop_map = w.shop_map
 
-    shop_items = {**location_shop, **(location_shop_dlc if use_dlc else {})}
+    shop_items = {**locations.location_shop, **(locations.location_shop_dlc if use_dlc else {})}
     coins = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
     # Prevent certain items from appearing in the shop

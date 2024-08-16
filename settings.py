@@ -4,10 +4,11 @@ from .options import CupheadOptions
 
 class GradeCheckMode(IntEnum):
     disabled = 0
-    a_grade = 1
-    aplus_grade = 2
-    s_grade = 3
-    pacifist = 4
+    a_minus_grade = 1
+    a_grade = 2
+    a_plus_grade = 3
+    s_grade = 4
+    pacifist = 5
 
 # These are settings stored and accessed by other classes
 class WorldSettings:
