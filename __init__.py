@@ -47,9 +47,13 @@ class CupheadWorld(World):
     wsettings: WorldSettings = None
 
     def generate_early(self) -> None:
+        # Sanitize settings
         # Sanitize start_weapon
         if not self.options.use_dlc and int(self.options.start_weapon.value)>5:
             self.options.start_weapon.value = self.random.randint(0,5)
+        # Sanitize grade checks
+        if not self.options.expert_mode and int(self.options.boss_grade_checks)>3:
+            self.options.boss_grade_checks = 3
 
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)

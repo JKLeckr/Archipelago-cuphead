@@ -1,6 +1,6 @@
 from __future__ import annotations
 from enum import IntEnum
-from Options import PerGameCommonOptions
+from .options import CupheadOptions
 
 class GradeCheckMode(IntEnum):
     disabled = 0
@@ -13,6 +13,7 @@ class GradeCheckMode(IntEnum):
 class WorldSettings:
     use_dlc: bool
     hard_logic: bool
+    expert_mode: bool
     start_weapon: int
     level_shuffle: bool
     #shop_shuffle: bool
@@ -38,9 +39,10 @@ class WorldSettings:
     require_secret_shortcuts: bool
     filler_item_buffer: int
 
-    def __init__(self, options: PerGameCommonOptions) -> None:
+    def __init__(self, options: CupheadOptions) -> None:
         self.use_dlc = options.use_dlc
         self.hard_logic = False #options.hard_logic
+        self.expert_mode = options.expert_mode
         self.start_weapon = int(options.start_weapon)
         self.level_shuffle = options.level_shuffle
         #self.shop_shuffle = options.shop_shuffle

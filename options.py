@@ -95,9 +95,10 @@ class BossGradeChecks(Choice):
     """
     display_name = "Boss Grade Checks"
     option_disabled = 0
-    option_a_grade = 1
-    option_aplus_grade = 2
-    option_s_grade = 3
+    option_a_minus_grade = 1
+    option_a_grade = 2
+    option_a_plus_grade = 3
+    option_s_grade = 4
     default = 0
 
 class RunGunGradeChecks(Choice):
@@ -107,10 +108,11 @@ class RunGunGradeChecks(Choice):
     """
     display_name = "Run n' Gun Grade Checks"
     option_disabled = 0
-    option_a_grade = 1
-    option_aplus_grade = 2
-    option_pacifist = 4
-    alias_p_grade = 4
+    option_a_minus_grade = 1
+    option_a_grade = 2
+    option_a_plus_grade = 3
+    option_p_grade = 5
+    alias_pacifist = 5
     default = 0
 
 class DlcBossChaliceChecks(Toggle):
