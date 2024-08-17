@@ -7,22 +7,36 @@ from .settings import WorldSettings
 from .auxiliary import scrub_list
 from .rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_has_all, region_rule_has_any
 
+LevelRule = Callable[[WorldSettings], RegionRule]
+
 # Level Rules
+def level_rule_and(a: LevelRule, b: LevelRule) -> LevelRule:
+    return lambda s: lambda state, player: a(s)(state, player) and b(s)(state, player)
+def level_rule_not(a: LevelRule) -> LevelRule:
+    return lambda s: lambda state, player: not a(s)(state, player)
+def level_rule_or(a: LevelRule, b: LevelRule) -> LevelRule:
+    return lambda s: lambda state, player: a(s)(state, player) or b(s)(state, player)
 def level_rule_none(settings: WorldSettings) -> RegionRule:
     return region_rule_none()
 def level_rule_plane(settings: WorldSettings) -> RegionRule:
     return region_rule_has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs})
 def level_rule_dash(settings: WorldSettings) -> RegionRule:
     return region_rule_has(ItemNames.item_ability_dash)
+def level_rule_parry(settings: WorldSettings) -> RegionRule:
+    return region_rule_has(ItemNames.item_ability_parry)
+def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
+    return region_rule_has(ItemNames.item_ability_plane_parry)
 def level_rule_pirate(settings: WorldSettings) -> RegionRule:
     return region_rule_has_any({ItemNames.item_ability_duck, ItemNames.item_ability_parry})
+def level_rule_robot(settings: WorldSettings) -> RegionRule:
+    return level_rule_and(level_rule_plane, level_rule_plane_parry)(settings)
 def level_dlc_rule_relic(settings: WorldSettings) -> RegionRule:
     return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
 
 class LevelData(NamedTuple):
     world_location: Optional[str]
     locations: list[str] = None
-    rule: Callable[[WorldSettings], RegionRule] = level_rule_none
+    rule: LevelRule = level_rule_none
 
 # Levels
 level_boss = {

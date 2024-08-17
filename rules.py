@@ -3,9 +3,8 @@ import typing
 from BaseClasses import Location, Region
 from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
-from .levels import level_rule_plane
 from .names import ItemNames, LocationNames
-from .rulebase import Rule, rule_has, rule_has_all
+from .rulebase import Rule, rule_and, rule_has, rule_has_all, rule_has_any
 from . import locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -27,7 +26,6 @@ def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
 
 def set_rules(world: CupheadWorld):
     w = world
-    player = w.player
     settings = w.wsettings
     use_dlc = w.use_dlc
     contract_reqs = settings.contract_requirements
@@ -36,7 +34,7 @@ def set_rules(world: CupheadWorld):
     set_region_rules(w, LocationNames.world_inkwell_2, rule_has(w, ItemNames.item_contract, contract_reqs[0]))
     set_region_rules(w, LocationNames.world_inkwell_3, rule_has(w, ItemNames.item_contract, contract_reqs[1]))
     set_region_rules(w, LocationNames.level_boss_kingdice,
-                     lambda state: state.has(ItemNames.item_contract, player, contract_reqs[2]) and level_rule_plane)
+                     rule_and(rule_has(w, ItemNames.item_contract, contract_reqs[2]), rule_has_any(w, {ItemNames.item_plane_gun, ItemNames.item_plane_bombs})))
     set_shop_rules(w)
 
     set_level_rules(w)

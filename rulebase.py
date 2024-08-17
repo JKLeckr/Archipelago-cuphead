@@ -1,3 +1,4 @@
+from __future__ import annotations
 import typing
 from typing import Callable, Iterable
 from BaseClasses import CollectionState
@@ -7,6 +8,12 @@ if typing.TYPE_CHECKING:
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
 
+def rule_and(a: Rule, b: Rule) -> Rule:
+    return lambda state: a(state) and b(state)
+def rule_not(a: Rule) -> Rule:
+    return lambda state: not a(state)
+def rule_or(a: Rule, b: Rule) -> Rule:
+    return lambda state: a(state) or b(state)
 def rule_none() -> Rule:
     return lambda state: True
 def rule_has(world: "CupheadWorld", item: str, count: int = 1) -> Rule:
