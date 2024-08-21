@@ -12,10 +12,11 @@ if typing.TYPE_CHECKING:
 class DefType(IntEnum):
     SIMPLE = 0,
     LEVEL = 1,
+    WORLD = 2,
 
 class DefFlags(IntFlag):
     NONE = 0,
-    LV_IGNORE_FREEMOVE = 1,
+    TGT_IGNORE_FREEMOVE = 1,
 
 def rule_has(item: str, count: int = 1) -> RegionRule:
     return region_rule_has(item, count)
@@ -30,6 +31,8 @@ class Target:
         self.rule = rule
         self.depends = depends if depends else dep.dep_none
         self.tgt_type = tgt_type
+    def __str__(self) -> str:
+        return self.name
 class RegionData:
     name: str
     locations: list[str]
@@ -44,24 +47,29 @@ class RegionData:
         self.depends = depends if depends else dep.dep_none
         self.region_type = region_type
         self.flags = flags
+    def __str__(self) -> str:
+        return self.name
 class LevelTarget(Target):
     def __init__(self, name: str, add_rule: Optional[RegionRule] = None, depends: Optional[Dep] = None):
         super().__init__(name, add_rule, depends, DefType.LEVEL)
 class LevelRegionData(RegionData):
     def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, flags: DefFlags = 0):
         super().__init__(name, add_locations, connect_to, depends, DefType.LEVEL, flags)
+class WorldRegionData(RegionData):
+    def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, flags: DefFlags = 1):
+        super().__init__(name, add_locations, connect_to, depends, DefType.WORLD, flags)
 
-region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)])
+region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)], flags=1)
 region_house = RegionData(LocationNames.level_house, None, [
-    Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)])
+    Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)], flags=1)
 
 region_house_level_tutorial = RegionData(LocationNames.level_tutorial, [
     LocationNames.loc_level_tutorial,
     LocationNames.loc_level_tutorial_coin,
-], None)
+], None, flags=1)
 
 region_worlds = [
-    RegionData(LocationNames.world_inkwell_1, [
+    WorldRegionData(LocationNames.world_inkwell_1, [
         LocationNames.loc_npc_mac,
         LocationNames.loc_coin_isle1_secret,
     ], [
@@ -76,8 +84,8 @@ region_worlds = [
         LevelTarget(LocationNames.level_boss_frogs, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_plane_blimp, None, dep.dep_freemove),
         Target(LocationNames.level_mausoleum_i, None, dep.dep_freemove)
-    ]),
-    RegionData(LocationNames.world_inkwell_2, [
+    ], ),
+    WorldRegionData(LocationNames.world_inkwell_2, [
         LocationNames.loc_npc_canteen,
         LocationNames.loc_quest_4mel,
     ], [
@@ -93,7 +101,7 @@ region_worlds = [
         LevelTarget(LocationNames.level_mausoleum_ii, None, dep.dep_freemove),
         Target(LocationNames.loc_event_isle2_shortcut, None, dep.dep_freemove)
     ]),
-    RegionData(LocationNames.world_inkwell_3, None, [
+    WorldRegionData(LocationNames.world_inkwell_3, None, [
         Target(LocationNames.level_shop3, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_bee),
         LevelTarget(LocationNames.level_boss_pirate),
@@ -106,21 +114,21 @@ region_worlds = [
         LevelTarget(LocationNames.level_boss_plane_mermaid, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_rungun_harbour, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_mausoleum_iii, None, dep.dep_freemove),
-        Target(LocationNames.loc_quest_ludwig, None, dep.dep_freemove),
+        Target(LocationNames.loc_quest_ludwig, None, dep.dep_and(dep.dep_freemove, dep.dep_music_quest)),
     ]),
-    RegionData(LocationNames.world_inkwell_hell, [LocationNames.loc_coin_isleh_secret], [
+    WorldRegionData(LocationNames.world_inkwell_hell, [LocationNames.loc_coin_isleh_secret], [
         Target(LocationNames.level_boss_kingdice)
     ]),
 ]
 region_dlc_worlds = [
-    RegionData(LocationNames.world_dlc_inkwell_4, [
+    WorldRegionData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_event_dlc_start,
         LocationNames.loc_dlc_npc_newscat,
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [
         Target(LocationNames.level_dlc_tutorial),
         Target(LocationNames.level_dlc_shop4),
-        Target(LocationNames.level_dlc_chesscastle),
+        Target(LocationNames.level_dlc_chesscastle, rule_has(ItemNames.item_ability_parry)),
         LevelTarget(LocationNames.level_dlc_boss_oldman),
         LevelTarget(LocationNames.level_dlc_boss_rumrunners),
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy, None, dep.dep_freemove),
@@ -214,11 +222,11 @@ region_isle3 = [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
         LevelTarget(LocationNames.level_boss_train),
-        Target(LocationNames.level_shop3), # FIXME: Verify that this connection is legit
+        Target(LocationNames.level_shop3),
         Target(LocationNames.loc_quest_15agrades, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_mouse, None, [
-        LevelTarget(LocationNames.level_boss_sallystageplay), # FIXME: Verify that this connection is legit
+        LevelTarget(LocationNames.level_boss_sallystageplay),
         Target(LocationNames.loc_quest_wolfgang, None, dep.dep_music_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_train, None, [Target(LocationNames.world_inkwell_hell)]),
@@ -245,7 +253,7 @@ region_isle3 = [
     RegionData(LocationNames.loc_quest_pacifist, [LocationNames.loc_quest_pacifist], None, dep.dep_pacifist_quest),
 ]
 region_isleh = [
-    LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)]),
+    LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], flags=1),
     #LevelRegionData(LocationNames.level_boss_devil, None, None),
     RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
 ]
@@ -277,17 +285,17 @@ region_dlc_isle4 = [
     #LevelRegionData(LocationNames.level_dlc_graveyard, None),
     RegionData(LocationNames.level_dlc_chesscastle, None, [
         LevelTarget(LocationNames.level_dlc_chesscastle_pawn)
-    ]),
+    ], flags=1),
     RegionData(LocationNames.loc_dlc_quest_cactusgirl, [LocationNames.loc_dlc_quest_cactusgirl], None, dep.dep_dlc_cactusgirl_quest),
 ]
 region_dlc_chesscastle = [
     # Setup Regions later
-    LevelRegionData(LocationNames.level_dlc_chesscastle_pawn, None, [LevelTarget(LocationNames.level_dlc_chesscastle_knight)]),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)]),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_bishop, None, [LevelTarget(LocationNames.level_dlc_chesscastle_rook)]),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_rook, None, [LevelTarget(LocationNames.level_dlc_chesscastle_queen)]),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run)]),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_run, None)
+    LevelRegionData(LocationNames.level_dlc_chesscastle_pawn, None, [LevelTarget(LocationNames.level_dlc_chesscastle_knight)], flags=1),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)], flags=1),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_bishop, None, [LevelTarget(LocationNames.level_dlc_chesscastle_rook)], flags=1),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_rook, None, [LevelTarget(LocationNames.level_dlc_chesscastle_queen)], flags=1),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run)], flags=1),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_run, None, flags=1)
 ]
 region_dlc_special = [
     # Add Logic Regions and connections to curse_complete

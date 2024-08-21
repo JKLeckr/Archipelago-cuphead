@@ -21,17 +21,75 @@ def level_rule_none(settings: WorldSettings) -> RegionRule:
 def level_rule_plane(settings: WorldSettings) -> RegionRule:
     return region_rule_has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs})
 def level_rule_dash(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_dash)
 def level_rule_parry(settings: WorldSettings) -> RegionRule:
-    return region_rule_has(ItemNames.item_ability_parry)
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_or(level_rule_dash, level_rule_parry)
 def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_plane_parry)
 def level_rule_pirate(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
     return region_rule_has_any({ItemNames.item_ability_duck, ItemNames.item_ability_parry})
 def level_rule_robot(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_plane(settings)
     return level_rule_and(level_rule_plane, level_rule_plane_parry)(settings)
+def level_rule_devil(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_plane(settings)
+    return level_rule_and(level_rule_dash, level_rule_plane_parry)(settings)
 def level_dlc_rule_relic(settings: WorldSettings) -> RegionRule:
     return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
+
+level_map = {
+    0: LocationNames.level_boss_veggies,
+    1: LocationNames.level_boss_slime,
+    2: LocationNames.level_boss_frogs,
+    3: LocationNames.level_boss_flower,
+    4: LocationNames.level_boss_baroness,
+    5: LocationNames.level_boss_clown,
+    6: LocationNames.level_boss_dragon,
+    7: LocationNames.level_boss_bee,
+    8: LocationNames.level_boss_pirate,
+    9: LocationNames.level_boss_mouse,
+    10: LocationNames.level_boss_sallystageplay,
+    11: LocationNames.level_boss_train,
+    12: LocationNames.level_boss_plane_blimp,
+    13: LocationNames.level_boss_plane_genie,
+    14: LocationNames.level_boss_plane_bird,
+    15: LocationNames.level_boss_plane_mermaid,
+    16: LocationNames.level_boss_plane_robot,
+    17: LocationNames.level_boss_kingdice,
+    18: LocationNames.level_boss_devil,
+    19: LocationNames.level_rungun_forest,
+    20: LocationNames.level_rungun_tree,
+    21: LocationNames.level_rungun_circus,
+    22: LocationNames.level_rungun_funhouse,
+    23: LocationNames.level_rungun_harbour,
+    24: LocationNames.level_rungun_mountain,
+    100: LocationNames.level_dlc_boss_oldman,
+    101: LocationNames.level_dlc_boss_rumrunners,
+    102: LocationNames.level_dlc_boss_snowcult,
+    103: LocationNames.level_dlc_boss_airplane,
+    104: LocationNames.level_dlc_boss_plane_cowboy,
+    105: LocationNames.level_dlc_boss_saltbaker,
+    106: LocationNames.level_dlc_graveyard,
+    107: LocationNames.level_dlc_chesscastle_pawn,
+    108: LocationNames.level_dlc_chesscastle_knight,
+    109: LocationNames.level_dlc_chesscastle_bishop,
+    110: LocationNames.level_dlc_chesscastle_rook,
+    111: LocationNames.level_dlc_chesscastle_queen,
+}
+level_id_map = {v: k for k, v in level_map.items()}
 
 class LevelData(NamedTuple):
     world_location: Optional[str]
@@ -64,31 +122,31 @@ level_boss = {
         LocationNames.loc_level_boss_flower_topgrade,
         LocationNames.loc_level_boss_flower_event_agrade,
         LocationNames.loc_level_boss_flower_dlc_chaliced,
-    ]),
+    ]), # No rules
     LocationNames.level_boss_baroness: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_baroness,
         LocationNames.loc_level_boss_baroness_topgrade,
         LocationNames.loc_level_boss_baroness_event_agrade,
         LocationNames.loc_level_boss_baroness_dlc_chaliced,
-    ]),
+    ]), # No rules
     LocationNames.level_boss_clown: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_clown,
         LocationNames.loc_level_boss_clown_topgrade,
         LocationNames.loc_level_boss_clown_event_agrade,
         LocationNames.loc_level_boss_clown_dlc_chaliced,
-    ]),
+    ], level_rule_dash_or_parry),
     LocationNames.level_boss_dragon: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_dragon,
         LocationNames.loc_level_boss_dragon_topgrade,
         LocationNames.loc_level_boss_dragon_event_agrade,
         LocationNames.loc_level_boss_dragon_dlc_chaliced,
-    ]),
+    ]), # No Rules
     LocationNames.level_boss_bee: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_bee,
         LocationNames.loc_level_boss_bee_topgrade,
         LocationNames.loc_level_boss_bee_event_agrade,
         LocationNames.loc_level_boss_bee_dlc_chaliced,
-    ]),
+    ]), # No Rules
     LocationNames.level_boss_pirate: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_pirate,
         LocationNames.loc_level_boss_pirate_topgrade,
@@ -100,20 +158,20 @@ level_boss = {
         LocationNames.loc_level_boss_mouse_topgrade,
         LocationNames.loc_level_boss_mouse_event_agrade,
         LocationNames.loc_level_boss_mouse_dlc_chaliced,
-    ]),
+    ], level_rule_parry),
     LocationNames.level_boss_sallystageplay: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_sallystageplay,
         LocationNames.loc_level_boss_sallystageplay_topgrade,
         LocationNames.loc_level_boss_sallystageplay_secret,
         LocationNames.loc_level_boss_sallystageplay_event_agrade,
         LocationNames.loc_level_boss_sallystageplay_dlc_chaliced,
-    ]),
+    ], level_rule_parry),
     LocationNames.level_boss_train: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_train,
         LocationNames.loc_level_boss_train_topgrade,
         LocationNames.loc_level_boss_train_event_agrade,
         LocationNames.loc_level_boss_train_dlc_chaliced,
-    ]),
+    ], level_rule_parry),
     LocationNames.level_boss_kingdice: LevelData(LocationNames.world_inkwell_hell, [
         LocationNames.loc_level_boss_kingdice,
         LocationNames.loc_level_boss_kingdice_topgrade,
@@ -158,7 +216,7 @@ level_boss_final = {
         LocationNames.loc_level_boss_devil_topgrade,
         LocationNames.loc_level_boss_devil_event_agrade,
         LocationNames.loc_level_boss_devil_dlc_chaliced,
-    ])
+    ], level_rule_devil)
 }
 level_dlc_boss = {
     LocationNames.level_dlc_boss_oldman: LevelData(LocationNames.world_dlc_inkwell_4, [
@@ -172,19 +230,19 @@ level_dlc_boss = {
         LocationNames.loc_level_dlc_boss_rumrunners_topgrade,
         LocationNames.loc_level_dlc_boss_rumrunners_event_agrade,
         LocationNames.loc_level_dlc_boss_rumrunners_dlc_chaliced,
-    ]),
+    ], level_rule_parry),
     LocationNames.level_dlc_boss_snowcult: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_snowcult,
         LocationNames.loc_level_dlc_boss_snowcult_topgrade,
         LocationNames.loc_level_dlc_boss_snowcult_event_agrade,
         LocationNames.loc_level_dlc_boss_snowcult_dlc_chaliced,
-    ]),
+    ]), # No Rules
     LocationNames.level_dlc_boss_airplane: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_airplane,
         LocationNames.loc_level_dlc_boss_airplane_topgrade,
         LocationNames.loc_level_dlc_boss_airplane_event_agrade,
         LocationNames.loc_level_dlc_boss_airplane_dlc_chaliced,
-    ]),
+    ]), # ???
     LocationNames.level_dlc_boss_plane_cowboy: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_plane_cowboy,
         LocationNames.loc_level_dlc_boss_plane_cowboy_topgrade,
@@ -354,10 +412,10 @@ def setup_level_shuffle_map(rand: Random, settings: WorldSettings):
 
     return level_shuffle_map
 
-def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list[str] = None) -> dict[str, str]:
-    res: dict[str, str] = {}
+def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list[str] = None) -> dict[int, int]:
+    res: dict[int, int] = {}
     excludes = level_exclude_list if level_exclude_list else []
-    _levels = [x for x in level_list if (x not in excludes)]
+    _levels = [level_id_map[x] for x in level_list if (x not in excludes)]
 
     levels_shuffled = list(_levels)
     rand.shuffle(levels_shuffled)
@@ -365,7 +423,7 @@ def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list
     for i in range(len(_levels)):
         res[_levels[i]] = levels_shuffled[i]
     for x in excludes:
-        res.update({x: x})
+        res[x] = x
 
     return res
 

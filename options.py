@@ -88,6 +88,14 @@ class RandomizeAimAbilities(Toggle):
     """
     display_name = "Randomize Aim Abilities"
 
+class BossSecretChecks(Toggle):
+    """
+    Also include beating the secret phases of the three bosses as checks.
+    The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
+    The secret phases are more difficult than the normal fight.
+    """
+    display_name = "Boss Secret Checks"
+
 class BossGradeChecks(Choice):
     """
     Enable grade checks for Boss Levels.
@@ -192,6 +200,7 @@ class CupheadOptions(PerGameCommonOptions):
     #weapon_gate: WeaponGate
     randomize_abilities: RandomizeAbilities
     #randomize_abilities_aim: RandomizeAimAbilities
+    boss_secret_checks: BossSecretChecks
     boss_grade_checks: BossGradeChecks
     rungun_grade_checks: RunGunGradeChecks
     #dlc_boss_chalice_checks: DlcBossChaliceChecks

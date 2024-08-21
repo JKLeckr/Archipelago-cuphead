@@ -4,7 +4,6 @@ from BaseClasses import MultiWorld, Region
 from .regiondefs import DefType, RegionData, RegionRule, get_regions
 from .levels import LevelData
 from .locations import CupheadLocation
-#from . import debug
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
@@ -18,21 +17,17 @@ def level_map(world: CupheadWorld, level: str) -> LevelData:
     else:
         return levels[level]
 
-def create_region(world: CupheadWorld, regc: RegionData):
+def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] = None):
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
     region = Region(regc.name, player, multiworld, None)
     if regc.region_type == DefType.LEVEL:
         _locations = level_map(world, regc.name).locations
-        #print(regc.name+"[B] :")
-        #debug.print_list(_locations)
         if regc.locations:
             _locations = _locations + regc.locations
     else:
         _locations = regc.locations
-    #print(regc.name+"[A] :")
-    #debug.print_list(_locations)
     if _locations:
         for loc_name in _locations:
             if not loc_name: # If entry is None
@@ -42,6 +37,11 @@ def create_region(world: CupheadWorld, regc: RegionData):
                 event = locations[loc_name].event if loc_id else True
                 progress_type = locations[loc_name].progress_type
                 location = CupheadLocation(player, loc_name, loc_id, region, event, progress_type, True) # TODO: Update show_in_spoilers later
+                if locset:
+                    if loc_name not in locset:
+                        locset.add(loc_name)
+                    else:
+                        print("WARNING: \""+loc_name+"\" already was registered!")
                 region.locations.append(location)
             else:
                  print("WARNING: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
@@ -53,7 +53,7 @@ def get_rule_def(a: RegionRule, b: RegionRule = None) -> RegionRule:
     else:
         return a
 
-def connect_region_targets(world: CupheadWorld, regc: RegionData):
+def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] = None):
     multiworld = world.multiworld
     player = world.player
     wsettings = world.wsettings
@@ -70,7 +70,10 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData):
                 src = multiworld.get_region(regc.name, player)
                 tgt = multiworld.get_region(target.name, player)
                 name = regc.name + " -> " + target.name
-                #print("Connecting "+name)
+                if locset:
+                    for loc in tgt.locations:
+                        if loc not in locset:
+                            locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, player=player, rule=_rule: rule(state, player)) if _rule else None)
             #else:
             #    print("Skipping Target "+target.name) # if debug

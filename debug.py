@@ -1,7 +1,9 @@
-def test_duplicates(list: list) -> int:
+from .auxiliary import format_list
+
+def test_duplicates(ls: list) -> int:
     seen = set()
     dups = []
-    for x in list:
+    for x in ls:
         if x in seen:
             dups.append(x)
         else:
@@ -10,19 +12,9 @@ def test_duplicates(list: list) -> int:
     print("Total Duplicates: "+str(len(dups)))
     return len(dups)
 
-def print_list_each_line(list: list) -> None:
-    for item in list:
+def print_list_each_line(ls: list) -> None:
+    for item in ls:
         print(item)
 
-def print_list(list: list) -> None:
-    res = "["
-    first = True
-    if list:
-        for item in list:
-            if not first:
-                res += ","
-            else:
-                first = False
-            res += str(item)
-    res += "]"
-    print(res)
+def print_list(ls: list) -> None:
+    print(format_list(ls))

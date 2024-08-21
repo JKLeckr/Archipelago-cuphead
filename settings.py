@@ -52,7 +52,7 @@ class WorldSettings:
         self.randomize_abilities = options.randomize_abilities
         self._boss_grade_checks = int(options.boss_grade_checks)
         self._rungun_grade_checks = int(options.rungun_grade_checks)
-        self.boss_secret_checks = False
+        self.boss_secret_checks = options.boss_secret_checks
         self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks
         self.fourparries_quest = True
         self.ginger_quest = True
