@@ -5,7 +5,7 @@ from .names import LocationNames, ItemNames
 from .locations import LocationData
 from .settings import WorldSettings
 from .auxiliary import scrub_list
-from .rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_has_all, region_rule_has_any
+from .rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_has_any
 
 LevelRule = Callable[[WorldSettings], RegionRule]
 
@@ -18,8 +18,15 @@ def level_rule_or(a: LevelRule, b: LevelRule) -> LevelRule:
     return lambda s: lambda state, player: a(s)(state, player) or b(s)(state, player)
 def level_rule_none(settings: WorldSettings) -> RegionRule:
     return region_rule_none()
+def level_rule_plane_gun(settings: WorldSettings) -> RegionRule:
+    return region_rule_has(ItemNames.item_plane_gun)
+def level_rule_plane_bombs(settings: WorldSettings) -> RegionRule:
+    return region_rule_has(ItemNames.item_plane_bombs)
 def level_rule_plane(settings: WorldSettings) -> RegionRule:
-    return region_rule_has_any({ItemNames.item_plane_gun,ItemNames.item_plane_bombs})
+    if settings.hard_logic:
+        return level_rule_or(level_rule_plane_gun, level_rule_plane_bombs)(settings)
+    else:
+        return level_rule_plane_gun(settings)
 def level_rule_dash(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -35,6 +42,11 @@ def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_plane_parry)
+def level_rule_bird(settings: WorldSettings):
+    if settings.hard_logic:
+        return level_rule_plane_gun(settings)
+    else:
+        return level_rule_and(level_rule_plane_gun, level_rule_plane_bombs)(settings)
 def level_rule_pirate(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -196,7 +208,7 @@ level_boss = {
         LocationNames.loc_level_boss_plane_bird_topgrade,
         LocationNames.loc_level_boss_plane_bird_event_agrade,
         LocationNames.loc_level_boss_plane_bird_dlc_chaliced,
-    ], level_rule_plane),
+    ], level_rule_bird),
     LocationNames.level_boss_plane_mermaid: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_plane_mermaid,
         LocationNames.loc_level_boss_plane_mermaid_topgrade,

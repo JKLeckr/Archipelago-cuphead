@@ -107,8 +107,8 @@ item_abilities_aim = {
 }
 
 item_trap = {
-    #ItemNames.item_level_trap_fingerjam: ItemData(id(39), ItemClassification.trap, 0),
-    #ItemNames.item_level_trap_slowfire: ItemData(id(40), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_fingerjam: ItemData(id(39), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_slowfire: ItemData(id(40), ItemClassification.trap, 0),
     ItemNames.item_level_trap_superdrain: ItemData(id(41), ItemClassification.trap, 0),
     ItemNames.item_level_trap_reversal: ItemData(id(42), ItemClassification.trap, 0)
 }
@@ -160,6 +160,7 @@ items_all = {
     **items_base,
     **items_dlc,
     **item_abilities,
+    #**item_abilities_aim,
     **item_trap,
     **item_trap_special
 }
