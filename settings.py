@@ -35,6 +35,7 @@ class WorldSettings:
     pacifist_quest: bool
     music_quest: bool
     dlc_cactusgirl_quest: bool
+    coin_amounts: tuple[int, int, int]
     contract_requirements: tuple[int,int,int]
     dlc_ingredient_requirements: int
     require_secret_shortcuts: bool
@@ -64,11 +65,21 @@ class WorldSettings:
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
         self.traps = options.traps
         self.envirotraps = False
+        self.coin_amounts = self._get_coin_amounts()
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True
         self.filler_item_buffer = 0
+
+    def _get_coin_amounts(self) -> tuple[int]:
+        total_single_coins = 40 if self.use_dlc else 37
+        total_double_coins = 5 if self.use_dlc else 0
+        total_triple_coins = 2 if self.use_dlc else 1
+
+        return (total_single_coins, total_double_coins, total_triple_coins)
+
     def get_boss_grade_checks(self) -> GradeCheckMode:
         return GradeCheckMode(self._boss_grade_checks)
+
     def get_rungun_grade_checks(self) -> GradeCheckMode:
         return GradeCheckMode(self._rungun_grade_checks)
