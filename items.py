@@ -181,9 +181,10 @@ def setup_items(settings: WorldSettings):
                 items[w].type = ItemClassification.progression
     if settings.randomize_abilities:
         items.update(item_abilities)
+        items[ItemNames.item_charm_psugar].type = ItemClassification.progression
     if settings.traps>0:
         items.update(item_trap)
-        if settings.envirotraps:
+        if settings.trap_weights[4] > 0:
             items.update(item_trap_special[ItemNames.item_level_trap_envirotrap])
     return items
 

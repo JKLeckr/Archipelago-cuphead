@@ -22,7 +22,7 @@ class WorldSettings:
     weapon_gate: bool
     randomize_abilities: bool
     traps: int
-    envirotraps: bool
+    trap_weights: tuple[int, int, int, int, int]
     _boss_grade_checks: int
     _rungun_grade_checks: int
     boss_secret_checks: bool
@@ -36,7 +36,7 @@ class WorldSettings:
     music_quest: bool
     dlc_cactusgirl_quest: bool
     coin_amounts: tuple[int, int, int]
-    contract_requirements: tuple[int,int,int]
+    contract_requirements: tuple[int, int, int]
     dlc_ingredient_requirements: int
     require_secret_shortcuts: bool
     filler_item_buffer: int
@@ -64,19 +64,28 @@ class WorldSettings:
         self.music_quest = False
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
         self.traps = options.traps
-        self.envirotraps = False
-        self.coin_amounts = self._get_coin_amounts()
+        self.trap_weights = self._get_trap_weights(options)
+        self.coin_amounts = self._get_coin_amounts(options)
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True
         self.filler_item_buffer = 0
 
-    def _get_coin_amounts(self) -> tuple[int]:
+    def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int]:
         total_single_coins = 40 if self.use_dlc else 37
         total_double_coins = 5 if self.use_dlc else 0
         total_triple_coins = 2 if self.use_dlc else 1
 
         return (total_single_coins, total_double_coins, total_triple_coins)
+
+    def _get_trap_weights(self, options: CupheadOptions) -> tuple[int, int, int, int, int]:
+        return (
+            options.trap_weight_fingerjam,
+            options.trap_weight_slowfire,
+            options.trap_weight_superdrain,
+            options.trap_weight_reversal,
+            0, #options.trap_weight_enviro
+        )
 
     def get_boss_grade_checks(self) -> GradeCheckMode:
         return GradeCheckMode(self._boss_grade_checks)

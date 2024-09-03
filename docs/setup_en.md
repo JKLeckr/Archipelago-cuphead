@@ -5,7 +5,7 @@
 - **Cuphead** ([Steam](https://store.steampowered.com/app/268910/Cuphead/), [GOG](https://www.gog.com/en/game/cuphead))
   - PC: Tested
   - Mac: Not Tested - Use at your own risk
-  - Linux via Proton: Not Tested (Steam only)
+  - Linux via Proton: Tested - Might require extra setup
 - **CupheadArchipelagoMod** ([Github](https://github.com/JKLeckr/CupheadArchipelagoMod))
 
 ## Optional Software
