@@ -33,6 +33,9 @@ class Target:
         self.tgt_type = tgt_type
     def __str__(self) -> str:
         return self.name
+class LevelTarget(Target):
+    def __init__(self, name: str, add_rule: Optional[RegionRule] = None, depends: Optional[Dep] = None):
+        super().__init__(name, add_rule, depends, DefType.LEVEL)
 class RegionData:
     name: str
     locations: list[str]
@@ -49,9 +52,6 @@ class RegionData:
         self.flags = flags
     def __str__(self) -> str:
         return self.name
-class LevelTarget(Target):
-    def __init__(self, name: str, add_rule: Optional[RegionRule] = None, depends: Optional[Dep] = None):
-        super().__init__(name, add_rule, depends, DefType.LEVEL)
 class LevelRegionData(RegionData):
     def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, flags: DefFlags = 0):
         super().__init__(name, add_locations, connect_to, depends, DefType.LEVEL, flags)
