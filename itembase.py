@@ -3,9 +3,10 @@ import math
 import typing
 from random import Random
 from BaseClasses import Item, ItemClassification
-from .names import ItemNames, LocationNames
 from .auxiliary import count_in_list
 from .items import CupheadItem
+from .names import ItemNames, LocationNames
+from .settings import WorldSettings
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -22,7 +23,40 @@ def create_item(name: str, player: int, force_classification: ItemClassification
 
     return new_item
 
-def get_filler_item_name(random: Random):
+def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Random) -> list[CupheadItem]:
+    trap_items = (
+        ItemNames.item_level_trap_fingerjam,
+        ItemNames.item_level_trap_slowfire,
+        ItemNames.item_level_trap_superdrain,
+        ItemNames.item_level_trap_reversal,
+        ItemNames.item_level_trap_envirotrap,
+    )
+    trap_item_weights = settings.trap_weights
+
+    active_trap_weights = [(trap, weight) for trap, weight in zip(trap_items, trap_item_weights) if weight > 0]
+
+    if not active_trap_weights:
+        return
+
+    active_traps, active_weights = zip(*active_trap_weights)
+
+    res: list[CupheadItem] = []
+
+    for i in range(trap_count):
+        total_weight = sum(active_weights)
+
+        choice = rand.randint(1, total_weight)
+
+        culmu_sum = 0
+        for i, weight in enumerate(active_weights):
+            culmu_sum += weight
+            if choice <= culmu_sum:
+                res.append(create_item(active_traps[i], player))
+                break
+
+    return res
+
+def get_filler_item_name(random: Random) -> str:
     return random.choice(tuple(items.item_filler.keys()))
 
 def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[str]) -> list[CupheadItem]:
@@ -35,20 +69,22 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
             _itempool += [create_item(item, world.player) for _ in range(qty)]
     return _itempool
 def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
+    #print(f"Filler count: {filler_count}")
     rand = world.random
     _itempool: list[Item] = []
     if filler_count > 0:
-        trap_count = math.ceil(world.wsettings.traps / filler_count * 100)
-        if world.wsettings.traps>0:
-            trap_items = set(items.item_trap.keys())
-            if world.wsettings.envirotraps:
-                trap_items.add(ItemNames.item_level_trap_envirotrap)
-            _itempool += [create_item(rand.choice(trap_items), world.player) for _ in range(trap_count)]
+        trap_count = math.ceil(world.wsettings.traps / 100 * filler_count)
+        #print(f"Trap count: {trap_count}")
+        if trap_count>0:
+            _itempool += create_traps(trap_count, world.player, world.wsettings, rand)
             filler_count -= trap_count
 
+        #print(f"Total count so far: {len(_itempool)}")
+        #print(f"Filler count: {filler_count}")
         #print(len(world.multiworld.precollected_items[world.player]))
         _itempool += [create_item(get_filler_item_name(rand), world.player) for _ in range(filler_count)]
 
+    #print(f"Total count: {len(_itempool)}")
     return _itempool
 
 def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: ItemClassification = None) -> None:

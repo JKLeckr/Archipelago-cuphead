@@ -1,6 +1,18 @@
 from dataclasses import dataclass
 from Options import Toggle, Range, Choice, PerGameCommonOptions
 
+class Weight(Range):
+    range_start = 0
+    range_end = 10
+    weight_max = 100
+
+    def __init__(self, value: int):
+        if value < 0:
+            raise Exception(f"Option {self.__class__.__name__} cannot be negative!")
+        elif value > self.weight_max:
+            raise Exception(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
+        self.value = value
+
 class DeliciousLastCourse(Toggle):
     """
     --DLC NOT FULLY IMPLEMENTED!--
@@ -75,7 +87,6 @@ class WeaponGate(Toggle):
 
 class RandomizeAbilities(Toggle):
     """
-    --NOT YET IMPLEMENTED--
     Randomize essential abilities like Duck, Perry, Dash, etc.
     """
     display_name = "Randomize Abilities"
@@ -181,10 +192,44 @@ class Traps(Range):
     range_start = 0
     range_end = 100
     default = 0
+class TrapWeightFingerJam(Weight):
+    """
+    Set Finger Jam Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Finger Jam Trap Weight"
+    default = 3
+class TrapWeightSlowFire(Weight):
+    """
+    Set Slow Fire Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Slow Fire Trap Weight"
+    default = 3
+class TrapWeightSuperDrain(Weight):
+    """
+    Set Super Drain Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Super Drain Trap Weight"
+    default = 3
+class TrapWeightReversal(Weight):
+    """
+    Set Reversal Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Reversal Trap Weight"
+    default = 3
+class TrapWeightEnviro(Weight):
+    """
+    Set Envirotrap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Envirotrap Weight"
+    default = 0
 
 class DeathLink(Toggle):
     """
-    --NOT YET IMPLEMENTED--
     When you die, everyone dies. Of course the reverse is true too.
     In Cuphead, this only applies while you are in a level.
     """
@@ -208,4 +253,9 @@ class CupheadOptions(PerGameCommonOptions):
     pacifist_quest: PacifistQuest
     #dlc_cactusgirl_quest: DlcCactusGirlQuest
     traps: Traps
+    trap_weight_fingerjam: TrapWeightFingerJam
+    trap_weight_slowfire: TrapWeightSlowFire
+    trap_weight_superdrain: TrapWeightSuperDrain
+    trap_weight_reversal: TrapWeightReversal
+    #trap_weight_enviro: TrapWeightEnviro
     deathlink: DeathLink

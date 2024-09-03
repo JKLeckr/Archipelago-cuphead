@@ -41,7 +41,7 @@ def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
 def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return region_rule_has(ItemNames.item_ability_plane_parry)
+    return region_rule_has_any((ItemNames.item_ability_plane_parry, ItemNames.item_charm_psugar))
 def level_rule_bird(settings: WorldSettings):
     if settings.hard_logic:
         return level_rule_plane_gun(settings)
