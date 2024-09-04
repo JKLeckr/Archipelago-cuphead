@@ -25,14 +25,16 @@ class WorldSettings:
     hard_logic: bool
     expert_mode: bool
     start_weapon: int
+    start_maxhealth: int
     level_shuffle: bool
     #shop_shuffle: bool
     freemove_isles: bool
     weapon_gate: bool
     randomize_abilities: bool
+    maxhealth_upgrades: int
     traps: int
-    filler_item_weights: list[int, int]
-    trap_weights: list[int, int, int, int, int]
+    filler_item_weights: list[int]
+    trap_weights: list[int]
     boss_grade_checks: GradeCheckMode
     rungun_grade_checks: GradeCheckMode
     boss_secret_checks: bool
@@ -49,7 +51,7 @@ class WorldSettings:
     contract_requirements: tuple[int, int, int]
     dlc_ingredient_requirements: int
     require_secret_shortcuts: bool
-    filler_item_buffer: int
+    minimum_filler: int
 
     def __init__(self, options: CupheadOptions) -> None:
         self.use_dlc = options.use_dlc
@@ -57,6 +59,7 @@ class WorldSettings:
         self.hard_logic = False #options.hard_logic
         self.expert_mode = options.expert_mode
         self.start_weapon = int(options.start_weapon)
+        self.start_maxhealth = options.start_maxhealth
         self.level_shuffle = options.level_shuffle
         #self.shop_shuffle = options.shop_shuffle
         self.freemove_isles = options.freemove_isles
@@ -74,6 +77,7 @@ class WorldSettings:
         self.pacifist_quest = options.pacifist_quest
         self.music_quest = False
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
+        self.maxhealth_upgrades = 0 #options.maxhealth_upgrades
         self.traps = options.traps
         self.trap_weights = self._get_trap_weights(options)
         self.filler_item_weights = self._get_filler_item_weights(options)
@@ -81,9 +85,9 @@ class WorldSettings:
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True
-        self.filler_item_buffer = 0
+        self.minimum_filler = options.minimum_filler
 
-    def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int]:
+    def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int, int, int]:
         total_single_coins = 40 if self.use_dlc else 37
         total_double_coins = 5 if self.use_dlc else 0
         total_triple_coins = 2 if self.use_dlc else 1
@@ -102,5 +106,6 @@ class WorldSettings:
             options.trap_weight_slowfire,
             options.trap_weight_superdrain,
             options.trap_weight_reversal,
+            0, #options.trap_weight_stun,
             0, #options.trap_weight_enviro
         ]

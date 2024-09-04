@@ -111,6 +111,7 @@ class CupheadWorld(World):
             "rungun_grade_checks",
             "agrade_quest",
             "pacifist_quest",
+            "start_maxhealth",
             "deathlink"
         )
         for option in slot_data_options:

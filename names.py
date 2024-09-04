@@ -532,6 +532,7 @@ class ItemNames:
     item_level_trap_slowfire = "Slow Fire Trap"
     item_level_trap_superdrain = "Super Drain Trap"
     item_level_trap_reversal = "Reversal Trap"
+    item_level_trap_stun = "Stun Trap"
     item_level_trap_envirotrap = "Envirotrap"
 
     # Events
