@@ -421,7 +421,7 @@ location_dlc_goal = {
     LocationNames.loc_event_dlc_goal_saltbaker: LocationData(None),
 }
 
-locations_base = {
+locations_base: dict[str, LocationData] = {
     **location_level_tutorial,
     **location_level_boss,
     #**location_level_boss_final,
@@ -432,18 +432,18 @@ locations_base = {
     **location_world,
     **location_world_event,
 }
-locations_topgrade = {
+locations_topgrade: dict[str, LocationData] = {
     **location_level_boss_topgrade,
     ##**location_level_boss_final_topgrade,
     **location_level_rungun_agrade,
     **location_level_rungun_pacifist,
 }
-locations_event_agrade = {
+locations_event_agrade: dict[str, LocationData] = {
     **location_level_boss_event_agrade,
     #**location_level_boss_final_event_agrade,
     **location_level_rungun_event_agrade,
 }
-locations_dlc = {
+locations_dlc: dict[str, LocationData] = {
     **location_level_dlc_tutorial,
     **location_level_dlc_boss,
     #**location_level_dlc_boss_final,
@@ -454,28 +454,28 @@ locations_dlc = {
     **location_dlc_world,
     **location_dlc_world_event,
 }
-locations_dlc_boss_chaliced = {
+locations_dlc_boss_chaliced: dict[str, LocationData] = {
     **location_level_boss_dlc_chaliced,
     #**location_level_boss_final_dlc_chaliced,
     **location_level_dlc_boss_dlc_chaliced,
     #**location_level_dlc_boss_final_dlc_chaliced,
 }
-locations_dlc_topgrade = {
+locations_dlc_topgrade: dict[str, LocationData] = {
     **location_level_dlc_boss_topgrade,
     #**location_level_dlc_boss_final_topgrade,
 }
-locations_dlc_event_agrade = {
+locations_dlc_event_agrade: dict[str, LocationData] = {
     **location_level_dlc_boss_event_agrade,
     #**location_level_dlc_boss_final_event_agrade,
 }
-locations_dlc_event_boss_chaliced = {
+locations_dlc_event_boss_chaliced: dict[str, LocationData] = {
     **location_level_boss_event_dlc_chaliced,
     #**location_level_boss_final_event_dlc_chaliced,
     **location_level_dlc_boss_event_dlc_chaliced,
     #**location_level_dlc_boss_final_event_dlc_chaliced,
 }
 
-locations_all = {
+locations_all: dict[str, LocationData] = {
     **locations_base,
     **locations_topgrade,
     **locations_event_agrade,
@@ -497,8 +497,8 @@ locations_all = {
 def setup_locations(settings: WorldSettings):
     use_dlc = settings.use_dlc
     locations: dict[str,LocationData] = {**locations_base}
-    boss_grade_checks = settings.get_boss_grade_checks()
-    rungun_grade_checks = settings.get_rungun_grade_checks()
+    boss_grade_checks = settings.boss_grade_checks
+    rungun_grade_checks = settings.rungun_grade_checks
     if boss_grade_checks>0:
         locations.update(location_level_boss_topgrade)
         if use_dlc:

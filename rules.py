@@ -70,8 +70,8 @@ def set_rules(world: CupheadWorld):
 
 def set_level_rules(world: CupheadWorld):
     w = world
-    boss_grade_checks = w.wsettings.get_boss_grade_checks()
-    rungun_grade_checks = w.wsettings.get_rungun_grade_checks()
+    boss_grade_checks = w.wsettings.boss_grade_checks
+    rungun_grade_checks = w.wsettings.rungun_grade_checks
     if w.wsettings.randomize_abilities:
         if boss_grade_checks > 0:
             for _loc in locations.location_level_boss_topgrade:
