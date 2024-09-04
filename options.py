@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, Range, Choice, PerGameCommonOptions
+from Options import Toggle, Range, Choice, PerGameCommonOptions, OptionError, OptionGroup
 
 class Weight(Range):
     range_start = 0
@@ -8,9 +8,9 @@ class Weight(Range):
 
     def __init__(self, value: int):
         if value < 0:
-            raise Exception(f"Option {self.__class__.__name__} cannot be negative!")
+            raise OptionError(f"Option {self.__class__.__name__} cannot be negative!")
         elif value > self.weight_max:
-            raise Exception(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
+            raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
         self.value = value
 
 class DeliciousLastCourse(Toggle):
@@ -20,18 +20,20 @@ class DeliciousLastCourse(Toggle):
     """
     display_name = "DLC"
 
-class Mode(Choice):
+class GameMode(Choice):
     """
     --ONLY DEFAULT CHOICE WORKS--
     Set the mode of the randomizer which includes goal.
-    NOTE: Setting dlc
+    NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
     """
     display_name = "Mode"
     option_beat_devil = 0
-    option_dlc_beat_devil = 1
-    option_dlc_beat_saltbaker = 2
-    option_dlc_beat_both = 3
-    option_dlc_beat_saltbaker_isle4_only = 4
+    option_contracts = 1
+    option_dlc_beat_devil = 2
+    option_dlc_beat_saltbaker = 3
+    option_dlc_beat_both = 4
+    option_dlc_beat_saltbaker_isle4_only = 5
+    option_dlc_ingradients = 6
     default = 0
 
 class HardLogic(Toggle):
@@ -63,7 +65,7 @@ class StartWeapon(Choice):
     option_dlc_crackshot = 6
     option_dlc_converge = 7
     option_dlc_twistup = 8
-    default = 0
+    default = "random"
 
 class LevelShuffle(Toggle):
     """
@@ -184,6 +186,21 @@ class MaxHealthUpgrades(Range):
     range_end = 5
     default = 0
 
+class FillerWeightExtraHealth(Weight):
+    """
+    Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
+    Set to 0 to disable this item.
+    """
+    display_name = "Extra Health Weight"
+    default = 3
+class FillerWeightSuperRecharge(Weight):
+    """
+    Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
+    Set to 0 to disable this item.
+    """
+    display_name = "Super Recharge Weight"
+    default = 3
+
 class Traps(Range):
     """
     Set Trap percentage for filler items.
@@ -238,10 +255,12 @@ class DeathLink(Toggle):
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
     use_dlc: DeliciousLastCourse
+    mode: GameMode
     expert_mode: ExpertMode
     start_weapon: StartWeapon
     level_shuffle: LevelShuffle
     freemove_isles: FreeMoveIsles
+    deathlink: DeathLink
     #weapon_gate: WeaponGate
     randomize_abilities: RandomizeAbilities
     #randomize_abilities_aim: RandomizeAimAbilities
@@ -252,10 +271,50 @@ class CupheadOptions(PerGameCommonOptions):
     agrade_quest: AGradeQuest
     pacifist_quest: PacifistQuest
     #dlc_cactusgirl_quest: DlcCactusGirlQuest
+    #start_maxhealth: StartMaxHealth
+    #maxhealth_upgrade: MaxHealthUpgrades
     traps: Traps
+    filler_weight_extrahealth: FillerWeightExtraHealth
+    filler_weight_superrecharge: FillerWeightSuperRecharge
     trap_weight_fingerjam: TrapWeightFingerJam
     trap_weight_slowfire: TrapWeightSlowFire
     trap_weight_superdrain: TrapWeightSuperDrain
     trap_weight_reversal: TrapWeightReversal
     #trap_weight_enviro: TrapWeightEnviro
-    deathlink: DeathLink
+
+cuphead_option_groups = [
+    OptionGroup("Main", [
+        DeliciousLastCourse,
+        GameMode,
+        ExpertMode,
+        StartWeapon,
+        FreeMoveIsles,
+        #WeaponGate,
+        RandomizeAbilities,
+        #RandomizeAimAbilities,
+        DeathLink,
+    ]),
+    OptionGroup("Checks", [
+        BossSecretChecks,
+        BossGradeChecks,
+        RunGunGradeChecks,
+        #DlcBossChaliceChecks,
+        AGradeQuest,
+        PacifistQuest,
+        #DlcCactusGirlQuest,
+    ]),
+    OptionGroup("Items", [
+        #StartMaxHealth,
+        #MaxHealthUpgrades,
+        Traps,
+    ]),
+    OptionGroup("Item Weights", [
+        FillerWeightExtraHealth,
+        FillerWeightSuperRecharge,
+        TrapWeightFingerJam,
+        TrapWeightSlowFire,
+        TrapWeightSuperDrain,
+        TrapWeightReversal,
+        #TrapWeightEnviro,
+    ], True)
+]

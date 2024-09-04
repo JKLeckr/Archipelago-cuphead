@@ -4,7 +4,7 @@ from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from Utils import visualize_regions
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
-from .options import CupheadOptions
+from .options import CupheadOptions, cuphead_option_groups
 from .settings import WorldSettings
 from .items import ItemData
 from .locations import LocationData
@@ -22,6 +22,7 @@ class CupheadWebWorld(WebWorld):
         ["JKLeckr"]
     )
     tutorials = [setup_en]
+    option_groups = cuphead_option_groups
 
 class CupheadWorld(World):
     """
@@ -45,9 +46,13 @@ class CupheadWorld(World):
 
     def generate_early(self) -> None:
         # Sanitize settings
-        # Sanitize start_weapon
-        if not self.options.use_dlc and int(self.options.start_weapon.value)>5:
-            self.options.start_weapon.value = self.random.randint(0,5)
+        if not self.options.use_dlc:
+            # Sanitize mode
+            if int(self.options.mode)>1:
+                self.options.mode = self.random.randint(0,1)
+            # Sanitize start_weapon
+            if int(self.options.start_weapon.value)>5:
+                self.options.start_weapon.value = self.random.randint(0,5)
         # Sanitize grade checks
         if not self.options.expert_mode and int(self.options.boss_grade_checks)>3:
             self.options.boss_grade_checks = 3
@@ -73,29 +78,19 @@ class CupheadWorld(World):
             self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
         # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-        self.shop_map: list[tuple[int]] = [(2,2), (2,2), (1,2), (3,2)] if not self.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
+        self.shop_map: list[tuple[int]] = self.get_shop_map()
         self.shop_locations: dict[str,list[str]] = self.get_shop_locations()
 
         self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
         self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
 
         # Group Items
-        nitem_name_groups: dict[str, set[str]] = {
-            "Weapon": set(),
-            "Charm": set(),
-            "Super": set(),
-            "Ability": set(),
-        }
-        for item in self.active_items.keys():
-            if item in items.item_weapons or (self.use_dlc and item in items.item_dlc_weapons):
-                nitem_name_groups["Weapon"].update(item)
-            if item in items.item_charms or (self.use_dlc and item in items.item_dlc_charms):
-                nitem_name_groups["Charm"].update(item)
-            if item in items.item_super:
-                nitem_name_groups["Super"].update(item)
-            if item in items.item_abilities or item in items.item_abilities_aim:
-                nitem_name_groups["Ability"].update(item)
-        self.item_name_groups = {x: y for x,y in nitem_name_groups.items() if len(y)>0}
+        self.item_name_groups = self.get_item_groups()
+
+        # Filler items and weights
+        filler_items = list(items.item_filler.keys())
+        filler_item_weights = self.wsettings.filler_item_weights
+        self.filler_item_weights = [(trap, weight) for trap, weight in zip(filler_items, filler_item_weights) if weight > 0]
 
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data = {
@@ -106,6 +101,7 @@ class CupheadWorld(World):
         }
         slot_data_options = (
             "use_dlc",
+            "mode",
             "expert_mode",
             "start_weapon",
             "freemove_isles",
@@ -120,6 +116,9 @@ class CupheadWorld(World):
         for option in slot_data_options:
             slot_data.update(self.options.as_dict(option))
         return slot_data
+
+    def get_shop_map(self) -> list[tuple[int]]:
+        return [(2,2), (2,2), (1,2), (3,2)] if not self.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
 
     def get_shop_locations(self) -> dict[str,list[str]]:
         _shop_weapons = [
@@ -160,6 +159,24 @@ class CupheadWorld(World):
             shop_locations[LocationNames.level_shops[i]] = shop_region ## TODO: Rename to shop sets
         return shop_locations
 
+    def get_item_groups(self) -> dict[str, set[str]]:
+        nitem_name_groups: dict[str, set[str]] = {
+            "Weapon": set(),
+            "Charm": set(),
+            "Super": set(),
+            "Ability": set(),
+        }
+        for item in self.active_items.keys():
+            if item in items.item_weapons or (self.use_dlc and item in items.item_dlc_weapons):
+                nitem_name_groups["Weapon"].update(item)
+            if item in items.item_charms or (self.use_dlc and item in items.item_dlc_charms):
+                nitem_name_groups["Charm"].update(item)
+            if item in items.item_super:
+                nitem_name_groups["Super"].update(item)
+            if item in items.item_abilities or item in items.item_abilities_aim:
+                nitem_name_groups["Ability"].update(item)
+        return {x: y for x,y in nitem_name_groups.items() if len(y)>0}
+
     def create_regions(self) -> None:
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
@@ -190,7 +207,7 @@ class CupheadWorld(World):
             return super().collect(state, item)
 
     def get_filler_item_name(self) -> str:
-        itembase.get_filler_item_name(self.random)
+        itembase.get_filler_item_name(self)
 
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
         hint_dict: Dict[int, str] = {}

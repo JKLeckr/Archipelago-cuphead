@@ -2,6 +2,14 @@ from __future__ import annotations
 from enum import IntEnum
 from .options import CupheadOptions
 
+class GameMode(IntEnum):
+    beat_devil = 0
+    contracts = 1
+    dlc_beat_devil = 2
+    dlc_beat_saltbaker = 3
+    dlc_beat_both = 4
+    dlc_beat_saltbaker_isle4_only = 5
+    dlc_ingradients = 6
 class GradeCheckMode(IntEnum):
     disabled = 0
     a_minus_grade = 1
@@ -13,6 +21,7 @@ class GradeCheckMode(IntEnum):
 # These are settings stored and accessed by other classes
 class WorldSettings:
     use_dlc: bool
+    mode: GameMode
     hard_logic: bool
     expert_mode: bool
     start_weapon: int
@@ -22,9 +31,10 @@ class WorldSettings:
     weapon_gate: bool
     randomize_abilities: bool
     traps: int
-    trap_weights: tuple[int, int, int, int, int]
-    _boss_grade_checks: int
-    _rungun_grade_checks: int
+    filler_item_weights: list[int, int]
+    trap_weights: list[int, int, int, int, int]
+    boss_grade_checks: GradeCheckMode
+    rungun_grade_checks: GradeCheckMode
     boss_secret_checks: bool
     dlc_boss_chalice_checks: bool
     fourparries_quest: bool
@@ -43,6 +53,7 @@ class WorldSettings:
 
     def __init__(self, options: CupheadOptions) -> None:
         self.use_dlc = options.use_dlc
+        self.mode = GameMode(options.mode)
         self.hard_logic = False #options.hard_logic
         self.expert_mode = options.expert_mode
         self.start_weapon = int(options.start_weapon)
@@ -51,8 +62,8 @@ class WorldSettings:
         self.freemove_isles = options.freemove_isles
         self.weapon_gate = False #options.weapon_gate
         self.randomize_abilities = options.randomize_abilities
-        self._boss_grade_checks = int(options.boss_grade_checks)
-        self._rungun_grade_checks = int(options.rungun_grade_checks)
+        self.boss_grade_checks = GradeCheckMode(options.boss_grade_checks)
+        self.rungun_grade_checks = GradeCheckMode(options.rungun_grade_checks)
         self.boss_secret_checks = options.boss_secret_checks
         self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks
         self.fourparries_quest = True
@@ -65,6 +76,7 @@ class WorldSettings:
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
         self.traps = options.traps
         self.trap_weights = self._get_trap_weights(options)
+        self.filler_item_weights = self._get_filler_item_weights(options)
         self.coin_amounts = self._get_coin_amounts(options)
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
@@ -78,17 +90,17 @@ class WorldSettings:
 
         return (total_single_coins, total_double_coins, total_triple_coins)
 
-    def _get_trap_weights(self, options: CupheadOptions) -> tuple[int, int, int, int, int]:
-        return (
+    def _get_filler_item_weights(self, options: CupheadOptions) -> list[int]:
+        return [
+            options.filler_weight_extrahealth,
+            options.filler_weight_superrecharge,
+        ]
+
+    def _get_trap_weights(self, options: CupheadOptions) -> list[int]:
+        return [
             options.trap_weight_fingerjam,
             options.trap_weight_slowfire,
             options.trap_weight_superdrain,
             options.trap_weight_reversal,
             0, #options.trap_weight_enviro
-        )
-
-    def get_boss_grade_checks(self) -> GradeCheckMode:
-        return GradeCheckMode(self._boss_grade_checks)
-
-    def get_rungun_grade_checks(self) -> GradeCheckMode:
-        return GradeCheckMode(self._rungun_grade_checks)
+        ]

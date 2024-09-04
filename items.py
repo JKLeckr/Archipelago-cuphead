@@ -110,9 +110,7 @@ item_trap = {
     ItemNames.item_level_trap_fingerjam: ItemData(id(39), ItemClassification.trap, 0),
     ItemNames.item_level_trap_slowfire: ItemData(id(40), ItemClassification.trap, 0),
     ItemNames.item_level_trap_superdrain: ItemData(id(41), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_reversal: ItemData(id(42), ItemClassification.trap, 0)
-}
-item_trap_special = {
+    ItemNames.item_level_trap_reversal: ItemData(id(42), ItemClassification.trap, 0),
     ItemNames.item_level_trap_envirotrap: ItemData(id(43), ItemClassification.trap, 0),
 }
 
@@ -136,7 +134,7 @@ item_dlc_special = {
 item_goal = {ItemNames.item_event_goal_devilko: ItemData(None, ItemClassification.progression, 0),}
 item_dlc_goal = {ItemNames.item_event_goal_dlc_saltbakerko: ItemData(None, ItemClassification.progression, 0),}
 
-items_base = {
+items_base: dict[str, ItemData] = {
     #**item_generic,
     **item_filler,
     **item_essential,
@@ -147,7 +145,7 @@ items_base = {
     **item_special,
     **item_goal
 }
-items_dlc = {
+items_dlc: dict[str, ItemData] = {
     **item_dlc_essential,
     **item_dlc_weapons,
     **item_dlc_charms,
@@ -156,13 +154,12 @@ items_dlc = {
     **item_dlc_goal,
 }
 
-items_all = {
+items_all: dict[str, ItemData] = {
     **items_base,
     **items_dlc,
     **item_abilities,
     #**item_abilities_aim,
     **item_trap,
-    **item_trap_special
 }
 
 def setup_items(settings: WorldSettings):
@@ -184,8 +181,6 @@ def setup_items(settings: WorldSettings):
         items[ItemNames.item_charm_psugar].type = ItemClassification.progression
     if settings.traps>0:
         items.update(item_trap)
-        if settings.trap_weights[4] > 0:
-            items.update(item_trap_special[ItemNames.item_level_trap_envirotrap])
     return items
 
 name_to_id = {name: data.id for name, data in items_all.items() if data.id}

@@ -372,19 +372,19 @@ level_dlc_chesscastle_boss = {
     LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,])
 }
 
-levels_base = {
+levels_base: dict[str, LevelData] = {
     **level_boss,
     **level_boss_final,
     **level_rungun,
     **level_mausoleum
 }
-levels_dlc = {
+levels_dlc: dict[str, LevelData] = {
     **level_dlc_boss,
     **level_dlc_boss_final,
     **level_dlc_special,
 }
 
-levels_all = {
+levels_all: dict[str, LevelData] = {
     **levels_base,
     **level_dicepalace_boss,
     **levels_dlc,
@@ -406,9 +406,9 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
 
     return levels
 
-def setup_level_shuffle_map(rand: Random, settings: WorldSettings):
+def setup_level_shuffle_map(rand: Random, settings: WorldSettings) -> dict[int,int]:
     use_dlc = settings.use_dlc
-    level_shuffle_map: dict[str,str] = {}
+    level_shuffle_map: dict[int,int] = {}
 
     # level_lists format: (level_list, exclude_list)
     level_lists: list[tuple[list[str],list[str]]] = [
