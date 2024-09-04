@@ -254,6 +254,13 @@ class TrapWeightStun(Weight):
     """
     display_name = "Stun Trap Weight"
     default = 0
+class TrapWeightFreeze(Weight):
+    """
+    Set Freeze Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Freeze Trap Weight"
+    default = 0
 class TrapWeightEnviro(Weight):
     """
     Set Envirotrap weight. Higher weight means it will more likely appear compared to other traps.
@@ -299,6 +306,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_superdrain: TrapWeightSuperDrain
     trap_weight_reversal: TrapWeightReversal
     #trap_weight_stun: TrapWeightStun
+    #trap_weight_freeze: TrapWeightFreeze
     #trap_weight_enviro: TrapWeightEnviro
 
 cuphead_option_groups = [
@@ -336,6 +344,7 @@ cuphead_option_groups = [
         TrapWeightSuperDrain,
         TrapWeightReversal,
         #TrapWeightStun,
+        #TrapWeightFreeze,
         #TrapWeightEnviro,
     ], True)
 ]
