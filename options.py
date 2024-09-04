@@ -183,7 +183,17 @@ class MaxHealthUpgrades(Range):
     """
     display_name = "Max Health Upgrades"
     range_start = 0
-    range_end = 5
+    range_end = 3
+    default = 0
+
+class MinimumFillerItems(Range):
+    """
+    Set the minimum amount of filler items that should exist in this world.
+    NOTE: If there is not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
+    """
+    display_name = "Minimum Filler Items"
+    range_start = 0
+    range_end = 10
     default = 0
 
 class FillerWeightExtraHealth(Weight):
@@ -237,6 +247,13 @@ class TrapWeightReversal(Weight):
     """
     display_name = "Reversal Trap Weight"
     default = 3
+class TrapWeightStun(Weight):
+    """
+    Set Stun Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Stun Trap Weight"
+    default = 0
 class TrapWeightEnviro(Weight):
     """
     Set Envirotrap weight. Higher weight means it will more likely appear compared to other traps.
@@ -258,6 +275,7 @@ class CupheadOptions(PerGameCommonOptions):
     mode: GameMode
     expert_mode: ExpertMode
     start_weapon: StartWeapon
+    start_maxhealth: StartMaxHealth
     level_shuffle: LevelShuffle
     freemove_isles: FreeMoveIsles
     deathlink: DeathLink
@@ -271,8 +289,8 @@ class CupheadOptions(PerGameCommonOptions):
     agrade_quest: AGradeQuest
     pacifist_quest: PacifistQuest
     #dlc_cactusgirl_quest: DlcCactusGirlQuest
-    #start_maxhealth: StartMaxHealth
-    #maxhealth_upgrade: MaxHealthUpgrades
+    #maxhealth_upgrades: MaxHealthUpgrades
+    minimum_filler: MinimumFillerItems
     traps: Traps
     filler_weight_extrahealth: FillerWeightExtraHealth
     filler_weight_superrecharge: FillerWeightSuperRecharge
@@ -280,6 +298,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_slowfire: TrapWeightSlowFire
     trap_weight_superdrain: TrapWeightSuperDrain
     trap_weight_reversal: TrapWeightReversal
+    #trap_weight_stun: TrapWeightStun
     #trap_weight_enviro: TrapWeightEnviro
 
 cuphead_option_groups = [
@@ -288,6 +307,7 @@ cuphead_option_groups = [
         GameMode,
         ExpertMode,
         StartWeapon,
+        StartMaxHealth,
         FreeMoveIsles,
         #WeaponGate,
         RandomizeAbilities,
@@ -304,8 +324,8 @@ cuphead_option_groups = [
         #DlcCactusGirlQuest,
     ]),
     OptionGroup("Items", [
-        #StartMaxHealth,
         #MaxHealthUpgrades,
+        MinimumFillerItems,
         Traps,
     ]),
     OptionGroup("Item Weights", [
@@ -315,6 +335,7 @@ cuphead_option_groups = [
         TrapWeightSlowFire,
         TrapWeightSuperDrain,
         TrapWeightReversal,
+        #TrapWeightStun,
         #TrapWeightEnviro,
     ], True)
 ]

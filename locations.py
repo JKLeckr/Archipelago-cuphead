@@ -18,8 +18,8 @@ class LocationData(NamedTuple):
     event: bool = False
     category: str = None
 
-base_id = 0xc4ead0
-base_dlc_id = 0xc4fad0
+base_id = 12905168
+base_dlc_id = 12909264
 
 def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i

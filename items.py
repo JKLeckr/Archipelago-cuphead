@@ -14,14 +14,14 @@ class ItemData(NamedTuple):
     event: bool = False
     catefory: str = None
 
-base_id = 0xc4ead0
-base_dlc_id = 0xc4fad0
+base_id = 12905168
+base_dlc_id = 12909264
 
 def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Items
-# Next ids: 44, 8
+# Next ids: 45, 8
 item_generic = {
     ItemNames.item_level_generic: ItemData(id(0), ItemClassification.filler, 0),
 }
@@ -111,7 +111,8 @@ item_trap = {
     ItemNames.item_level_trap_slowfire: ItemData(id(40), ItemClassification.trap, 0),
     ItemNames.item_level_trap_superdrain: ItemData(id(41), ItemClassification.trap, 0),
     ItemNames.item_level_trap_reversal: ItemData(id(42), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_envirotrap: ItemData(id(43), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_stun: ItemData(id(43), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_envirotrap: ItemData(id(44), ItemClassification.trap, 0),
 }
 
 item_special = {

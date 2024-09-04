@@ -116,6 +116,32 @@ def setup_locked_items(world: CupheadWorld):
         create_locked_items(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
         create_locked_items(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
 
+def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> tuple[int, int, int]:
+    total_single_coins, total_double_coins, total_triple_coins = coin_amounts
+    def _total_coins():
+        return total_single_coins + total_double_coins + total_triple_coins
+    while _total_coins() >= location_count:
+        if total_single_coins >= 2 and _total_coins():
+            total_single_coins -= 2
+            total_double_coins += 1
+        elif total_single_coins >= 3:
+            total_single_coins -= 3
+            total_triple_coins += 1
+        elif total_double_coins >= 1 and total_single_coins >= 1:
+            total_single_coins -= 1
+            total_double_coins -= 1
+            total_triple_coins += 1
+        elif total_double_coins >= 3:
+            total_double_coins -= 3
+            total_triple_coins += 2
+        elif total_single_coins >= 2:
+            total_single_coins -= 2
+            total_double_coins += 1
+        else:
+            print("Error: Cannot resolve coins!")
+            break
+    return (total_single_coins, total_double_coins, total_triple_coins)
+
 def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str], coin_items: tuple[str]) -> list[Item]:
     res = []
     # Coins
@@ -146,24 +172,11 @@ def create_coins(world: CupheadWorld, location_count: int, precollected_item_nam
     total_double_coins = max(total_double_coins - start_2coins, 0)
     total_single_coins = max(total_single_coins - start_coins, 0)
 
-    while (total_single_coins + total_double_coins + total_triple_coins) >= location_count:
-        if total_single_coins >= 3:
-            total_single_coins -= 3
-            total_triple_coins += 1
-        elif total_double_coins >= 1 and total_single_coins >= 1:
-            total_single_coins -= 1
-            total_double_coins -= 1
-            total_triple_coins += 1
-        elif total_double_coins >= 3:
-            total_double_coins -= 3
-            total_triple_coins += 2
-        else:
-            print("Error: Cannot resolve coins!")
-            break
+    total_coins = compress_coins((total_single_coins, total_double_coins, total_triple_coins), location_count)
 
-    res += [create_item(coin_items[0], world.player) for _ in range(total_single_coins)]
-    res += [create_item(coin_items[1], world.player) for _ in range(total_double_coins)]
-    res += [create_item(coin_items[2], world.player) for _ in range(total_triple_coins)]
+    res += [create_item(coin_items[0], world.player) for _ in range(total_coins[0])]
+    res += [create_item(coin_items[1], world.player) for _ in range(total_coins[1])]
+    res += [create_item(coin_items[2], world.player) for _ in range(total_coins[2])]
 
     return res
 
@@ -216,7 +229,7 @@ def create_items(world: CupheadWorld) -> None:
         itempool += create_pool_items(items.item_abilities.keys(), precollected_item_names)
 
     # Add Coins
-    leftover_locations = total_locations - len(itempool) - world.wsettings.filler_item_buffer
+    leftover_locations = total_locations - len(itempool) - world.wsettings.minimum_filler
 
     itempool += create_coins(world, leftover_locations, precollected_item_names, coin_items)
 
