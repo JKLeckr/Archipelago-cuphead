@@ -107,5 +107,6 @@ class WorldSettings:
             options.trap_weight_superdrain,
             options.trap_weight_reversal,
             0, #options.trap_weight_stun,
-            0, #options.trap_weight_enviro
+            0, #options.trap_weight_freeze,
+            0, #options.trap_weight_enviro,
         ]

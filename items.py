@@ -112,7 +112,8 @@ item_trap = {
     ItemNames.item_level_trap_superdrain: ItemData(id(41), ItemClassification.trap, 0),
     ItemNames.item_level_trap_reversal: ItemData(id(42), ItemClassification.trap, 0),
     ItemNames.item_level_trap_stun: ItemData(id(43), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_envirotrap: ItemData(id(44), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_freeze: ItemData(id(44), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_envirotrap: ItemData(id(45), ItemClassification.trap, 0),
 }
 
 item_special = {
