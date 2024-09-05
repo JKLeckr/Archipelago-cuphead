@@ -98,6 +98,7 @@ class WorldSettings:
         return [
             options.filler_weight_extrahealth,
             options.filler_weight_superrecharge,
+            options.filler_weight_fastfire,
         ]
 
     def _get_trap_weights(self, options: CupheadOptions) -> list[int]:
@@ -106,7 +107,4 @@ class WorldSettings:
             options.trap_weight_slowfire,
             options.trap_weight_superdrain,
             options.trap_weight_reversal,
-            0, #options.trap_weight_stun,
-            0, #options.trap_weight_freeze,
-            0, #options.trap_weight_enviro,
         ]

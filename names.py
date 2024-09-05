@@ -465,6 +465,8 @@ class ItemNames:
     item_level_generic = "Present"
     item_level_extrahealth = "+1 Health"
     item_level_superrecharge = "Super Recharge"
+    item_level_fastfire = "Fast Fire"
+    item_level_4 = "Item Id 4"
 
     # Weapons
     item_weapon = "Weapon"
@@ -532,9 +534,6 @@ class ItemNames:
     item_level_trap_slowfire = "Slow Fire Trap"
     item_level_trap_superdrain = "Super Drain Trap"
     item_level_trap_reversal = "Reversal Trap"
-    item_level_trap_stun = "Stun Trap"
-    item_level_trap_freeze = "Stun Trap"
-    item_level_trap_envirotrap = "Envirotrap"
 
     # Events
     item_event_boss_defeated = _item_event_ + "Boss Defeated"

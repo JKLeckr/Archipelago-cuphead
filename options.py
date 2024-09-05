@@ -210,6 +210,13 @@ class FillerWeightSuperRecharge(Weight):
     """
     display_name = "Super Recharge Weight"
     default = 3
+class FillerWeightFastFire(Weight):
+    """
+    Set Fast Fire weight. Higher weight means it will more likely appear compared to other filler items.
+    Set to 0 to disable this item.
+    """
+    display_name = "Fast Fire Weight"
+    default = 0
 
 class Traps(Range):
     """
@@ -247,27 +254,6 @@ class TrapWeightReversal(Weight):
     """
     display_name = "Reversal Trap Weight"
     default = 3
-class TrapWeightStun(Weight):
-    """
-    Set Stun Trap weight. Higher weight means it will more likely appear compared to other traps.
-    Set to 0 to disable this trap.
-    """
-    display_name = "Stun Trap Weight"
-    default = 0
-class TrapWeightFreeze(Weight):
-    """
-    Set Freeze Trap weight. Higher weight means it will more likely appear compared to other traps.
-    Set to 0 to disable this trap.
-    """
-    display_name = "Freeze Trap Weight"
-    default = 0
-class TrapWeightEnviro(Weight):
-    """
-    Set Envirotrap weight. Higher weight means it will more likely appear compared to other traps.
-    Set to 0 to disable this trap.
-    """
-    display_name = "Envirotrap Weight"
-    default = 0
 
 class DeathLink(Toggle):
     """
@@ -301,13 +287,11 @@ class CupheadOptions(PerGameCommonOptions):
     traps: Traps
     filler_weight_extrahealth: FillerWeightExtraHealth
     filler_weight_superrecharge: FillerWeightSuperRecharge
+    filler_weight_fastfire: FillerWeightFastFire
     trap_weight_fingerjam: TrapWeightFingerJam
     trap_weight_slowfire: TrapWeightSlowFire
     trap_weight_superdrain: TrapWeightSuperDrain
     trap_weight_reversal: TrapWeightReversal
-    #trap_weight_stun: TrapWeightStun
-    #trap_weight_freeze: TrapWeightFreeze
-    #trap_weight_enviro: TrapWeightEnviro
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -339,12 +323,10 @@ cuphead_option_groups = [
     OptionGroup("Item Weights", [
         FillerWeightExtraHealth,
         FillerWeightSuperRecharge,
+        FillerWeightFastFire,
         TrapWeightFingerJam,
         TrapWeightSlowFire,
         TrapWeightSuperDrain,
         TrapWeightReversal,
-        #TrapWeightStun,
-        #TrapWeightFreeze,
-        #TrapWeightEnviro,
     ], True)
 ]
