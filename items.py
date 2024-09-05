@@ -136,7 +136,7 @@ item_goal = {ItemNames.item_event_goal_devilko: ItemData(None, ItemClassificatio
 item_dlc_goal = {ItemNames.item_event_goal_dlc_saltbakerko: ItemData(None, ItemClassification.progression, 0),}
 
 items_base: dict[str, ItemData] = {
-    #**item_generic,
+    **item_generic,
     **item_filler,
     **item_essential,
     **item_weapons,
