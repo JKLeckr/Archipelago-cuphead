@@ -421,7 +421,7 @@ class LocationNames:
     loc_quest_4mel = "Barbershop Quartet Quest"
     loc_quest_lucien = "Lucien Quest"
     loc_quest_pacifist = "Pacifist Quest"
-    loc_quest_15agrades = "15+ Grade-A Quest"
+    loc_quest_silverworth = "Silverworth Quest"
     loc_quest_music = "Music Quest"
     loc_quest_ludwig = "Ludwig"
     loc_quest_wolfgang = "Wolfgang"

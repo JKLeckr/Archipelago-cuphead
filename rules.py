@@ -45,7 +45,7 @@ def set_rules(world: CupheadWorld):
     if settings.ginger_quest:
         set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
     if settings.agrade_quest:
-        set_item_rule(w, LocationNames.loc_quest_15agrades, ItemNames.item_event_agrade, 15)
+        set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
     if settings.pacifist_quest:
         set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
     if settings.music_quest:

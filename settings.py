@@ -73,7 +73,7 @@ class WorldSettings:
         self.ginger_quest = True
         self.fourmel_quest = True
         self.lucien_quest = False
-        self.agrade_quest = options.agrade_quest
+        self.agrade_quest = options.silverworth_quest
         self.pacifist_quest = options.pacifist_quest
         self.music_quest = False
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
