@@ -38,6 +38,10 @@ def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return level_rule_or(level_rule_dash, level_rule_parry)
+def level_rule_dash_and_parry(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_and(level_rule_dash, level_rule_parry)
 def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -308,7 +312,7 @@ level_rungun = {
         LocationNames.loc_level_rungun_tree_coin5,
         LocationNames.loc_level_rungun_tree_event_agrade,
         LocationNames.loc_level_rungun_tree_event_pacifist,
-    ]),
+    ], level_rule_dash),
     LocationNames.level_rungun_circus: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_rungun_circus,
         LocationNames.loc_level_rungun_circus_agrade,
@@ -332,7 +336,7 @@ level_rungun = {
         LocationNames.loc_level_rungun_funhouse_coin5,
         LocationNames.loc_level_rungun_funhouse_event_agrade,
         LocationNames.loc_level_rungun_funhouse_event_pacifist,
-    ]),
+    ], level_rule_parry),
     LocationNames.level_rungun_harbour: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_rungun_harbour,
         LocationNames.loc_level_rungun_harbour_agrade,
@@ -344,7 +348,7 @@ level_rungun = {
         LocationNames.loc_level_rungun_harbour_coin5,
         LocationNames.loc_level_rungun_harbour_event_agrade,
         LocationNames.loc_level_rungun_harbour_event_pacifist,
-    ]),
+    ], level_rule_dash_and_parry),
     LocationNames.level_rungun_mountain: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_rungun_mountain,
         LocationNames.loc_level_rungun_mountain_agrade,
