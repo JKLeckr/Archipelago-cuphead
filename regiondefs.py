@@ -115,7 +115,7 @@ region_worlds = [
         LevelTarget(LocationNames.level_rungun_harbour, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_mausoleum_iii, None, dep.dep_freemove),
         Target(LocationNames.loc_quest_ludwig, None, dep.dep_and(dep.dep_freemove, dep.dep_music_quest)),
-        Target(LocationNames.loc_quest_15agrades, None, dep.dep_and(dep.dep_freemove, dep.dep_agrade_quest)),
+        Target(LocationNames.loc_quest_silverworth, None, dep.dep_and(dep.dep_freemove, dep.dep_agrade_quest)),
         Target(LocationNames.loc_quest_pacifist, None, dep.dep_and(dep.dep_freemove, dep.dep_pacifist_quest)),
     ]),
     WorldRegionData(LocationNames.world_inkwell_hell, [LocationNames.loc_coin_isleh_secret], [
@@ -225,7 +225,7 @@ region_isle3 = [
         LevelTarget(LocationNames.level_mausoleum_iii),
         LevelTarget(LocationNames.level_boss_train),
         Target(LocationNames.level_shop3),
-        Target(LocationNames.loc_quest_15agrades, None, dep.dep_agrade_quest)
+        Target(LocationNames.loc_quest_silverworth, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_mouse, None, [
         LevelTarget(LocationNames.level_boss_sallystageplay),
@@ -236,13 +236,13 @@ region_isle3 = [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
         Target(LocationNames.level_shop3),
-        Target(LocationNames.loc_quest_15agrades, None, dep.dep_agrade_quest)
+        Target(LocationNames.loc_quest_silverworth, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_rungun_mountain, None, [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
         Target(LocationNames.level_shop3),
-        Target(LocationNames.loc_quest_15agrades, None, dep.dep_agrade_quest)
+        Target(LocationNames.loc_quest_silverworth, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_mausoleum_iii, None, None),
     RegionData(LocationNames.loc_quest_wolfgang, [
@@ -251,7 +251,7 @@ region_isle3 = [
     RegionData(LocationNames.loc_quest_ludwig, [
         LocationNames.loc_event_quest_ludwig,
     ], None, dep.dep_music_quest),
-    RegionData(LocationNames.loc_quest_15agrades, [LocationNames.loc_quest_15agrades], None, dep.dep_agrade_quest),
+    RegionData(LocationNames.loc_quest_silverworth, [LocationNames.loc_quest_silverworth], None, dep.dep_agrade_quest),
     RegionData(LocationNames.loc_quest_pacifist, [LocationNames.loc_quest_pacifist], None, dep.dep_pacifist_quest),
 ]
 region_isleh = [

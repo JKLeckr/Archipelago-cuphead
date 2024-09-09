@@ -143,7 +143,7 @@ class DlcBossChaliceChecks(Toggle):
     """
     display_name = "[DLC] Boss Chalice Checks"
 
-class AGradeQuest(Toggle): # TODO: Maybe make this on by default later.
+class SilverworthQuest(Toggle): # TODO: Maybe make this on by default later.
     """
     Enable the 15 A-Grade Quest check.
     This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
@@ -279,7 +279,7 @@ class CupheadOptions(PerGameCommonOptions):
     boss_grade_checks: BossGradeChecks
     rungun_grade_checks: RunGunGradeChecks
     #dlc_boss_chalice_checks: DlcBossChaliceChecks
-    agrade_quest: AGradeQuest
+    silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     #dlc_cactusgirl_quest: DlcCactusGirlQuest
     #maxhealth_upgrades: MaxHealthUpgrades
@@ -311,7 +311,7 @@ cuphead_option_groups = [
         BossGradeChecks,
         RunGunGradeChecks,
         #DlcBossChaliceChecks,
-        AGradeQuest,
+        SilverworthQuest,
         PacifistQuest,
         #DlcCactusGirlQuest,
     ]),

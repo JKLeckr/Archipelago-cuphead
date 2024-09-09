@@ -378,7 +378,7 @@ location_world_quest = {
     LocationNames.loc_quest_4mel: LocationData(id(120)),
     LocationNames.loc_quest_lucien: LocationData(id(121)),
     LocationNames.loc_quest_pacifist: LocationData(id(122)),
-    LocationNames.loc_quest_15agrades: LocationData(id(123)),
+    LocationNames.loc_quest_silverworth: LocationData(id(123)),
     LocationNames.loc_quest_music: LocationData(id(124)),
 }
 location_dlc_world = {
@@ -530,7 +530,7 @@ def setup_locations(settings: WorldSettings):
         _add_location(LocationNames.loc_event_quest_wolfgang,location_world_quest)
     if settings.agrade_quest:
         locations.update(locations_event_agrade)
-        _add_location(LocationNames.loc_quest_15agrades,location_world_quest)
+        _add_location(LocationNames.loc_quest_silverworth,location_world_quest)
     if settings.pacifist_quest:
         locations.update(location_level_rungun_event_pacifist)
         _add_location(LocationNames.loc_quest_pacifist,location_world_quest)
