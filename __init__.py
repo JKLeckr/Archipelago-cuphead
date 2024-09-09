@@ -109,7 +109,7 @@ class CupheadWorld(World):
             "boss_secret_checks",
             "boss_grade_checks",
             "rungun_grade_checks",
-            "agrade_quest",
+            "silverworth_quest",
             "pacifist_quest",
             "start_maxhealth",
             "deathlink"
