@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, Range, Choice, PerGameCommonOptions, OptionError, OptionGroup
+from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions, OptionError, OptionGroup
 
 class Weight(Range):
     range_start = 0
@@ -120,7 +120,7 @@ class BossGradeChecks(Choice):
     option_a_grade = 2
     option_a_plus_grade = 3
     option_s_grade = 4
-    default = 0
+    default = 1
 
 class RunGunGradeChecks(Choice):
     """
@@ -134,7 +134,7 @@ class RunGunGradeChecks(Choice):
     option_a_plus_grade = 3
     option_p_grade = 5
     alias_pacifist = 5
-    default = 0
+    default = 1
 
 class DlcBossChaliceChecks(Toggle):
     """
@@ -143,7 +143,7 @@ class DlcBossChaliceChecks(Toggle):
     """
     display_name = "[DLC] Boss Chalice Checks"
 
-class SilverworthQuest(Toggle): # TODO: Maybe make this on by default later.
+class SilverworthQuest(DefaultOnToggle):
     """
     Enable the 15 A-Grade Quest check.
     This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
