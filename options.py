@@ -324,7 +324,7 @@ cuphead_option_groups = [
         #DlcCactusGirlQuest,
     ]),
     OptionGroup("Items", [
-        #MaxHealthUpgrades,
+        MaxHealthUpgrades,
         MinimumFillerItems,
         Traps,
     ]),
