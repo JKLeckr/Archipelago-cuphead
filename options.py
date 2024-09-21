@@ -247,12 +247,19 @@ class TrapWeightSuperDrain(Weight):
     """
     display_name = "Super Drain Trap Weight"
     default = 3
-class TrapWeightReversal(Weight):
+class TrapWeightReverse(Weight):
     """
-    Set Reversal Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set Reverse Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
     """
-    display_name = "Reversal Trap Weight"
+    display_name = "Reverse Trap Weight"
+    default = 3
+class TrapWeightScreen(Weight):
+    """
+    Set Screen Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set to 0 to disable this trap.
+    """
+    display_name = "Screen Trap Weight"
     default = 3
 
 class DeathLink(Toggle):
@@ -288,10 +295,11 @@ class CupheadOptions(PerGameCommonOptions):
     filler_weight_extrahealth: FillerWeightExtraHealth
     filler_weight_superrecharge: FillerWeightSuperRecharge
     filler_weight_fastfire: FillerWeightFastFire
-    trap_weight_fingerjam: TrapWeightFingerJam
-    trap_weight_slowfire: TrapWeightSlowFire
-    trap_weight_superdrain: TrapWeightSuperDrain
-    trap_weight_reversal: TrapWeightReversal
+    #trap_weight_fingerjam: TrapWeightFingerJam
+    #trap_weight_slowfire: TrapWeightSlowFire
+    #trap_weight_superdrain: TrapWeightSuperDrain
+    #trap_weight_reverse: TrapWeightReverse
+    #trap_weight_screen: TrapWeightScreen
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -324,9 +332,10 @@ cuphead_option_groups = [
         FillerWeightExtraHealth,
         FillerWeightSuperRecharge,
         FillerWeightFastFire,
-        TrapWeightFingerJam,
-        TrapWeightSlowFire,
-        TrapWeightSuperDrain,
-        TrapWeightReversal,
-    ], True)
+        #TrapWeightFingerJam,
+        #TrapWeightSlowFire,
+        #TrapWeightSuperDrain,
+        #TrapWeightReverse,
+        #TrapWeightScreen,
+    ], True),
 ]

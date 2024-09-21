@@ -533,7 +533,8 @@ class ItemNames:
     item_level_trap_fingerjam = "Finger Jam Trap"
     item_level_trap_slowfire = "Slow Fire Trap"
     item_level_trap_superdrain = "Super Drain Trap"
-    item_level_trap_reversal = "Reversal Trap"
+    item_level_trap_reverse = "Reverse Trap"
+    item_level_trap_screen = "Screen Trap"
 
     # Events
     item_event_boss_defeated = _item_event_ + "Boss Defeated"
