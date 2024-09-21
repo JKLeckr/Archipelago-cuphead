@@ -89,7 +89,7 @@ class WeaponGate(Toggle):
 
 class RandomizeAbilities(Toggle):
     """
-    Randomize essential abilities like Duck, Perry, Dash, etc.
+    Randomize essential abilities like Duck, Parry, Dash, etc.
     """
     display_name = "Randomize Abilities"
 
@@ -145,10 +145,10 @@ class DlcBossChaliceChecks(Toggle):
 
 class SilverworthQuest(DefaultOnToggle):
     """
-    Enable the 15 A-Grade Quest check.
-    This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
+    Enable the Silverworht Quest check.
+    This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
     """
-    display_name = "15 A-Grade Quest"
+    display_name = "Silverworth Quest"
 
 class PacifistQuest(Toggle):
     """
