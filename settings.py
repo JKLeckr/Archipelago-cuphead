@@ -103,8 +103,9 @@ class WorldSettings:
 
     def _get_trap_weights(self, options: CupheadOptions) -> list[int]:
         return [
-            options.trap_weight_fingerjam,
-            options.trap_weight_slowfire,
-            options.trap_weight_superdrain,
-            options.trap_weight_reversal,
+            0, #options.trap_weight_fingerjam,
+            0, #options.trap_weight_slowfire,
+            3, #options.trap_weight_superdrain,
+            0, #options.trap_weight_reverse,
+            0, #options.trap_weight_screen,
         ]

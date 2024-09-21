@@ -21,7 +21,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Items
-# Next ids: 45, 8
+# Next ids: 46, 8
 item_generic = {
     ItemNames.item_level_generic: ItemData(id(0), ItemClassification.filler, 0),
 }
@@ -112,7 +112,8 @@ item_trap = {
     ItemNames.item_level_trap_fingerjam: ItemData(id(41), ItemClassification.trap, 0),
     ItemNames.item_level_trap_slowfire: ItemData(id(42), ItemClassification.trap, 0),
     ItemNames.item_level_trap_superdrain: ItemData(id(43), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_reversal: ItemData(id(44), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_reverse: ItemData(id(44), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_screen: ItemData(id(45), ItemClassification.trap, 0),
 }
 
 item_special = {
