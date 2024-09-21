@@ -504,7 +504,7 @@ def setup_locations(settings: WorldSettings):
         if use_dlc:
             locations.update(location_level_boss_final_topgrade)
     if rungun_grade_checks>0:
-        if rungun_grade_checks==GradeCheckMode.a_grade or rungun_grade_checks==GradeCheckMode.a_plus_grade:
+        if rungun_grade_checks>=1 and rungun_grade_checks<=3:
             locations.update(location_level_rungun_agrade)
         elif rungun_grade_checks==GradeCheckMode.pacifist:
             locations.update(location_level_rungun_pacifist)
