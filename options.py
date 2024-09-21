@@ -145,7 +145,7 @@ class DlcBossChaliceChecks(Toggle):
 
 class SilverworthQuest(DefaultOnToggle):
     """
-    Enable the Silverworht Quest check.
+    Enable the Silverworth Quest check.
     This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
     """
     display_name = "Silverworth Quest"
@@ -289,7 +289,7 @@ class CupheadOptions(PerGameCommonOptions):
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     #dlc_cactusgirl_quest: DlcCactusGirlQuest
-    #maxhealth_upgrades: MaxHealthUpgrades
+    maxhealth_upgrades: MaxHealthUpgrades
     minimum_filler: MinimumFillerItems
     traps: Traps
     filler_weight_extrahealth: FillerWeightExtraHealth

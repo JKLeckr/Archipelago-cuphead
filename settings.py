@@ -77,7 +77,7 @@ class WorldSettings:
         self.pacifist_quest = options.pacifist_quest
         self.music_quest = False
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
-        self.maxhealth_upgrades = 0 #options.maxhealth_upgrades
+        self.maxhealth_upgrades = options.maxhealth_upgrades
         self.traps = options.traps
         self.trap_weights = self._get_trap_weights(options)
         self.filler_item_weights = self._get_filler_item_weights(options)
