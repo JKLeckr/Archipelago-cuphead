@@ -12,7 +12,10 @@ class ItemData(NamedTuple):
     type: ItemClassification = ItemClassification.filler
     quantity: int = 1 # Set to 0 to skip automatic placement (Useful if placing manually)
     event: bool = False
-    catefory: str = None
+    category: str = None
+
+def item_with_type(item: ItemData, type: ItemClassification) -> ItemData:
+    return ItemData(item.id, type, item.quantity, item.event, item.category)
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -169,7 +172,7 @@ def setup_items(settings: WorldSettings):
     if settings.use_dlc:
         items.update(items_dlc)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
-            items[ItemNames.item_charm_dlc_cookie].type = ItemClassification.progression
+            items[ItemNames.item_charm_dlc_cookie] = item_with_type(items[ItemNames.item_charm_dlc_cookie], ItemClassification.progression)
     if settings.weapon_gate:
         weapon_keys = {
             **item_weapons,
@@ -177,10 +180,10 @@ def setup_items(settings: WorldSettings):
         }
         for w in weapon_keys:
             if w in items.keys():
-                items[w].type = ItemClassification.progression
+                items[w] = item_with_type(items[w], ItemClassification.progression)
     if settings.randomize_abilities:
         items.update(item_abilities)
-        items[ItemNames.item_charm_psugar].type = ItemClassification.progression
+        items[ItemNames.item_charm_psugar] = item_with_type(items[ItemNames.item_charm_psugar], ItemClassification.progression)
     if settings.traps>0:
         items.update(item_trap)
     return items
