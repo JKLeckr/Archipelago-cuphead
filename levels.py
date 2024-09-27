@@ -34,14 +34,15 @@ def level_rule_dash(settings: WorldSettings) -> RegionRule:
 def level_rule_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
+    return region_rule_has(ItemNames.item_ability_parry)
 def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return level_rule_or(level_rule_dash, level_rule_parry)
+    return level_rule_or(level_rule_dash, level_rule_parry)(settings)
 def level_rule_dash_and_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return level_rule_and(level_rule_dash, level_rule_parry)
+    return level_rule_and(level_rule_dash, level_rule_parry)(settings)
 def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)

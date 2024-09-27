@@ -1,3 +1,5 @@
+from typing import Iterable
+
 def count_in_list(e, ls: list):
     count = 0
     for el in ls:
@@ -18,7 +20,7 @@ def format_list(ls: list) -> str:
     res += "]"
     return res
 
-def scrub_list(a: list, b: set) -> list:
+def scrub_list(a: list, b: Iterable) -> list:
     newlist: list = []
     for item in a:
         if item in b:

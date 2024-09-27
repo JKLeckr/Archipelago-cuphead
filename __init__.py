@@ -49,13 +49,13 @@ class CupheadWorld(World):
         if not self.options.use_dlc:
             # Sanitize mode
             if int(self.options.mode)>1:
-                self.options.mode = self.random.randint(0,1)
+                self.options.mode.value = self.random.randint(0,1)
             # Sanitize start_weapon
             if int(self.options.start_weapon.value)>5:
                 self.options.start_weapon.value = self.random.randint(0,5)
         # Sanitize grade checks
         if not self.options.expert_mode and int(self.options.boss_grade_checks)>3:
-            self.options.boss_grade_checks = 3
+            self.options.boss_grade_checks.value = 3
 
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)
