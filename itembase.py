@@ -219,6 +219,7 @@ def create_items(world: CupheadWorld) -> None:
 
     essential_items = [y for y in items.item_essential.keys() if y not in coin_items] + (list(items.item_essential.keys()) if world.use_dlc else [])
     charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if world.use_dlc else [])
+    abilities = list(items.item_abilities.keys())
 
     # Add the other non-filler items before the coins
     itempool += create_pool_items(world, essential_items, precollected_item_names)
@@ -226,7 +227,7 @@ def create_items(world: CupheadWorld) -> None:
     itempool += create_pool_items(world, charms, precollected_item_names)
     itempool += create_pool_items(world, items.item_super.keys(), precollected_item_names)
     if world.wsettings.randomize_abilities:
-        itempool += create_pool_items(items.item_abilities.keys(), precollected_item_names)
+        itempool += create_pool_items(world, abilities, precollected_item_names)
 
     # Add Coins
     leftover_locations = total_locations - len(itempool) - world.wsettings.minimum_filler
