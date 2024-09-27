@@ -1,6 +1,6 @@
 from __future__ import annotations
 import typing
-from BaseClasses import Location, Region
+from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
 from .names import ItemNames, LocationNames
@@ -9,7 +9,7 @@ from . import locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
-def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Location:
+def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
     return world.multiworld.get_entrance(exit+" -> "+entrance, world.player)
 def get_location(world: CupheadWorld, location: str) -> Location:
     return world.multiworld.get_location(location, world.player)

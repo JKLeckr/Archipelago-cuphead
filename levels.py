@@ -431,7 +431,7 @@ def setup_level_shuffle_map(rand: Random, settings: WorldSettings) -> dict[int,i
 
 def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list[str] = None) -> dict[int, int]:
     res: dict[int, int] = {}
-    excludes = level_exclude_list if level_exclude_list else []
+    excludes: list[int] = level_exclude_list if level_exclude_list else []
     _levels = [level_id_map[x] for x in level_list if (x not in excludes)]
 
     levels_shuffled = list(_levels)
