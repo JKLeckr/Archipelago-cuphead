@@ -58,7 +58,7 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Total count: {len(_itempool)}")
     return _itempool
 
-def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Random) -> list[Item]:
+def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Random) -> typing.Optional[list[Item]]:
     trap_items = list(items.item_trap.keys())
     trap_item_weights = settings.trap_weights
 
@@ -86,7 +86,8 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
 
 def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: ItemClassification = None) -> None:
     world.multiworld.get_location(location, world.player).place_locked_item(create_item(name, world.player, force_classification))
-def create_locked_items(world: CupheadWorld, name: str, locations: set[str], force_classification: ItemClassification = None) -> None:
+def create_locked_items(world: CupheadWorld, name: str, locations:  dict[str, locations.LocationData],
+                        force_classification: ItemClassification = None) -> None:
     for loc in locations:
         if loc in world.active_locations:
             create_locked_item(world, name, loc, force_classification)
@@ -142,7 +143,8 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
             break
     return (total_single_coins, total_double_coins, total_triple_coins)
 
-def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str], coin_items: tuple[str]) -> list[Item]:
+def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str],
+                 coin_items: tuple[str, str, str]) -> list[Item]:
     res = []
     # Coins
     coin_amounts = world.wsettings.coin_amounts ## TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop
@@ -187,12 +189,13 @@ def create_items(world: CupheadWorld) -> None:
 
     setup_locked_items(world)
 
-    total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.event])
+    # total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.event])
     unfilled_locations = len([x.name for x in world.multiworld.get_unfilled_locations(world.player)])
     #print(total_locations)
     #print(unfilled_locations)
-    if total_locations != unfilled_locations:
-        print("ERROR: unfilled locations mismatch total non-event locations")
+    # This can fail if someone uses plando
+    # if total_locations != unfilled_locations:
+    #     print("ERROR: unfilled locations mismatch total non-event locations")
 
     # Starter weapon
     weapon_dict: dict[int,str] = {
@@ -206,10 +209,10 @@ def create_items(world: CupheadWorld) -> None:
         7: ItemNames.item_weapon_dlc_converge,
         8: ItemNames.item_weapon_dlc_twistup,
     }
-    weapons = {x for x in set(items.item_weapons.keys()) if x not in precollected_item_names}
-    start_weapon_index = world.start_weapon
+    weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
     if world.use_dlc:
-        weapons.update({x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names})
+        weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
+    start_weapon_index = world.start_weapon
     start_weapon = weapon_dict[start_weapon_index]
     if start_weapon in weapons:
         weapons.remove(start_weapon)
@@ -230,11 +233,11 @@ def create_items(world: CupheadWorld) -> None:
         itempool += create_pool_items(world, abilities, precollected_item_names)
 
     # Add Coins
-    leftover_locations = total_locations - len(itempool) - world.wsettings.minimum_filler
+    leftover_locations = unfilled_locations - len(itempool) - world.wsettings.minimum_filler
 
     itempool += create_coins(world, leftover_locations, precollected_item_names, coin_items)
 
-    leftover_locations = total_locations - len(itempool)
+    leftover_locations = unfilled_locations - len(itempool)
     if (leftover_locations<0):
         print("Error: There are more items than locations!")
 

@@ -39,6 +39,9 @@ class CupheadWorld(World):
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id
 
+    # TODO: Move item_name_groups definition to be static
+    #item_name_groups = {}
+
     item_names = set(items.items_all.keys())
     location_names = set(locations.locations_all.keys())
 
@@ -49,13 +52,13 @@ class CupheadWorld(World):
         if not self.options.use_dlc:
             # Sanitize mode
             if int(self.options.mode)>1:
-                self.options.mode = self.random.randint(0,1)
+                self.options.mode.value = self.random.randint(0,1)
             # Sanitize start_weapon
             if int(self.options.start_weapon.value)>5:
                 self.options.start_weapon.value = self.random.randint(0,5)
         # Sanitize grade checks
         if not self.options.expert_mode and int(self.options.boss_grade_checks)>3:
-            self.options.boss_grade_checks = 3
+            self.options.boss_grade_checks.value = 3
 
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)
@@ -78,12 +81,13 @@ class CupheadWorld(World):
             self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
         # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-        self.shop_map: list[tuple[int]] = self.get_shop_map()
+        self.shop_map: list[tuple[int, int]] = self.get_shop_map()
         self.shop_locations: dict[str,list[str]] = self.get_shop_locations()
 
         self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
         self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
 
+        # TODO: Move item_name_groups definition to be static
         # Group Items
         self.item_name_groups = self.get_item_groups()
 
@@ -118,7 +122,7 @@ class CupheadWorld(World):
             slot_data.update(self.options.as_dict(option))
         return slot_data
 
-    def get_shop_map(self) -> list[tuple[int]]:
+    def get_shop_map(self) -> list[tuple[int, int]]:
         return [(2,2), (2,2), (1,2), (3,2)] if not self.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
 
     def get_shop_locations(self) -> dict[str,list[str]]:
@@ -208,7 +212,7 @@ class CupheadWorld(World):
             return super().collect(state, item)
 
     def get_filler_item_name(self) -> str:
-        itembase.get_filler_item_name(self)
+        return itembase.get_filler_item_name(self)
 
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
         hint_dict: Dict[int, str] = {}

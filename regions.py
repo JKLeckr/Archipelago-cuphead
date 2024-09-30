@@ -74,7 +74,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
                     for loc in tgt.locations:
                         if loc not in locset:
                             locset.add(loc.name)
-                src.connect(tgt, name, (lambda state, player=player, rule=_rule: rule(state, player)) if _rule else None)
+                src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
             #else:
             #    print("Skipping Target "+target.name) # if debug
         else:

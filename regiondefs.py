@@ -59,14 +59,14 @@ class WorldRegionData(RegionData):
     def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, depends: Optional[Dep] = None, flags: DefFlags = 1):
         super().__init__(name, add_locations, connect_to, depends, DefType.WORLD, flags)
 
-region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)], flags=1)
+region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)], flags=DefFlags.TGT_IGNORE_FREEMOVE)
 region_house = RegionData(LocationNames.level_house, None, [
-    Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)], flags=1)
+    Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)], flags=DefFlags.TGT_IGNORE_FREEMOVE)
 
 region_house_level_tutorial = RegionData(LocationNames.level_tutorial, [
     LocationNames.loc_level_tutorial,
     LocationNames.loc_level_tutorial_coin,
-], None, flags=1)
+], None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
 
 region_worlds = [
     WorldRegionData(LocationNames.world_inkwell_1, [
@@ -255,7 +255,7 @@ region_isle3 = [
     RegionData(LocationNames.loc_quest_pacifist, [LocationNames.loc_quest_pacifist], None, dep.dep_pacifist_quest),
 ]
 region_isleh = [
-    LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], flags=1),
+    LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     #LevelRegionData(LocationNames.level_boss_devil, None, None),
     RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
 ]
@@ -277,7 +277,7 @@ region_dlc_isle4 = [
         LevelTarget(LocationNames.level_dlc_boss_airplane),
         #LevelTarget(LocationNames.level_dlc_graveyard),
     ]),
-    LevelRegionData(LocationNames.level_dlc_boss_airplane, [
+    LevelRegionData(LocationNames.level_dlc_boss_airplane, None, [
         LevelTarget(LocationNames.level_dlc_boss_snowcult),
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy),
         Target(LocationNames.loc_dlc_quest_cactusgirl, None, dep.dep_dlc_cactusgirl_quest),
@@ -287,17 +287,17 @@ region_dlc_isle4 = [
     #LevelRegionData(LocationNames.level_dlc_graveyard, None),
     RegionData(LocationNames.level_dlc_chesscastle, None, [
         LevelTarget(LocationNames.level_dlc_chesscastle_pawn)
-    ], flags=1),
+    ], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     RegionData(LocationNames.loc_dlc_quest_cactusgirl, [LocationNames.loc_dlc_quest_cactusgirl], None, dep.dep_dlc_cactusgirl_quest),
 ]
 region_dlc_chesscastle = [
     # Setup Regions later
-    LevelRegionData(LocationNames.level_dlc_chesscastle_pawn, None, [LevelTarget(LocationNames.level_dlc_chesscastle_knight)], flags=1),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)], flags=1),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_bishop, None, [LevelTarget(LocationNames.level_dlc_chesscastle_rook)], flags=1),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_rook, None, [LevelTarget(LocationNames.level_dlc_chesscastle_queen)], flags=1),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run)], flags=1),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_run, None, flags=1)
+    LevelRegionData(LocationNames.level_dlc_chesscastle_pawn, None, [LevelTarget(LocationNames.level_dlc_chesscastle_knight)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_bishop, None, [LevelTarget(LocationNames.level_dlc_chesscastle_rook)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_rook, None, [LevelTarget(LocationNames.level_dlc_chesscastle_queen)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_run, None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
 ]
 region_dlc_special = [
     # Add Logic Regions and connections to curse_complete
