@@ -3,6 +3,7 @@ import typing
 from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
+from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
 from .rulebase import Rule, rule_and, rule_has, rule_has_all, rule_has_any
 from . import locations
@@ -68,6 +69,13 @@ def set_rules(world: CupheadWorld):
         rule_has(w, ItemNames.item_event_goal_devilko)
     )
 
+def set_level_parry_rule(world: CupheadWorld, loc: str):
+    w = world
+    if loc in s_plane_locations:
+        set_item_rule(w, loc, ItemNames.item_ability_plane_parry)
+    else:
+        set_item_rule(w, loc, ItemNames.item_ability_parry)
+
 def set_level_rules(world: CupheadWorld):
     w = world
     boss_grade_checks = w.wsettings.boss_grade_checks
@@ -75,10 +83,10 @@ def set_level_rules(world: CupheadWorld):
     if w.wsettings.randomize_abilities:
         if boss_grade_checks > 0:
             for _loc in locations.location_level_boss_topgrade:
-                set_item_rule(w, _loc, ItemNames.item_ability_parry)
+                set_level_parry_rule(w, _loc)
             if w.wsettings.use_dlc:
                 for _loc in locations.location_level_dlc_boss_topgrade:
-                    set_item_rule(w, _loc, ItemNames.item_ability_parry)
+                    set_level_parry_rule(w, _loc)
         if rungun_grade_checks > 0 and rungun_grade_checks < 5:
             for _loc in locations.location_level_rungun_agrade:
                 set_item_rule(w, _loc, ItemNames.item_ability_parry)

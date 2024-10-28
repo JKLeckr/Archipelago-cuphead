@@ -62,7 +62,8 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
             if target.depends(wsettings):
                 if regc.region_type == DefType.LEVEL:
                     _ruleb = target.rule
-                    _rulea = level_map(world, regc.name).rule(wsettings)
+                    _level = level_map(world, regc.name)
+                    _rulea = _level.rule(wsettings)
                 else:
                     _ruleb = None
                     _rulea = target.rule

@@ -15,9 +15,11 @@ def create_item(name: str, player: int, force_classification: ItemClassification
     data = items.items_all[name]
 
     if force_classification:
-            classification = force_classification
+        classification = force_classification
     else:
         classification = data.type
+
+    #print("Item: "+name+", "+str(classification))
 
     new_item = CupheadItem(name, classification, data.id, player)
 
@@ -76,12 +78,13 @@ def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Ran
 
 def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[str]) -> list[CupheadItem]:
     _itempool = []
-    for item in items:
-        qty = world.active_items[item].quantity - count_in_list(item, precollected)
+    for itemname in items:
+        item = world.active_items[itemname]
+        qty = item.quantity - count_in_list(item, precollected)
         if qty<0:
             print("WARNING: \""+item+"\" has quantity of "+str(qty)+"!")
-        if world.active_items[item].id and qty>0:
-            _itempool += [create_item(item, world.player) for _ in range(qty)]
+        if item.id and qty>0:
+            _itempool += [create_item(itemname, world.player, item.type) for _ in range(qty)]
     return _itempool
 
 def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: ItemClassification = None) -> None:

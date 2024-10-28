@@ -184,6 +184,7 @@ def setup_items(settings: WorldSettings):
     if settings.randomize_abilities:
         items.update(item_abilities)
         items[ItemNames.item_charm_psugar] = item_with_type(items[ItemNames.item_charm_psugar], ItemClassification.progression)
+        items[ItemNames.item_ability_plane_parry] = item_with_type(items[ItemNames.item_ability_plane_parry], ItemClassification.progression)
     if settings.traps>0:
         items.update(item_trap)
     return items
