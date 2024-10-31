@@ -166,6 +166,15 @@ class DlcCactusGirlQuest(Toggle):
     """
     display_name = "[DLC] Cactus Girl Quest"
 
+class ExtraCoins(Range):
+    """
+    Set extra coins in the item pool.
+    """
+    display_name = "Extra Coins"
+    range_start = 0
+    range_end = 10
+    default = 0
+
 class StartMaxHealth(Range):
     """
     Set starting max health.
@@ -289,6 +298,7 @@ class CupheadOptions(PerGameCommonOptions):
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     #dlc_cactusgirl_quest: DlcCactusGirlQuest
+    extra_coins: ExtraCoins
     maxhealth_upgrades: MaxHealthUpgrades
     minimum_filler: MinimumFillerItems
     traps: Traps
@@ -324,6 +334,7 @@ cuphead_option_groups = [
         #DlcCactusGirlQuest,
     ]),
     OptionGroup("Items", [
+        ExtraCoins,
         MaxHealthUpgrades,
         MinimumFillerItems,
         Traps,

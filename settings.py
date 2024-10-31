@@ -54,41 +54,41 @@ class WorldSettings:
     minimum_filler: int
 
     def __init__(self, options: CupheadOptions) -> None:
-        self.use_dlc = options.use_dlc
-        self.mode = GameMode(options.mode)
-        self.hard_logic = False #options.hard_logic
-        self.expert_mode = options.expert_mode
-        self.start_weapon = int(options.start_weapon)
-        self.start_maxhealth = options.start_maxhealth
-        self.level_shuffle = options.level_shuffle
-        #self.shop_shuffle = options.shop_shuffle
-        self.freemove_isles = options.freemove_isles
-        self.weapon_gate = False #options.weapon_gate
-        self.randomize_abilities = options.randomize_abilities
-        self.boss_grade_checks = GradeCheckMode(options.boss_grade_checks)
-        self.rungun_grade_checks = GradeCheckMode(options.rungun_grade_checks)
-        self.boss_secret_checks = options.boss_secret_checks
-        self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks
+        self.use_dlc = options.use_dlc.value
+        self.mode = GameMode(options.mode.value)
+        self.hard_logic = False #options.hard_logic.value
+        self.expert_mode = options.expert_mode.value
+        self.start_weapon = int(options.start_weapon.value)
+        self.start_maxhealth = options.start_maxhealth.value
+        self.level_shuffle = options.level_shuffle.value
+        #self.shop_shuffle = options.shop_shuffle.value
+        self.freemove_isles = options.freemove_isles.value
+        self.weapon_gate = False #options.weapon_gate.value
+        self.randomize_abilities = options.randomize_abilities.value
+        self.boss_grade_checks = GradeCheckMode(options.boss_grade_checks.value)
+        self.rungun_grade_checks = GradeCheckMode(options.rungun_grade_checks.value)
+        self.boss_secret_checks = options.boss_secret_checks.value
+        self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks.value
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
         self.lucien_quest = False
-        self.agrade_quest = options.silverworth_quest
-        self.pacifist_quest = options.pacifist_quest
+        self.agrade_quest = options.silverworth_quest.value
+        self.pacifist_quest = options.pacifist_quest.value
         self.music_quest = False
         self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
-        self.maxhealth_upgrades = options.maxhealth_upgrades
-        self.traps = options.traps
+        self.maxhealth_upgrades = options.maxhealth_upgrades.value
+        self.traps = options.traps.value
         self.trap_weights = self._get_trap_weights(options)
         self.filler_item_weights = self._get_filler_item_weights(options)
         self.coin_amounts = self._get_coin_amounts(options)
         self.contract_requirements = (5,10,17)
         self.dlc_ingredient_requirements = 5
         self.require_secret_shortcuts = True
-        self.minimum_filler = options.minimum_filler
+        self.minimum_filler = options.minimum_filler.value
 
     def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int, int, int]:
-        total_single_coins = 40 if self.use_dlc else 37
+        total_single_coins = (40 if self.use_dlc else 37) + options.extra_coins.value
         total_double_coins = 5 if self.use_dlc else 0
         total_triple_coins = 2 if self.use_dlc else 1
 
@@ -96,16 +96,16 @@ class WorldSettings:
 
     def _get_filler_item_weights(self, options: CupheadOptions) -> list[int]:
         return [
-            options.filler_weight_extrahealth,
-            options.filler_weight_superrecharge,
-            options.filler_weight_fastfire,
+            options.filler_weight_extrahealth.value,
+            options.filler_weight_superrecharge.value,
+            options.filler_weight_fastfire.value,
         ]
 
     def _get_trap_weights(self, options: CupheadOptions) -> list[int]:
         return [
-            0, #options.trap_weight_fingerjam,
-            0, #options.trap_weight_slowfire,
-            3, #options.trap_weight_superdrain,
-            0, #options.trap_weight_reverse,
-            0, #options.trap_weight_screen,
+            0, #options.trap_weight_fingerjam.value,
+            0, #options.trap_weight_slowfire.value,
+            3, #options.trap_weight_superdrain.value,
+            0, #options.trap_weight_reverse.value,
+            0, #options.trap_weight_screen.value,
         ]
