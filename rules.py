@@ -3,9 +3,10 @@ import typing
 from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
+from .levels import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
-from .rulebase import Rule, rule_and, rule_has, rule_has_all, rule_has_any
+from .rulebase import Rule, rule_and, rule_has, rule_has_all, rule_has_any, region_rule_to_rule
 from . import locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -24,6 +25,11 @@ def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
         set_rule(entrance, rule)
+def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
+    region = get_region(world, region_name)
+    for entrance in region.entrances:
+        if entrance.access_rule:
+            set_rule(entrance, rule)
 
 def set_rules(world: CupheadWorld):
     w = world
@@ -35,7 +41,10 @@ def set_rules(world: CupheadWorld):
     set_region_rules(w, LocationNames.world_inkwell_2, rule_has(w, ItemNames.item_contract, contract_reqs[0]))
     set_region_rules(w, LocationNames.world_inkwell_3, rule_has(w, ItemNames.item_contract, contract_reqs[1]))
     set_region_rules(w, LocationNames.level_boss_kingdice,
-                     rule_and(rule_has(w, ItemNames.item_contract, contract_reqs[2]), rule_has_any(w, {ItemNames.item_plane_gun, ItemNames.item_plane_bombs})))
+                     rule_and(
+                         rule_has(w, ItemNames.item_contract, contract_reqs[2]),
+                         region_rule_to_rule(level_rule_kingdice(settings), w.player)
+                     ))
     set_shop_rules(w)
 
     set_level_rules(w)
@@ -83,7 +92,8 @@ def set_level_rules(world: CupheadWorld):
     if w.wsettings.randomize_abilities:
         if boss_grade_checks > 0:
             for _loc in locations.location_level_boss_topgrade:
-                set_level_parry_rule(w, _loc)
+                if _loc != LocationNames.loc_level_boss_kingdice_topgrade:
+                    set_level_parry_rule(w, _loc)
             if w.wsettings.use_dlc:
                 for _loc in locations.location_level_dlc_boss_topgrade:
                     set_level_parry_rule(w, _loc)

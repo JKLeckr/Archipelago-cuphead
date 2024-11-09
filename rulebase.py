@@ -23,6 +23,9 @@ def rule_has_all(world: "CupheadWorld", items: Iterable[str]) -> Rule:
 def rule_has_any(world: "CupheadWorld", items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_any(items, player)
 
+def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
+    return lambda state, p=player: rrule(state, p)
+
 def region_rule_none() -> RegionRule:
     return lambda state, player: True
 def region_rule_has(item: str, count: int = 1) -> RegionRule:
