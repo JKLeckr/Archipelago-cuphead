@@ -381,6 +381,11 @@ location_world_quest = {
     LocationNames.loc_quest_silverworth: LocationData(id(123)),
     LocationNames.loc_quest_music: LocationData(id(124)),
 }
+location_level_boss_secret = {
+    LocationNames.loc_level_boss_veggies_secret: LocationData(id(125)),
+    LocationNames.loc_level_boss_plane_genie_secret: LocationData(id(126)),
+    LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
+}
 location_dlc_world = {
     #LocationNames.loc_dlc_cookie: LocationData(dlc_id(51)),
     LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(52)),
@@ -392,12 +397,6 @@ location_dlc_world_event = {
 }
 location_dlc_world_quest = {
     LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(55)),
-}
-
-location_level_boss_secret = {
-    LocationNames.loc_level_boss_veggies_secret: LocationData(id(125)),
-    LocationNames.loc_level_boss_plane_genie_secret: LocationData(id(126)),
-    LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
 }
 
 # Special Locations
@@ -443,7 +442,7 @@ locations_base: dict[str, LocationData] = {
 }
 locations_topgrade: dict[str, LocationData] = {
     **location_level_boss_topgrade,
-    ##**location_level_boss_final_topgrade,
+    #**location_level_boss_final_topgrade,
     **location_level_rungun_agrade,
     **location_level_rungun_pacifist,
 }
@@ -486,15 +485,22 @@ locations_dlc_event_boss_chaliced: dict[str, LocationData] = {
 
 locations_all: dict[str, LocationData] = {
     **locations_base,
+    **location_level_boss_final, # Final
+    **location_level_boss_secret,
     **locations_topgrade,
+    **location_level_boss_final_topgrade,  # Final
     **locations_event_agrade,
     **location_level_rungun_event_pacifist,
     **location_world_quest,
     **location_special,
     **location_goal,
     **locations_dlc,
+    **location_level_dlc_boss_final, # Final
     **locations_dlc_topgrade,
+    **location_level_dlc_boss_final_topgrade, # Final
     **locations_dlc_boss_chaliced,
+    **location_level_boss_final_dlc_chaliced, # Final
+    **location_level_dlc_boss_final_dlc_chaliced, # Final
     **locations_dlc_event_agrade,
     **locations_dlc_event_boss_chaliced,
     **location_dlc_world_quest,

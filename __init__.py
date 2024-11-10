@@ -32,7 +32,7 @@ class CupheadWorld(World):
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
     options: CupheadOptions
-    version = "0.1.1-preview02f"
+    version = "0.1.1-preview02g"
     required_client_version = (0, 5, 0)
     debug = False
 
