@@ -2,7 +2,6 @@
 class LocationNames:
     # Prefixes
     _loc_event_ = "Event "
-    _reg_group_ = "RGroup "
 
     # Postfixes
     _num1_ = " One"
@@ -104,8 +103,8 @@ class LocationNames:
     level_plane_tutorial = "Plane Tutorial"
     level_dlc_tutorial = "Recipe for Ms. Chalice"
 
-    # Region Groups
-    # (None)
+    # Misc Region
+    reg_dlc_boat = "Boat"
 
     # World Defs
     world_inkwell = "Inkwell Isle"
@@ -526,7 +525,7 @@ class ItemNames:
     item_plane_super = "Plane Super"
     item_contract = "Contract"
     item_healthupgrade = "+1 Max Health"
-    item_dlc_boat = "Boat"
+    item_dlc_boat = "Boat Access"
     item_dlc_ingredient = "Ingredient"
 
     # Traps

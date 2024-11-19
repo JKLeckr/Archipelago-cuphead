@@ -69,13 +69,19 @@ region_house = RegionData(LocationNames.level_house, None, [
 
 region_house_level_tutorial = LevelRegionData(LocationNames.level_tutorial, None, None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
 
+region_dlc_boat = RegionData(LocationNames.reg_dlc_boat, [LocationNames.loc_event_dlc_boatarrival], None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
+
 region_worlds = [
     WorldRegionData(LocationNames.world_inkwell_1, [
         LocationNames.loc_npc_mac,
         LocationNames.loc_coin_isle1_secret,
     ], [
         Target(LocationNames.level_shop1),
-        Target(LocationNames.world_dlc_inkwell_4, rule_has(ItemNames.item_event_dlc_boataccess), dep.dep_dlc),
+        Target(LocationNames.world_dlc_inkwell_4,
+               rule_has_all({
+                   ItemNames.item_event_dlc_boataccess,
+                   ItemNames.item_dlc_boat
+               }), dep.dep_dlc),
         LevelTarget(LocationNames.level_boss_veggies),
         LevelTarget(LocationNames.level_boss_slime),
         LevelTarget(LocationNames.level_rungun_forest),
@@ -125,7 +131,7 @@ region_worlds = [
 ]
 region_dlc_worlds = [
     WorldRegionData(LocationNames.world_dlc_inkwell_4, [
-        LocationNames.loc_event_dlc_start,
+        #LocationNames.loc_event_dlc_start,
         LocationNames.loc_dlc_npc_newscat,
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [

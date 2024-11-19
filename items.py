@@ -132,7 +132,7 @@ item_special = {
     ItemNames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_skip_balancing, 0),
 }
 item_dlc_special = {
-    #ItemNames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
+    ItemNames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
 }
 
