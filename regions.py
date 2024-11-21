@@ -60,7 +60,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
     for target in regc.connect_to:
         if target:
             if target.depends(wsettings):
-                if regc.region_type == DefType.LEVEL:
+                if target.tgt_type == DefType.LEVEL:
                     _ruleb = target.rule
                     _level = level_map(world, regc.name)
                     _rulea = _level.rule(wsettings)
@@ -76,6 +76,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
                         if loc not in locset:
                             locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
+                #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
             #else:
             #    print("Skipping Target "+target.name) # if debug
         else:

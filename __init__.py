@@ -1,7 +1,6 @@
 from __future__ import annotations
 from typing import TextIO, Dict, Any
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
-from Utils import visualize_regions
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
 from .options import CupheadOptions, cuphead_option_groups
@@ -9,7 +8,7 @@ from .settings import WorldSettings
 from .items import ItemData
 from .locations import LocationData
 from .levels import LevelData, level_map
-from . import items, itembase, levels, locations, regions, rules
+from . import items, itembase, levels, locations, regions, rules, debug
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -32,7 +31,7 @@ class CupheadWorld(World):
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
     options: CupheadOptions
-    version = "0.1.1-preview02g"
+    version = "0.1.1-preview02h"
     required_client_version = (0, 5, 0)
     debug = False
 
@@ -196,9 +195,9 @@ class CupheadWorld(World):
 
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if self.level_shuffle and len(self.level_shuffle_map)>0:
-            spoiler_handle.write("\nLevel Shuffle Map:\n\n")
+            spoiler_handle.write(f"\n{self.player} Level Shuffle Map:\n\n")
             spoiler_handle.write('\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n')
-        spoiler_handle.write("\nShop Items:\n\n")
+        spoiler_handle.write(f"\n{self.player} Shop Items:\n\n")
         spoiler_handle.write('\n'.join([
             (x + ':\n' + '\n'.join([f" {z}" for z in y])) for x, y in self.shop_locations.items() if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
         ]))
@@ -229,4 +228,5 @@ class CupheadWorld(World):
 
     def set_rules(self) -> None:
         rules.set_rules(self)
-        #visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
+        #debug.print_locations(self)
+        #debug.visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
