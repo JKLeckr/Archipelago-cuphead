@@ -27,10 +27,16 @@ def level_rule_plane(settings: WorldSettings) -> RegionRule:
         return level_rule_or(level_rule_plane_gun, level_rule_plane_bombs)(settings)
     else:
         return level_rule_plane_gun(settings)
+def level_rule_duck(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return region_rule_has(ItemNames.item_ability_duck)
 def level_rule_dash(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_dash)
+def level_rule_duck_and_dash(settings: WorldSettings) -> RegionRule:
+    return level_rule_or(level_rule_duck, level_rule_dash)(settings)
 def level_rule_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -135,13 +141,13 @@ level_boss = {
         LocationNames.loc_level_boss_slime_topgrade,
         LocationNames.loc_level_boss_slime_event_agrade,
         LocationNames.loc_level_boss_slime_dlc_chaliced,
-    ]), # No rules
+    ], level_rule_duck_and_dash),
     LocationNames.level_boss_frogs: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_frogs,
         LocationNames.loc_level_boss_frogs_topgrade,
         LocationNames.loc_level_boss_frogs_event_agrade,
         LocationNames.loc_level_boss_frogs_dlc_chaliced,
-    ]), # No rules
+    ], level_rule_parry_or_psugar),
     LocationNames.level_boss_flower: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_flower,
         LocationNames.loc_level_boss_flower_topgrade,
@@ -153,7 +159,7 @@ level_boss = {
         LocationNames.loc_level_boss_baroness_topgrade,
         LocationNames.loc_level_boss_baroness_event_agrade,
         LocationNames.loc_level_boss_baroness_dlc_chaliced,
-    ]), # No rules
+    ], level_rule_parry_or_psugar),
     LocationNames.level_boss_clown: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_clown,
         LocationNames.loc_level_boss_clown_topgrade,

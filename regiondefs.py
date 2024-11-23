@@ -1,9 +1,9 @@
 from __future__ import annotations
 import typing
-from typing import Optional
+from typing import Optional, Iterable
 from enum import IntEnum, IntFlag
 from .names import LocationNames, ItemNames
-from .rulebase import RegionRule, region_rule_has
+from .rulebase import RegionRule, region_rule_has, region_rule_has_all
 from .dep import Dep
 from . import dep
 if typing.TYPE_CHECKING:
@@ -20,6 +20,8 @@ class DefFlags(IntFlag):
 
 def rule_has(item: str, count: int = 1) -> RegionRule:
     return region_rule_has(item, count)
+def rule_has_all(items: Iterable[str]) -> RegionRule:
+    return region_rule_has_all(items)
 
 class Target:
     name: str
@@ -61,7 +63,9 @@ class WorldRegionData(RegionData):
 
 region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)], flags=DefFlags.TGT_IGNORE_FREEMOVE)
 region_house = RegionData(LocationNames.level_house, None, [
-    Target(LocationNames.level_tutorial), Target(LocationNames.world_inkwell_1)], flags=DefFlags.TGT_IGNORE_FREEMOVE)
+        Target(LocationNames.level_tutorial, rule_has_all([ItemNames.item_ability_dash, ItemNames.item_ability_duck, ItemNames.item_ability_parry])),
+        Target(LocationNames.world_inkwell_1)
+    ], flags=DefFlags.TGT_IGNORE_FREEMOVE)
 
 region_house_level_tutorial = RegionData(LocationNames.level_tutorial, [
     LocationNames.loc_level_tutorial,
