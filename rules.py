@@ -89,6 +89,7 @@ def set_level_rules(world: CupheadWorld):
     w = world
     boss_grade_checks = w.wsettings.boss_grade_checks
     rungun_grade_checks = w.wsettings.rungun_grade_checks
+    boss_secret_checks = w.wsettings.boss_secret_checks
     if w.wsettings.randomize_abilities:
         if boss_grade_checks > 0:
             for _loc in locations.location_level_boss_topgrade:
@@ -100,6 +101,8 @@ def set_level_rules(world: CupheadWorld):
         if rungun_grade_checks > 0 and rungun_grade_checks < 5:
             for _loc in locations.location_level_rungun_agrade:
                 set_item_rule(w, _loc, ItemNames.item_ability_parry)
+        if boss_secret_checks:
+            set_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
 
 def set_shop_rules(world: CupheadWorld):
     w = world

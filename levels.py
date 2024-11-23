@@ -375,7 +375,7 @@ level_rungun = {
         LocationNames.loc_level_rungun_mountain_coin5,
         LocationNames.loc_level_rungun_mountain_event_agrade,
         LocationNames.loc_level_rungun_mountain_event_pacifist,
-    ]),
+    ], level_rule_dash),
 }
 level_mausoleum = {
     LocationNames.level_mausoleum_i: LevelData(LocationNames.world_inkwell_1, [LocationNames.loc_level_mausoleum_i,], level_rule_parry),
