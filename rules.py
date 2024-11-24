@@ -102,6 +102,7 @@ def set_level_rules(world: CupheadWorld):
             for _loc in locations.location_level_rungun_agrade:
                 set_item_rule(w, _loc, ItemNames.item_ability_parry)
         if boss_secret_checks:
+            set_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
             set_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
 
 def set_shop_rules(world: CupheadWorld):
