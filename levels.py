@@ -5,7 +5,7 @@ from .names import LocationNames, ItemNames
 from .locations import LocationData
 from .settings import WorldSettings
 from .auxiliary import scrub_list
-from .rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_has_any
+from .rulebase import RegionRule, region_rule_none, region_rule_has
 
 LevelRule = Callable[[WorldSettings], RegionRule]
 
@@ -41,10 +41,14 @@ def level_rule_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_parry)
+def level_rule_psugar(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return region_rule_has(ItemNames.item_charm_psugar)
 def level_rule_parry_or_psugar(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return region_rule_has_any((ItemNames.item_ability_parry, ItemNames.item_charm_psugar))
+    return level_rule_or(level_rule_parry, level_rule_psugar)
 def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -57,6 +61,10 @@ def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_plane_parry)
+def level_rule_funhouse(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_or(level_rule_parry, level_rule_and(level_rule_psugar, level_rule_dash))(settings)
 def level_rule_bird(settings: WorldSettings):
     if settings.hard_logic:
         return level_rule_plane_gun(settings)
@@ -65,7 +73,7 @@ def level_rule_bird(settings: WorldSettings):
 def level_rule_pirate(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return region_rule_has_any({ItemNames.item_ability_duck, ItemNames.item_ability_parry})
+    return level_rule_or(level_rule_duck, level_rule_and(level_rule_parry, level_rule_dash))
 def level_rule_robot(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_plane(settings)
@@ -315,7 +323,7 @@ level_rungun = {
         LocationNames.loc_level_rungun_forest_coin5,
         LocationNames.loc_level_rungun_forest_event_agrade,
         LocationNames.loc_level_rungun_forest_event_pacifist,
-    ]),
+    ], level_rule_dash),
     LocationNames.level_rungun_tree: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_rungun_tree,
         LocationNames.loc_level_rungun_tree_agrade,
@@ -351,7 +359,7 @@ level_rungun = {
         LocationNames.loc_level_rungun_funhouse_coin5,
         LocationNames.loc_level_rungun_funhouse_event_agrade,
         LocationNames.loc_level_rungun_funhouse_event_pacifist,
-    ], level_rule_parry),
+    ], level_rule_funhouse),
     LocationNames.level_rungun_harbour: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_rungun_harbour,
         LocationNames.loc_level_rungun_harbour_agrade,
