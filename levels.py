@@ -85,7 +85,7 @@ def level_rule_kingdice(settings: WorldSettings) -> RegionRule:
 def level_rule_devil(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return level_rule_and(level_rule_parry, level_rule_or(level_rule_dash, level_rule_duck))(settings) # TODO: dash or duck
+    return level_rule_parry(settings)
 def level_dlc_rule_relic(settings: WorldSettings) -> RegionRule:
     return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
 
