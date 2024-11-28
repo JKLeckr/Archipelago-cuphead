@@ -167,8 +167,8 @@ items_all: dict[str, ItemData] = {
     **item_trap,
 }
 
-def setup_items(settings: WorldSettings):
-    items: dict[str,ItemData] = {**items_base}
+def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
+    items: dict[str, ItemData] = {**items_base}
     if settings.use_dlc:
         items.update(items_dlc)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:

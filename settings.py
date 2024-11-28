@@ -82,8 +82,8 @@ class WorldSettings:
         self.trap_weights = self._get_trap_weights(options)
         self.filler_item_weights = self._get_filler_item_weights(options)
         self.coin_amounts = self._get_coin_amounts(options)
-        self.contract_requirements = (5,10,17)
-        self.dlc_ingredient_requirements = 5
+        self.contract_requirements = self._get_contract_requirements(options)
+        self.dlc_ingredient_requirements = options.ingredient_requirements.value
         self.require_secret_shortcuts = True
         self.minimum_filler = options.minimum_filler.value
 
@@ -93,6 +93,15 @@ class WorldSettings:
         total_triple_coins = 2 if self.use_dlc else 1
 
         return (total_single_coins, total_double_coins, total_triple_coins)
+
+    def _get_contract_requirements(self, options: CupheadOptions) -> tuple[int, int, int]:
+        max_contracts = (5, 10, 17)
+        total_req = options.contract_requirements.value
+        distrib = total_req // 3
+        die1 = min(distrib, max_contracts[0])
+        die2 = die1 + min(distrib, max_contracts[1])
+
+        return (die1, die2, total_req)
 
     def _get_filler_item_weights(self, options: CupheadOptions) -> list[int]:
         return [

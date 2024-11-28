@@ -32,8 +32,8 @@ class CupheadWorld(World):
     options_dataclass = CupheadOptions
     options: CupheadOptions
     version = "0.1.2-preview03a"
-    required_client_version = (0, 5, 0)
-    debug = False
+    required_client_version = (0, 5, 1)
+    debug_mode = False
 
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id
