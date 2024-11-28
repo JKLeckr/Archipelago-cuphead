@@ -38,6 +38,7 @@ class GameMode(Choice):
 
 class HardLogic(Toggle):
     """
+    -PARTIALLY WORKS-
     Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
     Examples include requiring jumping into pits to get across gaps and requiring avoiding King Dice bosses that
     requires certain abilities to beat King Dice in logic.
@@ -66,6 +67,24 @@ class StartWeapon(Choice):
     option_dlc_converge = 7
     option_dlc_twistup = 8
     default = "random"
+
+class ContractRequirements(Range):
+    """
+    Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
+    The required contracts for the die houses are evenly distributed.
+    """
+    display_name = "Contract Requirements"
+    range_start = 3
+    range_end = 17
+
+class DlcIngredientRequirements(Range):
+    """
+    -DLC ONLY-
+    Set the amount of ingredients needed to confront Saltbaker.
+    """
+    display_name = "DLC Ingredient Requirements"
+    range_start = 1
+    range_end = 5
 
 class LevelShuffle(Toggle):
     """
@@ -285,6 +304,8 @@ class CupheadOptions(PerGameCommonOptions):
     expert_mode: ExpertMode
     start_weapon: StartWeapon
     start_maxhealth: StartMaxHealth
+    contract_requirements: ContractRequirements
+    ingredient_requirements: DlcIngredientRequirements
     level_shuffle: LevelShuffle
     freemove_isles: FreeMoveIsles
     deathlink: DeathLink
@@ -324,15 +345,20 @@ cuphead_option_groups = [
         #RandomizeAimAbilities,
         DeathLink,
     ]),
+    OptionGroup("DLC Main", [
+        DlcIngredientRequirements
+    ]),
     OptionGroup("Checks", [
         BossSecretChecks,
         BossGradeChecks,
         RunGunGradeChecks,
-        #DlcBossChaliceChecks,
         SilverworthQuest,
         PacifistQuest,
-        #DlcCactusGirlQuest,
     ]),
+    #OptionGroup("DLC Checks", [
+    #    #DlcBossChaliceChecks,
+    #    #DlcCactusGirlQuest,
+    #]),
     OptionGroup("Items", [
         ExtraCoins,
         MaxHealthUpgrades,
