@@ -108,6 +108,8 @@ class CupheadWorld(World):
             "start_weapon",
             "contract_requirements",
             "dlc_ingredient_requirements",
+            "contract_goal_requirements",
+            "dlc_ingredient_goal_requirements",
             "freemove_isles",
             "randomize_abilities",
             "boss_secret_checks", #

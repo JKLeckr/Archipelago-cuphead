@@ -23,6 +23,19 @@ def rule_has_all(world: "CupheadWorld", items: Iterable[str]) -> Rule:
 def rule_has_any(world: "CupheadWorld", items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_any(items, player)
 
+def _can_reach_all_regions(state: CollectionState, player: int, regions: Iterable[str]) -> bool:
+    for region in regions:
+        if not state.can_reach_region(region, player):
+            return False
+    return True
+
+def rule_can_reach(world: "CupheadWorld", location: str) -> Rule:
+    return lambda state, player=world.player: state.can_reach(location, player)
+def rule_can_reach_region(world: "CupheadWorld", region: str) -> Rule:
+    return lambda state, player=world.player: state.can_reach_region(region, player)
+def rule_can_reach_all_regions(world: "CupheadWorld", regions: Iterable[str]) -> Rule:
+    return lambda state, player=world.player: _can_reach_all_regions(state, player, regions)
+
 def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, p=player: rrule(state, p)
 
