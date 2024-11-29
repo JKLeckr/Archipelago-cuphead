@@ -82,7 +82,7 @@ class DlcIngredientRequirements(Range):
     -DLC ONLY-
     Set the amount of ingredients needed to confront Saltbaker.
     """
-    display_name = "DLC Ingredient Requirements"
+    display_name = "[DLC] Ingredient Requirements"
     range_start = 1
     range_end = 5
 
@@ -157,6 +157,7 @@ class RunGunGradeChecks(Choice):
 
 class DlcBossChaliceChecks(Toggle):
     """
+    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     Enable checks for defeating each boss as Ms. Chalice.
     """
@@ -178,6 +179,7 @@ class PacifistQuest(Toggle):
 
 class DlcCactusGirlQuest(Toggle):
     """
+    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
     This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
@@ -305,7 +307,7 @@ class CupheadOptions(PerGameCommonOptions):
     start_weapon: StartWeapon
     start_maxhealth: StartMaxHealth
     contract_requirements: ContractRequirements
-    ingredient_requirements: DlcIngredientRequirements
+    dlc_ingredient_requirements: DlcIngredientRequirements
     level_shuffle: LevelShuffle
     freemove_isles: FreeMoveIsles
     deathlink: DeathLink
@@ -315,10 +317,10 @@ class CupheadOptions(PerGameCommonOptions):
     boss_secret_checks: BossSecretChecks
     boss_grade_checks: BossGradeChecks
     rungun_grade_checks: RunGunGradeChecks
-    #dlc_boss_chalice_checks: DlcBossChaliceChecks
+    dlc_boss_chalice_checks: DlcBossChaliceChecks
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
-    #dlc_cactusgirl_quest: DlcCactusGirlQuest
+    dlc_cactusgirl_quest: DlcCactusGirlQuest
     extra_coins: ExtraCoins
     maxhealth_upgrades: MaxHealthUpgrades
     minimum_filler: MinimumFillerItems
@@ -326,11 +328,11 @@ class CupheadOptions(PerGameCommonOptions):
     filler_weight_extrahealth: FillerWeightExtraHealth
     filler_weight_superrecharge: FillerWeightSuperRecharge
     filler_weight_fastfire: FillerWeightFastFire
-    #trap_weight_fingerjam: TrapWeightFingerJam
-    #trap_weight_slowfire: TrapWeightSlowFire
-    #trap_weight_superdrain: TrapWeightSuperDrain
-    #trap_weight_reverse: TrapWeightReverse
-    #trap_weight_screen: TrapWeightScreen
+    trap_weight_fingerjam: TrapWeightFingerJam
+    trap_weight_slowfire: TrapWeightSlowFire
+    trap_weight_superdrain: TrapWeightSuperDrain
+    trap_weight_reverse: TrapWeightReverse
+    trap_weight_screen: TrapWeightScreen
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -355,10 +357,10 @@ cuphead_option_groups = [
         SilverworthQuest,
         PacifistQuest,
     ]),
-    #OptionGroup("DLC Checks", [
-    #    #DlcBossChaliceChecks,
-    #    #DlcCactusGirlQuest,
-    #]),
+    OptionGroup("DLC Checks", [
+        DlcBossChaliceChecks,
+        DlcCactusGirlQuest,
+    ]),
     OptionGroup("Items", [
         ExtraCoins,
         MaxHealthUpgrades,
