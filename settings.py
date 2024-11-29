@@ -38,6 +38,7 @@ class WorldSettings:
     boss_grade_checks: GradeCheckMode
     rungun_grade_checks: GradeCheckMode
     boss_secret_checks: bool
+    kingdice_bosssanity: bool
     dlc_boss_chalice_checks: bool
     fourparries_quest: bool
     ginger_quest: bool
@@ -50,6 +51,8 @@ class WorldSettings:
     coin_amounts: tuple[int, int, int]
     contract_requirements: tuple[int, int, int]
     dlc_ingredient_requirements: int
+    contract_goal_requirements: int
+    dlc_ingredient_goal_requirements: int
     require_secret_shortcuts: bool
     minimum_filler: int
 
@@ -68,7 +71,8 @@ class WorldSettings:
         self.boss_grade_checks = GradeCheckMode(options.boss_grade_checks.value)
         self.rungun_grade_checks = GradeCheckMode(options.rungun_grade_checks.value)
         self.boss_secret_checks = options.boss_secret_checks.value
-        self.dlc_boss_chalice_checks = False #options.dlc_boss_chalice_checks.value
+        self.kingdice_bosssanity = options.kingdice_bosssanity.value
+        self.dlc_boss_chalice_checks = options.dlc_boss_chalice_checks.value
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
@@ -76,7 +80,7 @@ class WorldSettings:
         self.agrade_quest = options.silverworth_quest.value
         self.pacifist_quest = options.pacifist_quest.value
         self.music_quest = False
-        self.dlc_cactusgirl_quest = False #options.dlc_cactusgirl_quest
+        self.dlc_cactusgirl_quest = options.dlc_cactusgirl_quest.value
         self.maxhealth_upgrades = options.maxhealth_upgrades.value
         self.traps = options.traps.value
         self.trap_weights = self._get_trap_weights(options)
@@ -84,6 +88,8 @@ class WorldSettings:
         self.coin_amounts = self._get_coin_amounts(options)
         self.contract_requirements = self._get_contract_requirements(options)
         self.dlc_ingredient_requirements = options.dlc_ingredient_requirements.value
+        self.contract_goal_requirements = options.contract_goal_requirements.value
+        self.dlc_ingredient_goal_requirements = options.dlc_ingredient_goal_requirements.value
         self.require_secret_shortcuts = True
         self.minimum_filler = options.minimum_filler.value
 
@@ -112,9 +118,9 @@ class WorldSettings:
 
     def _get_trap_weights(self, options: CupheadOptions) -> list[int]:
         return [
-            0, #options.trap_weight_fingerjam.value,
-            0, #options.trap_weight_slowfire.value,
-            3, #options.trap_weight_superdrain.value,
-            0, #options.trap_weight_reverse.value,
-            0, #options.trap_weight_screen.value,
+            options.trap_weight_fingerjam.value,
+            options.trap_weight_slowfire.value,
+            options.trap_weight_superdrain.value,
+            options.trap_weight_reverse.value,
+            options.trap_weight_screen.value,
         ]

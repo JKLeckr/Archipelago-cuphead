@@ -46,6 +46,7 @@ class LocationNames:
     level_boss_plane_robot = "Junkyard Jive"
     level_dlc_boss_plane_cowboy = "High-Noon Hoopla"
 
+    level_dicepalace = "Kingdice Minibosses"
     level_dicepalace_boss1 = "Kingdice Miniboss 1"
     level_dicepalace_boss2 = "Kingdice Miniboss 2"
     level_dicepalace_boss3 = "Kingdice Miniboss 3"

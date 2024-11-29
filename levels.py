@@ -391,12 +391,12 @@ level_mausoleum = {
     LocationNames.level_mausoleum_iii: LevelData(LocationNames.world_inkwell_3, [LocationNames.loc_level_mausoleum_iii,], level_rule_parry),
 }
 level_dlc_chesscastle_boss = {
-    LocationNames.level_dlc_chesscastle_pawn: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_pawn,]),
-    LocationNames.level_dlc_chesscastle_knight: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_knight,]),
-    LocationNames.level_dlc_chesscastle_bishop: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_bishop,]),
-    LocationNames.level_dlc_chesscastle_rook: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_rook,]),
-    LocationNames.level_dlc_chesscastle_queen: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_queen,]),
-    LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,])
+    LocationNames.level_dlc_chesscastle_pawn: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_pawn,], level_rule_parry),
+    LocationNames.level_dlc_chesscastle_knight: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_knight,], level_rule_parry),
+    LocationNames.level_dlc_chesscastle_bishop: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_bishop,], level_rule_parry),
+    LocationNames.level_dlc_chesscastle_rook: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_rook,], level_rule_parry),
+    LocationNames.level_dlc_chesscastle_queen: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_queen,], level_rule_parry),
+    LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,], level_rule_parry)
 }
 
 levels_base: dict[str, LevelData] = {

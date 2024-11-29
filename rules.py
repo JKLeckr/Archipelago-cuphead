@@ -72,11 +72,7 @@ def set_rules(world: CupheadWorld):
             chaliced_events = set(locations.locations_dlc_event_boss_chaliced.keys())
             set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
 
-    w.multiworld.completion_condition[w.player] = (
-        rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
-    ) if use_dlc else (
-        rule_has(w, ItemNames.item_event_goal_devilko)
-    )
+    set_goal(w)
 
 def set_level_parry_rule(world: CupheadWorld, loc: str):
     w = world
@@ -146,3 +142,23 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
     region = get_region(world, LocationNames.level_shops[shop_index])
     for entrance in region.entrances:
         set_rule(entrance, lambda state: state.has(ItemNames.item_coin, player, cost))
+
+def set_goal(world: CupheadWorld):
+    w = world
+    settings = w.wsettings
+    w.multiworld.completion_condition[w.player] = (
+        rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
+    ) if settings.mode == 1 else (
+        rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
+    ) if settings.mode == 2 else (
+        rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
+    ) if settings.mode == 3 else (
+        rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
+    ) if settings.mode == 4 else (
+        rule_and(
+            rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements),
+            rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
+        )
+    ) if settings.mode == 5 else (
+        rule_has(w, ItemNames.item_event_goal_devilko)
+    )
