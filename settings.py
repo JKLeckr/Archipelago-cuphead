@@ -83,7 +83,7 @@ class WorldSettings:
         self.filler_item_weights = self._get_filler_item_weights(options)
         self.coin_amounts = self._get_coin_amounts(options)
         self.contract_requirements = self._get_contract_requirements(options)
-        self.dlc_ingredient_requirements = options.ingredient_requirements.value
+        self.dlc_ingredient_requirements = options.dlc_ingredient_requirements.value
         self.require_secret_shortcuts = True
         self.minimum_filler = options.minimum_filler.value
 
