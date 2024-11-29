@@ -29,10 +29,11 @@ class GameMode(Choice):
     display_name = "Mode"
     option_beat_devil = 0
     option_collect_contracts = 1
-    option_dlc_beat_saltbaker = 2
-    option_dlc_beat_both = 3
-    option_dlc_collect_ingradients = 4
-    option_dlc_collect_both = 5
+    option_buy_out_shop = 2
+    option_dlc_beat_saltbaker = 3
+    option_dlc_beat_both = 4
+    option_dlc_collect_ingradients = 5
+    option_dlc_collect_both = 6
     default = 0
 
 class HardLogic(Toggle):
