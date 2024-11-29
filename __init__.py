@@ -97,7 +97,7 @@ class CupheadWorld(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data = {
-            "version": 1,
+            "version": 2,
             "world_version": self.version,
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop_map,
@@ -107,13 +107,15 @@ class CupheadWorld(World):
             "mode",
             "expert_mode",
             "start_weapon",
+            "contract_requirements",
+            "dlc_ingredient_requirements",
             "freemove_isles",
-            "randomize_abilities",
-            "boss_secret_checks",
+            "randomize_abilities", #
+            "boss_secret_checks", #
             "boss_grade_checks",
             "rungun_grade_checks",
-            "silverworth_quest",
-            "pacifist_quest",
+            "silverworth_quest", #
+            "pacifist_quest", #
             "start_maxhealth",
             "deathlink"
         )
