@@ -28,17 +28,16 @@ class GameMode(Choice):
     """
     display_name = "Mode"
     option_beat_devil = 0
-    option_contracts = 1
-    option_dlc_beat_devil = 2
-    option_dlc_beat_saltbaker = 3
-    option_dlc_beat_both = 4
-    option_dlc_beat_saltbaker_isle4_only = 5
-    option_dlc_ingradients = 6
+    option_collect_contracts = 1
+    option_dlc_beat_saltbaker = 2
+    option_dlc_beat_both = 3
+    option_dlc_collect_ingradients = 4
+    option_dlc_collect_both = 5
     default = 0
 
 class HardLogic(Toggle):
     """
-    -PARTIALLY WORKS-
+    -PARTIALLY WORKS, NOT STABLE-
     Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
     Examples include requiring jumping into pits to get across gaps and requiring avoiding King Dice bosses that
     requires certain abilities to beat King Dice in logic.
@@ -76,6 +75,7 @@ class ContractRequirements(Range):
     display_name = "Contract Requirements"
     range_start = 3
     range_end = 17
+    default = 17
 
 class DlcIngredientRequirements(Range):
     """
@@ -85,6 +85,26 @@ class DlcIngredientRequirements(Range):
     display_name = "[DLC] Ingredient Requirements"
     range_start = 1
     range_end = 5
+    default = 5
+
+class ContractGoalRequirements(Range):
+    """
+    Set the amount of contracts needed for goal.
+    """
+    display_name = "Contract Goal Requirements"
+    range_start = 3
+    range_end = 17
+    default = 17
+
+class DlcIngredientGoalRequirements(Range):
+    """
+    -DLC ONLY-
+    Set the amount of ingredients needed for goal.
+    """
+    display_name = "[DLC] Ingredient Goal Requirements"
+    range_start = 1
+    range_end = 5
+    default = 5
 
 class LevelShuffle(Toggle):
     """
@@ -176,6 +196,13 @@ class PacifistQuest(Toggle):
     This means that you will have to beat all 6 Run n' Gun levels without killing any monsters in order to get this check (not easy).
     """
     display_name = "Pacifist Quest"
+
+class DicePalaceBossSanity(Toggle):
+    """
+    Enable checks for beating the Kingdice mini-bosses.
+    There is an indicator for which mini-bosses you defeated.
+    """
+    display_name = "Kingdice BossSanity"
 
 class DlcCactusGirlQuest(Toggle):
     """
@@ -308,6 +335,8 @@ class CupheadOptions(PerGameCommonOptions):
     start_maxhealth: StartMaxHealth
     contract_requirements: ContractRequirements
     dlc_ingredient_requirements: DlcIngredientRequirements
+    contract_goal_requirements: ContractGoalRequirements
+    dlc_ingredient_goal_requirements: DlcIngredientGoalRequirements
     level_shuffle: LevelShuffle
     freemove_isles: FreeMoveIsles
     deathlink: DeathLink
@@ -317,6 +346,7 @@ class CupheadOptions(PerGameCommonOptions):
     boss_secret_checks: BossSecretChecks
     boss_grade_checks: BossGradeChecks
     rungun_grade_checks: RunGunGradeChecks
+    kingdice_bosssanity: DicePalaceBossSanity
     dlc_boss_chalice_checks: DlcBossChaliceChecks
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
@@ -356,6 +386,7 @@ cuphead_option_groups = [
         RunGunGradeChecks,
         SilverworthQuest,
         PacifistQuest,
+        DicePalaceBossSanity,
     ]),
     OptionGroup("DLC Checks", [
         DlcBossChaliceChecks,

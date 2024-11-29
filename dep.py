@@ -27,5 +27,7 @@ def dep_lucien_quest(s: WorldSettings) -> bool:
     return s.lucien_quest
 def dep_music_quest(s: WorldSettings) -> bool:
     return s.music_quest
+def dep_dicepalace(s: WorldSettings) -> bool:
+    return s.kingdice_bosssanity
 def dep_dlc_cactusgirl_quest(s: WorldSettings) -> bool:
     return s.dlc_cactusgirl_quest

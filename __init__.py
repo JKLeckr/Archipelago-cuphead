@@ -50,13 +50,13 @@ class CupheadWorld(World):
         # Sanitize settings
         if not self.options.use_dlc:
             # Sanitize mode
-            if int(self.options.mode)>1:
+            if int(self.options.mode.value)>1:
                 self.options.mode.value = self.random.randint(0,1)
             # Sanitize start_weapon
             if int(self.options.start_weapon.value)>5:
                 self.options.start_weapon.value = self.random.randint(0,5)
         # Sanitize grade checks
-        if not self.options.expert_mode and int(self.options.boss_grade_checks)>3:
+        if not self.options.expert_mode and int(self.options.boss_grade_checks.value)>3:
             self.options.boss_grade_checks.value = 3
 
         # Settings (See Settings.py)
@@ -86,7 +86,6 @@ class CupheadWorld(World):
         self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
         self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
 
-        # TODO: Move item_name_groups definition to be static
         # Group Items
         self.item_name_groups = self.get_item_groups()
 
@@ -110,7 +109,7 @@ class CupheadWorld(World):
             "contract_requirements",
             "dlc_ingredient_requirements",
             "freemove_isles",
-            "randomize_abilities", #
+            "randomize_abilities",
             "boss_secret_checks", #
             "boss_grade_checks",
             "rungun_grade_checks",
@@ -173,9 +172,9 @@ class CupheadWorld(World):
             "Ability": set(),
         }
         for item in self.active_items.keys():
-            if item in items.item_weapons or (self.use_dlc and item in items.item_dlc_weapons):
+            if item in items.item_weapons or item in items.item_dlc_weapons:
                 nitem_name_groups["Weapon"].update(item)
-            if item in items.item_charms or (self.use_dlc and item in items.item_dlc_charms):
+            if item in items.item_charms or item in items.item_dlc_charms:
                 nitem_name_groups["Charm"].update(item)
             if item in items.item_super:
                 nitem_name_groups["Super"].update(item)

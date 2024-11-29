@@ -387,7 +387,7 @@ location_level_boss_secret = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
 }
 location_dlc_world = {
-    #LocationNames.loc_dlc_cookie: LocationData(dlc_id(51)),
+    LocationNames.loc_dlc_cookie: LocationData(dlc_id(51)),
     LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(52)),
     LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(53)),
     #LocationNames.loc_event_dlc_curse_complete: LocationData(dlc_id(54)),
@@ -401,7 +401,6 @@ location_dlc_world_quest = {
 
 # Special Locations
 location_special = {
-    #LocationNames.loc_event_firstweapon: LocationData(None),
     LocationNames.loc_event_isle2_shortcut: LocationData(None),
     LocationNames.loc_event_quest_4mel_4th: LocationData(None),
     LocationNames.loc_event_quest_ludwig: LocationData(None),
