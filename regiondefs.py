@@ -262,6 +262,7 @@ region_isle3 = [
     RegionData(LocationNames.loc_quest_pacifist, [LocationNames.loc_quest_pacifist], None, dep.dep_pacifist_quest),
 ]
 region_isleh = [
+    LevelRegionData(LocationNames.level_dicepalace, None, None, dep.dep_dicepalace, flags=DefFlags.TGT_IGNORE_FREEMOVE),
     LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     #LevelRegionData(LocationNames.level_boss_devil, None, None),
     RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
