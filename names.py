@@ -530,10 +530,10 @@ class ItemNames:
     item_dlc_ingredient = "Ingredient"
 
     # Traps
-    item_level_trap_fingerjam = "Finger Jam Trap"
-    item_level_trap_slowfire = "Slow Fire Trap"
-    item_level_trap_superdrain = "Super Drain Trap"
-    item_level_trap_reverse = "Reverse Trap"
+    item_level_trap_fingerjam = "Finger Jam"
+    item_level_trap_slowfire = "Slow Fire"
+    item_level_trap_superdrain = "Super Drain"
+    item_level_trap_loadout = "Loadout Mixup"
     item_level_trap_screen = "Screen Trap"
 
     # Events

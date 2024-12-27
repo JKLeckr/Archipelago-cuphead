@@ -316,8 +316,8 @@ regions_start = [
     region_house,
     region_house_level_tutorial,
 ]
-regions_base = region_worlds + region_isle1 + region_isle2 + region_isle3 + region_isleh
-regions_dlc = region_dlc_worlds + region_dlc_isle4 + region_dlc_chesscastle #+ region_dlc_special
+regions_base: list[RegionData] = region_worlds + region_isle1 + region_isle2 + region_isle3 + region_isleh
+regions_dlc: list[RegionData] = [region_dlc_boat] + region_dlc_worlds + region_dlc_isle4 + region_dlc_chesscastle #+ region_dlc_special
 
 def get_regions(world: CupheadWorld) -> list[RegionData]:
     shop_locations = world.shop_locations
