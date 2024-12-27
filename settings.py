@@ -55,6 +55,7 @@ class WorldSettings:
     dlc_ingredient_goal_requirements: int
     require_secret_shortcuts: bool
     minimum_filler: int
+    trap_loadout_anyweapon: bool
 
     def __init__(self, options: CupheadOptions) -> None:
         self.use_dlc = options.use_dlc.value
@@ -92,6 +93,7 @@ class WorldSettings:
         self.dlc_ingredient_goal_requirements = options.dlc_ingredient_goal_requirements.value
         self.require_secret_shortcuts = True
         self.minimum_filler = options.minimum_filler.value
+        self.trap_loadout_anyweapon = options.trap_loadout_anyweapon.value
 
     def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int, int, int]:
         total_single_coins = (40 if self.use_dlc else 37) + options.extra_coins.value
@@ -121,6 +123,6 @@ class WorldSettings:
             options.trap_weight_fingerjam.value,
             options.trap_weight_slowfire.value,
             options.trap_weight_superdrain.value,
-            options.trap_weight_reverse.value,
-            options.trap_weight_screen.value,
+            options.trap_weight_loadout.value,
+            0,
         ]

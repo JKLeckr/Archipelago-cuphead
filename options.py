@@ -205,6 +205,12 @@ class DicePalaceBossSanity(Toggle):
     """
     display_name = "Kingdice BossSanity"
 
+class TrapLoadoutAnyWeapon(Toggle):
+    """
+    Allow Loadout Mixup to use any item including ones you do not currently have.
+    """
+    display_name = "Loadout Mixup Any Item"
+
 class DlcCactusGirlQuest(Toggle):
     """
     ---NOT YET IMPLEMENTED---
@@ -290,28 +296,28 @@ class TrapWeightFingerJam(Weight):
     Set to 0 to disable this trap.
     """
     display_name = "Finger Jam Trap Weight"
-    default = 3
+    default = 5
 class TrapWeightSlowFire(Weight):
     """
     Set Slow Fire Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
     """
     display_name = "Slow Fire Trap Weight"
-    default = 3
+    default = 5
 class TrapWeightSuperDrain(Weight):
     """
     Set Super Drain Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
     """
     display_name = "Super Drain Trap Weight"
-    default = 3
-class TrapWeightReverse(Weight):
+    default = 5
+class TrapWeightLoadout(Weight):
     """
-    Set Reverse Trap weight. Higher weight means it will more likely appear compared to other traps.
+    Set Loadout Mixup Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
     """
-    display_name = "Reverse Trap Weight"
-    default = 3
+    display_name = "Loadout Mixup Trap Weight"
+    default = 5
 class TrapWeightScreen(Weight):
     """
     Set Screen Trap weight. Higher weight means it will more likely appear compared to other traps.
@@ -359,11 +365,11 @@ class CupheadOptions(PerGameCommonOptions):
     filler_weight_extrahealth: FillerWeightExtraHealth
     filler_weight_superrecharge: FillerWeightSuperRecharge
     filler_weight_fastfire: FillerWeightFastFire
+    trap_loadout_anyweapon: TrapLoadoutAnyWeapon
     trap_weight_fingerjam: TrapWeightFingerJam
     trap_weight_slowfire: TrapWeightSlowFire
     trap_weight_superdrain: TrapWeightSuperDrain
-    trap_weight_reverse: TrapWeightReverse
-    trap_weight_screen: TrapWeightScreen
+    trap_weight_loadout: TrapWeightLoadout
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -399,14 +405,16 @@ cuphead_option_groups = [
         MinimumFillerItems,
         Traps,
     ]),
+    OptionGroup("Misc", [
+        TrapLoadoutAnyWeapon
+    ]),
     OptionGroup("Item Weights", [
         FillerWeightExtraHealth,
         FillerWeightSuperRecharge,
         FillerWeightFastFire,
-        #TrapWeightFingerJam,
-        #TrapWeightSlowFire,
-        #TrapWeightSuperDrain,
-        #TrapWeightReverse,
-        #TrapWeightScreen,
+        TrapWeightFingerJam,
+        TrapWeightSlowFire,
+        TrapWeightSuperDrain,
+        TrapWeightLoadout,
     ], True),
 ]

@@ -118,6 +118,7 @@ class CupheadWorld(World):
             "silverworth_quest", #
             "pacifist_quest", #
             "start_maxhealth",
+            "trap_loadout_anyweapon",
             "deathlink"
         )
         for option in slot_data_options:
