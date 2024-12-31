@@ -6,7 +6,7 @@ from .items import item_filler
 from .levels import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
-from .rulebase import Rule, rule_and, rule_has, rule_has_all, rule_has_any, region_rule_to_rule, rule_can_reach_all_regions
+from .rulebase import Rule, rule_and, rule_has, rule_has_all, region_rule_to_rule, rule_can_reach_all_regions
 from . import locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -19,7 +19,7 @@ def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
 def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
     set_loc_rule(world, loc, rule_has(world, item, count))
-def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule = None) -> None:
+def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
     set_rule(get_location(world, loc), rule)
 def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
@@ -28,8 +28,7 @@ def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
 def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
-        if entrance.access_rule:
-            set_rule(entrance, rule)
+        set_rule(entrance, rule)
 
 def set_rules(world: CupheadWorld):
     w = world
@@ -50,16 +49,8 @@ def set_rules(world: CupheadWorld):
     set_level_rules(w)
 
     set_item_rule(w, LocationNames.loc_coin_isle1_secret, ItemNames.item_event_isle1_secret_prereq, 5)
-    if settings.fourmel_quest:
-        set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
-    if settings.ginger_quest:
-        set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
-    if settings.agrade_quest:
-        set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
-    if settings.pacifist_quest:
-        set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
-    if settings.music_quest:
-        set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
+
+    set_quest_rules(w)
 
     if use_dlc:
         set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
@@ -73,6 +64,20 @@ def set_rules(world: CupheadWorld):
             set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
 
     set_goal(w)
+
+def set_quest_rules(world: CupheadWorld):
+    w = world
+    settings = w.wsettings
+    if settings.fourmel_quest:
+        set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
+    if settings.ginger_quest:
+        set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
+    if settings.agrade_quest:
+        set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
+    if settings.pacifist_quest:
+        set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
+    if settings.music_quest:
+        set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
 
 def set_level_parry_rule(world: CupheadWorld, loc: str):
     w = world

@@ -1,13 +1,13 @@
-from typing import Iterable
+from typing import Iterable, Any
 
-def count_in_list(e, ls: list):
+def count_in_list(e: Any, ls: list[Any]):
     count = 0
     for el in ls:
         if el == e:
             count += 1
     return count
 
-def format_list(ls: list) -> str:
+def format_list(ls: list[Any]) -> str:
     res = "["
     first = True
     if ls:
@@ -20,8 +20,8 @@ def format_list(ls: list) -> str:
     res += "]"
     return res
 
-def scrub_list(a: list, b: Iterable) -> list:
-    newlist: list = []
+def scrub_list(a: list[Any], b: Iterable[Any]) -> list[Any]:
+    newlist: list[Any] = []
     for item in a:
         if item in b:
             newlist.append(item)

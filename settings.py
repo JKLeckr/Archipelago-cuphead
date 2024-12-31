@@ -27,6 +27,7 @@ class WorldSettings:
     start_weapon: int
     start_maxhealth: int
     level_shuffle: bool
+    level_shuffle_plane_separate: bool
     #shop_shuffle: bool
     freemove_isles: bool
     weapon_gate: bool
@@ -58,30 +59,31 @@ class WorldSettings:
     trap_loadout_anyweapon: bool
 
     def __init__(self, options: CupheadOptions) -> None:
-        self.use_dlc = options.use_dlc.value
+        self.use_dlc = bool(options.use_dlc.value)
         self.mode = GameMode(options.mode.value)
-        self.hard_logic = False #options.hard_logic.value
-        self.expert_mode = options.expert_mode.value
+        self.hard_logic = False #bool(options.hard_logic.value)
+        self.expert_mode = bool(options.expert_mode.value)
         self.start_weapon = int(options.start_weapon.value)
         self.start_maxhealth = options.start_maxhealth.value
-        self.level_shuffle = options.level_shuffle.value
-        #self.shop_shuffle = options.shop_shuffle.value
-        self.freemove_isles = options.freemove_isles.value
-        self.weapon_gate = False #options.weapon_gate.value
-        self.randomize_abilities = options.randomize_abilities.value
+        self.level_shuffle = bool(options.level_shuffle.value)
+        self.level_shuffle_plane_separate = bool(options.level_shuffle_plane_separate)
+        #self.shop_shuffle = bool(options.shop_shuffle.value)
+        self.freemove_isles = bool(options.freemove_isles.value)
+        self.weapon_gate = False #bool(options.weapon_gate.value)
+        self.randomize_abilities = bool(options.randomize_abilities.value)
         self.boss_grade_checks = GradeCheckMode(options.boss_grade_checks.value)
         self.rungun_grade_checks = GradeCheckMode(options.rungun_grade_checks.value)
-        self.boss_secret_checks = options.boss_secret_checks.value
-        self.kingdice_bosssanity = options.kingdice_bosssanity.value
-        self.dlc_boss_chalice_checks = options.dlc_boss_chalice_checks.value
+        self.boss_secret_checks = bool(options.boss_secret_checks.value)
+        self.kingdice_bosssanity = bool(options.kingdice_bosssanity.value)
+        self.dlc_boss_chalice_checks = bool(options.dlc_boss_chalice_checks.value)
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
         self.lucien_quest = False
-        self.agrade_quest = options.silverworth_quest.value
-        self.pacifist_quest = options.pacifist_quest.value
+        self.agrade_quest = bool(options.silverworth_quest.value)
+        self.pacifist_quest = bool(options.pacifist_quest.value)
         self.music_quest = False
-        self.dlc_cactusgirl_quest = options.dlc_cactusgirl_quest.value
+        self.dlc_cactusgirl_quest = bool(options.dlc_cactusgirl_quest.value)
         self.maxhealth_upgrades = options.maxhealth_upgrades.value
         self.traps = options.traps.value
         self.trap_weights = self._get_trap_weights(options)
@@ -93,7 +95,7 @@ class WorldSettings:
         self.dlc_ingredient_goal_requirements = options.dlc_ingredient_goal_requirements.value
         self.require_secret_shortcuts = True
         self.minimum_filler = options.minimum_filler.value
-        self.trap_loadout_anyweapon = options.trap_loadout_anyweapon.value
+        self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
 
     def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int, int, int]:
         total_single_coins = (40 if self.use_dlc else 37) + options.extra_coins.value

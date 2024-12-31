@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TextIO, Dict, Any
+from typing import Optional, TextIO, Dict, Any
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
@@ -8,7 +8,7 @@ from .settings import WorldSettings
 from .items import ItemData
 from .locations import LocationData
 from .levels import LevelData, level_map
-from . import items, itembase, levels, locations, regions, rules, debug
+from . import items, itembase, levels, locations, regions, rules
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -27,10 +27,10 @@ class CupheadWorld(World):
     """
     A classic run and gun action game heavily focused on boss battles
     """
-    game: str = "Cuphead"
+    game: str = "Cuphead" # type: ignore
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
-    options: CupheadOptions
+    options: CupheadOptions # type: ignore
     version = "0.1.2-preview03a"
     required_client_version = (0, 5, 1)
     debug_mode = False
@@ -38,13 +38,14 @@ class CupheadWorld(World):
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id
 
-    # TODO: Move item_name_groups definition to be static
-    #item_name_groups = {}
+    item_name_groups = items.get_item_groups()
 
     item_names = set(items.items_all.keys())
     location_names = set(locations.locations_all.keys())
 
-    wsettings: WorldSettings = None
+    wsettings: WorldSettings
+
+    level_shuffle_map: dict[int,int] = {}
 
     def generate_early(self) -> None:
         # Sanitize settings
@@ -75,7 +76,6 @@ class CupheadWorld(World):
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wsettings)
         #Tests.test_duplicates(self.active_locations)
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wsettings,self.active_locations)
-        self.level_shuffle_map: dict[str,str] = {}
         if self.level_shuffle:
             self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
@@ -86,22 +86,19 @@ class CupheadWorld(World):
         self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
         self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
 
-        # Group Items
-        self.item_name_groups = self.get_item_groups()
-
         # Filler items and weights
         filler_items = list(items.item_filler.keys())
         filler_item_weights = self.wsettings.filler_item_weights
         self.filler_item_weights = [(trap, weight) for trap, weight in zip(filler_items, filler_item_weights) if weight > 0]
 
     def fill_slot_data(self) -> Dict[str, Any]:
-        slot_data = {
+        slot_data: dict[str, Any] = {
             "version": 2,
             "world_version": self.version,
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop_map,
         }
-        slot_data_options = (
+        slot_data_options: list[str] = [
             "use_dlc",
             "mode",
             "expert_mode",
@@ -120,7 +117,7 @@ class CupheadWorld(World):
             "start_maxhealth",
             "trap_loadout_anyweapon",
             "deathlink"
-        )
+        ]
         for option in slot_data_options:
             slot_data.update(self.options.as_dict(option))
         return slot_data
@@ -167,31 +164,13 @@ class CupheadWorld(World):
             shop_locations[LocationNames.level_shops[i]] = shop_region ## TODO: Rename to shop sets
         return shop_locations
 
-    def get_item_groups(self) -> dict[str, set[str]]:
-        nitem_name_groups: dict[str, set[str]] = {
-            "Weapon": set(),
-            "Charm": set(),
-            "Super": set(),
-            "Ability": set(),
-        }
-        for item in self.active_items.keys():
-            if item in items.item_weapons or item in items.item_dlc_weapons:
-                nitem_name_groups["Weapon"].update(item)
-            if item in items.item_charms or item in items.item_dlc_charms:
-                nitem_name_groups["Charm"].update(item)
-            if item in items.item_super:
-                nitem_name_groups["Super"].update(item)
-            if item in items.item_abilities or item in items.item_abilities_aim:
-                nitem_name_groups["Ability"].update(item)
-        return {x: y for x,y in nitem_name_groups.items() if len(y)>0}
-
     def create_regions(self) -> None:
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
-    def create_item(self, name: str, force_classification: ItemClassification = None) -> Item:
+    def create_item(self, name: str, force_classification: Optional[ItemClassification] = None) -> Item:
         return itembase.create_item(name, self.player, force_classification)
 
     def create_items(self) -> None:

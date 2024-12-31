@@ -7,13 +7,13 @@ from .locations import locations_all
 def print_items():
     print("-- Items --")
     for item, data in items_all.items():
-        print(item + ": " + data.id + " | " + data.type)
-    print()
+        print(f"{item}: {data.id} | {data.type}")
+    print("")
 def print_locations():
     print("-- Locations --")
     for item, data in locations_all.items():
-        print(item + ": " + data.id + " | " + data.progress_type)
-    print()
+        print(f"{item}: {data.id} | {data.progress_type}")
+    print("")
 
 def print(mode: str):
     if (mode == "items".lower() or mode == "all".lower()):
