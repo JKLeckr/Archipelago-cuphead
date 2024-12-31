@@ -113,12 +113,21 @@ level_map = {
     16: LocationNames.level_boss_plane_robot,
     17: LocationNames.level_boss_kingdice,
     18: LocationNames.level_boss_devil,
-    19: LocationNames.level_rungun_forest,
-    20: LocationNames.level_rungun_tree,
-    21: LocationNames.level_rungun_circus,
-    22: LocationNames.level_rungun_funhouse,
-    23: LocationNames.level_rungun_harbour,
-    24: LocationNames.level_rungun_mountain,
+    19: LocationNames.level_dicepalace_boss_booze,
+    20: LocationNames.level_dicepalace_boss_chips,
+    21: LocationNames.level_dicepalace_boss_cigar,
+    22: LocationNames.level_dicepalace_boss_domino,
+    23: LocationNames.level_dicepalace_boss_rabbit,
+    24: LocationNames.level_dicepalace_boss_plane_horse,
+    25: LocationNames.level_dicepalace_boss_roulette,
+    26: LocationNames.level_dicepalace_boss_eightball,
+    27: LocationNames.level_dicepalace_boss_plane_memory,
+    28: LocationNames.level_rungun_forest,
+    29: LocationNames.level_rungun_tree,
+    30: LocationNames.level_rungun_circus,
+    31: LocationNames.level_rungun_funhouse,
+    32: LocationNames.level_rungun_harbour,
+    33: LocationNames.level_rungun_mountain,
     100: LocationNames.level_dlc_boss_oldman,
     101: LocationNames.level_dlc_boss_rumrunners,
     102: LocationNames.level_dlc_boss_snowcult,
@@ -136,11 +145,11 @@ level_id_map = {v: k for k, v in level_map.items()}
 
 class LevelData(NamedTuple):
     world_location: Optional[str]
-    locations: list[str] = None
+    locations: list[str]
     rule: LevelRule = level_rule_none
 
 # Levels
-level_boss = {
+level_boss_regular: dict[str, LevelData] = {
     LocationNames.level_boss_veggies: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_veggies,
         LocationNames.loc_level_boss_veggies_topgrade,
@@ -221,6 +230,8 @@ level_boss = {
         LocationNames.loc_level_boss_kingdice_event_agrade,
         LocationNames.loc_level_boss_kingdice_dlc_chaliced,
     ], level_rule_kingdice), # Has special rules set in rules.py
+}
+level_boss_plane: dict[str, LevelData] = {
     LocationNames.level_boss_plane_blimp: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_plane_blimp,
         LocationNames.loc_level_boss_plane_blimp_topgrade,
@@ -253,7 +264,11 @@ level_boss = {
         LocationNames.loc_level_boss_plane_robot_dlc_chaliced,
     ], level_rule_plane),
 }
-level_boss_final = {
+level_boss: dict[str, LevelData] = {
+    **level_boss_regular,
+    **level_boss_plane
+}
+level_boss_final: dict[str, LevelData] = {
     LocationNames.level_boss_devil: LevelData(LocationNames.world_inkwell_hell, [
         LocationNames.loc_level_boss_devil,
         LocationNames.loc_level_boss_devil_topgrade,
@@ -261,7 +276,7 @@ level_boss_final = {
         LocationNames.loc_level_boss_devil_dlc_chaliced,
     ], level_rule_devil)
 }
-level_dlc_boss = {
+level_dlc_boss_regular: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_oldman: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_oldman,
         LocationNames.loc_level_dlc_boss_oldman_topgrade,
@@ -286,6 +301,8 @@ level_dlc_boss = {
         LocationNames.loc_level_dlc_boss_airplane_event_agrade,
         LocationNames.loc_level_dlc_boss_airplane_dlc_chaliced,
     ]), # ???
+}
+level_dlc_boss_plane: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_plane_cowboy: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_plane_cowboy,
         LocationNames.loc_level_dlc_boss_plane_cowboy_topgrade,
@@ -293,7 +310,11 @@ level_dlc_boss = {
         LocationNames.loc_level_dlc_boss_plane_cowboy_dlc_chaliced,
     ], level_rule_plane),
 }
-level_dlc_boss_final = {
+level_dlc_boss: dict[str, LevelData] = {
+    **level_dlc_boss_regular,
+    **level_dlc_boss_plane
+}
+level_dlc_boss_final: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_saltbaker: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_saltbaker,
         LocationNames.loc_level_dlc_boss_saltbaker_topgrade,
@@ -312,7 +333,7 @@ level_dicepalace_boss = {
     LocationNames.level_dicepalace_boss_eightball: LevelData(LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_eightball,]),
     LocationNames.level_dicepalace_boss_plane_memory: LevelData(LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_plane_memory,]),
 }
-level_rungun = {
+level_rungun: dict[str, LevelData] = {
     LocationNames.level_rungun_forest: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_rungun_forest,
         LocationNames.loc_level_rungun_forest_agrade,
@@ -386,12 +407,12 @@ level_rungun = {
         LocationNames.loc_level_rungun_mountain_event_pacifist,
     ], level_rule_dash),
 }
-level_mausoleum = {
+level_mausoleum: dict[str, LevelData] = {
     LocationNames.level_mausoleum_i: LevelData(LocationNames.world_inkwell_1, [LocationNames.loc_level_mausoleum_i,], level_rule_parry),
     LocationNames.level_mausoleum_ii: LevelData(LocationNames.world_inkwell_2, [LocationNames.loc_level_mausoleum_ii,], level_rule_parry),
     LocationNames.level_mausoleum_iii: LevelData(LocationNames.world_inkwell_3, [LocationNames.loc_level_mausoleum_iii,], level_rule_parry),
 }
-level_dlc_chesscastle_boss = {
+level_dlc_chesscastle_boss: dict[str, LevelData] = {
     LocationNames.level_dlc_chesscastle_pawn: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_pawn,], level_rule_parry),
     LocationNames.level_dlc_chesscastle_knight: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_knight,], level_rule_parry),
     LocationNames.level_dlc_chesscastle_bishop: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_bishop,], level_rule_parry),
@@ -444,33 +465,45 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
 
 def setup_level_shuffle_map(rand: Random, settings: WorldSettings) -> dict[int,int]:
     use_dlc = settings.use_dlc
+    separate_plane = settings.level_shuffle_plane_separate
     level_shuffle_map: dict[int,int] = {}
 
     # level_lists format: (level_list, exclude_list)
-    level_lists: list[tuple[list[str],list[str]]] = [
-        (list(level_boss.keys()), LocationNames.level_boss_kingdice),
-        (list(level_rungun.keys()), None),
-    ]
+    level_lists: list[tuple[list[str],list[str]]]
+    if separate_plane:
+        level_lists: list[tuple[list[str],list[str]]] = [
+            (list(level_boss_regular.keys()), [LocationNames.level_boss_kingdice]),
+            (list(level_boss_plane.keys()), []),
+            (list(level_rungun.keys()), []),
+        ]
+    else:
+        level_lists: list[tuple[list[str],list[str]]] = [
+            (list(level_boss.keys()), [LocationNames.level_boss_kingdice]),
+            (list(level_rungun.keys()), []),
+        ]
     if use_dlc:
-        level_lists[0][0] += list(level_dlc_boss.keys())
-        level_lists += (list(level_dlc_chesscastle_boss.keys()), None)
+        level_lists[0][0].extend(level_dlc_boss_regular.keys() if separate_plane else level_dlc_boss.keys())
+        if separate_plane:
+            level_lists[0][1].extend(level_dlc_boss_plane.keys())
+        level_lists.append((list(level_dlc_chesscastle_boss.keys()), []))
 
     for level_list in level_lists:
-        level_shuffle_map.update(shuffle_levels(rand, level_list[0], level_list[1]))
+        _shuffled_levels = shuffle_levels(rand, level_list[0], level_list[1])
+        level_shuffle_map.update(_shuffled_levels)
 
     return level_shuffle_map
 
-def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list[str] = None) -> dict[int, int]:
+def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list[str]) -> dict[int, int]:
     res: dict[int, int] = {}
-    excludes: list[int] = level_exclude_list if level_exclude_list else []
-    _levels = [level_id_map[x] for x in level_list if (x not in excludes)]
+    _levels = [level_id_map[x] for x in level_list if (x not in level_exclude_list)]
+    _excluded_levels = [level_id_map[x] for x in level_list if (x in level_exclude_list)]
 
     levels_shuffled = list(_levels)
     rand.shuffle(levels_shuffled)
 
     for i in range(len(_levels)):
         res[_levels[i]] = levels_shuffled[i]
-    for x in excludes:
+    for x in _excluded_levels:
         res[x] = x
 
     return res

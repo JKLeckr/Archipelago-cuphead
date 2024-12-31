@@ -1,31 +1,45 @@
 from __future__ import annotations
 import typing
+from typing import Optional, Collection
 from BaseClasses import MultiWorld, Region
 from .regiondefs import DefType, RegionData, RegionRule, get_regions
-from .levels import LevelData
+from .levels import LevelData, level_map, level_id_map, level_dicepalace_boss
 from .locations import CupheadLocation
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
-def level_map(world: CupheadWorld, level: str) -> LevelData:
+def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
+    if world.level_shuffle:
+        level_shuffle_map = world.level_shuffle_map
+        if level in level_id_map:
+            level_map_id = level_id_map[level]
+            if level_map_id in level_shuffle_map:
+                return level_map[level_shuffle_map[level_map_id]]
+    return level
+def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
     levels = world.active_levels
-    level_shuffle_map = world.level_shuffle_map
     if level not in levels:
+        print("WARNING: For \""+level+"\": level is invalid!")
         return LevelData(None, [])
-    if level in level_shuffle_map:
-        return levels[level_shuffle_map[level]]
-    else:
+    if not map:
         return levels[level]
+    return levels[get_mapped_level_name(world, level)]
 
-def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] = None):
+def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[str]] = None):
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
     region = Region(regc.name, player, multiworld, None)
     if regc.region_type == DefType.LEVEL:
-        _locations = level_map(world, regc.name).locations
+        _level_name = get_mapped_level_name(world, regc.name)
+        region.name = _level_name
+        _level = get_level(world, _level_name, False)
+        _locations = _level.locations
         if regc.locations:
             _locations = _locations + regc.locations
+        if (regc.flags & 2)>0 and world.wsettings.kingdice_bosssanity:
+            for ldata in level_dicepalace_boss.values():
+                _locations = _locations + ldata.locations
     else:
         _locations = regc.locations
     if _locations:
@@ -47,13 +61,15 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] = None
                  print("WARNING: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
     multiworld.regions.append(region)
 
-def get_rule_def(a: RegionRule, b: RegionRule = None) -> RegionRule:
+def get_rule_def(a: RegionRule, b: Optional[RegionRule] = None) -> RegionRule:
     if b:
         return lambda s, p: a(s, p) and b(s, p)
     else:
         return a
 
-def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] = None):
+def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: Optional[set[str]] = None):
+    if not regc.connect_to:
+        raise ValueError(f"For {regc.name}: connect_to cannot be None!")
     multiworld = world.multiworld
     player = world.player
     wsettings = world.wsettings
@@ -62,18 +78,18 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
             if target.depends(wsettings):
                 if target.tgt_type == DefType.LEVEL:
                     _ruleb = target.rule
-                    _level = level_map(world, regc.name)
+                    _level = get_level(world, target.name)
                     _rulea = _level.rule(wsettings)
                 else:
                     _ruleb = None
                     _rulea = target.rule
-                _rule = get_rule_def(_rulea, _ruleb)
+                _rule = get_rule_def(_rulea, _ruleb) if _rulea else None
                 src = multiworld.get_region(regc.name, player)
                 tgt = multiworld.get_region(target.name, player)
                 name = regc.name + " -> " + target.name
                 if locset:
                     for loc in tgt.locations:
-                        if loc not in locset:
+                        if loc.name not in locset:
                             locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
                 #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
@@ -100,10 +116,10 @@ def create_regions(world: CupheadWorld) -> None:
     freemove_isles = world.wsettings.freemove_isles
     for regc in compile_regions:
         if regc and regc.connect_to:
-            if not freemove_isles or (regc.flags & 1)==1: # If flags contains LV_IGNORE_FREEMOVE
+            if not freemove_isles or (regc.flags & 1)>0: # If flags contains LV_IGNORE_FREEMOVE
                 connect_region_targets(world, regc)
 
-def list_regions_names(regions: list[Region]) -> list[str]:
+def list_regions_names(regions: Collection[Region]) -> list[str]:
     return [x.name for x in regions if x]
 def list_multiworld_regions_names(multiworld: MultiWorld) -> list[str]:
-    return list_regions_names(multiworld.regions)
+    return list_regions_names(multiworld.get_regions(None))

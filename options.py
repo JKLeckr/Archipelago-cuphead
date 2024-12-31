@@ -111,8 +111,14 @@ class LevelShuffle(Toggle):
     """
     --NOT YET IMPLEMENTED--
     Shuffle the Boss and Run n' Gun levels.
+    Bosses and Run n' Guns are shuffled within their own group.
     """
     display_name = "Level Shuffle"
+class LevelShufflePlaneSeparate(Toggle):
+    """
+    For Level Shuffle:
+    Plane Levels are shuffled separately from other boss levels.
+    """
 
 class FreeMoveIsles(Toggle):
     """
@@ -178,7 +184,7 @@ class RunGunGradeChecks(Choice):
 
 class DlcBossChaliceChecks(Toggle):
     """
-    ---NOT YET IMPLEMENTED---
+    --NOT YET IMPLEMENTED--
     -DLC ONLY-
     Enable checks for defeating each boss as Ms. Chalice.
     """
@@ -207,6 +213,7 @@ class DicePalaceBossSanity(Toggle):
 
 class TrapLoadoutAnyWeapon(Toggle):
     """
+    For Loadout Mixup Trap:
     Allow Loadout Mixup to use any item including ones you do not currently have.
     """
     display_name = "Loadout Mixup Any Item"
@@ -284,6 +291,7 @@ class FillerWeightFastFire(Weight):
 
 class Traps(Range):
     """
+    ---TRAPS NOT FULLY IMPLEMENTED---
     Set Trap percentage for filler items.
     """
     display_name = "Traps"
@@ -345,6 +353,7 @@ class CupheadOptions(PerGameCommonOptions):
     contract_goal_requirements: ContractGoalRequirements
     dlc_ingredient_goal_requirements: DlcIngredientGoalRequirements
     level_shuffle: LevelShuffle
+    level_shuffle_plane_separate: LevelShufflePlaneSeparate
     freemove_isles: FreeMoveIsles
     deathlink: DeathLink
     #weapon_gate: WeaponGate
@@ -406,6 +415,7 @@ cuphead_option_groups = [
         Traps,
     ]),
     OptionGroup("Misc", [
+        LevelShufflePlaneSeparate,
         TrapLoadoutAnyWeapon
     ]),
     OptionGroup("Item Weights", [

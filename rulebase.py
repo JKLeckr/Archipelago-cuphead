@@ -30,7 +30,7 @@ def _can_reach_all_regions(state: CollectionState, player: int, regions: Iterabl
     return True
 
 def rule_can_reach(world: "CupheadWorld", location: str) -> Rule:
-    return lambda state, player=world.player: state.can_reach(location, player)
+    return lambda state, player=world.player: state.can_reach_location(location, player)
 def rule_can_reach_region(world: "CupheadWorld", region: str) -> Rule:
     return lambda state, player=world.player: state.can_reach_region(region, player)
 def rule_can_reach_all_regions(world: "CupheadWorld", regions: Iterable[str]) -> Rule:

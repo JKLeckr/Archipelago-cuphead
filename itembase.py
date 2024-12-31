@@ -1,6 +1,7 @@
 from __future__ import annotations
 import math
 import typing
+from typing import Optional
 from random import Random
 from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
@@ -11,7 +12,7 @@ from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
-def create_item(name: str, player: int, force_classification: ItemClassification = None) -> Item:
+def create_item(name: str, player: int, force_classification: Optional[ItemClassification] = None) -> Item:
     data = items.items_all[name]
 
     if force_classification:
@@ -26,6 +27,9 @@ def create_item(name: str, player: int, force_classification: ItemClassification
     return new_item
 
 def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> str:
+    if len(item_weights)<1:
+        raise ValueError("item_weights must not be empty!")
+
     active_items, active_weights = zip(*item_weights)
 
     total_weight = sum(active_weights)
@@ -37,6 +41,7 @@ def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> s
         culmu_sum += weight
         if choice <= culmu_sum:
             return active_items[i]
+    return active_items[-1]
 
 def get_filler_item_name(world: CupheadWorld) -> str:
     return weighted_item_choice(world.filler_item_weights, world.random)
@@ -60,14 +65,14 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Total count: {len(_itempool)}")
     return _itempool
 
-def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Random) -> typing.Optional[list[Item]]:
+def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Random) -> list[Item]:
     trap_items = list(items.item_trap.keys())
     trap_item_weights = settings.trap_weights
 
     active_trap_weights = [(trap, weight) for trap, weight in zip(trap_items, trap_item_weights) if weight > 0]
 
     if not active_trap_weights:
-        return
+        return []
 
     res: list[Item] = []
 
@@ -76,21 +81,21 @@ def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Ran
 
     return res
 
-def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[str]) -> list[CupheadItem]:
-    _itempool = []
+def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[str]) -> list[Item]:
+    _itempool: list[Item] = []
     for itemname in items:
         item = world.active_items[itemname]
         qty = item.quantity - count_in_list(item, precollected)
         if qty<0:
-            print("WARNING: \""+item+"\" has quantity of "+str(qty)+"!")
+            print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
         if item.id and qty>0:
             _itempool += [create_item(itemname, world.player, item.type) for _ in range(qty)]
     return _itempool
 
-def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: ItemClassification = None) -> None:
+def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: Optional[ItemClassification] = None) -> None:
     world.multiworld.get_location(location, world.player).place_locked_item(create_item(name, world.player, force_classification))
 def create_locked_items(world: CupheadWorld, name: str, locations:  dict[str, locations.LocationData],
-                        force_classification: ItemClassification = None) -> None:
+                        force_classification: Optional[ItemClassification] = None) -> None:
     for loc in locations:
         if loc in world.active_locations:
             create_locked_item(world, name, loc, force_classification)
@@ -148,7 +153,7 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
 
 def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str],
                  coin_items: tuple[str, str, str]) -> list[Item]:
-    res = []
+    res: list[Item] = []
     # Coins
     coin_amounts = world.wsettings.coin_amounts ## TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop
     total_single_coins = coin_amounts[0]
@@ -186,7 +191,7 @@ def create_coins(world: CupheadWorld, location_count: int, precollected_item_nam
     return res
 
 def create_items(world: CupheadWorld) -> None:
-    itempool: list[CupheadItem] = []
+    itempool: list[Item] = []
 
     precollected_item_names = [x.name for x in world.multiworld.precollected_items[world.player]]
 
@@ -231,7 +236,7 @@ def create_items(world: CupheadWorld) -> None:
     itempool += create_pool_items(world, essential_items, precollected_item_names)
     itempool += create_pool_items(world, weapons, precollected_item_names)
     itempool += create_pool_items(world, charms, precollected_item_names)
-    itempool += create_pool_items(world, items.item_super.keys(), precollected_item_names)
+    itempool += create_pool_items(world, list(items.item_super.keys()), precollected_item_names)
     if world.wsettings.randomize_abilities:
         itempool += create_pool_items(world, abilities, precollected_item_names)
 
