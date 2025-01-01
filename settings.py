@@ -94,6 +94,8 @@ class WorldSettings:
         self.contract_goal_requirements = options.contract_goal_requirements.value
         self.dlc_ingredient_goal_requirements = options.dlc_ingredient_goal_requirements.value
         self.require_secret_shortcuts = True
+        self.dlc_randomize_boat = True
+        self.dlc_requires_mausoleum = True
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
 

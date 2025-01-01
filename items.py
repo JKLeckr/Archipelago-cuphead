@@ -46,7 +46,7 @@ item_essential: dict[str, ItemData] = {
     ItemNames.item_healthupgrade: ItemData(id(12), ItemClassification.useful, 0)
 }
 item_dlc_essential: dict[str, ItemData] = {
-    ItemNames.item_dlc_boat: ItemData(dlc_id(0), ItemClassification.progression, 5),
+    ItemNames.item_dlc_boat: ItemData(dlc_id(0), ItemClassification.progression, 0),
     ItemNames.item_dlc_ingredient: ItemData(dlc_id(1), ItemClassification.progression_skip_balancing, 5),
 }
 

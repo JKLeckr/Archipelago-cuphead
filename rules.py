@@ -1,7 +1,7 @@
 from __future__ import annotations
 import typing
 from BaseClasses import Location, Region, Entrance
-from worlds.generic.Rules import set_rule, forbid_item, forbid_items_for_player
+from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
 from .levels import level_rule_kingdice
 from .locations import s_plane_locations
@@ -28,14 +28,13 @@ def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
 def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
-        set_rule(entrance, rule)
+        add_rule(entrance, rule)
 
 def set_rules(world: CupheadWorld):
     w = world
     settings = w.wsettings
     use_dlc = w.use_dlc
     contract_reqs = settings.contract_requirements
-    ingredient_reqs = settings.dlc_ingredient_requirements
 
     set_region_rules(w, LocationNames.world_inkwell_2, rule_has(w, ItemNames.item_contract, contract_reqs[0]))
     set_region_rules(w, LocationNames.world_inkwell_3, rule_has(w, ItemNames.item_contract, contract_reqs[1]))
@@ -53,17 +52,32 @@ def set_rules(world: CupheadWorld):
     set_quest_rules(w)
 
     if use_dlc:
-        set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
-        if settings.dlc_boss_chalice_checks:
-            for _loc in locations.locations_dlc_boss_chaliced.keys():
-                set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
-        if settings.dlc_cactusgirl_quest:
-            for _loc in locations.locations_dlc_event_boss_chaliced.keys():
-                set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
-            chaliced_events = set(locations.locations_dlc_event_boss_chaliced.keys())
-            set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
+        set_dlc_rules(w)
 
     set_goal(w)
+
+def set_dlc_rules(world: CupheadWorld):
+    w = world
+    settings = w.wsettings
+    ingredient_reqs = settings.dlc_ingredient_requirements
+    set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
+    if settings.dlc_boss_chalice_checks:
+        for _loc in locations.locations_dlc_boss_chaliced.keys():
+            set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
+    if settings.dlc_cactusgirl_quest:
+        for _loc in locations.locations_dlc_event_boss_chaliced.keys():
+            set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
+        chaliced_events = set(locations.locations_dlc_event_boss_chaliced.keys())
+        set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
+
+def set_dlc_boat_rules(world: CupheadWorld):
+    w = world
+    settings = w.wsettings
+    set_region_rules(
+        w,
+        LocationNames.reg_dlc_boat,
+        rule_has()
+    )
 
 def set_quest_rules(world: CupheadWorld):
     w = world

@@ -538,6 +538,7 @@ class ItemNames:
 
     # Events
     item_event_boss_defeated = _item_event_ + "Boss Defeated"
+    item_event_mausoleum = _item_event_ + "Mausoleum"
     item_event_isle1_secret_prereq = _item_event_ + LocationNames.world_inkwell_1 + " Secret Coin Prerequisite"
     item_event_isle2_shortcut = _item_event_ + LocationNames.loc_event_isle2_shortcut + " Accessed"
     item_event_quest_4mel_4th = _item_event_ + LocationNames.loc_event_quest_4mel_4th

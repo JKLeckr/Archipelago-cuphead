@@ -97,11 +97,7 @@ region_worlds: list[RegionData] = [
         LocationNames.loc_coin_isle1_secret,
     ], [
         Target(LocationNames.level_shop1),
-        Target(LocationNames.world_dlc_inkwell_4,
-               rule_has_all({
-                   ItemNames.item_event_dlc_boataccess,
-                   ItemNames.item_dlc_boat
-               }), dep.dep_dlc),
+        Target(LocationNames.world_dlc_inkwell_4, rule_has(ItemNames.item_event_dlc_boataccess), dep.dep_and(dep.dep_dlc, dep.dep_freemove)),
         LevelTarget(LocationNames.level_boss_veggies),
         LevelTarget(LocationNames.level_boss_slime),
         LevelTarget(LocationNames.level_rungun_forest),
@@ -111,7 +107,7 @@ region_worlds: list[RegionData] = [
         LevelTarget(LocationNames.level_boss_frogs, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_plane_blimp, None, dep.dep_freemove),
         Target(LocationNames.level_mausoleum_i, None, dep.dep_freemove)
-    ], ),
+    ]),
     WorldRegionData(LocationNames.world_inkwell_2, [
         LocationNames.loc_npc_canteen,
         LocationNames.loc_quest_4mel,
