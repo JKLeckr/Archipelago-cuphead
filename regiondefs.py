@@ -165,7 +165,7 @@ region_dlc_worlds = [
 ]
 
 region_isle1 =  [
-    LevelRegionData(LocationNames.level_boss_veggies, [LocationNames.loc_event_isle1_secret_prereq1],
+    LevelRegionData(LocationNames.level_boss_veggies, [LocationNames.loc_event_isle1_secret_prereq1], #FIXME: Secret Prereq should stick to absolute location
         [LevelTarget(LocationNames.level_boss_frogs)]),
     LevelRegionData(LocationNames.level_boss_slime, [LocationNames.loc_event_isle1_secret_prereq2],
         [LevelTarget(LocationNames.level_boss_plane_blimp)]),

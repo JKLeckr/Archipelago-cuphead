@@ -1,4 +1,5 @@
 from __future__ import annotations
+import typing
 from typing import NamedTuple, Optional, Callable
 from random import Random
 from .names import LocationNames, ItemNames
@@ -6,6 +7,8 @@ from .locations import LocationData
 from .settings import WorldSettings
 from .auxiliary import scrub_list
 from .rulebase import RegionRule, region_rule_none, region_rule_has
+if typing.TYPE_CHECKING:
+    from . import CupheadWorld
 
 LevelRule = Callable[[WorldSettings], RegionRule]
 
@@ -510,3 +513,20 @@ def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list
 
 def level_query(levels: dict[str,LevelData], world_location: Optional[str]) -> dict[str,LevelData]:
     return {level: data for level,data in levels.items() if (not world_location or data.world_location == world_location)}
+
+def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
+    if world.level_shuffle:
+        level_shuffle_map = world.level_shuffle_map
+        if level in level_id_map:
+            level_map_id = level_id_map[level]
+            if level_map_id in level_shuffle_map:
+                return level_map[level_shuffle_map[level_map_id]]
+    return level
+def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
+    levels = world.active_levels
+    if level not in levels:
+        print("WARNING: For \""+level+"\": level is invalid!")
+        return LevelData(None, [])
+    if not map:
+        return levels[level]
+    return levels[get_mapped_level_name(world, level)]

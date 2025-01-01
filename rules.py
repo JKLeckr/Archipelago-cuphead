@@ -6,7 +6,7 @@ from .items import item_filler
 from .levels import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
-from .rulebase import Rule, rule_and, rule_has, rule_has_all, region_rule_to_rule, rule_can_reach_all_regions
+from .rulebase import Rule, rule_and, rule_has, rule_has_all, region_rule_to_rule, rule_can_reach_all_regions, rule_can_reach_any_region
 from . import locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -73,11 +73,27 @@ def set_dlc_rules(world: CupheadWorld):
 def set_dlc_boat_rules(world: CupheadWorld):
     w = world
     settings = w.wsettings
-    set_region_rules(
-        w,
-        LocationNames.reg_dlc_boat,
-        rule_has()
-    )
+    freemove_isles = settings.freemove_isles
+    randomize_boat = settings.dlc_randomize_boat
+    require_mausoleum = settings.dlc_requires_mausoleum
+    if randomize_boat:
+        add_region_rules(w,
+                         LocationNames.reg_dlc_boat,
+                         rule_has(w, ItemNames.item_dlc_boat))
+    if not freemove_isles:
+        add_region_rules(w,
+                         LocationNames.reg_dlc_boat,
+                         rule_can_reach_any_region(w, [
+                             LocationNames.level_
+                         ]))
+    if require_mausoleum:
+        add_region_rules(w,
+                         LocationNames.reg_dlc_boat,
+                         rule_can_reach_any_region(w, [
+                             LocationNames.level_mausoleum_i, #FIXME: Use event items which is more reliable
+                             LocationNames.level_mausoleum_ii,
+                             LocationNames.level_mausoleum_iii,
+                         ]))
 
 def set_quest_rules(world: CupheadWorld):
     w = world

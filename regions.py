@@ -3,27 +3,10 @@ import typing
 from typing import Optional, Collection
 from BaseClasses import MultiWorld, Region
 from .regiondefs import DefType, RegionData, RegionRule, get_regions
-from .levels import LevelData, level_map, level_id_map, level_dicepalace_boss
+from .levels import get_level, get_mapped_level_name, level_dicepalace_boss
 from .locations import CupheadLocation
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
-
-def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
-    if world.level_shuffle:
-        level_shuffle_map = world.level_shuffle_map
-        if level in level_id_map:
-            level_map_id = level_id_map[level]
-            if level_map_id in level_shuffle_map:
-                return level_map[level_shuffle_map[level_map_id]]
-    return level
-def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
-    levels = world.active_levels
-    if level not in levels:
-        print("WARNING: For \""+level+"\": level is invalid!")
-        return LevelData(None, [])
-    if not map:
-        return levels[level]
-    return levels[get_mapped_level_name(world, level)]
 
 def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[str]] = None):
     multiworld = world.multiworld
