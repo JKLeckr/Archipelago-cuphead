@@ -447,6 +447,7 @@ class LocationNames:
     loc_event_quest_ludwig = _loc_event_ + "Ludwig Quest"
     loc_event_quest_wolfgang = _loc_event_ + "Wolfgang Quest"
     loc_event_music = _loc_event_ + "Piano Music"
+    loc_event_mausoleum = _loc_event_ + "Mausoleum"
     loc_event_dlc_start = _loc_event_ + "DLC Start"
     loc_event_dlc_curse_complete = _loc_event_ + "Divine Relic"
 

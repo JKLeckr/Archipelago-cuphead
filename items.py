@@ -131,6 +131,7 @@ item_special: dict[str, ItemData] = {
     #ItemNames.item_event_music: ItemData(None, ItemClassification.progression, 0),
 }
 item_dlc_special: dict[str, ItemData] = {
+    ItemNames.item_event_mausoleum: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_skip_balancing, 0),

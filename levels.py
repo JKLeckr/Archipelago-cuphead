@@ -411,9 +411,9 @@ level_rungun: dict[str, LevelData] = {
     ], level_rule_dash),
 }
 level_mausoleum: dict[str, LevelData] = {
-    LocationNames.level_mausoleum_i: LevelData(LocationNames.world_inkwell_1, [LocationNames.loc_level_mausoleum_i,], level_rule_parry),
-    LocationNames.level_mausoleum_ii: LevelData(LocationNames.world_inkwell_2, [LocationNames.loc_level_mausoleum_ii,], level_rule_parry),
-    LocationNames.level_mausoleum_iii: LevelData(LocationNames.world_inkwell_3, [LocationNames.loc_level_mausoleum_iii,], level_rule_parry),
+    LocationNames.level_mausoleum_i: LevelData(LocationNames.world_inkwell_1, [LocationNames.loc_level_mausoleum_i], level_rule_parry),
+    LocationNames.level_mausoleum_ii: LevelData(LocationNames.world_inkwell_2, [LocationNames.loc_level_mausoleum_ii], level_rule_parry),
+    LocationNames.level_mausoleum_iii: LevelData(LocationNames.world_inkwell_3, [LocationNames.loc_level_mausoleum_iii], level_rule_parry),
 }
 level_dlc_chesscastle_boss: dict[str, LevelData] = {
     LocationNames.level_dlc_chesscastle_pawn: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_pawn,], level_rule_parry),
