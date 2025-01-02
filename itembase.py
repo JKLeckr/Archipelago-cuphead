@@ -119,6 +119,7 @@ def setup_locked_items(world: CupheadWorld):
     create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
     if world.use_dlc:
+        create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
         create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
         #create_locked_item(world, ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)

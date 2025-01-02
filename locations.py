@@ -408,6 +408,7 @@ location_special: dict[str, LocationData] = {
     #LocationNames.loc_event_music: LocationData(None),
 }
 location_dlc_special: dict[str, LocationData] = {
+    LocationNames.loc_event_mausoleum: LocationData(None),
     LocationNames.loc_event_dlc_start: LocationData(None),
 }
 
