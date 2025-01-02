@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'test*'
+      - 'preview*'
+      - '*.*.*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: true
+          name: Preview (${{ env.RELEASE_VERSION }})
+        env:
+          GITHUB_TOKEN: ${{ secrets.AP_TOKEN }}
+
+  build-release:
+    name: Build and Upload Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        #with:
+        #  fetch-depth: 0  # Fetch all history for possible versioning
+
+      - name: Clean project directory
+        run: |
+          # Remove unnecessary files and directories
+          find . -type d -name "_pycache_" -exec rm -rf {} \;
+          rm -rf .git .github
+
+      - name: Build ZIP package
+        run: |
+          zip -r cuphead.zip . -x "*.git*" "*.github*" "*_pycache_*"
+          mv cuphead.zip cuphead.apworld
+
+      - name: Calculate SHA256 checksum
+        run: |
+          sha256sum cuphead.apworld > cuphead.apworld.sha256
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: true
+          name: Preview (${{ env.RELEASE_VERSION }})
+          files: |
+            cuphead.apworld
+            cuphead.apworld.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.AP_TOKEN }}
