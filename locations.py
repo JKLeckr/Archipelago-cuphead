@@ -549,6 +549,8 @@ def setup_locations(settings: WorldSettings):
     if settings.pacifist_quest:
         locations.update(location_level_rungun_event_pacifist)
         _add_location(LocationNames.loc_quest_pacifist,location_world_quest)
+    if settings.dlc_requires_mausoleum:
+        _add_location(LocationNames.loc_event_mausoleum,location_dlc_special)
     locations.update(location_goal)
 
     if use_dlc:
