@@ -30,8 +30,8 @@ def dep_music_quest(s: WorldSettings) -> bool:
 def dep_dicepalace(s: WorldSettings) -> bool:
     return s.kingdice_bosssanity
 def dep_dlc_boatitem(s: WorldSettings) -> bool:
-    return s.dlc_randomize_boat
+    return s.use_dlc and s.dlc_randomize_boat
 def dep_dlc_boat_mausoleum(s: WorldSettings) -> bool:
-    return s.dlc_requires_mausoleum
+    return s.use_dlc and s.dlc_requires_mausoleum
 def dep_dlc_cactusgirl_quest(s: WorldSettings) -> bool:
-    return s.dlc_cactusgirl_quest
+    return s.use_dlc and s.dlc_cactusgirl_quest

@@ -100,7 +100,7 @@ region_worlds: list[RegionData] = [
         LocationNames.loc_coin_isle1_secret,
     ], [
         Target(LocationNames.level_shop1),
-        Target(LocationNames.reg_dlc_boat, None, dep.dep_freemove),
+        Target(LocationNames.reg_dlc_boat, None, dep.dep_and(dep.dep_dlc, dep.dep_freemove)),
         Target(LocationNames.world_dlc_inkwell_4, rule_has(ItemNames.item_event_dlc_boataccess), dep.dep_and(dep.dep_dlc, dep.dep_freemove)),
         LevelTarget(LocationNames.level_boss_veggies),
         LevelTarget(LocationNames.level_boss_slime),

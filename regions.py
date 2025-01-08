@@ -13,6 +13,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
     locations = world.active_locations
     player = world.player
     region = Region(regc.name, player, multiworld, None)
+    print(f"Region: {regc.name}, {regc.region_type}")
     if regc.region_type == DefType.LEVEL:
         _level_name = get_mapped_level_name(world, regc.name)
         region.name = _level_name
@@ -28,7 +29,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
     if _locations:
         for loc_name in _locations:
             if not loc_name: # If entry is None
-                print("WARNING: For \""+regc.name+"\": location is None!")
+                print(f"WARNING: For \"{regc.name}\": location is None!")
             elif loc_name in locations: # If entry exits in active locations
                 loc_id = locations[loc_name].id
                 event = locations[loc_name].event if loc_id else True
@@ -38,10 +39,10 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
                     if loc_name not in locset:
                         locset.add(loc_name)
                     else:
-                        print("WARNING: \""+loc_name+"\" already was registered!")
+                        print(f"WARNING: \"{loc_name}\" already was registered!")
                 region.locations.append(location)
             else:
-                 print("WARNING: For \""+regc.name+"\": location \""+loc_name+"\" does not exist.")
+                 print(f"WARNING: For \"{regc.name}\": location \"{loc_name}\" does not exist.")
     multiworld.regions.append(region)
 
 def get_rule_def(a: RegionRule, b: Optional[RegionRule] = None) -> RegionRule:
@@ -75,11 +76,11 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: Option
                         if loc.name not in locset:
                             locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
-                #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
+                print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
             #else:
             #    print("Skipping Target "+target.name) # if debug
         else:
-            print("WARNING: For \""+regc.name+"\": a target is None!")
+            print(f"WARNING: For \"{regc.name}\": a target is None!")
 
 def create_regions(world: CupheadWorld) -> None:
     compile_regions = get_regions(world)
@@ -93,7 +94,7 @@ def create_regions(world: CupheadWorld) -> None:
             #else: # if debug
             #    print("Skipping Region "+regc.name)
         else:
-            print("WARNING: For \"compile_regions\": region \"is None!\"")
+            print(f"WARNING: For \"{compile_regions}\": region \"is None!\"")
 
     # Connect Region Targets
     freemove_isles = world.wsettings.freemove_isles
