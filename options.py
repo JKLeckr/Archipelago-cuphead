@@ -15,7 +15,7 @@ class Weight(Range):
 
 class DeliciousLastCourse(Toggle):
     """
-    --DLC NOT FULLY IMPLEMENTED!--
+    ---WORKS, WIP---
     Set whether or not to use Delicious Last Course content (Requires owning the DLC).
     """
     display_name = "DLC"
@@ -109,7 +109,7 @@ class DlcIngredientGoalRequirements(Range):
 
 class LevelShuffle(Toggle):
     """
-    --NOT YET IMPLEMENTED--
+    --WIP, NOT PLANDO FRIENDLY--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
     """
