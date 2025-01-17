@@ -8,7 +8,7 @@ from .settings import WorldSettings
 from .items import ItemData
 from .locations import LocationData
 from .levels import LevelData, level_map
-from . import items, itembase, levels, locations, regions, rules
+from . import items, itembase, levels, locations, regions, rules, debug # type: ignore  # noqa: F401
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"

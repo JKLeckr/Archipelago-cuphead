@@ -55,6 +55,9 @@ class WorldSettings:
     contract_goal_requirements: int
     dlc_ingredient_goal_requirements: int
     require_secret_shortcuts: bool
+    dlc_randomize_boat: bool
+    dlc_requires_mausoleum: bool
+    dlc_chesscastle_fullrun: bool
     minimum_filler: int
     trap_loadout_anyweapon: bool
 
@@ -96,6 +99,7 @@ class WorldSettings:
         self.require_secret_shortcuts = True
         self.dlc_randomize_boat = True
         self.dlc_requires_mausoleum = True
+        self.dlc_chesscastle_fullrun = True
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
 

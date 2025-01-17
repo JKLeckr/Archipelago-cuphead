@@ -229,7 +229,7 @@ def create_items(world: CupheadWorld) -> None:
     # Item names for coins
     coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
-    essential_items = [y for y in items.item_essential.keys() if y not in coin_items] + (list(items.item_essential.keys()) if world.use_dlc else [])
+    essential_items = [y for y in items.item_essential.keys() if y not in coin_items] + (list(items.item_dlc_essential.keys()) if world.use_dlc else [])
     charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if world.use_dlc else [])
     abilities = list(items.item_abilities.keys())
 

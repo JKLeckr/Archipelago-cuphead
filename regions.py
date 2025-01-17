@@ -13,7 +13,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
     locations = world.active_locations
     player = world.player
     region = Region(regc.name, player, multiworld, None)
-    print(f"Region: {regc.name}, {regc.region_type}")
+    #print(f"Region: {regc.name}, {regc.region_type}")
     if regc.region_type == DefType.LEVEL:
         _level_name = get_mapped_level_name(world, regc.name)
         region.name = _level_name
@@ -76,7 +76,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: Option
                         if loc.name not in locset:
                             locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
-                print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
+                #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
             #else:
             #    print("Skipping Target "+target.name) # if debug
         else:

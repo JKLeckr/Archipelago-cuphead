@@ -1,13 +1,13 @@
 from typing import Iterable, Any
 
-def count_in_list(e: Any, ls: list[Any]):
+def count_in_list(e: Any, ls: Iterable[Any]):
     count = 0
     for el in ls:
         if el == e:
             count += 1
     return count
 
-def format_list(ls: list[Any]) -> str:
+def format_list(ls: Iterable[Any]) -> str:
     res = "["
     first = True
     if ls:

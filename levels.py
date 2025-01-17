@@ -89,10 +89,10 @@ def level_rule_kingdice(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_plane(settings)
     return level_rule_and(level_rule_plane, level_rule_and(level_rule_parry, level_rule_dash))(settings)
-def level_rule_devil(settings: WorldSettings) -> RegionRule:
+def level_rule_final(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return level_rule_parry(settings)
+    return level_rule_and(level_rule_parry, level_rule_dash)(settings)
 def level_dlc_rule_relic(settings: WorldSettings) -> RegionRule:
     return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)
 
@@ -277,7 +277,7 @@ level_boss_final: dict[str, LevelData] = {
         LocationNames.loc_level_boss_devil_topgrade,
         LocationNames.loc_level_boss_devil_event_agrade,
         LocationNames.loc_level_boss_devil_dlc_chaliced,
-    ], level_rule_devil)
+    ], level_rule_final)
 }
 level_dlc_boss_regular: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_oldman: LevelData(LocationNames.world_dlc_inkwell_4, [
@@ -323,7 +323,7 @@ level_dlc_boss_final: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_saltbaker_topgrade,
         LocationNames.loc_level_dlc_boss_saltbaker_event_agrade,
         LocationNames.loc_level_dlc_boss_saltbaker_dlc_chaliced,
-    ]),
+    ], level_rule_final),
 }
 level_dicepalace_boss = {
     LocationNames.level_dicepalace_boss_booze: LevelData(LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_booze,]),
@@ -439,6 +439,7 @@ levels_base: dict[str, LevelData] = {
 levels_dlc: dict[str, LevelData] = {
     **level_dlc_boss,
     **level_dlc_boss_final,
+    **level_dlc_chesscastle_boss,
     **level_dlc_special,
 }
 
@@ -446,7 +447,6 @@ levels_all: dict[str, LevelData] = {
     **levels_base,
     **level_dicepalace_boss,
     **levels_dlc,
-    **level_dlc_chesscastle_boss,
     **level_special,
 }
 
@@ -462,6 +462,7 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
     if use_dlc:
         for lev,data in {**level_dlc_boss, **level_dlc_boss_final}.items():
             levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
+        levels.update(level_dlc_chesscastle_boss)
         levels.update(level_dlc_special)
 
     return levels
