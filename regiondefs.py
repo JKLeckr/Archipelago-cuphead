@@ -327,8 +327,8 @@ region_dlc_chesscastle: list[RegionData] = [
     LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     LevelRegionData(LocationNames.level_dlc_chesscastle_bishop, None, [LevelTarget(LocationNames.level_dlc_chesscastle_rook)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     LevelRegionData(LocationNames.level_dlc_chesscastle_rook, None, [LevelTarget(LocationNames.level_dlc_chesscastle_queen)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
-    LevelRegionData(LocationNames.level_dlc_chesscastle_run, None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
+    LevelRegionData(LocationNames.level_dlc_chesscastle_queen, None, [LevelTarget(LocationNames.level_dlc_chesscastle_run, None, dep.dep_dlc_chesscastle_run)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_dlc_chesscastle_run, None, None, dep.dep_dlc_chesscastle_run, flags=DefFlags.TGT_IGNORE_FREEMOVE)
 ]
 region_dlc_special: list[RegionData] = [
     # Add Logic Regions and connections to curse_complete
