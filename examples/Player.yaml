@@ -1,0 +1,62 @@
+name: Player
+game: Cuphead
+Cuphead:
+  progression_balancing: '50'
+  accessibility: items
+  start_inventory: {}
+
+  # --DLC NOT FULLY IMPLEMENTED! (Does not work!)--
+  # Set whether or not to use Delicious Last Course content (Requires owning the DLC).
+  use_dlc: 'false'
+
+  # Set the boss difficulty to expert.
+  expert_mode: 'false'
+
+  # --NOT YET IMPLEMENTED--
+  # Shuffle the Boss and Run n' Gun levels.
+  level_shuffle: 'false'
+
+  # Allow all the bosses on each island to be freely accessible without completing a previous level first.
+  freemove_isles: 'false'
+
+  # Randomize essential abilities like Duck, Perry, Dash, etc.
+  randomize_abilities: 'false'
+
+  # Enable grade checks for Boss Levels.
+  # NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
+  # Possible options: a_minus_grade, a_grade, a_plus_grade, s_grade
+  boss_grade_checks: disabled
+
+  # Enable grade checks for Run n' Gun levels.
+  # Pacifist: Beat the level without killing any monsters (not easy).
+  # Possible options: a_minus_grade, a_grade, a_plus_grade, p_grade
+  rungun_grade_checks: disabled
+
+  # Enable the Silverworth Quest check.
+  # This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
+  silverworth_quest: 'false'
+
+  # Enable the Pacifist Quest check.
+  # This means that you will have to beat all 6 Run n' Gun levels without killing any monsters in order to get this check (not easy).
+  pacifist_quest: 'false'
+
+  # Set number of max health upgrades in the pool.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  maxhealth_upgrades: '0'
+
+  # Set Trap percentage for filler items.
+  traps: '0'
+
+  # --NOT YET IMPLEMENTED--
+  # When you die, everyone dies. Of course the reverse is true too.
+  # In Cuphead, this only applies while you are in a level.
+  deathlink: 'false'
+
+  # Choose weapon to start with.
+  # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
+  # Possible options: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
+  start_weapon: random
+
+  # Set starting max health.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  start_maxhealth: '3'

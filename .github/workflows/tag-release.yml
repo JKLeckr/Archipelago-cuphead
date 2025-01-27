@@ -44,12 +44,16 @@ jobs:
 
       - name: Build ZIP package
         run: |
-          zip -r cuphead.zip . -x "*.git*" "*.github*" "*_pycache_*"
+          zip -r cuphead.zip . -x "*.git*" "*.github*" "*_pycache_*" "examples/"
           mv cuphead.zip cuphead.apworld
 
       - name: Calculate SHA256 checksum
         run: |
           sha256sum cuphead.apworld > cuphead.apworld.sha256
+      
+      - name: Copy Example Files
+        run: |
+          for file in examples/*; do cp -v $file .; done
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
