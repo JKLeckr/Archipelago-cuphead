@@ -63,14 +63,11 @@ class WorldRegionData(RegionData):
 
 region_begin = RegionData("Menu", None, [Target(LocationNames.level_house)], flags=DefFlags.TGT_IGNORE_FREEMOVE)
 region_house = RegionData(LocationNames.level_house, None, [
-        Target(LocationNames.level_tutorial, rule_has_all([ItemNames.item_ability_dash, ItemNames.item_ability_duck, ItemNames.item_ability_parry])),
+        LevelTarget(LocationNames.level_tutorial),
         Target(LocationNames.world_inkwell_1)
     ], flags=DefFlags.TGT_IGNORE_FREEMOVE)
 
-region_house_level_tutorial = RegionData(LocationNames.level_tutorial, [
-    LocationNames.loc_level_tutorial,
-    LocationNames.loc_level_tutorial_coin,
-], None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
+region_house_level_tutorial = LevelRegionData(LocationNames.level_tutorial, None, None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
 
 region_worlds = [
     WorldRegionData(LocationNames.world_inkwell_1, [

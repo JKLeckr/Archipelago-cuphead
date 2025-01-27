@@ -48,7 +48,7 @@ def level_rule_psugar(settings: WorldSettings) -> RegionRule:
 def level_rule_parry_or_psugar(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return level_rule_or(level_rule_parry, level_rule_psugar)
+    return level_rule_or(level_rule_parry, level_rule_psugar)(settings)
 def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -57,6 +57,10 @@ def level_rule_dash_and_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return level_rule_and(level_rule_dash, level_rule_parry)(settings)
+def level_rule_duck_dash_and_parry(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_and(level_rule_duck, level_rule_dash_and_parry)(settings)
 def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -73,7 +77,7 @@ def level_rule_bird(settings: WorldSettings):
 def level_rule_pirate(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
-    return level_rule_or(level_rule_duck, level_rule_and(level_rule_parry, level_rule_dash))
+    return level_rule_or(level_rule_duck, level_rule_and(level_rule_parry, level_rule_dash))(settings)
 def level_rule_robot(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_plane(settings)
@@ -297,9 +301,6 @@ level_dlc_boss_final = {
         LocationNames.loc_level_dlc_boss_saltbaker_dlc_chaliced,
     ]),
 }
-level_dlc_special = {
-    #LocationNames.level_dlc_graveyard: LevelData(LocationNames.world_dlc_inkwell_4, [LocationNames.loc_level_dlc_graveyard,], level_dlc_rule_relic),
-}
 level_dicepalace_boss = {
     LocationNames.level_dicepalace_boss_booze: LevelData(LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_booze,]),
     LocationNames.level_dicepalace_boss_chips: LevelData(LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_chips,]),
@@ -398,6 +399,12 @@ level_dlc_chesscastle_boss = {
     LocationNames.level_dlc_chesscastle_queen: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_queen,]),
     LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,])
 }
+level_special = {
+    LocationNames.level_tutorial: LevelData(LocationNames.level_house, [LocationNames.loc_level_tutorial, LocationNames.loc_level_tutorial_coin,], level_rule_duck_dash_and_parry)
+}
+level_dlc_special = {
+    #LocationNames.level_dlc_graveyard: LevelData(LocationNames.world_dlc_inkwell_4, [LocationNames.loc_level_dlc_graveyard,], level_dlc_rule_relic),
+}
 
 levels_base: dict[str, LevelData] = {
     **level_boss,
@@ -416,12 +423,14 @@ levels_all: dict[str, LevelData] = {
     **level_dicepalace_boss,
     **levels_dlc,
     **level_dlc_chesscastle_boss,
+    **level_special,
 }
 
 def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
     use_dlc = settings.use_dlc
     levels: dict[str,LevelData] = {}
 
+    levels[LocationNames.level_tutorial] = level_special[LocationNames.level_tutorial]
     for lev,data in {**level_boss, **level_boss_final, **level_rungun}.items():
         levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
     levels.update(level_mausoleum)
