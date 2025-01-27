@@ -221,6 +221,9 @@ region_isle2: list[RegionData] = [
         Target(LocationNames.level_shop2),
         Target(LocationNames.reg_dlc_boat)
     ]),
+    LevelRegionData(LocationNames.level_mausoleum_ii, [
+        LocationNames.loc_quest_lucien,
+    ], [Target(LocationNames.loc_event_mausoleum, None, dep.dep_dlc_boat_mausoleum)], dep.dep_lucien_quest, flags=DefFlags.TGT_IGNORE_FREEMOVE),
     LevelRegionData(LocationNames.level_mausoleum_ii, None, [Target(LocationNames.loc_event_mausoleum, None, dep.dep_dlc_boat_mausoleum)], dep.dep_not(dep.dep_lucien_quest), flags=DefFlags.TGT_IGNORE_FREEMOVE),
     RegionData(LocationNames.loc_event_isle2_shortcut, [
         LocationNames.loc_event_isle2_shortcut
