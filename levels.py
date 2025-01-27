@@ -423,10 +423,10 @@ level_dlc_chesscastle_boss: dict[str, LevelData] = {
     LocationNames.level_dlc_chesscastle_queen: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_queen,], level_rule_parry),
     LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,], level_rule_parry)
 }
-level_special = {
+level_special: dict[str, LevelData] = {
     LocationNames.level_tutorial: LevelData(LocationNames.level_house, [LocationNames.loc_level_tutorial, LocationNames.loc_level_tutorial_coin,], level_rule_duck_dash_and_parry)
 }
-level_dlc_special = {
+level_dlc_special: dict[str, LevelData] = {
     #LocationNames.level_dlc_graveyard: LevelData(LocationNames.world_dlc_inkwell_4, [LocationNames.loc_level_dlc_graveyard,], level_dlc_rule_relic),
 }
 
