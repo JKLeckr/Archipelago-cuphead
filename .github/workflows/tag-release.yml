@@ -1,4 +1,4 @@
-name: Release
+name: TagRelease
 
 on:
   push:
@@ -43,17 +43,16 @@ jobs:
           rm -rf .git .github
 
       - name: Build ZIP package
+        working-directory: ../
         run: |
-          zip -r cuphead.zip . -x "*.git*" "*.github*" "*_pycache_*" "examples/"
-          mv cuphead.zip cuphead.apworld
+          mv Archipelago-cuphead cuphead
+          zip -r cuphead.zip cuphead -x "*.git*" "*.github*" "*_pycache_*" "examples/"
+          mv cuphead Archipelago-cuphead
+          mv cuphead.zip Archipelago-cuphead/cuphead.apworld
 
       - name: Calculate SHA256 checksum
         run: |
           sha256sum cuphead.apworld > cuphead.apworld.sha256
-      
-      - name: Copy Example Files
-        run: |
-          for file in examples/*; do cp -v $file .; done
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
@@ -64,5 +63,6 @@ jobs:
           files: |
             cuphead.apworld
             cuphead.apworld.sha256
+            examples/*
         env:
           GITHUB_TOKEN: ${{ secrets.AP_TOKEN }}
