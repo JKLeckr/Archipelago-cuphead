@@ -99,7 +99,7 @@ def create_regions(world: CupheadWorld) -> None:
     # Connect Region Targets
     freemove_isles = world.wsettings.freemove_isles
     for regc in compile_regions:
-        if regc and regc.connect_to:
+        if regc and regc.depends(world.wsettings) and regc.connect_to:
             if not freemove_isles or (regc.flags & 1)>0: # If flags contains LV_IGNORE_FREEMOVE
                 connect_region_targets(world, regc)
 

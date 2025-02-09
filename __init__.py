@@ -109,11 +109,8 @@ class CupheadWorld(World):
             "dlc_ingredient_goal_requirements",
             "freemove_isles",
             "randomize_abilities",
-            "boss_secret_checks", #
             "boss_grade_checks",
             "rungun_grade_checks",
-            "silverworth_quest", #
-            "pacifist_quest", #
             "start_maxhealth",
             "trap_loadout_anyweapon",
             "deathlink"

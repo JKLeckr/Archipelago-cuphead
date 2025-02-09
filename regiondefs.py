@@ -189,7 +189,12 @@ region_isle2: list[RegionData] = [
         LevelTarget(LocationNames.level_rungun_circus),
         Target(LocationNames.loc_event_isle2_shortcut)
     ]),
-    LevelRegionData(LocationNames.level_boss_plane_genie, None, [LevelTarget(LocationNames.level_mausoleum_ii), Target(LocationNames.reg_dlc_boat)]),
+    LevelRegionData(LocationNames.level_boss_plane_genie, None, [
+        LevelTarget(LocationNames.level_mausoleum_ii),
+        Target(LocationNames.loc_quest_lucien),
+        Target(LocationNames.level_shop2),
+        Target(LocationNames.reg_dlc_boat)
+    ]),
     LevelRegionData(LocationNames.level_boss_clown, None, [
         LevelTarget(LocationNames.level_boss_dragon),
         LevelTarget(LocationNames.level_rungun_funhouse),
@@ -198,6 +203,7 @@ region_isle2: list[RegionData] = [
     ]),
     LevelRegionData(LocationNames.level_boss_plane_bird, None, [
         LevelTarget(LocationNames.level_mausoleum_ii),
+        Target(LocationNames.loc_quest_lucien),
         Target(LocationNames.level_shop2),
         Target(LocationNames.reg_dlc_boat)
     ]),
@@ -205,6 +211,7 @@ region_isle2: list[RegionData] = [
         LocationNames.loc_quest_4parries,
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
+        Target(LocationNames.loc_quest_lucien),
         Target(LocationNames.level_shop2),
         Target(LocationNames.reg_dlc_boat)
     ]),
@@ -213,18 +220,18 @@ region_isle2: list[RegionData] = [
         LocationNames.loc_quest_ginger,
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
+        Target(LocationNames.loc_quest_lucien),
         Target(LocationNames.level_shop2),
         Target(LocationNames.reg_dlc_boat)
     ]),
     LevelRegionData(LocationNames.level_rungun_funhouse, [LocationNames.loc_coin_isle2_secret], [
         LevelTarget(LocationNames.level_mausoleum_ii),
+        Target(LocationNames.loc_quest_lucien),
         Target(LocationNames.level_shop2),
         Target(LocationNames.reg_dlc_boat)
     ]),
-    LevelRegionData(LocationNames.level_mausoleum_ii, [
-        LocationNames.loc_quest_lucien,
-    ], [Target(LocationNames.loc_event_mausoleum, None, dep.dep_dlc_boat_mausoleum)], dep.dep_lucien_quest, flags=DefFlags.TGT_IGNORE_FREEMOVE),
-    LevelRegionData(LocationNames.level_mausoleum_ii, None, [Target(LocationNames.loc_event_mausoleum, None, dep.dep_dlc_boat_mausoleum)], dep.dep_not(dep.dep_lucien_quest), flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    LevelRegionData(LocationNames.level_mausoleum_ii, None, [Target(LocationNames.loc_event_mausoleum, None, dep.dep_dlc_boat_mausoleum)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
+    RegionData(LocationNames.loc_quest_lucien, [LocationNames.loc_quest_lucien], None, dep.dep_lucien_quest),
     RegionData(LocationNames.loc_event_isle2_shortcut, [
         LocationNames.loc_event_isle2_shortcut
     ], [

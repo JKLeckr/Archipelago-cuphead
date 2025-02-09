@@ -488,8 +488,8 @@ def setup_level_shuffle_map(rand: Random, settings: WorldSettings) -> dict[int,i
     if use_dlc:
         level_lists[0][0].extend(level_dlc_boss_regular.keys() if separate_plane else level_dlc_boss.keys())
         if separate_plane:
-            level_lists[0][1].extend(level_dlc_boss_plane.keys())
-        level_lists.append((list(level_dlc_chesscastle_boss.keys()), []))
+            level_lists[1][0].extend(level_dlc_boss_plane.keys())
+        level_lists.append((list(level_dlc_chesscastle_boss.keys()), [LocationNames.level_dlc_chesscastle_run]))
 
     for level_list in level_lists:
         _shuffled_levels = shuffle_levels(rand, level_list[0], level_list[1])
