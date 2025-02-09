@@ -109,7 +109,7 @@ class DlcIngredientGoalRequirements(Range):
 
 class LevelShuffle(Toggle):
     """
-    --WIP, NOT PLANDO FRIENDLY--
+    --NOT YET IMPLEMENTED--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
     """
@@ -291,7 +291,7 @@ class FillerWeightFastFire(Weight):
 
 class Traps(Range):
     """
-    ---TRAPS NOT FULLY IMPLEMENTED---
+    ---NOT YET IMPLEMENTED---
     Set Trap percentage for filler items.
     """
     display_name = "Traps"
