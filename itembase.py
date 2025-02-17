@@ -240,6 +240,8 @@ def create_items(world: CupheadWorld) -> None:
     itempool += create_pool_items(world, list(items.item_super.keys()), precollected_item_names)
     if world.wsettings.randomize_abilities:
         itempool += create_pool_items(world, abilities, precollected_item_names)
+    for _ in range(world.wsettings.maxhealth_upgrades):
+        itempool.append(create_item(ItemNames.item_healthupgrade, world.player))
 
     # Add Coins
     leftover_locations = unfilled_locations - len(itempool) - world.wsettings.minimum_filler
