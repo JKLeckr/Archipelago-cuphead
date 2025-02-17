@@ -193,7 +193,7 @@ region_isle2: list[RegionData] = [
     ]),
     LevelRegionData(LocationNames.level_boss_plane_genie, None, [
         LevelTarget(LocationNames.level_mausoleum_ii),
-        Target(LocationNames.loc_quest_lucien),
+        Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
         Target(LocationNames.level_shop2),
     ]),
     LevelRegionData(LocationNames.level_boss_clown, None, [
@@ -204,14 +204,14 @@ region_isle2: list[RegionData] = [
     ]),
     LevelRegionData(LocationNames.level_boss_plane_bird, None, [
         LevelTarget(LocationNames.level_mausoleum_ii),
-        Target(LocationNames.loc_quest_lucien),
+        Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
         Target(LocationNames.level_shop2),
     ]),
     LevelRegionData(LocationNames.level_boss_dragon, [
         LocationNames.loc_quest_4parries,
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
-        Target(LocationNames.loc_quest_lucien),
+        Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
         Target(LocationNames.level_shop2),
     ]),
     LevelRegionData(LocationNames.level_rungun_circus, [
@@ -219,12 +219,12 @@ region_isle2: list[RegionData] = [
         LocationNames.loc_quest_ginger,
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
-        Target(LocationNames.loc_quest_lucien),
+        Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
         Target(LocationNames.level_shop2),
     ]),
     LevelRegionData(LocationNames.level_rungun_funhouse, [LocationNames.loc_coin_isle2_secret], [
         LevelTarget(LocationNames.level_mausoleum_ii),
-        Target(LocationNames.loc_quest_lucien),
+        Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
         Target(LocationNames.level_shop2),
     ]),
     LevelRegionData(LocationNames.level_mausoleum_ii, None, [Target(LocationNames.loc_event_mausoleum, None, dep.dep_dlc_boat_mausoleum)], flags=DefFlags.TGT_IGNORE_FREEMOVE),

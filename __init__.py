@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Optional, TextIO, Dict, Any
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
+from Options import NumericOption
 from worlds.AutoWorld import World, WebWorld
 from .names import ItemNames, LocationNames
 from .options import CupheadOptions, cuphead_option_groups
@@ -47,18 +48,41 @@ class CupheadWorld(World):
 
     level_shuffle_map: dict[int,int] = {}
 
-    def generate_early(self) -> None:
+    option_overrides: list[str] = []
+
+    def override_option(self, option: NumericOption, value: int):
+        self.option_overrides.append(f"{option.current_option_name}: {option.value} -> {value}")
+        option.value = value
+
+    def sanitize_options(self) -> None:
+        _options = self.options
+
+        # Resolve Random
+        if _options.mode.value==-1:
+            _options.mode.value = self.random.randint(0,6 if _options.use_dlc else 2)
+        if _options.start_weapon.value==-1:
+            _options.start_weapon.value = self.random.randint(0,8 if _options.use_dlc else 5)
+        if _options.boss_grade_checks.value==-1:
+            _options.boss_grade_checks.value = self.random.randint(0,4 if _options.use_dlc else 3)
+
         # Sanitize settings
-        if not self.options.use_dlc:
+        if _options.contract_goal_requirements.value < _options.contract_requirements.value:
+            self.override_option(_options.contract_goal_requirements, _options.contract_requirements.value)
+        if _options.use_dlc and _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value:
+            self.override_option(_options.dlc_ingredient_goal_requirements, _options.dlc_ingredient_requirements.value)
+        if not _options.use_dlc:
             # Sanitize mode
-            if int(self.options.mode.value)>1:
-                self.options.mode.value = self.random.randint(0,1)
+            if _options.mode.value>2:
+                self.override_option(_options.mode, self.random.randint(0,2))
             # Sanitize start_weapon
-            if int(self.options.start_weapon.value)>5:
-                self.options.start_weapon.value = self.random.randint(0,5)
+            if _options.start_weapon.value>5:
+                self.override_option(_options.start_weapon, self.random.randint(0,5))
         # Sanitize grade checks
-        if not self.options.expert_mode and int(self.options.boss_grade_checks.value)>3:
-            self.options.boss_grade_checks.value = 3
+        if not _options.expert_mode and _options.boss_grade_checks.value>3:
+            self.override_option(_options.boss_grade_checks, 3)
+
+    def generate_early(self) -> None:
+        self.sanitize_options()
 
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)
@@ -97,14 +121,14 @@ class CupheadWorld(World):
             "world_version": self.version,
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop_map,
+            "contract_requirements": self.contract_requirements,
+            "dlc_ingredient_requirements": self.dlc_ingredient_requirements,
         }
         slot_data_options: list[str] = [
             "use_dlc",
             "mode",
             "expert_mode",
             "start_weapon",
-            "contract_requirements",
-            "dlc_ingredient_requirements",
             "contract_goal_requirements",
             "dlc_ingredient_goal_requirements",
             "freemove_isles",
@@ -174,6 +198,9 @@ class CupheadWorld(World):
         itembase.create_items(self)
 
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
+        if len(self.option_overrides)>0:
+            spoiler_handle.write(f"\n{self.player} Option Changes:\n\n")
+            spoiler_handle.write('\n'.join([x for x in self.option_overrides]) + '\n')
         if self.level_shuffle and len(self.level_shuffle_map)>0:
             spoiler_handle.write(f"\n{self.player} Level Shuffle Map:\n\n")
             spoiler_handle.write('\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n')

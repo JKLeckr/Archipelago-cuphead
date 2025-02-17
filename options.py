@@ -1,17 +1,6 @@
 from dataclasses import dataclass
-from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions, OptionError, OptionGroup
-
-class Weight(Range):
-    range_start = 0
-    range_end = 10
-    weight_max = 100
-
-    def __init__(self, value: int):
-        if value < 0:
-            raise OptionError(f"Option {self.__class__.__name__} cannot be negative!")
-        elif value > self.weight_max:
-            raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
-        self.value = value
+from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions, OptionGroup
+from .optionbase import ChoiceEx, Weight
 
 class DeliciousLastCourse(Toggle):
     """
@@ -20,7 +9,7 @@ class DeliciousLastCourse(Toggle):
     """
     display_name = "DLC"
 
-class GameMode(Choice):
+class GameMode(ChoiceEx):
     """
     --ONLY DEFAULT CHOICE WORKS--
     Set the mode of the randomizer which includes goal.
@@ -32,7 +21,7 @@ class GameMode(Choice):
     option_buy_out_shop = 2
     option_dlc_beat_saltbaker = 3
     option_dlc_beat_both = 4
-    option_dlc_collect_ingradients = 5
+    option_dlc_collect_ingredients = 5
     option_dlc_collect_both = 6
     default = 0
 
@@ -51,7 +40,7 @@ class ExpertMode(Toggle):
     """
     display_name = "Expert Mode"
 
-class StartWeapon(Choice):
+class StartWeapon(ChoiceEx):
     """
     Choose weapon to start with.
     NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
@@ -91,6 +80,7 @@ class DlcIngredientRequirements(Range):
 class ContractGoalRequirements(Range):
     """
     Set the amount of contracts needed for goal.
+    Note: Cannot be lower than Contract Requirements
     """
     display_name = "Contract Goal Requirements"
     range_start = 3
@@ -101,6 +91,7 @@ class DlcIngredientGoalRequirements(Range):
     """
     -DLC ONLY-
     Set the amount of ingredients needed for goal.
+    Note: Cannot be lower than Ingredient Requirements
     """
     display_name = "[DLC] Ingredient Goal Requirements"
     range_start = 1
@@ -155,7 +146,7 @@ class BossSecretChecks(Toggle):
     """
     display_name = "Boss Secret Checks"
 
-class BossGradeChecks(Choice):
+class BossGradeChecks(ChoiceEx):
     """
     Enable grade checks for Boss Levels.
     NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
