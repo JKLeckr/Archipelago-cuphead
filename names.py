@@ -500,12 +500,22 @@ class ItemNames:
     item_super_ii = "Super Art II"
     item_super_iii = "Super Art III"
 
+    item_super_dlc_c_i = "Chalice Super Art I"
+    item_super_dlc_c_ii = "Chalice Super Art II"
+    item_super_dlc_c_iii = "Chalice Super Art III"
+
     # Abilities
     item_ability_parry = "Parry"
     item_ability_dash = "Dash"
     item_ability_duck = "Duck"
     item_ability_plane_shrink = "Plane Shrink"
     item_ability_plane_parry = "Plane Parry"
+
+    item_ability_dlc_cparry = "Chalice Parry"
+    item_ability_dlc_cdash = "Chalice Dash"
+    item_ability_dlc_cduck = "Chalice Duck"
+    item_ability_dlc_cplane_shrink = "Chalice Plane Shrink"
+    item_ability_dlc_cplane_parry = "Chalice Plane Parry"
 
     item_ability_aim_left = "Aim Left"
     item_ability_aim_right = "Aim Right"
@@ -529,6 +539,9 @@ class ItemNames:
     item_healthupgrade = "+1 Max Health"
     item_dlc_boat = "Boat Access"
     item_dlc_ingredient = "Ingredient"
+    item_dlc_cplane_gun = "Chalice Plane Gun"
+    item_dlc_cplane_bombs = "Chalice Plane Bombs"
+    item_dlc_cplane_super = "Chalice Plane Super"
 
     # Traps
     item_level_trap_fingerjam = "Finger Jam"

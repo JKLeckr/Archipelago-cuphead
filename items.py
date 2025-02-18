@@ -24,7 +24,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Items
-# Next ids: 46, 8
+# Next ids: 46, 19
 item_generic: dict[str, ItemData] = {
     ItemNames.item_level_generic: ItemData(id(0), ItemClassification.filler, 0),
 }
@@ -39,15 +39,20 @@ item_essential: dict[str, ItemData] = {
     ItemNames.item_coin: ItemData(id(5), ItemClassification.progression_skip_balancing, 0),
     ItemNames.item_coin2: ItemData(id(6), ItemClassification.progression_skip_balancing, 0),
     ItemNames.item_coin3: ItemData(id(7), ItemClassification.progression_skip_balancing, 0),
-    ItemNames.item_plane_gun: ItemData(id(8), ItemClassification.progression),
-    ItemNames.item_plane_bombs: ItemData(id(9), ItemClassification.progression),
-    ItemNames.item_plane_super: ItemData(id(10), ItemClassification.useful),
-    ItemNames.item_contract: ItemData(id(11), ItemClassification.progression_skip_balancing, 17),
+    ItemNames.item_contract: ItemData(id(8), ItemClassification.progression_skip_balancing, 17),
+    ItemNames.item_plane_gun: ItemData(id(9), ItemClassification.progression),
+    ItemNames.item_plane_bombs: ItemData(id(10), ItemClassification.progression),
+    ItemNames.item_plane_super: ItemData(id(11), ItemClassification.useful),
     ItemNames.item_healthupgrade: ItemData(id(12), ItemClassification.useful, 0)
 }
 item_dlc_essential: dict[str, ItemData] = {
-    ItemNames.item_dlc_boat: ItemData(dlc_id(0), ItemClassification.progression, 0),
+    ItemNames.item_dlc_boat: ItemData(dlc_id(0), ItemClassification.progression, 1),
     ItemNames.item_dlc_ingredient: ItemData(dlc_id(1), ItemClassification.progression_skip_balancing, 5),
+}
+item_dlc_chalice_essential: dict[str, ItemData] = {
+    ItemNames.item_dlc_cplane_gun: ItemData(dlc_id(2), ItemClassification.progression, 1),
+    ItemNames.item_dlc_cplane_bombs: ItemData(dlc_id(3), ItemClassification.progression, 1),
+    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(4), ItemClassification.progression, 1),
 }
 
 item_weapons: dict[str, ItemData] = {
@@ -59,9 +64,9 @@ item_weapons: dict[str, ItemData] = {
     ItemNames.item_weapon_roundabout: ItemData(id(18), ItemClassification.useful,1),
 }
 item_dlc_weapons: dict[str, ItemData] = {
-    ItemNames.item_weapon_dlc_crackshot: ItemData(dlc_id(2), ItemClassification.useful),
-    ItemNames.item_weapon_dlc_converge: ItemData(dlc_id(3), ItemClassification.useful),
-    ItemNames.item_weapon_dlc_twistup: ItemData(dlc_id(4), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_crackshot: ItemData(dlc_id(5), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_converge: ItemData(dlc_id(6), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_twistup: ItemData(dlc_id(7), ItemClassification.useful),
 }
 
 item_charms: dict[str, ItemData] = {
@@ -73,24 +78,20 @@ item_charms: dict[str, ItemData] = {
     ItemNames.item_charm_whetstone: ItemData(id(24), ItemClassification.useful),
 }
 item_dlc_charms: dict[str, ItemData] = {
-    #ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(5), ItemClassification.useful, 0),
-    ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(6), ItemClassification.useful),
-    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(7), ItemClassification.useful, 1), # Sequence will not be in logic
-}
-
-item_shop: dict[str, ItemData] = {
-    #ItemNames.item_weapon: ItemData(None, ItemClassification.progression, 0),
-    #ItemNames.item_charm: ItemData(None, ItemClassification.useful, 0),
-}
-item_dlc_shop: dict[str, ItemData] = {
-    #ItemNames.item_dlc_weapon: ItemData(None, ItemClassification.progression, 0),
-    #ItemNames.item_dlc_charm: ItemData(None, ItemClassification.useful, 0),
+    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(8), ItemClassification.useful, 0), # TODO: Add Cookie back
+    ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(9), ItemClassification.useful),
+    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(10), ItemClassification.useful), # Sequence will not be in logic
 }
 
 item_super: dict[str, ItemData] = {
     ItemNames.item_super_i: ItemData(id(25), ItemClassification.useful),
     ItemNames.item_super_ii: ItemData(id(26), ItemClassification.useful),
     ItemNames.item_super_iii: ItemData(id(27), ItemClassification.useful),
+}
+item_dlc_chalice_super: dict[str, ItemData] = {
+    ItemNames.item_super_dlc_c_i: ItemData(dlc_id(11), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_ii: ItemData(dlc_id(12), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_iii: ItemData(dlc_id(13), ItemClassification.useful),
 }
 
 item_abilities: dict[str, ItemData] = {
@@ -99,6 +100,13 @@ item_abilities: dict[str, ItemData] = {
     ItemNames.item_ability_parry: ItemData(id(30), ItemClassification.progression),
     ItemNames.item_ability_plane_shrink: ItemData(id(31), ItemClassification.useful),
     ItemNames.item_ability_plane_parry: ItemData(id(32), ItemClassification.useful),
+}
+item_dlc_chalice_abilities: dict[str, ItemData] = {
+    ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(14), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cdash: ItemData(dlc_id(15), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cparry: ItemData(dlc_id(16), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(17), ItemClassification.useful),
+    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(18), ItemClassification.useful),
 }
 item_abilities_aim: dict[str, ItemData] = {
     ItemNames.item_ability_aim_left: ItemData(id(33), ItemClassification.progression),
@@ -146,7 +154,6 @@ items_base: dict[str, ItemData] = {
     **item_essential,
     **item_weapons,
     **item_charms,
-    **item_shop,
     **item_super,
     **item_special,
     **item_goal
@@ -155,7 +162,6 @@ items_dlc: dict[str, ItemData] = {
     **item_dlc_essential,
     **item_dlc_weapons,
     **item_dlc_charms,
-    **item_dlc_shop,
     **item_dlc_special,
     **item_dlc_goal,
 }
@@ -163,7 +169,10 @@ items_dlc: dict[str, ItemData] = {
 items_all: dict[str, ItemData] = {
     **items_base,
     **items_dlc,
+    **item_dlc_chalice_essential,
+    **item_dlc_chalice_super,
     **item_abilities,
+    **item_dlc_chalice_abilities,
     **item_abilities_aim,
     **item_trap,
 }
@@ -183,6 +192,8 @@ def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
         items.update(items_dlc)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
             items[ItemNames.item_charm_dlc_cookie] = item_with_type(items[ItemNames.item_charm_dlc_cookie], ItemClassification.progression)
+        if settings.dlc_chalice_items_separate:
+            items.update(item_dlc_chalice_essential)
     if settings.weapon_gate:
         weapon_keys = {
             **item_weapons,
@@ -193,6 +204,8 @@ def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
                 items[w] = item_with_type(items[w], ItemClassification.progression)
     if settings.randomize_abilities:
         items.update(item_abilities)
+        if settings.use_dlc and settings.dlc_chalice_items_separate:
+            items.update(item_dlc_chalice_abilities)
         items[ItemNames.item_charm_psugar] = item_with_type(items[ItemNames.item_charm_psugar], ItemClassification.progression)
         items[ItemNames.item_ability_plane_parry] = item_with_type(items[ItemNames.item_ability_plane_parry], ItemClassification.progression)
         if settings.boss_secret_checks:

@@ -12,6 +12,18 @@ from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
+weapon_dict: dict[int,str] = {
+    0: ItemNames.item_weapon_peashooter,
+    1: ItemNames.item_weapon_spread,
+    2: ItemNames.item_weapon_chaser,
+    3: ItemNames.item_weapon_lobber,
+    4: ItemNames.item_weapon_charge,
+    5: ItemNames.item_weapon_roundabout,
+    6: ItemNames.item_weapon_dlc_crackshot,
+    7: ItemNames.item_weapon_dlc_converge,
+    8: ItemNames.item_weapon_dlc_twistup,
+}
+
 def create_item(name: str, player: int, force_classification: Optional[ItemClassification] = None) -> Item:
     data = items.items_all[name]
 
@@ -84,12 +96,13 @@ def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Ran
 def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[str]) -> list[Item]:
     _itempool: list[Item] = []
     for itemname in items:
-        item = world.active_items[itemname]
-        qty = item.quantity - count_in_list(item, precollected)
-        if qty<0:
-            print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
-        if item.id and qty>0:
-            _itempool += [create_item(itemname, world.player, item.type) for _ in range(qty)]
+        if itemname in world.active_items.keys():
+            item = world.active_items[itemname]
+            qty = item.quantity - count_in_list(item, precollected)
+            if qty<0:
+                print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
+            if item.id and qty>0:
+                _itempool += [create_item(itemname, world.player, item.type) for _ in range(qty)]
     return _itempool
 
 def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: Optional[ItemClassification] = None) -> None:
@@ -207,23 +220,13 @@ def create_items(world: CupheadWorld) -> None:
     #     print("ERROR: unfilled locations mismatch total non-event locations")
 
     # Starter weapon
-    weapon_dict: dict[int,str] = {
-        0: ItemNames.item_weapon_peashooter,
-        1: ItemNames.item_weapon_spread,
-        2: ItemNames.item_weapon_chaser,
-        3: ItemNames.item_weapon_lobber,
-        4: ItemNames.item_weapon_charge,
-        5: ItemNames.item_weapon_roundabout,
-        6: ItemNames.item_weapon_dlc_crackshot,
-        7: ItemNames.item_weapon_dlc_converge,
-        8: ItemNames.item_weapon_dlc_twistup,
-    }
     weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
     if world.use_dlc:
         weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
     start_weapon_index = world.start_weapon
     start_weapon = weapon_dict[start_weapon_index]
     if start_weapon in weapons:
+        world.multiworld.push_precollected(create_item(start_weapon, world.player))
         weapons.remove(start_weapon)
 
     # Item names for coins
@@ -231,14 +234,19 @@ def create_items(world: CupheadWorld) -> None:
 
     essential_items = [y for y in items.item_essential.keys() if y not in coin_items] + (list(items.item_dlc_essential.keys()) if world.use_dlc else [])
     charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if world.use_dlc else [])
-    abilities = list(items.item_abilities.keys())
+    supers = list(items.item_super.keys())
+
+    if world.use_dlc and world.wsettings.dlc_chalice_items_separate:
+        essential_items += list(items.item_dlc_chalice_essential.keys())
+        #supers += list(items.item_dlc_chalice_super) # TODO: Investigate addding this later
 
     # Add the other non-filler items before the coins
     itempool += create_pool_items(world, essential_items, precollected_item_names)
     itempool += create_pool_items(world, weapons, precollected_item_names)
     itempool += create_pool_items(world, charms, precollected_item_names)
-    itempool += create_pool_items(world, list(items.item_super.keys()), precollected_item_names)
+    itempool += create_pool_items(world, supers, precollected_item_names)
     if world.wsettings.randomize_abilities:
+        abilities = list(items.item_abilities.keys()) + (list(items.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
         itempool += create_pool_items(world, abilities, precollected_item_names)
     for _ in range(world.wsettings.maxhealth_upgrades):
         itempool.append(create_item(ItemNames.item_healthupgrade, world.player))

@@ -28,13 +28,18 @@ class CupheadWorld(World):
     """
     A classic run and gun action game heavily focused on boss battles
     """
-    game: str = "Cuphead" # type: ignore
+
+    GAME_NAME: str = "Cuphead"
+    APWORLD_VERSION: str = "0.1.2-preview03a"
+
+    game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
     options: CupheadOptions # type: ignore
-    version = "0.1.2-preview03a"
+    version = APWORLD_VERSION
+
     required_client_version = (0, 5, 1)
-    debug_mode = False
+    required_server_version = (0, 5, 1)
 
     item_name_to_id = items.name_to_id
     location_name_to_id = locations.name_to_id
