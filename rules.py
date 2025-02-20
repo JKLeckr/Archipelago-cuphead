@@ -3,11 +3,11 @@ import typing
 from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
 from .items import item_filler
-from .levels import level_rule_kingdice
+from .levelrules import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
-from .rulebase import Rule, rule_and, rule_has, rule_has_all, region_rule_to_rule, rule_can_reach_all_regions
-from . import locations
+from .rulebase import Rule
+from . import locations, levelcoinrules, rulebase as lb
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
@@ -18,7 +18,7 @@ def get_location(world: CupheadWorld, location: str) -> Location:
 def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
 def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
-    set_loc_rule(world, loc, rule_has(world, item, count))
+    set_loc_rule(world, loc, lb.rule_has(world, item, count))
 def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
     set_rule(get_location(world, loc), rule)
 def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
@@ -36,12 +36,12 @@ def set_rules(world: CupheadWorld):
     use_dlc = w.use_dlc
     contract_reqs = settings.contract_requirements
 
-    set_region_rules(w, LocationNames.world_inkwell_2, rule_has(w, ItemNames.item_contract, contract_reqs[0]))
-    set_region_rules(w, LocationNames.world_inkwell_3, rule_has(w, ItemNames.item_contract, contract_reqs[1]))
+    set_region_rules(w, LocationNames.world_inkwell_2, lb.rule_has(w, ItemNames.item_contract, contract_reqs[0]))
+    set_region_rules(w, LocationNames.world_inkwell_3, lb.rule_has(w, ItemNames.item_contract, contract_reqs[1]))
     set_region_rules(w, LocationNames.level_boss_kingdice,
-                     rule_and(
-                         rule_has(w, ItemNames.item_contract, contract_reqs[2]),
-                         region_rule_to_rule(level_rule_kingdice(settings), w.player)
+                     lb.rule_and(
+                         lb.rule_has(w, ItemNames.item_contract, contract_reqs[2]),
+                         lb.region_rule_to_rule(level_rule_kingdice(settings), w.player)
                      ))
     set_shop_rules(w)
 
@@ -60,7 +60,7 @@ def set_dlc_rules(world: CupheadWorld):
     w = world
     settings = w.wsettings
     ingredient_reqs = settings.dlc_ingredient_requirements
-    set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
+    set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, lb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
     if settings.dlc_boss_chalice_checks:
         for _loc in locations.locations_dlc_boss_chaliced.keys():
             set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
@@ -68,7 +68,7 @@ def set_dlc_rules(world: CupheadWorld):
         for _loc in locations.locations_dlc_event_boss_chaliced.keys():
             set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
         chaliced_events = set(locations.locations_dlc_event_boss_chaliced.keys())
-        set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rule_has_all(w, chaliced_events))
+        set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, lb.rule_has_all(w, chaliced_events))
 
 def set_dlc_boat_rules(world: CupheadWorld):
     w = world
@@ -76,9 +76,9 @@ def set_dlc_boat_rules(world: CupheadWorld):
     randomize_boat = settings.dlc_randomize_boat
     require_mausoleum = settings.dlc_requires_mausoleum
     if require_mausoleum:
-        add_region_rules(w, LocationNames.reg_dlc_boat, rule_has(w, ItemNames.item_event_mausoleum))
+        add_region_rules(w, LocationNames.reg_dlc_boat, lb.rule_has(w, ItemNames.item_event_mausoleum))
     if randomize_boat:
-        add_region_rules(w, LocationNames.reg_dlc_boat, rule_has(w, ItemNames.item_dlc_boat))
+        add_region_rules(w, LocationNames.reg_dlc_boat, lb.rule_has(w, ItemNames.item_dlc_boat))
 
 def set_quest_rules(world: CupheadWorld):
     w = world
@@ -101,6 +101,12 @@ def set_level_parry_rule(world: CupheadWorld, loc: str):
     else:
         set_item_rule(w, loc, ItemNames.item_ability_parry)
 
+def set_level_coin_rules(world: CupheadWorld):
+    w = world
+    coin_rules = levelcoinrules.level_coin_rules
+    for _loc in coin_rules:
+        set_loc_rule(w, _loc, lb.region_rule_to_rule(coin_rules[_loc](w.wsettings), w.player))
+
 def set_level_rules(world: CupheadWorld):
     w = world
     boss_grade_checks = w.wsettings.boss_grade_checks
@@ -120,6 +126,7 @@ def set_level_rules(world: CupheadWorld):
         if boss_secret_checks:
             set_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
             set_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
+    set_level_coin_rules(w)
 
 def set_shop_rules(world: CupheadWorld):
     w = world
@@ -167,20 +174,20 @@ def set_goal(world: CupheadWorld):
     w = world
     settings = w.wsettings
     w.multiworld.completion_condition[w.player] = (
-        rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
+        lb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
     ) if settings.mode == 1 else (
-        rule_can_reach_all_regions(w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops)
+        lb.rule_can_reach_all_regions(w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops)
     ) if settings.mode == 2 else (
-        rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
+        lb.rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
     ) if settings.mode == 3 else (
-        rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
+        lb.rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
     ) if settings.mode == 4 else (
-        rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
+        lb.rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
     ) if settings.mode == 5 else (
-        rule_and(
-            rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements),
-            rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
+        lb.rule_and(
+            lb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements),
+            lb.rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
         )
     ) if settings.mode == 6 else (
-        rule_has(w, ItemNames.item_event_goal_devilko)
+        lb.rule_has(w, ItemNames.item_event_goal_devilko)
     )
