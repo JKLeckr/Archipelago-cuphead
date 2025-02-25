@@ -20,7 +20,7 @@ def dep_freemove(s: WorldSettings) -> bool:
 def dep_shortcuts(s: WorldSettings) -> bool:
     return s.require_secret_shortcuts
 def dep_agrade_quest(s: WorldSettings) -> bool:
-    return s.agrade_quest
+    return s.silverworth_quest
 def dep_pacifist_quest(s: WorldSettings) -> bool:
     return s.pacifist_quest
 def dep_lucien_quest(s: WorldSettings) -> bool:

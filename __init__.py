@@ -142,6 +142,7 @@ class CupheadWorld(World):
             "rungun_grade_checks",
             "start_maxhealth",
             "trap_loadout_anyweapon",
+            #"music_rando",
             "deathlink"
         ]
         for option in slot_data_options:

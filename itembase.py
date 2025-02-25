@@ -46,14 +46,17 @@ def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> s
 
     total_weight = sum(active_weights)
 
+    if total_weight <= 0:
+        raise ValueError("Total weight must be greater than 0!")
+
     choice = rand.randint(1, total_weight)
 
-    culmu_sum = 0
+    culum_sum = 0
     for i, weight in enumerate(active_weights):
-        culmu_sum += weight
-        if choice <= culmu_sum:
+        culum_sum += weight
+        if choice <= culum_sum:
             return active_items[i]
-    return active_items[-1]
+    raise ValueError("Failed to choose an item from weighted_item_choice!")
 
 def get_filler_item_name(world: CupheadWorld) -> str:
     return weighted_item_choice(world.filler_item_weights, world.random)
@@ -125,7 +128,7 @@ def setup_locked_items(world: CupheadWorld):
     if world.wsettings.music_quest:
         create_locked_item(world, ItemNames.item_event_ludwig, LocationNames.loc_event_quest_ludwig)
         #create_locked_item(world, ItemNames.item_event_wolfgang, LocationNames.loc_event_quest_wolfgang)
-    if world.wsettings.agrade_quest:
+    if world.wsettings.silverworth_quest:
         create_locked_items(world, ItemNames.item_event_agrade, locations.locations_event_agrade)
     if world.wsettings.pacifist_quest:
         create_locked_items(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
@@ -211,7 +214,7 @@ def create_items(world: CupheadWorld) -> None:
 
     setup_locked_items(world)
 
-    # total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.event])
+    #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
     unfilled_locations = len([x.name for x in world.multiworld.get_unfilled_locations(world.player)])
     #print(total_locations)
     #print(unfilled_locations)

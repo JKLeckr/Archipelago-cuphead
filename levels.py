@@ -263,7 +263,7 @@ level_rungun: dict[str, LevelData] = {
         LocationNames.loc_level_rungun_forest_coin5,
         LocationNames.loc_level_rungun_forest_event_agrade,
         LocationNames.loc_level_rungun_forest_event_pacifist,
-    ], lr.level_rule_dash),
+    ]),
     LocationNames.level_rungun_tree: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_rungun_tree,
         LocationNames.loc_level_rungun_tree_agrade,
@@ -275,7 +275,7 @@ level_rungun: dict[str, LevelData] = {
         LocationNames.loc_level_rungun_tree_coin5,
         LocationNames.loc_level_rungun_tree_event_agrade,
         LocationNames.loc_level_rungun_tree_event_pacifist,
-    ], lr.level_rule_dash),
+    ]),
     LocationNames.level_rungun_circus: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_rungun_circus,
         LocationNames.loc_level_rungun_circus_agrade,
@@ -287,7 +287,7 @@ level_rungun: dict[str, LevelData] = {
         LocationNames.loc_level_rungun_circus_coin5,
         LocationNames.loc_level_rungun_circus_event_agrade,
         LocationNames.loc_level_rungun_circus_event_pacifist,
-    ], lr.level_rule_parry_or_psugar),
+    ]),
     LocationNames.level_rungun_funhouse: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_rungun_funhouse,
         LocationNames.loc_level_rungun_funhouse_agrade,
@@ -299,7 +299,7 @@ level_rungun: dict[str, LevelData] = {
         LocationNames.loc_level_rungun_funhouse_coin5,
         LocationNames.loc_level_rungun_funhouse_event_agrade,
         LocationNames.loc_level_rungun_funhouse_event_pacifist,
-    ], lr.level_rule_funhouse),
+    ]),
     LocationNames.level_rungun_harbour: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_rungun_harbour,
         LocationNames.loc_level_rungun_harbour_agrade,
@@ -311,7 +311,7 @@ level_rungun: dict[str, LevelData] = {
         LocationNames.loc_level_rungun_harbour_coin5,
         LocationNames.loc_level_rungun_harbour_event_agrade,
         LocationNames.loc_level_rungun_harbour_event_pacifist,
-    ], lr.level_rule_dash_and_parry),
+    ]),
     LocationNames.level_rungun_mountain: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_rungun_mountain,
         LocationNames.loc_level_rungun_mountain_agrade,
@@ -323,7 +323,7 @@ level_rungun: dict[str, LevelData] = {
         LocationNames.loc_level_rungun_mountain_coin5,
         LocationNames.loc_level_rungun_mountain_event_agrade,
         LocationNames.loc_level_rungun_mountain_event_pacifist,
-    ], lr.level_rule_dash),
+    ]),
 }
 level_mausoleum: dict[str, LevelData] = {
     LocationNames.level_mausoleum_i: LevelData(LocationNames.world_inkwell_1, [LocationNames.loc_level_mausoleum_i], lr.level_rule_parry),

@@ -124,7 +124,7 @@ class WeaponGate(Toggle):
     """
     display_name = "Weapon Gate"
 
-class RandomizeAbilities(Toggle):
+class RandomizeAbilities(DefaultOnToggle):
     """
     Randomize essential abilities like Duck, Parry, Dash, etc.
     """
@@ -325,9 +325,21 @@ class TrapWeightScreen(Weight):
     display_name = "Screen Trap Weight"
     default = 3
 
+class MusicRando(Choice):
+    """
+    Enable Randomizing Music.
+    """
+    display_name = "Music Rando"
+    option_disabled = 0
+    option_level_music = 1
+    option_map_music = 2
+    option_level_and_map_music = 3
+    option_all_music = 255
+    default = 0
+
 class DeathLink(Toggle):
     """
-    When you die, everyone dies. Of course the reverse is true too.
+    Enable Deathlink. When you die, everyone dies. Of course the reverse is true too.
     In Cuphead, this only applies while you are in a level.
     """
     display_name = "Death Link"
@@ -370,6 +382,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_slowfire: TrapWeightSlowFire
     trap_weight_superdrain: TrapWeightSuperDrain
     trap_weight_loadout: TrapWeightLoadout
+    #music_rando: MusicRando
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -407,7 +420,8 @@ cuphead_option_groups = [
     ]),
     OptionGroup("Misc", [
         LevelShufflePlaneSeparate,
-        TrapLoadoutAnyWeapon
+        TrapLoadoutAnyWeapon,
+        #MusicRando,
     ]),
     OptionGroup("Item Weights", [
         FillerWeightExtraHealth,

@@ -7,7 +7,7 @@ from .levelrules import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
 from .rulebase import Rule
-from . import locations, levelcoinrules, rulebase as lb
+from . import levellocrules, locations, rulebase as lb
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
@@ -19,8 +19,12 @@ def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
 def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
     set_loc_rule(world, loc, lb.rule_has(world, item, count))
+def add_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
+    add_loc_rule(world, loc, lb.rule_has(world, item, count))
 def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
     set_rule(get_location(world, loc), rule)
+def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
+    add_rule(get_location(world, loc), rule)
 def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
@@ -87,46 +91,50 @@ def set_quest_rules(world: CupheadWorld):
         set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
     if settings.ginger_quest:
         set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
-    if settings.agrade_quest:
+    if settings.silverworth_quest:
         set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
     if settings.pacifist_quest:
         set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
     if settings.music_quest:
         set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
 
-def set_level_parry_rule(world: CupheadWorld, loc: str):
+def add_level_parry_rule(world: CupheadWorld, loc: str):
     w = world
     if loc in s_plane_locations:
-        set_item_rule(w, loc, ItemNames.item_ability_plane_parry)
+        add_item_rule(w, loc, ItemNames.item_ability_plane_parry)
     else:
-        set_item_rule(w, loc, ItemNames.item_ability_parry)
+        add_item_rule(w, loc, ItemNames.item_ability_parry)
 
-def set_level_coin_rules(world: CupheadWorld):
+def set_level_loc_rules(world: CupheadWorld):
     w = world
-    coin_rules = levelcoinrules.level_coin_rules
-    for _loc in coin_rules:
-        set_loc_rule(w, _loc, lb.region_rule_to_rule(coin_rules[_loc](w.wsettings), w.player))
+    loc_rules = levellocrules.level_loc_rules
+    for _loc_rule in loc_rules:
+        for loc, rule in _loc_rule.loc_rules.items():
+            if loc in w.active_locations:
+                set_loc_rule(w, loc, lb.region_rule_to_rule(rule(w.wsettings), w.player))
+            #else:
+            #    print(f"[set_level_loc_rules] Skipping {loc}")
 
 def set_level_rules(world: CupheadWorld):
     w = world
     boss_grade_checks = w.wsettings.boss_grade_checks
-    rungun_grade_checks = w.wsettings.rungun_grade_checks
+    #rungun_grade_checks = w.wsettings.rungun_grade_checks
     boss_secret_checks = w.wsettings.boss_secret_checks
+    set_level_loc_rules(w)
     if w.wsettings.randomize_abilities:
         if boss_grade_checks > 0:
             for _loc in locations.location_level_boss_topgrade:
                 if _loc != LocationNames.loc_level_boss_kingdice_topgrade:
-                    set_level_parry_rule(w, _loc)
+                    add_level_parry_rule(w, _loc)
             if w.wsettings.use_dlc:
                 for _loc in locations.location_level_dlc_boss_topgrade:
-                    set_level_parry_rule(w, _loc)
-        if rungun_grade_checks > 0 and rungun_grade_checks < 5:
-            for _loc in locations.location_level_rungun_agrade:
-                set_item_rule(w, _loc, ItemNames.item_ability_parry)
+                    add_level_parry_rule(w, _loc)
+        #if rungun_grade_checks > 0 and rungun_grade_checks < 5:
+        #    for _loc in locations.location_level_rungun_agrade:
+        #        add_item_rule(w, _loc, ItemNames.item_ability_parry)
         if boss_secret_checks:
-            set_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
-            set_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
-    set_level_coin_rules(w)
+            add_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
+            add_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
 
 def set_shop_rules(world: CupheadWorld):
     w = world

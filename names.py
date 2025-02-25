@@ -2,6 +2,7 @@
 class LocationNames:
     # Prefixes
     _loc_event_ = "Event "
+    loc_event_pfx = _loc_event_
 
     # Postfixes
     _num1_ = " One"
@@ -303,8 +304,8 @@ class LocationNames:
     loc_level_rungun_forest_coin3 = level_rungun_forest + " Coin 3"
     loc_level_rungun_forest_coin4 = level_rungun_forest + " Coin 4"
     loc_level_rungun_forest_coin5 = level_rungun_forest + " Coin 5"
-    loc_level_rungun_forest_event_agrade = _loc_event_ + level_rungun_forest + " Grade A"
-    loc_level_rungun_forest_event_pacifist = level_rungun_forest + " Grade P"
+    loc_level_rungun_forest_event_agrade = _loc_event_ + loc_level_rungun_forest_agrade
+    loc_level_rungun_forest_event_pacifist = _loc_event_ + loc_level_rungun_forest_pacifist
 
     loc_level_rungun_tree = level_rungun_tree + " Complete"
     loc_level_rungun_tree_agrade = level_rungun_tree + " Top Grade"
@@ -314,8 +315,8 @@ class LocationNames:
     loc_level_rungun_tree_coin3 = level_rungun_tree + " Coin 3"
     loc_level_rungun_tree_coin4 = level_rungun_tree + " Coin 4"
     loc_level_rungun_tree_coin5 = level_rungun_tree + " Coin 5"
-    loc_level_rungun_tree_event_agrade = _loc_event_ + level_rungun_tree + " Grade A"
-    loc_level_rungun_tree_event_pacifist = level_rungun_tree + " Grade P"
+    loc_level_rungun_tree_event_agrade = _loc_event_ + loc_level_rungun_tree_agrade
+    loc_level_rungun_tree_event_pacifist = _loc_event_ + loc_level_rungun_tree_pacifist
 
     loc_level_rungun_circus = level_rungun_circus + " Complete"
     loc_level_rungun_circus_agrade = level_rungun_circus + " Top Grade"
@@ -325,8 +326,8 @@ class LocationNames:
     loc_level_rungun_circus_coin3 = level_rungun_circus + " Coin 3"
     loc_level_rungun_circus_coin4 = level_rungun_circus + " Coin 4"
     loc_level_rungun_circus_coin5 = level_rungun_circus + " Coin 5"
-    loc_level_rungun_circus_event_agrade = _loc_event_ + level_rungun_circus + " Grade A"
-    loc_level_rungun_circus_event_pacifist = level_rungun_circus + " Grade P"
+    loc_level_rungun_circus_event_agrade = _loc_event_ + loc_level_rungun_circus_agrade
+    loc_level_rungun_circus_event_pacifist = _loc_event_ + loc_level_rungun_circus_pacifist
 
     loc_level_rungun_funhouse = level_rungun_funhouse + " Complete"
     loc_level_rungun_funhouse_agrade = level_rungun_funhouse + " Top Grade"
@@ -336,8 +337,8 @@ class LocationNames:
     loc_level_rungun_funhouse_coin3 = level_rungun_funhouse + " Coin 3"
     loc_level_rungun_funhouse_coin4 = level_rungun_funhouse + " Coin 4"
     loc_level_rungun_funhouse_coin5 = level_rungun_funhouse + " Coin 5"
-    loc_level_rungun_funhouse_event_agrade = _loc_event_ + level_rungun_funhouse + " Grade A"
-    loc_level_rungun_funhouse_event_pacifist = level_rungun_funhouse + " Grade P"
+    loc_level_rungun_funhouse_event_agrade = _loc_event_ + loc_level_rungun_funhouse_agrade
+    loc_level_rungun_funhouse_event_pacifist = _loc_event_ + loc_level_rungun_funhouse_pacifist
 
     loc_level_rungun_harbour = level_rungun_harbour + " Complete"
     loc_level_rungun_harbour_agrade = level_rungun_harbour + " Top Grade"
@@ -347,8 +348,8 @@ class LocationNames:
     loc_level_rungun_harbour_coin3 = level_rungun_harbour + " Coin 3"
     loc_level_rungun_harbour_coin4 = level_rungun_harbour + " Coin 4"
     loc_level_rungun_harbour_coin5 = level_rungun_harbour + " Coin 5"
-    loc_level_rungun_harbour_event_agrade = _loc_event_ + level_rungun_harbour + " Grade A"
-    loc_level_rungun_harbour_event_pacifist = level_rungun_harbour + " Grade P"
+    loc_level_rungun_harbour_event_agrade = _loc_event_ + loc_level_rungun_harbour_agrade
+    loc_level_rungun_harbour_event_pacifist = _loc_event_ + loc_level_rungun_harbour_pacifist
 
     loc_level_rungun_mountain = level_rungun_mountain + " Complete"
     loc_level_rungun_mountain_agrade = level_rungun_mountain + " Top Grade"
@@ -358,8 +359,8 @@ class LocationNames:
     loc_level_rungun_mountain_coin3 = level_rungun_mountain + " Coin 3"
     loc_level_rungun_mountain_coin4 = level_rungun_mountain + " Coin 4"
     loc_level_rungun_mountain_coin5 = level_rungun_mountain + " Coin 5"
-    loc_level_rungun_mountain_event_agrade = _loc_event_ + level_rungun_mountain + " Grade A"
-    loc_level_rungun_mountain_event_pacifist = level_rungun_mountain + " Grade P"
+    loc_level_rungun_mountain_event_agrade = _loc_event_ + loc_level_rungun_mountain_agrade
+    loc_level_rungun_mountain_event_pacifist = _loc_event_ + loc_level_rungun_mountain_pacifist
 
     loc_level_mausoleum_i = level_mausoleum_i
     loc_level_mausoleum_ii = level_mausoleum_ii

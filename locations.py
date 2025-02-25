@@ -543,7 +543,7 @@ def setup_locations(settings: WorldSettings):
         _add_location(LocationNames.loc_quest_music,location_world_quest)
         _add_location(LocationNames.loc_event_quest_ludwig,location_world_quest)
         _add_location(LocationNames.loc_event_quest_wolfgang,location_world_quest)
-    if settings.agrade_quest:
+    if settings.silverworth_quest:
         locations.update(locations_event_agrade)
         _add_location(LocationNames.loc_quest_silverworth,location_world_quest)
     if settings.pacifist_quest:
@@ -555,7 +555,7 @@ def setup_locations(settings: WorldSettings):
 
     if use_dlc:
         locations.update(locations_dlc)
-        if settings.agrade_quest:
+        if settings.silverworth_quest:
             locations.update(locations_dlc_event_agrade)
         if boss_grade_checks>0:
             locations.update(location_level_dlc_boss_topgrade)

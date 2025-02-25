@@ -45,7 +45,7 @@ class WorldSettings:
     ginger_quest: bool
     fourmel_quest: bool
     lucien_quest: bool
-    agrade_quest: bool
+    silverworth_quest: bool
     pacifist_quest: bool
     music_quest: bool
     dlc_cactusgirl_quest: bool
@@ -84,7 +84,7 @@ class WorldSettings:
         self.ginger_quest = True
         self.fourmel_quest = True
         self.lucien_quest = False
-        self.agrade_quest = bool(options.silverworth_quest.value)
+        self.silverworth_quest = bool(options.silverworth_quest.value)
         self.pacifist_quest = bool(options.pacifist_quest.value)
         self.music_quest = False
         self.dlc_cactusgirl_quest = bool(options.dlc_cactusgirl_quest.value)
