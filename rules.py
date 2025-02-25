@@ -115,23 +115,30 @@ def set_level_loc_rules(world: CupheadWorld):
             #else:
             #    print(f"[set_level_loc_rules] Skipping {loc}")
 
-def set_level_rules(world: CupheadWorld):
+def set_level_boss_grade_rules(world: CupheadWorld):
     w = world
     boss_grade_checks = w.wsettings.boss_grade_checks
+    if boss_grade_checks > 0:
+        for _loc in locations.location_level_boss_topgrade:
+            if _loc != LocationNames.loc_level_boss_kingdice_topgrade:
+                add_level_parry_rule(w, _loc)
+        for _loc in locations.location_level_boss_event_agrade:
+            if _loc != LocationNames.loc_level_boss_kingdice_event_agrade:
+                add_level_parry_rule(w, _loc)
+        if w.wsettings.use_dlc:
+            for _loc in locations.location_level_dlc_boss_topgrade:
+                add_level_parry_rule(w, _loc)
+            for _loc in locations.location_level_dlc_boss_event_agrade:
+                add_level_parry_rule(w, _loc)
+
+def set_level_rules(world: CupheadWorld):
+    w = world
     #rungun_grade_checks = w.wsettings.rungun_grade_checks
     boss_secret_checks = w.wsettings.boss_secret_checks
     set_level_loc_rules(w)
+    # TODO: Eventually phase this over to the level_loc_rules
     if w.wsettings.randomize_abilities:
-        if boss_grade_checks > 0:
-            for _loc in locations.location_level_boss_topgrade:
-                if _loc != LocationNames.loc_level_boss_kingdice_topgrade:
-                    add_level_parry_rule(w, _loc)
-            if w.wsettings.use_dlc:
-                for _loc in locations.location_level_dlc_boss_topgrade:
-                    add_level_parry_rule(w, _loc)
-        #if rungun_grade_checks > 0 and rungun_grade_checks < 5:
-        #    for _loc in locations.location_level_rungun_agrade:
-        #        add_item_rule(w, _loc, ItemNames.item_ability_parry)
+        set_level_boss_grade_rules(w)
         if boss_secret_checks:
             add_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
             add_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
