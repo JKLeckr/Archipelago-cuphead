@@ -50,6 +50,10 @@ def level_rule_dash_or_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return level_rule_or(level_rule_dash, level_rule_parry)(settings)
+def level_rule_dash_parry_or_psugar(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_or(level_rule_dash, level_rule_or(level_rule_parry, level_rule_psugar))(settings)
 def level_rule_dash_and_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -62,15 +66,15 @@ def level_rule_plane_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_plane_parry)
-def level_rule_funhouse(settings: WorldSettings) -> RegionRule:
-    if not settings.randomize_abilities:
-        return level_rule_none(settings)
-    return level_rule_or(level_rule_parry, level_rule_and(level_rule_psugar, level_rule_dash))(settings)
 def level_rule_bird(settings: WorldSettings):
     if settings.hard_logic:
         return level_rule_plane_gun(settings)
     else:
         return level_rule_and(level_rule_plane_gun, level_rule_plane_bombs)(settings)
+def level_rule_funhouse(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_or(level_rule_parry, level_rule_and(level_rule_psugar, level_rule_dash))(settings)
 def level_rule_pirate(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -79,6 +83,10 @@ def level_rule_robot(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_plane(settings)
     return level_rule_and(level_rule_plane, level_rule_plane_parry)(settings)
+def level_rule_harbour(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_and(level_rule_dash, level_rule_parry)(settings)
 def level_rule_kingdice(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_plane(settings)

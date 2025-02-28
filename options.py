@@ -197,6 +197,7 @@ class PacifistQuest(Toggle):
 
 class DicePalaceBossSanity(Toggle):
     """
+    ---NOT YET IMPLEMENTED---
     Enable checks for beating the Kingdice mini-bosses.
     There is an indicator for which mini-bosses you defeated.
     """

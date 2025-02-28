@@ -28,20 +28,20 @@ class LevelRuleData:
                 if _loc not in _loc_rules:
                     if _loc.startswith(LocationNames.loc_event_pfx):
                         _event_locs.add(_loc)
-                        print(f"Adding event location {_loc}...")
+                        #print(f"Adding event location {_loc}...")
                     else:
                         _loc_rules[_loc] = LRule(self.base_rule) if self.base_rule else None
-                        print(f"Adding location rule {_loc}...")
+                        #print(f"Adding location rule {_loc}...")
         for _loc, lrule in _loc_rules.items():
             if lrule:
                 _nrule = lrule.rule
                 if self.base_rule:
                     if lrule.mode == LevelRuleModes.INHERIT:
                         _nrule = lr.level_rule_and(_nrule, self.base_rule)
-                        print(f"Inheriting rule for {_loc}...")
+                        #print(f"Inheriting rule for {_loc}...")
                     elif lrule.mode == LevelRuleModes.INHERIT_OR:
                         _nrule = lr.level_rule_or(_nrule, self.base_rule)
-                        print(f"Inheriting OR rule for {_loc}...")
+                        #print(f"Inheriting OR rule for {_loc}...")
                 nloc_rules[_loc] = _nrule
             else:
                 print(f"No rule for {_loc}. Skipping.")
@@ -49,7 +49,7 @@ class LevelRuleData:
             _loc = _eloc.removeprefix(LocationNames.loc_event_pfx)
             if _loc in nloc_rules:
                 nloc_rules[_eloc] = nloc_rules[_loc]
-                print(f"Adding event rule {_eloc}...")
+                #print(f"Adding event rule {_eloc}...")
         return nloc_rules
 
     def __init__(self, base_region: str, base_rule: Optional[LevelRule], loc_rules: dict[str, Optional[LRule]]):
