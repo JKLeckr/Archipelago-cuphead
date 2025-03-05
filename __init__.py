@@ -120,6 +120,10 @@ class CupheadWorld(World):
         filler_item_weights = self.wsettings.filler_item_weights
         self.filler_item_weights = [(trap, weight) for trap, weight in zip(filler_items, filler_item_weights) if weight > 0]
 
+        # Put items in early to prevent fill errors. FIXME: Make this more elegant.
+        if self.multiworld.players<2 and self.wsettings.randomize_abilities:
+            self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
+
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data: dict[str, Any] = {
             "version": 2,
