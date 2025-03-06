@@ -7,6 +7,7 @@ from .levelrules import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
 from .rulebase import Rule
+from .settings import GameMode
 from . import levellocrules, locations, rulebase as lb
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -190,19 +191,19 @@ def set_goal(world: CupheadWorld):
     settings = w.wsettings
     w.multiworld.completion_condition[w.player] = (
         lb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
-    ) if settings.mode == 1 else (
+    ) if settings.mode == GameMode.collect_contracts else (
         lb.rule_can_reach_all_regions(w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops)
-    ) if settings.mode == 2 else (
+    ) if settings.mode == GameMode.buy_out_shop else (
         lb.rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
-    ) if settings.mode == 3 else (
+    ) if settings.mode == GameMode.dlc_beat_saltbaker or settings.mode == GameMode.dlc_beat_saltbaker_isle4_only else (
         lb.rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
-    ) if settings.mode == 4 else (
+    ) if settings.mode == GameMode.dlc_beat_both else (
         lb.rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
-    ) if settings.mode == 5 else (
+    ) if settings.mode == GameMode.dlc_collect_ingredients else (
         lb.rule_and(
             lb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements),
             lb.rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
         )
-    ) if settings.mode == 6 else (
+    ) if settings.mode == GameMode.dlc_collect_both else (
         lb.rule_has(w, ItemNames.item_event_goal_devilko)
     )

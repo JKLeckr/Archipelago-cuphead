@@ -101,7 +101,7 @@ region_worlds: list[RegionData] = [
     ], [
         Target(LocationNames.level_shop1),
         Target(LocationNames.reg_dlc_boat, None, dep.dep_and(dep.dep_dlc, dep.dep_freemove)),
-        Target(LocationNames.world_dlc_inkwell_4, rule_has(ItemNames.item_event_dlc_boataccess), dep.dep_and(dep.dep_dlc, dep.dep_freemove)),
+        Target(LocationNames.world_dlc_inkwell_4, rule_has(ItemNames.item_event_dlc_boataccess), dep.dep_dlc),
         LevelTarget(LocationNames.level_boss_veggies),
         LevelTarget(LocationNames.level_boss_slime),
         LevelTarget(LocationNames.level_rungun_forest),
@@ -153,7 +153,7 @@ region_worlds: list[RegionData] = [
 ]
 region_dlc_worlds = [
     WorldRegionData(LocationNames.world_dlc_inkwell_4, [
-        #LocationNames.loc_event_dlc_start,
+        LocationNames.loc_dlc_cookie,
         LocationNames.loc_dlc_npc_newscat,
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [
@@ -294,8 +294,7 @@ region_isle3: list[RegionData] = [
 ]
 region_isleh: list[RegionData] = [
     LevelRegionData(LocationNames.level_boss_kingdice, None, [LevelTarget(LocationNames.level_boss_devil)], flags=DefFlags.DICE_PALACE),
-    #LevelRegionData(LocationNames.level_boss_devil, None, None),
-    RegionData(LocationNames.level_boss_devil, [LocationNames.loc_event_goal_devil]), #FIXME: Temp
+    LevelRegionData(LocationNames.level_boss_devil, None, None),
 ]
 region_dlc_isle4: list[RegionData] = [
     RegionData(LocationNames.level_dlc_tutorial, [
@@ -320,8 +319,7 @@ region_dlc_isle4: list[RegionData] = [
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy),
         Target(LocationNames.loc_dlc_quest_cactusgirl, None, dep.dep_dlc_cactusgirl_quest),
     ]),
-    #LevelRegionData(LocationNames.level_dlc_boss_saltbaker, None),
-    RegionData(LocationNames.level_dlc_boss_saltbaker, [LocationNames.loc_event_dlc_goal_saltbaker]), #FIXME: Temp
+    LevelRegionData(LocationNames.level_dlc_boss_saltbaker, None, None),
     #LevelRegionData(LocationNames.level_dlc_graveyard, None),
     RegionData(LocationNames.level_dlc_chesscastle, None, [
         LevelTarget(LocationNames.level_dlc_chesscastle_pawn)

@@ -1,15 +1,18 @@
 from __future__ import annotations
 from enum import IntEnum
+from .names import LocationNames
 from .options import CupheadOptions
 
 class GameMode(IntEnum):
     beat_devil = 0
-    contracts = 1
-    dlc_buy_out_shop = 2
+    collect_contracts = 1
+    buy_out_shop = 2
     dlc_beat_saltbaker = 3
     dlc_beat_both = 4
-    dlc_beat_saltbaker_isle4_only = 5
-    dlc_ingradients = 6
+    dlc_collect_ingredients = 5
+    dlc_collect_both = 6
+    dlc_beat_devil_no_isle4 = 7
+    dlc_beat_saltbaker_isle4_only = 8
 class GradeCheckMode(IntEnum):
     disabled = 0
     a_minus_grade = 1
@@ -136,3 +139,18 @@ class WorldSettings:
             options.trap_weight_loadout.value,
             0,
         ]
+
+    def is_goal_used(self, goal: str) -> bool:
+        if goal == LocationNames.loc_event_goal_devil:
+            return (
+                self.mode == GameMode.beat_devil or
+                self.mode == GameMode.dlc_beat_both or
+                self.mode == GameMode.dlc_beat_devil_no_isle4
+            )
+        elif goal == LocationNames.loc_event_dlc_goal_saltbaker:
+            return (
+                self.mode == GameMode.dlc_beat_saltbaker or
+                self.mode == GameMode.dlc_beat_both or
+                self.mode == GameMode.dlc_beat_saltbaker_isle4_only
+            )
+        return False

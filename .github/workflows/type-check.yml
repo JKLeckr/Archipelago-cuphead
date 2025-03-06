@@ -5,11 +5,13 @@ on:
     paths:
       - "**.py"
       - ".github/ruff.toml"
+      - ".github/type_check.py"
       - ".github/workflows/type-check.yml"
   push:
     paths:
       - "**.py"
       - ".github/ruff.toml"
+      - ".github/type_check.py"
       - ".github/workflows/type-check.yml"
 
 jobs:

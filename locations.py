@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import NamedTuple, Optional
-from BaseClasses import Location, LocationProgressType, Region
+from BaseClasses import Location, Region, LocationProgressType
 from .names import LocationNames
-from .settings import WorldSettings, GradeCheckMode
+from .settings import WorldSettings, GameMode,GradeCheckMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"
@@ -311,7 +311,7 @@ location_level_dlc_chesscastle: dict[str, LocationData] = {
 }
 
 location_level_dlc_special: dict[str, LocationData] = {
-    LocationNames.loc_level_dlc_graveyard: LocationData(dlc_id(45)),
+    #LocationNames.loc_level_dlc_graveyard: LocationData(dlc_id(45)),
 }
 
 # Shop Locations
@@ -328,32 +328,12 @@ location_shop: dict[str, LocationData] = {
     LocationNames.loc_shop_charm5: LocationData(id(110)),
     LocationNames.loc_shop_charm6: LocationData(id(111)),
 }
-location_shop_event: dict[str, LocationData] = {
-    LocationNames.loc_shop_weapon1_bought: LocationData(None, category="weapon"),
-    LocationNames.loc_shop_weapon2_bought: LocationData(None, category="weapon"),
-    LocationNames.loc_shop_weapon3_bought: LocationData(None, category="weapon"),
-    LocationNames.loc_shop_weapon4_bought: LocationData(None, category="weapon"),
-    LocationNames.loc_shop_weapon5_bought: LocationData(None, category="weapon"),
-    LocationNames.loc_shop_charm1_bought: LocationData(None, category="charm"),
-    LocationNames.loc_shop_charm2_bought: LocationData(None, category="charm"),
-    LocationNames.loc_shop_charm3_bought: LocationData(None, category="charm"),
-    LocationNames.loc_shop_charm4_bought: LocationData(None, category="charm"),
-    LocationNames.loc_shop_charm5_bought: LocationData(None, category="charm"),
-    LocationNames.loc_shop_charm6_bought: LocationData(None, category="charm"),
-}
 location_shop_dlc: dict[str, LocationData] = {
     LocationNames.loc_shop_dlc_weapon6: LocationData(dlc_id(46)),
     LocationNames.loc_shop_dlc_weapon7: LocationData(dlc_id(47)),
     LocationNames.loc_shop_dlc_weapon8: LocationData(dlc_id(48)),
     LocationNames.loc_shop_dlc_charm7: LocationData(dlc_id(49)),
     LocationNames.loc_shop_dlc_charm8: LocationData(dlc_id(50)),
-}
-location_shop_dlc_event: dict[str, LocationData] = {
-    LocationNames.loc_shop_dlc_weapon6_bought: LocationData(None, category="dlc_weapon"),
-    LocationNames.loc_shop_dlc_weapon7_bought: LocationData(None, category="dlc_weapon"),
-    LocationNames.loc_shop_dlc_weapon8_bought: LocationData(None, category="dlc_weapon"),
-    LocationNames.loc_shop_dlc_charm7_bought: LocationData(None, category="dlc_charm"),
-    LocationNames.loc_shop_dlc_charm8_bought: LocationData(None, category="dlc_charm"),
 }
 
 # World Locations
@@ -516,7 +496,7 @@ def setup_locations(settings: WorldSettings):
     rungun_grade_checks = settings.rungun_grade_checks
     if boss_grade_checks>0:
         locations.update(location_level_boss_topgrade)
-        if use_dlc:
+        if settings.mode != GameMode.beat_devil:
             locations.update(location_level_boss_final_topgrade)
     if rungun_grade_checks>0:
         if rungun_grade_checks>=1 and rungun_grade_checks<=3:
@@ -551,7 +531,6 @@ def setup_locations(settings: WorldSettings):
         _add_location(LocationNames.loc_quest_pacifist,location_world_quest)
     if settings.dlc_requires_mausoleum:
         _add_location(LocationNames.loc_event_mausoleum,location_dlc_special)
-    locations.update(location_goal)
 
     if use_dlc:
         locations.update(locations_dlc)
@@ -559,12 +538,25 @@ def setup_locations(settings: WorldSettings):
             locations.update(locations_dlc_event_agrade)
         if boss_grade_checks>0:
             locations.update(location_level_dlc_boss_topgrade)
+            if settings.mode != GameMode.dlc_beat_saltbaker:
+                locations.update(location_level_dlc_boss_final_topgrade)
         if settings.dlc_boss_chalice_checks:
             locations.update(locations_dlc_boss_chaliced)
         if settings.dlc_cactusgirl_quest:
             locations.update(locations_dlc_event_boss_chaliced)
             _add_location(LocationNames.loc_dlc_quest_cactusgirl,location_dlc_world_quest)
         locations.update(location_dlc_goal)
+
+    if settings.is_goal_used(LocationNames.loc_event_goal_devil):
+        locations.update(location_goal)
+    if settings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+        locations.update(location_dlc_goal)
+
+    if settings.mode != GameMode.beat_devil:
+        locations.update(location_level_boss_final)
+    if settings.use_dlc and settings.mode != GameMode.dlc_beat_saltbaker:
+        locations.update(location_level_dlc_boss_final)
+
     return locations
 
 name_to_id = {name: data.id for name, data in locations_all.items() if data.id}

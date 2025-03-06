@@ -11,7 +11,6 @@ class DeliciousLastCourse(Toggle):
 
 class GameMode(ChoiceEx):
     """
-    --ONLY DEFAULT CHOICE WORKS--
     Set the mode of the randomizer which includes goal.
     NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
     """
@@ -23,6 +22,8 @@ class GameMode(ChoiceEx):
     option_dlc_beat_both = 4
     option_dlc_collect_ingredients = 5
     option_dlc_collect_both = 6
+    #option_dlc_beat_devil_no_isle4 = 7
+    #option_dlc_beat_saltbaker_isle4_only = 8
     default = 0
 
 class HardLogic(Toggle):

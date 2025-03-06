@@ -192,6 +192,7 @@ level_boss_final: dict[str, LevelData] = {
         LocationNames.loc_level_boss_devil_topgrade,
         LocationNames.loc_level_boss_devil_event_agrade,
         LocationNames.loc_level_boss_devil_dlc_chaliced,
+        LocationNames.loc_event_goal_devil,
     ], lr.level_rule_final)
 }
 level_dlc_boss_regular: dict[str, LevelData] = {
@@ -238,6 +239,7 @@ level_dlc_boss_final: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_saltbaker_topgrade,
         LocationNames.loc_level_dlc_boss_saltbaker_event_agrade,
         LocationNames.loc_level_dlc_boss_saltbaker_dlc_chaliced,
+        LocationNames.loc_event_dlc_goal_saltbaker,
     ], lr.level_rule_final),
 }
 level_dicepalace_boss = {

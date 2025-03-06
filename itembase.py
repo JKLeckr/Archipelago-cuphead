@@ -132,13 +132,15 @@ def setup_locked_items(world: CupheadWorld):
         create_locked_items(world, ItemNames.item_event_agrade, locations.locations_event_agrade)
     if world.wsettings.pacifist_quest:
         create_locked_items(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
-    create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
+    if world.wsettings.is_goal_used(LocationNames.loc_event_goal_devil):
+        create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
     if world.use_dlc:
         create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
         create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
         #create_locked_item(world, ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
-        create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
+        if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+            create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
         create_locked_items(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
         create_locked_items(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
 

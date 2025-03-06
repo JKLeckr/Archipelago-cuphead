@@ -21,8 +21,7 @@ jobs:
           draft: true
           prerelease: true
           name: Preview (${{ env.RELEASE_VERSION }})
-        env:
-          GITHUB_TOKEN: ${{ secrets.AP_TOKEN }}
+          token: ${{ secrets.AP_TOKEN }}
 
   build-release:
     name: Build and Upload Release
@@ -60,9 +59,8 @@ jobs:
           draft: true
           prerelease: true
           name: Preview (${{ env.RELEASE_VERSION }})
+          token: ${{ secrets.AP_TOKEN }}
           files: |
             cuphead.apworld
             cuphead.apworld.sha256
             examples/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.AP_TOKEN }}

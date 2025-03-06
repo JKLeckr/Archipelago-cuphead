@@ -10,13 +10,39 @@ class TestOptions(CupheadTestBase):
         },
         "DLC": {
             "use_dlc": True,
+            "mode": "dlc_beat_both",
         },
         "Ability Rando": {
             "randomize_abilities": True,
         },
         "Boss Secrets": {
             "boss_secret_checks": True,
-        }
+        },
+        "DLC Freemove": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "freemove_isles": True,
+        },
+        "MacGuffin": {
+            "mode": "collect_contracts",
+        },
+        "DLC MacGuffin": {
+            "use_dlc": True,
+            "mode": "dlc_collect_ingredients",
+        },
+        "DLC Collect Both": {
+            "use_dlc": True,
+            "mode": "dlc_collect_both",
+        },
+        "No Grade Checks": {
+            "boss_grade_checks": "disabled",
+            "rungun_grade_checks": "disabled",
+        },
+        "DLC No Grade Checks": {
+            "use_dlc": True,
+            "boss_grade_checks": "disabled",
+            "rungun_grade_checks": "disabled",
+        },
     }
 
     def test_options(self):

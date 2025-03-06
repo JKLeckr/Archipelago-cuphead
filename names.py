@@ -433,7 +433,7 @@ class LocationNames:
     loc_coin_isleh_secret = world_inkwell_hell + " Secret Coin"
     loc_dlc_coin_isle4_secret = world_dlc_inkwell_4 + " Secret Coin"
 
-    loc_dlc_cookie = "Astral Cookie"
+    loc_dlc_cookie = "Astral Cookie Received"
     loc_dlc_npc_newscat = "Newsy Cat"
     loc_dlc_quest_cactusgirl = "Cactus Girl Quest"
 

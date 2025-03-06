@@ -6,25 +6,17 @@ name: UnitTests
 on:
   push:
     paths:
-      - '**'
-      - '!docs/**'
+      - "**.py"
       - '!examples/**'
       - '!print.py'
       - '!scriptstash.py'
-      - '!*.md'
-      - '!.gitignore'
-      - '!.github/workflows/**'
       - '.github/workflows/unittests.yml'
   pull_request:
     paths:
-      - '**'
-      - '!docs/**'
+      - "**.py"
       - '!examples/**'
       - '!print.py'
       - '!scriptstash.py'
-      - '!*.md'
-      - '!.gitignore'
-      - '!.github/workflows/**'
       - '.github/workflows/unittests.yml'
 
 jobs:
@@ -59,8 +51,20 @@ jobs:
         path: Archipelago
     
     - name: Clean up
+      shell: python
       run: |
-        rm -rf Archipelago/worlds/stardew_valley
+        import os, shutil
+
+        worlds_dir = "worlds"
+        worlds = ["stardew_valley"]
+        
+        for world in worlds:
+          directory = os.path.join(worlds_dir, world)
+          if os.path.isdir(directory):
+            print(f"Removing directory: {directory}")
+            shutil.rmtree(directory)
+          else:
+            print(f"Directory {directory} does not exist.")
 
     - name: Checkout Cuphead
       uses: actions/checkout@v4
