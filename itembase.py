@@ -42,7 +42,7 @@ def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> s
     if len(item_weights)<1:
         raise ValueError("item_weights must not be empty!")
 
-    active_items, active_weights = zip(*item_weights)
+    active_items, active_weights = zip(*item_weights, strict=True)
 
     total_weight = sum(active_weights)
 
@@ -84,7 +84,7 @@ def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Ran
     trap_items = list(items.item_trap.keys())
     trap_item_weights = settings.trap_weights
 
-    active_trap_weights = [(trap, weight) for trap, weight in zip(trap_items, trap_item_weights) if weight > 0]
+    active_trap_weights = [(trap, weight) for trap, weight in zip(trap_items, trap_item_weights, strict=True) if weight > 0]
 
     if not active_trap_weights:
         return []
