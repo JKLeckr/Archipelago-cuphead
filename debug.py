@@ -1,3 +1,4 @@
+from __future__ import annotations
 import Utils
 from typing import Any, Iterable
 from worlds.AutoWorld import World

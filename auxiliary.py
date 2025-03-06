@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Iterable, Any
 
 def count_in_list(e: Any, ls: Iterable[Any]):

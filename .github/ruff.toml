@@ -16,5 +16,5 @@ extend-exclude = [
     "scriptstash.py",
 ]
 
-# Assume Python 3.8
-target-version = "py38"
+# Assume Python 3.10
+target-version = "py310"
