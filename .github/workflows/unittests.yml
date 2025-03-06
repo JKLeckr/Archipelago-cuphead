@@ -1,0 +1,82 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: UnitTests
+
+on:
+  push:
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!examples/**'
+      - '!print.py'
+      - '!scriptstash.py'
+      - '!*.md'
+      - '!.gitignore'
+      - '!.github/workflows/**'
+      - '.github/workflows/unittests.yml'
+  pull_request:
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!examples/**'
+      - '!print.py'
+      - '!scriptstash.py'
+      - '!*.md'
+      - '!.gitignore'
+      - '!.github/workflows/**'
+      - '.github/workflows/unittests.yml'
+
+jobs:
+  unit:
+    runs-on: ${{ matrix.os }}
+    name: Test Python ${{ matrix.python.version }} ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: Archipelago/
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python:
+          - {version: '3.10'}
+          - {version: '3.11'}
+          - {version: '3.12'}
+        include:
+          - python: {version: '3.10'}  # old compat
+            os: windows-latest
+          - python: {version: '3.12'}  # current
+            os: windows-latest
+          - python: {version: '3.12'}  # current
+            os: macos-latest
+
+    steps:
+    - name: Checkout Archipelago
+      uses: actions/checkout@v4
+      with:
+        repository: JKLeckr/Archipelago
+        path: Archipelago
+    
+    - name: Clean up
+      run: |
+        rm -rf Archipelago/worlds/stardew_valley
+
+    - name: Checkout Cuphead
+      uses: actions/checkout@v4
+      with:
+        path: Archipelago/worlds/cuphead
+
+    - name: Set up Python ${{ matrix.python.version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python.version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-subtests pytest-xdist
+        python ModuleUpdate.py --yes --force --append "WebHostLib/requirements.txt"
+        python Launcher.py --update_settings  # make sure host.yaml exists for tests
+    - name: Unittests
+      run: |
+        pytest -n auto ./test/general/ ./test/options/ ./worlds/cuphead/test/

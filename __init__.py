@@ -51,6 +51,8 @@ class CupheadWorld(World):
 
     wsettings: WorldSettings
 
+    active_locations: dict[str,LocationData]
+
     level_shuffle_map: dict[int,int] = {}
 
     option_overrides: list[str] = []

@@ -102,8 +102,11 @@ env.bak/
 venv.bak/
 *.code-workspace
 shell.nix
-ruff.toml
 /*.bat
+
+# Ruff
+/ruff.toml
+.ruff_cache/
 
 # Spyder project settings
 .spyderproject

@@ -1,0 +1,45 @@
+name: TypeCheck
+
+on:
+  pull_request:
+    paths:
+      - "**.py"
+      - ".github/ruff.toml"
+      - ".github/workflows/type-check.yml"
+  push:
+    paths:
+      - "**.py"
+      - ".github/ruff.toml"
+      - ".github/workflows/type-check.yml"
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Archipelago/
+
+    steps:
+      - name: Checkout Archipelago
+        uses: actions/checkout@v4
+        with:
+          repository: JKLeckr/Archipelago
+          path: Archipelago
+
+      - name: Checkout Cuphead
+        uses: actions/checkout@v4
+        with:
+          path: Archipelago/worlds/cuphead
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: "Install dependencies"
+        run: |
+          python -m pip install --upgrade pip ruff==0.9.6
+          python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
+
+      - name: "Run ruff"
+        working-directory: Archipelago/worlds/cuphead
+        run: python .github/type_check.py

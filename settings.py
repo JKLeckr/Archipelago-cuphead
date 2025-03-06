@@ -5,7 +5,7 @@ from .options import CupheadOptions
 class GameMode(IntEnum):
     beat_devil = 0
     contracts = 1
-    dlc_beat_devil = 2
+    dlc_buy_out_shop = 2
     dlc_beat_saltbaker = 3
     dlc_beat_both = 4
     dlc_beat_saltbaker_isle4_only = 5

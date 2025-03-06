@@ -1,0 +1,20 @@
+# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+lint.select = ["E", "F", "W", "B"]
+lint.ignore = ["E501", "C901"]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+lint.fixable = ["ALL"]
+lint.unfixable = ["B", "C901"]
+
+# Exclude a variety of commonly ignored directories.
+extend-exclude = [
+    "**/__pycache__",
+    "**/.github",
+    "print.py",
+    "scriptstash.py",
+]
+
+# Assume Python 3.8
+target-version = "py38"
