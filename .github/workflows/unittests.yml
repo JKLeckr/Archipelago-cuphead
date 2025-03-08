@@ -8,14 +8,12 @@ on:
     paths:
       - "**.py"
       - '!examples/**'
-      - '!print.py'
       - '!scriptstash.py'
       - '.github/workflows/unittests.yml'
   pull_request:
     paths:
       - "**.py"
       - '!examples/**'
-      - '!print.py'
       - '!scriptstash.py'
       - '.github/workflows/unittests.yml'
 

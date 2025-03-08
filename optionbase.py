@@ -1,8 +1,10 @@
+from typing_extensions import override
 from Options import Range, Choice, OptionError
 
 class ChoiceEx(Choice):
     random_value: int = -1
 
+    @override
     @classmethod
     def from_text(cls, text: str) -> Choice:
         text = text.lower()

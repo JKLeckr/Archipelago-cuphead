@@ -1,0 +1,26 @@
+{
+    "include": [
+      "type_check.py",
+      "../**/*.py"
+    ],
+  
+    "exclude": [
+      "**/__pycache__",
+      "../print.py",
+      "../scriptstash.py"
+    ],
+  
+    "typeCheckingMode": "strict",
+    "reportImplicitOverride": "error",
+    "reportMissingImports": true,
+  
+    "pythonVersion": "3.10",
+    "pythonPlatform": "Windows",
+  
+    "executionEnvironments": [
+      {
+        "root": "../../.."
+      }
+    ]
+}
+  

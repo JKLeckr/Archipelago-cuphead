@@ -1,21 +1,21 @@
-name: TypeCheck
+name: LintCheck
 
 on:
   pull_request:
     paths:
       - "**.py"
-      - ".github/pyright-config.json"
-      - ".github/pyright_check.py"
-      - ".github/workflows/type-check.yml"
+      - ".github/ruff.toml"
+      - ".github/ruff_check.py"
+      - ".github/workflows/lint-check.yml"
   push:
     paths:
       - "**.py"
-      - ".github/pyright-config.json"
-      - ".github/pyright_check.py"
-      - ".github/workflows/type-check.yml"
+      - ".github/ruff.toml"
+      - ".github/ruff_check.py"
+      - ".github/workflows/lint-check.yml"
 
 jobs:
-  pyright:
+  ruff:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -39,9 +39,9 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          python -m pip install --upgrade pip pyright==1.1.396
+          python -m pip install --upgrade pip ruff==0.9.6
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
 
       - name: "Run ruff"
         working-directory: Archipelago/worlds/cuphead
-        run: python .github/pyright_check.py
+        run: python .github/ruff_check.py

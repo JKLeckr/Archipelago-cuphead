@@ -1,6 +1,7 @@
 from __future__ import annotations
 import typing
 from typing import Optional, Iterable
+from typing_extensions import override
 from enum import IntEnum, IntFlag
 from .names import LocationNames, ItemNames
 from .rulebase import RegionRule, region_rule_has, region_rule_has_all
@@ -34,6 +35,7 @@ class Target:
         self.rule = rule
         self.depends = depends if depends else dep.dep_none
         self.tgt_type = tgt_type
+    @override
     def __str__(self) -> str:
         return self.name
 class LevelTarget(Target):
@@ -60,6 +62,7 @@ class RegionData:
         self.depends = depends if depends else dep.dep_none
         self.region_type = region_type
         self.flags = flags
+    @override
     def __str__(self) -> str:
         return self.name
 class LevelRegionData(RegionData):

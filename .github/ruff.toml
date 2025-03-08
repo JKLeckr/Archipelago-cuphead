@@ -12,7 +12,6 @@ lint.unfixable = ["B", "C901"]
 extend-exclude = [
     "**/__pycache__",
     "**/.github",
-    "print.py",
     "scriptstash.py",
 ]
 

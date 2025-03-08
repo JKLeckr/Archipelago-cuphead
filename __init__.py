@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import Optional, TextIO, Dict, Any
+from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from Options import NumericOption
 from worlds.AutoWorld import World, WebWorld
@@ -88,6 +89,7 @@ class CupheadWorld(World):
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_option(_options.boss_grade_checks, 3)
 
+    @override
     def generate_early(self) -> None:
         self.sanitize_options()
 
@@ -126,6 +128,7 @@ class CupheadWorld(World):
         if self.multiworld.players<2 and self.wsettings.randomize_abilities:
             self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
 
+    @override
     def fill_slot_data(self) -> Dict[str, Any]:
         slot_data: dict[str, Any] = {
             "version": 2,
@@ -197,18 +200,22 @@ class CupheadWorld(World):
             shop_locations[LocationNames.level_shops[i]] = shop_region ## TODO: Rename to shop sets
         return shop_locations
 
+    @override
     def create_regions(self) -> None:
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
+    @override
     def create_item(self, name: str, force_classification: Optional[ItemClassification] = None) -> Item:
         return itembase.create_item(name, self.player, force_classification)
 
+    @override
     def create_items(self) -> None:
         itembase.create_items(self)
 
+    @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if len(self.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player} Option Changes:\n\n")
@@ -221,6 +228,7 @@ class CupheadWorld(World):
             (x + ':\n' + '\n'.join([f" {z}" for z in y])) for x, y in self.shop_locations.items() if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
         ]))
 
+    @override
     def collect(self, state: CollectionState, item: Item) -> bool:
         if item.name in {ItemNames.item_coin2, ItemNames.item_coin3}:
             amount = 3 if item.name == ItemNames.item_coin3 else 2
@@ -229,9 +237,11 @@ class CupheadWorld(World):
         else:
             return super().collect(state, item)
 
+    @override
     def get_filler_item_name(self) -> str:
         return itembase.get_filler_item_name(self)
 
+    @override
     def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
         hint_dict: Dict[int, str] = {}
         if self.level_shuffle:
@@ -245,6 +255,7 @@ class CupheadWorld(World):
                     hint_dict[self.location_name_to_id[loc]] = shop ## TODO: Use Shop Sets
         hint_data.update({self.player: hint_dict})
 
+    @override
     def set_rules(self) -> None:
         rules.set_rules(self)
         #debug.print_locations(self)
