@@ -89,6 +89,13 @@ class CupheadWorld(World):
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_option(_options.boss_grade_checks, 3)
 
+    def solo_setup(self) -> None:
+        # Put items in early to prevent fill errors. FIXME: Make this more elegant.
+        if self.wsettings.randomize_abilities:
+            self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
+            if not self.wsettings.freemove_isles:
+                self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
+
     @override
     def generate_early(self) -> None:
         self.sanitize_options()
@@ -124,9 +131,9 @@ class CupheadWorld(World):
         filler_item_weights = self.wsettings.filler_item_weights
         self.filler_item_weights = [(trap, weight) for trap, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0]
 
-        # Put items in early to prevent fill errors. FIXME: Make this more elegant.
-        if self.multiworld.players<2 and self.wsettings.randomize_abilities:
-            self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
+        # Solo World Setup (for loners)
+        if self.multiworld.players<2:
+            self.solo_setup()
 
     @override
     def fill_slot_data(self) -> Dict[str, Any]:
