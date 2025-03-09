@@ -1,25 +1,32 @@
 from __future__ import annotations
-from enum import IntEnum
+from enum import IntEnum, IntFlag
 from .names import LocationNames
 from .options import CupheadOptions
 
 class GameMode(IntEnum):
-    beat_devil = 0
-    collect_contracts = 1
-    buy_out_shop = 2
-    dlc_beat_saltbaker = 3
-    dlc_beat_both = 4
-    dlc_collect_ingredients = 5
-    dlc_collect_both = 6
-    dlc_beat_devil_no_isle4 = 7
-    dlc_beat_saltbaker_isle4_only = 8
+    BEAT_DEVIL = 0
+    COLLECT_CONTRACTS = 1
+    BUY_OUT_SHOP = 2
+    DLC_BEAT_SALTBAKER = 3
+    DLC_BEAT_BOTH = 4
+    DLC_COLLECT_INGREDIENTS = 5
+    DLC_COLLECT_BOTH = 6
+    DLC_BEAT_DEVIL_NO_ISLE4 = 7
+    DLC_BEAT_SALTBAKER_ISLE4_ONLY = 8
 class GradeCheckMode(IntEnum):
-    disabled = 0
-    a_minus_grade = 1
-    a_grade = 2
-    a_plus_grade = 3
-    s_grade = 4
-    pacifist = 5
+    DISABLED = 0
+    A_MINUS_GRADE = 1
+    A_GRADE = 2
+    A_PLUS_GRADE = 3
+    S_GRADE = 4
+    PACIFIST = 5
+class CItemGroups(IntFlag):
+    NONE = 0
+    ESSENTIAL = 1
+    SUPER = 2
+    ABILITY = 4
+    AIM_ABILITY = 8
+    ALL = 255
 
 # These are settings stored and accessed by other classes
 class WorldSettings:
@@ -31,10 +38,10 @@ class WorldSettings:
     start_maxhealth: int
     level_shuffle: bool
     level_shuffle_plane_separate: bool
-    #shop_shuffle: bool
     freemove_isles: bool
     weapon_gate: bool
     randomize_abilities: bool
+    randomize_abilities_aim: bool
     maxhealth_upgrades: int
     traps: int
     filler_item_weights: list[int]
@@ -60,7 +67,7 @@ class WorldSettings:
     require_secret_shortcuts: bool
     dlc_randomize_boat: bool
     dlc_requires_mausoleum: bool
-    dlc_chalice_items_separate: bool
+    dlc_chalice_items_separate: CItemGroups
     dlc_chesscastle_fullrun: bool
     minimum_filler: int
     trap_loadout_anyweapon: bool
@@ -74,10 +81,10 @@ class WorldSettings:
         self.start_maxhealth = options.start_maxhealth.value
         self.level_shuffle = bool(options.level_shuffle.value)
         self.level_shuffle_plane_separate = bool(options.level_shuffle_plane_separate)
-        #self.shop_shuffle = bool(options.shop_shuffle.value)
         self.freemove_isles = bool(options.freemove_isles.value)
         self.weapon_gate = False #bool(options.weapon_gate.value)
         self.randomize_abilities = bool(options.randomize_abilities.value)
+        self.randomize_abilities_aim = False #bool(options.randomize_abilities_aim.value)
         self.boss_grade_checks = GradeCheckMode(options.boss_grade_checks.value)
         self.rungun_grade_checks = GradeCheckMode(options.rungun_grade_checks.value)
         self.boss_secret_checks = bool(options.boss_secret_checks.value)
@@ -103,7 +110,7 @@ class WorldSettings:
         self.require_secret_shortcuts = True
         self.dlc_randomize_boat = True
         self.dlc_requires_mausoleum = True
-        self.dlc_chalice_items_separate = False
+        self.dlc_chalice_items_separate = CItemGroups.NONE
         self.dlc_chesscastle_fullrun = True
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
@@ -140,17 +147,20 @@ class WorldSettings:
             0,
         ]
 
+    def is_dlc_chalice_items_separate(self, item_group: CItemGroups) -> bool:
+        return (self.dlc_chalice_items_separate & item_group) > 0
+
     def is_goal_used(self, goal: str) -> bool:
         if goal == LocationNames.loc_event_goal_devil:
             return (
-                self.mode == GameMode.beat_devil or
-                self.mode == GameMode.dlc_beat_both or
-                self.mode == GameMode.dlc_beat_devil_no_isle4
+                self.mode == GameMode.BEAT_DEVIL or
+                self.mode == GameMode.DLC_BEAT_BOTH or
+                self.mode == GameMode.DLC_BEAT_DEVIL_NO_ISLE4
             )
         elif goal == LocationNames.loc_event_dlc_goal_saltbaker:
             return (
-                self.mode == GameMode.dlc_beat_saltbaker or
-                self.mode == GameMode.dlc_beat_both or
-                self.mode == GameMode.dlc_beat_saltbaker_isle4_only
+                self.mode == GameMode.DLC_BEAT_SALTBAKER or
+                self.mode == GameMode.DLC_BEAT_BOTH or
+                self.mode == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
             )
         return False

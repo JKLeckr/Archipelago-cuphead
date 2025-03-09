@@ -11,14 +11,13 @@ if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
 class DefType(IntEnum):
-    SIMPLE = 0, # type: ignore
-    LEVEL = 1, # type: ignore
-    WORLD = 2, # type: ignore
-
+    SIMPLE = 0
+    LEVEL = 1
+    WORLD = 2
 class DefFlags(IntFlag):
-    NONE = 0, # type: ignore
-    TGT_IGNORE_FREEMOVE = 1, # type: ignore
-    DICE_PALACE = 3, # type: ignore
+    NONE = 0
+    TGT_IGNORE_FREEMOVE = 1
+    DICE_PALACE = 3
 
 def rule_has(item: str, count: int = 1) -> RegionRule:
     return region_rule_has(item, count)

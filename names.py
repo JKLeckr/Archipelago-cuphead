@@ -528,6 +528,15 @@ class ItemNames:
     item_ability_aim_downleft = "Aim Down-Left"
     item_ability_aim_downright = "Aim Down-Right"
 
+    item_ability_dlc_c_aim_left = "Chalice Aim Left"
+    item_ability_dlc_c_aim_right = "Chalice Aim Right"
+    item_ability_dlc_c_aim_up = "Chalice Aim Up"
+    item_ability_dlc_c_aim_down = "Chalice Aim Down"
+    item_ability_dlc_c_aim_upleft = "Chalice Aim Up-Left"
+    item_ability_dlc_c_aim_upright = "Chalice Aim Up-Right"
+    item_ability_dlc_c_aim_downleft = "Chalice Aim Down-Left"
+    item_ability_dlc_c_aim_downright = "Chalice Aim Down-Right"
+
     # Essential
     item_coin = "Coin"
     item_coin2 = "2 Coins"

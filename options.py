@@ -221,6 +221,27 @@ class DlcCactusGirlQuest(Toggle):
     """
     display_name = "[DLC] Cactus Girl Quest"
 
+class DlcChaliceItemsSeparate(Choice):
+    """
+    -DLC ONLY-
+    Make certain items seperate for when playing as Ms. Chalice.
+    Options:
+    - Core Items: Core items like plane and supers.
+    - Abilities: Abilities including parry.
+
+    With parry for Ms. Chalice, the Parry item is replaced with Progressive Dash.
+    Progressive Dash has two levels: 1. Dash only, 2. Dash with Parry.
+    """
+    display_name = "[DLC] Chalice Items Separate"
+    option_none = 0
+    option_core_items = 3
+    option_abilities = 4
+    #option_core_and_abilities = 7
+    #option_aim_abilities = 8
+    #option_core_and_aim = 11
+    #option_abilities_and_aim = 12
+    option_all = 255
+
 class ExtraCoins(Range):
     """
     Set extra coins in the item pool.
@@ -327,16 +348,18 @@ class TrapWeightScreen(Weight):
     display_name = "Screen Trap Weight"
     default = 3
 
-class MusicRando(Choice):
+class MusicShuffle(Choice):
     """
-    Enable Randomizing Music.
+    ---NOT YET IMPLEMENTED---
+    Enable Shuffling Music.
+    NOTE: This option will do nothing until the client is updated
     """
     display_name = "Music Rando"
     option_disabled = 0
     option_level_music = 1
     option_map_music = 2
     option_level_and_map_music = 3
-    option_all_music = 255
+    #option_all_music = 255
     default = 0
 
 class DeathLink(Toggle):
@@ -369,6 +392,7 @@ class CupheadOptions(PerGameCommonOptions):
     rungun_grade_checks: RunGunGradeChecks
     kingdice_bosssanity: DicePalaceBossSanity
     dlc_boss_chalice_checks: DlcBossChaliceChecks
+    #dlc_chalice_items_separate: DlcChaliceItemsSeparate
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     dlc_cactusgirl_quest: DlcCactusGirlQuest
@@ -384,7 +408,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_slowfire: TrapWeightSlowFire
     trap_weight_superdrain: TrapWeightSuperDrain
     trap_weight_loadout: TrapWeightLoadout
-    #music_rando: MusicRando
+    music_shuffle: MusicShuffle
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -419,11 +443,12 @@ cuphead_option_groups = [
         MaxHealthUpgrades,
         MinimumFillerItems,
         Traps,
+        #DlcChaliceItemsSeparate,
     ]),
     OptionGroup("Misc", [
         LevelShufflePlaneSeparate,
         TrapLoadoutAnyWeapon,
-        #MusicRando,
+        MusicShuffle,
     ]),
     OptionGroup("Item Weights", [
         FillerWeightExtraHealth,

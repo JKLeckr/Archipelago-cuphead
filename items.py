@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Item, ItemClassification
 from .names import ItemNames
-from .settings import WorldSettings
+from .settings import WorldSettings, CItemGroups
 
 class CupheadItem(Item):
     game: str = "Cuphead"
@@ -118,6 +118,16 @@ item_abilities_aim: dict[str, ItemData] = {
     ItemNames.item_ability_aim_downleft: ItemData(id(39), ItemClassification.progression),
     ItemNames.item_ability_aim_downright: ItemData(id(40), ItemClassification.progression),
 }
+item_dlc_chalice_abilities_aim: dict[str, ItemData] = {
+    ItemNames.item_ability_dlc_c_aim_left: ItemData(id(33), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_right: ItemData(id(34), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_up: ItemData(id(35), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_down: ItemData(id(36), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_upleft: ItemData(id(37), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_upright: ItemData(id(38), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_downleft: ItemData(id(39), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_downright: ItemData(id(40), ItemClassification.progression),
+}
 
 item_trap: dict[str, ItemData] = {
     ItemNames.item_level_trap_fingerjam: ItemData(id(41), ItemClassification.trap, 0),
@@ -192,8 +202,10 @@ def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
         items.update(items_dlc)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
             items[ItemNames.item_charm_dlc_cookie] = item_with_type(items[ItemNames.item_charm_dlc_cookie], ItemClassification.progression)
-        if settings.dlc_chalice_items_separate:
+        if settings.is_dlc_chalice_items_separate(CItemGroups.ESSENTIAL):
             items.update(item_dlc_chalice_essential)
+        if settings.is_dlc_chalice_items_separate(CItemGroups.SUPER):
+            items.update(item_dlc_chalice_super)
     if settings.weapon_gate:
         weapon_keys = {
             **item_weapons,
@@ -204,12 +216,16 @@ def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
                 items[w] = item_with_type(items[w], ItemClassification.progression)
     if settings.randomize_abilities:
         items.update(item_abilities)
-        if settings.use_dlc and settings.dlc_chalice_items_separate:
+        if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.ABILITY):
             items.update(item_dlc_chalice_abilities)
         items[ItemNames.item_charm_psugar] = item_with_type(items[ItemNames.item_charm_psugar], ItemClassification.progression)
         items[ItemNames.item_ability_plane_parry] = item_with_type(items[ItemNames.item_ability_plane_parry], ItemClassification.progression)
         if settings.boss_secret_checks:
             items[ItemNames.item_ability_plane_shrink] = item_with_type(items[ItemNames.item_ability_plane_shrink], ItemClassification.progression)
+    if settings.randomize_abilities_aim:
+        items.update(item_abilities_aim)
+        if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.AIM_ABILITY):
+            items.update(item_dlc_chalice_abilities_aim)
     if settings.traps>0:
         items.update(item_trap)
     return items

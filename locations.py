@@ -496,12 +496,12 @@ def setup_locations(settings: WorldSettings):
     rungun_grade_checks = settings.rungun_grade_checks
     if boss_grade_checks>0:
         locations.update(location_level_boss_topgrade)
-        if settings.mode != GameMode.beat_devil:
+        if settings.mode != GameMode.BEAT_DEVIL:
             locations.update(location_level_boss_final_topgrade)
     if rungun_grade_checks>0:
         if rungun_grade_checks>=1 and rungun_grade_checks<=3:
             locations.update(location_level_rungun_agrade)
-        elif rungun_grade_checks==GradeCheckMode.pacifist:
+        elif rungun_grade_checks==GradeCheckMode.PACIFIST:
             locations.update(location_level_rungun_pacifist)
     if settings.boss_secret_checks:
         locations.update(location_level_boss_secret)
@@ -538,7 +538,7 @@ def setup_locations(settings: WorldSettings):
             locations.update(locations_dlc_event_agrade)
         if boss_grade_checks>0:
             locations.update(location_level_dlc_boss_topgrade)
-            if settings.mode != GameMode.dlc_beat_saltbaker:
+            if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
                 locations.update(location_level_dlc_boss_final_topgrade)
         if settings.dlc_boss_chalice_checks:
             locations.update(locations_dlc_boss_chaliced)
@@ -552,9 +552,9 @@ def setup_locations(settings: WorldSettings):
     if settings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
         locations.update(location_dlc_goal)
 
-    if settings.mode != GameMode.beat_devil:
+    if settings.mode != GameMode.BEAT_DEVIL:
         locations.update(location_level_boss_final)
-    if settings.use_dlc and settings.mode != GameMode.dlc_beat_saltbaker:
+    if settings.use_dlc and settings.mode != GameMode.DLC_BEAT_SALTBAKER:
         locations.update(location_level_dlc_boss_final)
 
     return locations

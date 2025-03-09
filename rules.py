@@ -191,19 +191,19 @@ def set_goal(world: CupheadWorld):
     settings = w.wsettings
     w.multiworld.completion_condition[w.player] = (
         lb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
-    ) if settings.mode == GameMode.collect_contracts else (
+    ) if settings.mode == GameMode.COLLECT_CONTRACTS else (
         lb.rule_can_reach_all_regions(w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops)
-    ) if settings.mode == GameMode.buy_out_shop else (
+    ) if settings.mode == GameMode.BUY_OUT_SHOP else (
         lb.rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
-    ) if settings.mode == GameMode.dlc_beat_saltbaker or settings.mode == GameMode.dlc_beat_saltbaker_isle4_only else (
+    ) if settings.mode == GameMode.DLC_BEAT_SALTBAKER or settings.mode == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY else (
         lb.rule_has_all(w, {ItemNames.item_event_goal_devilko, ItemNames.item_event_goal_dlc_saltbakerko})
-    ) if settings.mode == GameMode.dlc_beat_both else (
+    ) if settings.mode == GameMode.DLC_BEAT_BOTH else (
         lb.rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
-    ) if settings.mode == GameMode.dlc_collect_ingredients else (
+    ) if settings.mode == GameMode.DLC_COLLECT_INGREDIENTS else (
         lb.rule_and(
             lb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements),
             lb.rule_has(w, ItemNames.item_dlc_ingredient, settings.dlc_ingredient_goal_requirements)
         )
-    ) if settings.mode == GameMode.dlc_collect_both else (
+    ) if settings.mode == GameMode.DLC_COLLECT_BOTH else (
         lb.rule_has(w, ItemNames.item_event_goal_devilko)
     )
