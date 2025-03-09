@@ -513,7 +513,8 @@ class ItemNames:
     item_ability_plane_parry = "Plane Parry"
 
     item_ability_dlc_cparry = "Chalice Parry"
-    item_ability_dlc_cdash = "Chalice Dash"
+    #item_ability_dlc_cdash = "Chalice Dash"
+    item_ability_dlc_cdash = "Progressive Chalice Dash"
     item_ability_dlc_cduck = "Chalice Duck"
     item_ability_dlc_cplane_shrink = "Chalice Plane Shrink"
     item_ability_dlc_cplane_parry = "Chalice Plane Parry"

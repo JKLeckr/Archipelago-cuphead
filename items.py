@@ -52,7 +52,7 @@ item_dlc_essential: dict[str, ItemData] = {
 item_dlc_chalice_essential: dict[str, ItemData] = {
     ItemNames.item_dlc_cplane_gun: ItemData(dlc_id(2), ItemClassification.progression, 1),
     ItemNames.item_dlc_cplane_bombs: ItemData(dlc_id(3), ItemClassification.progression, 1),
-    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(4), ItemClassification.progression, 1),
+    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(4), ItemClassification.useful, 1),
 }
 
 item_weapons: dict[str, ItemData] = {
@@ -103,8 +103,8 @@ item_abilities: dict[str, ItemData] = {
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
     ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(14), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cdash: ItemData(dlc_id(15), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cparry: ItemData(dlc_id(16), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cdash: ItemData(dlc_id(15), ItemClassification.progression, 2),
+    #ItemNames.item_ability_dlc_cparry: ItemData(dlc_id(16), ItemClassification.progression),
     ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(17), ItemClassification.useful),
     ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(18), ItemClassification.useful),
 }
