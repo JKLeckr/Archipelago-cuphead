@@ -144,7 +144,6 @@ class CupheadWorld(World):
             "shop_map": self.shop_map,
             "contract_requirements": self.contract_requirements,
             "dlc_ingredient_requirements": self.dlc_ingredient_requirements,
-            "randomize_abilities_aim": self.wsettings.randomize_abilities_aim
         }
         slot_data_options: list[str] = [
             "use_dlc",
@@ -161,7 +160,7 @@ class CupheadWorld(World):
             "dlc_curse_mode",
             "trap_loadout_anyweapon",
             "music_shuffle",
-            "deathlink"
+            "deathlink",
         ]
         for option in slot_data_options:
             slot_data.update(self.options.as_dict(option))
