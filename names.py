@@ -437,6 +437,8 @@ class LocationNames:
     loc_dlc_npc_newscat = "Newsy Cat"
     loc_dlc_quest_cactusgirl = "Cactus Girl Quest"
 
+    loc_dlc_curse_complete = "Divine Relic"
+
     loc_event_isle1_secret_prereq = _loc_event_ + loc_coin_isle1_secret + " Prerequisite"
     loc_event_isle1_secret_prereq1 = loc_event_isle1_secret_prereq + " 1"
     loc_event_isle1_secret_prereq2 = loc_event_isle1_secret_prereq + " 2"
@@ -450,7 +452,7 @@ class LocationNames:
     loc_event_music = _loc_event_ + "Piano Music"
     loc_event_mausoleum = _loc_event_ + "Mausoleum"
     loc_event_dlc_start = _loc_event_ + "DLC Start"
-    loc_event_dlc_curse_complete = _loc_event_ + "Divine Relic"
+    loc_event_dlc_curse_complete = _loc_event_ + loc_dlc_curse_complete
 
     loc_event_firstweapon = _loc_event_ + "First Weapon"
     loc_event_dlc_boatarrival = _loc_event_ + "Boat Arrives"

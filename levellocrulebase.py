@@ -20,7 +20,7 @@ class LevelRuleData:
     base_rule: Optional[LevelRule]
     loc_rules: dict[str, LevelRule]
 
-    def _get_loc_rules(self, loc_rules: dict[str, Optional[LRule]]) -> dict[str, LevelRule]:
+    def _get_loc_rules(self, loc_rules: dict[str, Optional[LRule]]) -> dict[str, LevelRule]: # noqa: C901
         _loc_rules = loc_rules.copy()
         _event_locs: set[str] = set()
         nloc_rules: dict[str, LevelRule] = {}

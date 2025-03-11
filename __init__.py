@@ -158,6 +158,7 @@ class CupheadWorld(World):
             "boss_grade_checks",
             "rungun_grade_checks",
             "start_maxhealth",
+            "dlc_curse_mode",
             "trap_loadout_anyweapon",
             "music_shuffle",
             "deathlink"

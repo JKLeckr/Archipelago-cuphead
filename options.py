@@ -242,6 +242,26 @@ class DlcChaliceItemsSeparate(Choice):
     #option_abilities_and_aim = 12
     option_all = 255
 
+class DlcCurseMode(Choice):
+    """
+    -DLC ONLY-
+    Set how the cursed and devine relic is handled.
+
+    Modes:
+    - Off: Broken Relic is removed from the game
+    - Normal: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
+    """
+    display_name = "[DLC] Curse Mode"
+    option_off = 0
+    option_normal = 1
+    #option_reverse = 2
+    #option_always_on = 3
+    #option_always_on_r = 4
+    #option_always_on_1 = 5
+    #option_always_on_2 = 6
+    #option_always_on_3 = 7
+    #option_always_on_4 = 8
+
 class ExtraCoins(Range):
     """
     Set extra coins in the item pool.
@@ -396,6 +416,7 @@ class CupheadOptions(PerGameCommonOptions):
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     dlc_cactusgirl_quest: DlcCactusGirlQuest
+    dlc_curse_mode: DlcCurseMode
     extra_coins: ExtraCoins
     maxhealth_upgrades: MaxHealthUpgrades
     minimum_filler: MinimumFillerItems
@@ -424,7 +445,8 @@ cuphead_option_groups = [
         DeathLink,
     ]),
     OptionGroup("DLC Main", [
-        DlcIngredientRequirements
+        DlcIngredientRequirements,
+        DlcCurseMode
     ]),
     OptionGroup("Checks", [
         BossSecretChecks,

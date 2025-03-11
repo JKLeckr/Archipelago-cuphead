@@ -14,8 +14,8 @@ class ItemData(NamedTuple):
     event: bool = False
     category: str | None = None
 
-def item_with_type(item: ItemData, type: ItemClassification) -> ItemData:
-    return ItemData(item.id, type, item.quantity, item.event, item.category)
+    def with_type(self, type: ItemClassification) -> ItemData:
+        return ItemData(self.id, type, self.quantity, self.event, self.category)
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -80,7 +80,7 @@ item_charms: dict[str, ItemData] = {
 item_dlc_charms: dict[str, ItemData] = {
     ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(8), ItemClassification.useful, 0), # TODO: Add Cookie back
     ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(9), ItemClassification.useful),
-    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(10), ItemClassification.useful), # Sequence will not be in logic
+    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(10), ItemClassification.useful, 0), # Sequence will not be in logic
 }
 
 item_super: dict[str, ItemData] = {
@@ -196,32 +196,44 @@ def get_item_groups() -> dict[str, set[str]]:
     }
     return n_item_groups
 
+def change_item_type(items_ref: dict[str, ItemData], item: str, type: ItemClassification):
+    items_ref[item] = items_ref[item].with_type(type)
+
+def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
+    items_ref.update(items_dlc)
+    if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
+        change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
+    if settings.is_dlc_chalice_items_separate(CItemGroups.ESSENTIAL):
+        items_ref.update(item_dlc_chalice_essential)
+    if settings.is_dlc_chalice_items_separate(CItemGroups.SUPER):
+        items_ref.update(item_dlc_chalice_super)
+
+def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
+    items_ref.update(item_abilities)
+    if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.ABILITY):
+        items_ref.update(item_dlc_chalice_abilities)
+    change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
+    change_item_type(items_ref, ItemNames.item_ability_plane_parry, ItemClassification.progression)
+    if settings.boss_secret_checks:
+        change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
+
+def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
+    weapon_keys = {
+        **item_weapons,
+        **item_dlc_weapons,
+    }
+    for w in weapon_keys:
+        if w in items_ref.keys():
+            change_item_type(items_ref, w, ItemClassification.progression)
+
 def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**items_base}
     if settings.use_dlc:
-        items.update(items_dlc)
-        if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
-            items[ItemNames.item_charm_dlc_cookie] = item_with_type(items[ItemNames.item_charm_dlc_cookie], ItemClassification.progression)
-        if settings.is_dlc_chalice_items_separate(CItemGroups.ESSENTIAL):
-            items.update(item_dlc_chalice_essential)
-        if settings.is_dlc_chalice_items_separate(CItemGroups.SUPER):
-            items.update(item_dlc_chalice_super)
+        setup_dlc_items(items, settings)
     if settings.weapon_gate:
-        weapon_keys = {
-            **item_weapons,
-            **item_dlc_weapons,
-        }
-        for w in weapon_keys:
-            if w in items.keys():
-                items[w] = item_with_type(items[w], ItemClassification.progression)
+        setup_weapon_gate(items, settings)
     if settings.randomize_abilities:
-        items.update(item_abilities)
-        if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.ABILITY):
-            items.update(item_dlc_chalice_abilities)
-        items[ItemNames.item_charm_psugar] = item_with_type(items[ItemNames.item_charm_psugar], ItemClassification.progression)
-        items[ItemNames.item_ability_plane_parry] = item_with_type(items[ItemNames.item_ability_plane_parry], ItemClassification.progression)
-        if settings.boss_secret_checks:
-            items[ItemNames.item_ability_plane_shrink] = item_with_type(items[ItemNames.item_ability_plane_shrink], ItemClassification.progression)
+        setup_abilities(items, settings)
     if settings.randomize_abilities_aim:
         items.update(item_abilities_aim)
         if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.AIM_ABILITY):

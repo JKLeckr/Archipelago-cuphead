@@ -7,7 +7,7 @@ from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
 from .items import CupheadItem
 from .names import ItemNames, LocationNames
-from .settings import WorldSettings
+from .settings import WorldSettings, CurseMode
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -110,13 +110,13 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
 
 def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: Optional[ItemClassification] = None) -> None:
     world.multiworld.get_location(location, world.player).place_locked_item(create_item(name, world.player, force_classification))
-def create_locked_items(world: CupheadWorld, name: str, locations:  dict[str, locations.LocationData],
+def create_locked_items_at(world: CupheadWorld, name: str, locations:  dict[str, locations.LocationData],
                         force_classification: Optional[ItemClassification] = None) -> None:
     for loc in locations:
         if loc in world.active_locations:
             create_locked_item(world, name, loc, force_classification)
 
-def setup_locked_items(world: CupheadWorld):
+def create_locked_items(world: CupheadWorld):
     # Locked Items
     for i in range(1,6):
         _loc = LocationNames.loc_event_isle1_secret_prereq+" "+str(i)
@@ -129,9 +129,9 @@ def setup_locked_items(world: CupheadWorld):
         create_locked_item(world, ItemNames.item_event_ludwig, LocationNames.loc_event_quest_ludwig)
         #create_locked_item(world, ItemNames.item_event_wolfgang, LocationNames.loc_event_quest_wolfgang)
     if world.wsettings.silverworth_quest:
-        create_locked_items(world, ItemNames.item_event_agrade, locations.locations_event_agrade)
+        create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_event_agrade)
     if world.wsettings.pacifist_quest:
-        create_locked_items(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
+        create_locked_items_at(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
     if world.wsettings.is_goal_used(LocationNames.loc_event_goal_devil):
         create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
@@ -141,8 +141,21 @@ def setup_locked_items(world: CupheadWorld):
         #create_locked_item(world, ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
         if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
             create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
-        create_locked_items(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
-        create_locked_items(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
+        create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
+        create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
+
+def create_special_items(world: CupheadWorld) -> list[Item]:
+    player = world.player
+    settings = world.wsettings
+    items: list[Item] = []
+
+    for _ in range(world.wsettings.maxhealth_upgrades):
+        items.append(create_item(ItemNames.item_healthupgrade, world.player))
+    if settings.use_dlc:
+        if settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE:
+            items.append(create_item(ItemNames.item_charm_dlc_broken_relic, player))
+
+    return items
 
 def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> tuple[int, int, int]:
     total_single_coins, total_double_coins, total_triple_coins = coin_amounts
@@ -214,7 +227,7 @@ def create_items(world: CupheadWorld) -> None:
 
     precollected_item_names = [x.name for x in world.multiworld.precollected_items[world.player]]
 
-    setup_locked_items(world)
+    create_locked_items(world)
 
     #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
     unfilled_locations = len([x.name for x in world.multiworld.get_unfilled_locations(world.player)])
@@ -245,7 +258,7 @@ def create_items(world: CupheadWorld) -> None:
         essential_items += list(items.item_dlc_chalice_essential.keys())
         #supers += list(items.item_dlc_chalice_super) # TODO: Investigate addding this later
 
-    # Add the other non-filler items before the coins
+    # Add the grouped fill items
     itempool += create_pool_items(world, essential_items, precollected_item_names)
     itempool += create_pool_items(world, weapons, precollected_item_names)
     itempool += create_pool_items(world, charms, precollected_item_names)
@@ -253,8 +266,9 @@ def create_items(world: CupheadWorld) -> None:
     if world.wsettings.randomize_abilities:
         abilities = list(items.item_abilities.keys()) + (list(items.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
         itempool += create_pool_items(world, abilities, precollected_item_names)
-    for _ in range(world.wsettings.maxhealth_upgrades):
-        itempool.append(create_item(ItemNames.item_healthupgrade, world.player))
+
+    # Add special Items
+    itempool += create_special_items(world)
 
     # Add Coins
     leftover_locations = unfilled_locations - len(itempool) - world.wsettings.minimum_filler

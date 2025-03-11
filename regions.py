@@ -8,41 +8,49 @@ from .locations import CupheadLocation
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
+def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) -> list[str]:
+    locations: list[str] = []
+
+    if regc.region_type == DefType.LEVEL:
+        _level_name = get_mapped_level_name(world, regc.name)
+        region.name = _level_name
+        _level = get_level(world, _level_name, False)
+        locations = _level.locations
+        if regc.locations:
+            locations = locations + regc.locations
+        if (regc.flags & 2)>0 and world.wsettings.kingdice_bosssanity:
+            for ldata in level_dicepalace_boss.values():
+                locations = locations + ldata.locations
+    elif regc.locations:
+        locations = regc.locations
+
+    return locations
+
 def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[str]] = None):
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
     region = Region(regc.name, player, multiworld, None)
     #print(f"Region: {regc.name}, {regc.region_type}")
-    if regc.region_type == DefType.LEVEL:
-        _level_name = get_mapped_level_name(world, regc.name)
-        region.name = _level_name
-        _level = get_level(world, _level_name, False)
-        _locations = _level.locations
-        if regc.locations:
-            _locations = _locations + regc.locations
-        if (regc.flags & 2)>0 and world.wsettings.kingdice_bosssanity:
-            for ldata in level_dicepalace_boss.values():
-                _locations = _locations + ldata.locations
-    else:
-        _locations = regc.locations
-    if _locations:
-        for loc_name in _locations:
-            if not loc_name: # If entry is None
-                print(f"WARNING: For \"{regc.name}\": location is None!")
-            elif loc_name in locations: # If entry exits in active locations
-                loc_id = locations[loc_name].id
-                event = locations[loc_name].event if loc_id else True
-                progress_type = locations[loc_name].progress_type
-                location = CupheadLocation(player, loc_name, loc_id, region, event, progress_type, True) # TODO: Update show_in_spoilers later
-                if locset:
-                    if loc_name not in locset:
-                        locset.add(loc_name)
-                    else:
-                        print(f"WARNING: \"{loc_name}\" already was registered!")
-                region.locations.append(location)
-            else:
-                 print(f"WARNING: For \"{regc.name}\": location \"{loc_name}\" does not exist.")
+    region_locations = get_region_locations(world, region, regc)
+
+    for loc_name in region_locations:
+        if not loc_name: # If entry is None
+            print(f"WARNING: For \"{regc.name}\": location is None!")
+        elif loc_name in locations: # If entry exits in active locations
+            loc_id = locations[loc_name].id
+            event = locations[loc_name].event if loc_id else True
+            progress_type = locations[loc_name].progress_type
+            location = CupheadLocation(player, loc_name, loc_id, region, event, progress_type, True) # TODO: Update show_in_spoilers later
+            if locset:
+                if loc_name not in locset:
+                    locset.add(loc_name)
+                else:
+                    print(f"WARNING: \"{loc_name}\" already was registered!")
+            region.locations.append(location)
+        else:
+            print(f"WARNING: For \"{regc.name}\": location \"{loc_name}\" does not exist.")
+
     multiworld.regions.append(region)
 
 def get_rule_def(a: RegionRule, b: Optional[RegionRule] = None) -> RegionRule:

@@ -370,13 +370,12 @@ location_dlc_world: dict[str, LocationData] = {
     LocationNames.loc_dlc_cookie: LocationData(dlc_id(51)),
     LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(52)),
     LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(53)),
-    #LocationNames.loc_event_dlc_curse_complete: LocationData(dlc_id(54)),
 }
 location_dlc_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_dlc_boatarrival: LocationData(None),
 }
 location_dlc_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(55)),
+    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(54)),
 }
 
 # Special Locations
@@ -390,6 +389,7 @@ location_special: dict[str, LocationData] = {
 location_dlc_special: dict[str, LocationData] = {
     LocationNames.loc_event_mausoleum: LocationData(None),
     LocationNames.loc_event_dlc_start: LocationData(None),
+    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_id(55)),
 }
 
 # Goal Locations
@@ -489,63 +489,75 @@ locations_all: dict[str, LocationData] = {
     **location_level_dicepalace,
 }
 
-def setup_locations(settings: WorldSettings):
-    use_dlc = settings.use_dlc
-    locations: dict[str,LocationData] = {**locations_base}
+def add_location(locations_ref: dict[str,LocationData], loc_name: str):
+    locations_ref[loc_name] = locations_all[loc_name]
+
+def setup_grade_check_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
     boss_grade_checks = settings.boss_grade_checks
     rungun_grade_checks = settings.rungun_grade_checks
     if boss_grade_checks>0:
-        locations.update(location_level_boss_topgrade)
+        locations_ref.update(location_level_boss_topgrade)
         if settings.mode != GameMode.BEAT_DEVIL:
-            locations.update(location_level_boss_final_topgrade)
+            locations_ref.update(location_level_boss_final_topgrade)
     if rungun_grade_checks>0:
         if rungun_grade_checks>=1 and rungun_grade_checks<=3:
-            locations.update(location_level_rungun_agrade)
+            locations_ref.update(location_level_rungun_agrade)
         elif rungun_grade_checks==GradeCheckMode.PACIFIST:
-            locations.update(location_level_rungun_pacifist)
+            locations_ref.update(location_level_rungun_pacifist)
     if settings.boss_secret_checks:
-        locations.update(location_level_boss_secret)
+        locations_ref.update(location_level_boss_secret)
 
-    # Switches
-    def _add_location(name: str, location_dict: dict[str,LocationData]) -> None:
-        locations[name] = location_dict[name]
+def setup_quest_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
+    def _add_location(name: str):
+        add_location(locations_ref, name)
     if settings.fourparries_quest:
-        _add_location(LocationNames.loc_quest_4parries,location_world_quest)
+        _add_location(LocationNames.loc_quest_4parries)
     if settings.ginger_quest:
-        _add_location(LocationNames.loc_quest_ginger,location_world_quest)
-        _add_location(LocationNames.loc_event_isle2_shortcut,location_special)
+        _add_location(LocationNames.loc_quest_ginger)
+        _add_location(LocationNames.loc_event_isle2_shortcut)
     if settings.fourmel_quest:
-        _add_location(LocationNames.loc_quest_4mel,location_world_quest)
-        _add_location(LocationNames.loc_event_quest_4mel_4th,location_special)
+        _add_location(LocationNames.loc_quest_4mel)
+        _add_location(LocationNames.loc_event_quest_4mel_4th)
     if settings.lucien_quest:
-        _add_location(LocationNames.loc_quest_lucien,location_world_quest)
+        _add_location(LocationNames.loc_quest_lucien)
     if settings.music_quest:
-        _add_location(LocationNames.loc_quest_music,location_world_quest)
-        _add_location(LocationNames.loc_event_quest_ludwig,location_world_quest)
-        _add_location(LocationNames.loc_event_quest_wolfgang,location_world_quest)
+        _add_location(LocationNames.loc_quest_music)
+        _add_location(LocationNames.loc_event_quest_ludwig)
+        _add_location(LocationNames.loc_event_quest_wolfgang)
     if settings.silverworth_quest:
-        locations.update(locations_event_agrade)
-        _add_location(LocationNames.loc_quest_silverworth,location_world_quest)
+        locations_ref.update(locations_event_agrade)
+        _add_location(LocationNames.loc_quest_silverworth)
     if settings.pacifist_quest:
-        locations.update(location_level_rungun_event_pacifist)
-        _add_location(LocationNames.loc_quest_pacifist,location_world_quest)
+        locations_ref.update(location_level_rungun_event_pacifist)
+        _add_location(LocationNames.loc_quest_pacifist)
+
+def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
+    locations_ref.update(locations_dlc)
+    if settings.silverworth_quest:
+        locations_ref.update(locations_dlc_event_agrade)
+    if settings.boss_grade_checks>0:
+        locations_ref.update(location_level_dlc_boss_topgrade)
+        if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
+            locations_ref.update(location_level_dlc_boss_final_topgrade)
+    if settings.dlc_boss_chalice_checks:
+        locations_ref.update(locations_dlc_boss_chaliced)
+    if settings.dlc_cactusgirl_quest:
+        locations_ref.update(locations_dlc_event_boss_chaliced)
+        add_location(locations_ref, LocationNames.loc_dlc_quest_cactusgirl)
     if settings.dlc_requires_mausoleum:
-        _add_location(LocationNames.loc_event_mausoleum,location_dlc_special)
+        add_location(locations_ref, LocationNames.loc_event_mausoleum)
+    locations_ref.update(location_dlc_goal)
+
+def setup_locations(settings: WorldSettings):
+    use_dlc = settings.use_dlc
+    locations: dict[str,LocationData] = {**locations_base}
+
+    setup_grade_check_locations(locations, settings)
+
+    setup_quest_locations(locations, settings)
 
     if use_dlc:
-        locations.update(locations_dlc)
-        if settings.silverworth_quest:
-            locations.update(locations_dlc_event_agrade)
-        if boss_grade_checks>0:
-            locations.update(location_level_dlc_boss_topgrade)
-            if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
-                locations.update(location_level_dlc_boss_final_topgrade)
-        if settings.dlc_boss_chalice_checks:
-            locations.update(locations_dlc_boss_chaliced)
-        if settings.dlc_cactusgirl_quest:
-            locations.update(locations_dlc_event_boss_chaliced)
-            _add_location(LocationNames.loc_dlc_quest_cactusgirl,location_dlc_world_quest)
-        locations.update(location_dlc_goal)
+        setup_dlc_locations(locations, settings)
 
     if settings.is_goal_used(LocationNames.loc_event_goal_devil):
         locations.update(location_goal)

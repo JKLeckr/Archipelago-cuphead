@@ -20,6 +20,16 @@ class GradeCheckMode(IntEnum):
     A_PLUS_GRADE = 3
     S_GRADE = 4
     PACIFIST = 5
+class CurseMode(IntEnum):
+    OFF = 0
+    NORMAL = 1
+    REVERSE = 2
+    ALWAYS_ON = 3
+    ALWAYS_ON_R = 4
+    ALWAYS_ON_1 = 5
+    ALWAYS_ON_2 = 6
+    ALWAYS_ON_3 = 7
+    ALWAYS_ON_4 = 8
 class CItemGroups(IntFlag):
     NONE = 0
     ESSENTIAL = 1
@@ -69,6 +79,7 @@ class WorldSettings:
     dlc_requires_mausoleum: bool
     dlc_chalice_items_separate: CItemGroups
     dlc_chesscastle_fullrun: bool
+    dlc_curse_mode: CurseMode
     minimum_filler: int
     trap_loadout_anyweapon: bool
 
@@ -112,6 +123,7 @@ class WorldSettings:
         self.dlc_requires_mausoleum = True
         self.dlc_chalice_items_separate = CItemGroups.NONE
         self.dlc_chesscastle_fullrun = True
+        self.dlc_curse_mode = CurseMode.NORMAL
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
 

@@ -1,6 +1,7 @@
 {
     "include": [
-      "type_check.py",
+      "pyright_check.py",
+      "ruff_check.py",
       "../**/*.py"
     ],
   
