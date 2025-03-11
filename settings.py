@@ -30,12 +30,16 @@ class CurseMode(IntEnum):
     ALWAYS_ON_2 = 6
     ALWAYS_ON_3 = 7
     ALWAYS_ON_4 = 8
-class CItemGroups(IntFlag):
+class ItemGroups(IntFlag):
     NONE = 0
     ESSENTIAL = 1
     SUPER = 2
-    ABILITY = 4
-    AIM_ABILITY = 8
+    CORE_ITEMS = 3
+    ABILITIES = 4
+    CORE_AND_ABILITIES = 7
+    AIM_ABILITIES = 8
+    CORE_AND_AIM = 11
+    ABILITIES_AND_AIM = 12
     ALL = 255
 
 # These are settings stored and accessed by other classes
@@ -77,7 +81,7 @@ class WorldSettings:
     require_secret_shortcuts: bool
     dlc_randomize_boat: bool
     dlc_requires_mausoleum: bool
-    dlc_chalice_items_separate: CItemGroups
+    dlc_chalice_items_separate: ItemGroups
     dlc_chesscastle_fullrun: bool
     dlc_curse_mode: CurseMode
     minimum_filler: int
@@ -121,7 +125,7 @@ class WorldSettings:
         self.require_secret_shortcuts = True
         self.dlc_randomize_boat = True
         self.dlc_requires_mausoleum = True
-        self.dlc_chalice_items_separate = CItemGroups.NONE
+        self.dlc_chalice_items_separate = ItemGroups.NONE
         self.dlc_chesscastle_fullrun = True
         self.dlc_curse_mode = CurseMode.NORMAL
         self.minimum_filler = options.minimum_filler.value
@@ -159,7 +163,7 @@ class WorldSettings:
             0,
         ]
 
-    def is_dlc_chalice_items_separate(self, item_group: CItemGroups) -> bool:
+    def is_dlc_chalice_items_separate(self, item_group: ItemGroups) -> bool:
         return (self.dlc_chalice_items_separate & item_group) > 0
 
     def is_goal_used(self, goal: str) -> bool:

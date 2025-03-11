@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Item, ItemClassification
 from .names import ItemNames
-from .settings import WorldSettings, CItemGroups
+from .settings import WorldSettings, ItemGroups
 
 class CupheadItem(Item):
     game: str = "Cuphead"
@@ -203,14 +203,14 @@ def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(items_dlc)
     if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
         change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
-    if settings.is_dlc_chalice_items_separate(CItemGroups.ESSENTIAL):
+    if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
         items_ref.update(item_dlc_chalice_essential)
-    if settings.is_dlc_chalice_items_separate(CItemGroups.SUPER):
+    if settings.is_dlc_chalice_items_separate(ItemGroups.SUPER):
         items_ref.update(item_dlc_chalice_super)
 
 def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(item_abilities)
-    if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.ABILITY):
+    if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
         items_ref.update(item_dlc_chalice_abilities)
     change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
     change_item_type(items_ref, ItemNames.item_ability_plane_parry, ItemClassification.progression)
@@ -236,7 +236,7 @@ def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
         setup_abilities(items, settings)
     if settings.randomize_abilities_aim:
         items.update(item_abilities_aim)
-        if settings.use_dlc and settings.is_dlc_chalice_items_separate(CItemGroups.AIM_ABILITY):
+        if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.AIM_ABILITIES):
             items.update(item_dlc_chalice_abilities_aim)
     if settings.traps>0:
         items.update(item_trap)
