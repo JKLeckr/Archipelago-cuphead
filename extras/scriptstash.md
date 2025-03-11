@@ -1,12 +1,7 @@
-## ScriptStash: A place for discarded code that might be useful in the future
+## ScriptStash
+A place for discarded code that might be useful in the future
 
-from __future__ import annotations
-from BaseClasses import MultiWorld
-from .names import ItemNames, LocationNames
-from .levels import LevelData
-from . import items
-
-using_dlc = False
+```python
 
 shop_item_weapons = [
         LocationNames.loc_shop_weapon1,
@@ -79,7 +74,6 @@ def create_weapongates(multiworld: MultiWorld, player: int, weapon_tiers: dict[i
 
     return res
 
-'''
     # Overrides for Levels (to automatically account for level shuffling)
     class LevelTarget(Target):
         def __new__(cls, name: str, add_rule: Optional[Callable] = None) -> Target:
@@ -92,9 +86,7 @@ def create_weapongates(multiworld: MultiWorld, player: int, weapon_tiers: dict[i
             if add_locations:
                 _locations += add_locations
             super().__init__(name, _locations, connect_to if not freemove_isles or ignore_freemove_islands else None)
-'''
 
-'''
 class MysteryLevelItems(Toggle):
     """
     Replace all filler items and traps with presents.
@@ -102,4 +94,5 @@ class MysteryLevelItems(Toggle):
     For those who like uncertainty.
     """
     display_name = "Mystery Filler Items"
-'''
+
+```

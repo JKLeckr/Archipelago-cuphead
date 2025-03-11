@@ -6,9 +6,7 @@
     ],
   
     "exclude": [
-      "**/__pycache__",
-      "../print.py",
-      "../scriptstash.py"
+      "**/__pycache__"
     ],
   
     "typeCheckingMode": "strict",
