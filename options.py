@@ -370,7 +370,7 @@ class TrapWeightScreen(Weight):
 
 class MusicShuffle(Choice):
     """
-    ---NOT YET IMPLEMENTED---
+    ---NOT YET IMPLEMENTED ON CLIENT---
     Enable Shuffling Music.
     NOTE: This option will do nothing until the client is updated
     """
