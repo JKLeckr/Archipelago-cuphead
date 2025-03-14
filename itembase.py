@@ -7,7 +7,7 @@ from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
 from .items import CupheadItem
 from .names import ItemNames, LocationNames
-from .settings import WorldSettings, CurseMode
+from .settings import WorldSettings, ChaliceMode, CurseMode
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -116,6 +116,17 @@ def create_locked_items_at(world: CupheadWorld, name: str, locations:  dict[str,
         if loc in world.active_locations:
             create_locked_item(world, name, loc, force_classification)
 
+def create_dlc_locked_items(world: CupheadWorld):
+    create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
+    create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
+    if world.wsettings.dlc_chalice == ChaliceMode.VANILLA:
+        create_locked_item(world, ItemNames.item_charm_dlc_cookie, LocationNames.loc_dlc_cookie)
+    #create_locked_item(world, ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
+    if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+        create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
+    create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
+    create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
+
 def create_locked_items(world: CupheadWorld):
     # Locked Items
     for i in range(1,6):
@@ -136,13 +147,7 @@ def create_locked_items(world: CupheadWorld):
         create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
     if world.use_dlc:
-        create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
-        create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
-        #create_locked_item(world, ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
-        if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
-            create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
-        create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
-        create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
+        create_dlc_locked_items(world)
 
 def create_special_items(world: CupheadWorld) -> list[Item]:
     player = world.player
@@ -152,6 +157,8 @@ def create_special_items(world: CupheadWorld) -> list[Item]:
     for _ in range(world.wsettings.maxhealth_upgrades):
         items.append(create_item(ItemNames.item_healthupgrade, world.player))
     if settings.use_dlc:
+        if settings.dlc_chalice == ChaliceMode.RANDOMIZED:
+            items.append(create_item(ItemNames.item_charm_dlc_cookie, player))
         if settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE:
             items.append(create_item(ItemNames.item_charm_dlc_broken_relic, player))
 

@@ -58,11 +58,14 @@ class CupheadWorld(World):
 
     option_overrides: list[str] = []
 
-    def override_option(self, option: NumericOption, value: int):
-        self.option_overrides.append(f"{option.current_option_name}: {option.value} -> {value}")
+    def override_option(self, option: NumericOption, value: int, reason: Optional[str] = None):
+        string = f"{option.current_option_name}: \"{option.value}\" -> \"{value}\"."
+        if reason:
+            string += " Reason: {reason}"
+        self.option_overrides.append(string)
         option.value = value
 
-    def sanitize_options(self) -> None:
+    def resolve_random_options(self) -> None:
         _options = self.options
 
         # Resolve Random
@@ -73,21 +76,30 @@ class CupheadWorld(World):
         if _options.boss_grade_checks.value==-1:
             _options.boss_grade_checks.value = self.random.randint(0,4 if _options.use_dlc else 3)
 
+    def sanitize_options(self) -> None:
+        _options = self.options
+
+        CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements."
+        DLC_REASON = "DLC Off"
+
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:
-            self.override_option(_options.contract_goal_requirements, _options.contract_requirements.value)
+            self.override_option(_options.contract_goal_requirements, _options.contract_requirements.value, CONTRACT_GOAL_REASON)
         if _options.use_dlc and _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value:
-            self.override_option(_options.dlc_ingredient_goal_requirements, _options.dlc_ingredient_requirements.value)
-        if not _options.use_dlc:
+            self.override_option(_options.dlc_ingredient_goal_requirements, _options.dlc_ingredient_requirements.value, CONTRACT_GOAL_REASON)
+        if not _options.use_dlc.value:
             # Sanitize mode
             if _options.mode.value>2:
-                self.override_option(_options.mode, self.random.randint(0,2))
+                self.override_option(_options.mode, self.random.randint(0,2), DLC_REASON)
             # Sanitize start_weapon
             if _options.start_weapon.value>5:
-                self.override_option(_options.start_weapon, self.random.randint(0,5))
+                self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
+        if _options.dlc_chalice.value >= 0:
+            if _options.dlc_boss_chalice_checks.value:
+                self.override_option(_options.mode, False, "Chalice Off")
         # Sanitize grade checks
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
-            self.override_option(_options.boss_grade_checks, 3)
+            self.override_option(_options.boss_grade_checks, 3, "Expert Off")
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
@@ -98,6 +110,7 @@ class CupheadWorld(World):
 
     @override
     def generate_early(self) -> None:
+        self.resolve_random_options()
         self.sanitize_options()
 
         # Settings (See Settings.py)
@@ -157,6 +170,7 @@ class CupheadWorld(World):
             "boss_grade_checks",
             "rungun_grade_checks",
             "start_maxhealth",
+            "dlc_chalice",
             "dlc_curse_mode",
             "trap_loadout_anyweapon",
             "music_shuffle",

@@ -211,15 +211,21 @@ class TrapLoadoutAnyWeapon(Toggle):
     """
     display_name = "Loadout Mixup Any Item"
 
-class DlcCactusGirlQuest(Toggle):
+class DlcChaliceEnabled(Choice):
     """
-    ---NOT YET IMPLEMENTED---
+    ---NOT YET IMPLEMENTED ON CLIENT---
     -DLC ONLY-
-    Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
-    This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
-    You can talk to the Cactus Girl to know which bosses you need to defeat still.
+    Enable Ms. Chalice and the Astral Cookie.
+    Options:
+    - Disabled: The cookie is disabled and cannot be obtained (Ms. Chalice is disabled).
+    - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
+    - Randomized: The cookie is in the item pool. Starting the DLC is a check.
     """
-    display_name = "[DLC] Cactus Girl Quest"
+    display_name = "[DLC] Ms. Chalice"
+    option_disabled = 0
+    option_vanilla = 1
+    option_randomized = 2
+    default = 0
 
 class DlcChaliceItemsSeparate(Choice):
     """
@@ -241,6 +247,17 @@ class DlcChaliceItemsSeparate(Choice):
     #option_core_and_aim = 11
     #option_abilities_and_aim = 12
     option_all = 255
+    default = 0
+
+class DlcCactusGirlQuest(Toggle):
+    """
+    ---NOT YET IMPLEMENTED---
+    -DLC ONLY-
+    Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
+    This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
+    You can talk to the Cactus Girl to know which bosses you need to defeat still.
+    """
+    display_name = "[DLC] Cactus Girl Quest"
 
 class DlcCurseMode(Choice):
     """
@@ -261,6 +278,7 @@ class DlcCurseMode(Choice):
     #option_always_on_2 = 6
     #option_always_on_3 = 7
     #option_always_on_4 = 8
+    default = 0
 
 class ExtraCoins(Range):
     """
@@ -412,9 +430,10 @@ class CupheadOptions(PerGameCommonOptions):
     rungun_grade_checks: RunGunGradeChecks
     kingdice_bosssanity: DicePalaceBossSanity
     dlc_boss_chalice_checks: DlcBossChaliceChecks
-    #dlc_chalice_items_separate: DlcChaliceItemsSeparate
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
+    dlc_chalice: DlcChaliceEnabled
+    #dlc_chalice_items_separate: DlcChaliceItemsSeparate
     dlc_cactusgirl_quest: DlcCactusGirlQuest
     dlc_curse_mode: DlcCurseMode
     extra_coins: ExtraCoins
@@ -446,7 +465,8 @@ cuphead_option_groups = [
     ]),
     OptionGroup("DLC Main", [
         DlcIngredientRequirements,
-        DlcCurseMode
+        DlcChaliceEnabled,
+        DlcCurseMode,
     ]),
     OptionGroup("Checks", [
         BossSecretChecks,

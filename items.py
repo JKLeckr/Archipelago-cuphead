@@ -76,7 +76,7 @@ item_charms: dict[str, ItemData] = {
     ItemNames.item_charm_whetstone: ItemData(id(23), ItemClassification.useful),
 }
 item_dlc_charms: dict[str, ItemData] = {
-    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(7), ItemClassification.useful, 0), # TODO: Add Cookie back
+    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(7), ItemClassification.useful, 0),
     ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(8), ItemClassification.useful),
     ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(9), ItemClassification.useful, 0), # Sequence will not be in logic
 }

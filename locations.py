@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Location, Region, LocationProgressType
 from .names import LocationNames
-from .settings import WorldSettings, GameMode,GradeCheckMode
+from .settings import WorldSettings, GameMode, GradeCheckMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"
@@ -367,15 +367,14 @@ location_level_boss_secret: dict[str, LocationData] = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
 }
 location_dlc_world: dict[str, LocationData] = {
-    LocationNames.loc_dlc_cookie: LocationData(dlc_id(51)),
-    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(52)),
-    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(53)),
+    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(51)),
+    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(52)),
 }
 location_dlc_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_dlc_boatarrival: LocationData(None),
 }
 location_dlc_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(54)),
+    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(53)),
 }
 
 # Special Locations
@@ -387,8 +386,9 @@ location_special: dict[str, LocationData] = {
     #LocationNames.loc_event_music: LocationData(None),
 }
 location_dlc_special: dict[str, LocationData] = {
+    LocationNames.loc_dlc_cookie: LocationData(dlc_id(54)),
     LocationNames.loc_event_mausoleum: LocationData(None),
-    LocationNames.loc_event_dlc_start: LocationData(None),
+    LocationNames.loc_event_dlc_cookie: LocationData(None),
     #LocationNames.loc_dlc_curse_complete: LocationData(dlc_id(55)),
 }
 
@@ -539,6 +539,8 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSe
         locations_ref.update(location_level_dlc_boss_topgrade)
         if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
             locations_ref.update(location_level_dlc_boss_final_topgrade)
+    if settings.dlc_chalice >= 0:
+        add_location(locations_ref, LocationNames.loc_dlc_cookie)
     if settings.dlc_boss_chalice_checks:
         locations_ref.update(locations_dlc_boss_chaliced)
     if settings.dlc_cactusgirl_quest:

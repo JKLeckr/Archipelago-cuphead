@@ -20,6 +20,10 @@ class GradeCheckMode(IntEnum):
     A_PLUS_GRADE = 3
     S_GRADE = 4
     PACIFIST = 5
+class ChaliceMode(IntEnum):
+    DISABLED = 0
+    VANILLA = 1
+    RANDOMIZED = 2
 class CurseMode(IntEnum):
     OFF = 0
     NORMAL = 1
@@ -71,6 +75,7 @@ class WorldSettings:
     lucien_quest: bool
     silverworth_quest: bool
     pacifist_quest: bool
+    dlc_chalice: ChaliceMode
     music_quest: bool
     dlc_cactusgirl_quest: bool
     coin_amounts: tuple[int, int, int]
@@ -112,6 +117,7 @@ class WorldSettings:
         self.silverworth_quest = bool(options.silverworth_quest.value)
         self.pacifist_quest = bool(options.pacifist_quest.value)
         self.music_quest = False
+        self.dlc_chalice = ChaliceMode(options.dlc_chalice.value)
         self.dlc_cactusgirl_quest = bool(options.dlc_cactusgirl_quest.value)
         self.maxhealth_upgrades = options.maxhealth_upgrades.value
         self.traps = options.traps.value
