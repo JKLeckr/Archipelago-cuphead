@@ -4,7 +4,7 @@ from typing import NamedTuple, Optional
 from random import Random
 from .names import LocationNames
 from .locations import LocationData
-from .settings import WorldSettings
+from .settings import WorldSettings, LevelShuffleMode
 from .auxiliary import scrub_list
 from .levelrules import LevelRule
 from . import levelrules as lr
@@ -386,7 +386,7 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
 
 def setup_level_shuffle_map(rand: Random, settings: WorldSettings) -> dict[int,int]:
     use_dlc = settings.use_dlc
-    separate_plane = settings.level_shuffle_plane_separate
+    separate_plane = settings.level_shuffle == LevelShuffleMode.PLANE_LEVELS_SEPARATE
     level_shuffle_map: dict[int,int] = {}
 
     # level_lists format: (level_list, exclude_list)

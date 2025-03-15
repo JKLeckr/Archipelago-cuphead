@@ -13,10 +13,14 @@ class GameMode(IntEnum):
     DLC_COLLECT_BOTH = 6
     DLC_BEAT_DEVIL_NO_ISLE4 = 7
     DLC_BEAT_SALTBAKER_ISLE4_ONLY = 8
-class WeaponExModes(IntEnum):
+class WeaponExMode(IntEnum):
     NORMAL = 0
     RANDOMIZED = 1
     ALL_BUT_START = 2
+class LevelShuffleMode(IntEnum):
+    DISABLED = 0
+    ENABLED = 1
+    PLANE_LEVELS_SEPARATE = 2
 class GradeCheckMode(IntEnum):
     DISABLED = 0
     A_MINUS_GRADE = 1
@@ -57,10 +61,9 @@ class WorldSettings:
     hard_logic: bool
     expert_mode: bool
     start_weapon: int
-    randomize_weapon_ex: WeaponExModes
+    randomize_weapon_ex: WeaponExMode
     start_maxhealth: int
-    level_shuffle: bool
-    level_shuffle_plane_separate: bool
+    level_shuffle: LevelShuffleMode
     freemove_isles: bool
     weapon_gate: bool
     randomize_abilities: bool
@@ -103,10 +106,9 @@ class WorldSettings:
         self.hard_logic = False #bool(options.hard_logic.value)
         self.expert_mode = bool(options.expert_mode.value)
         self.start_weapon = int(options.start_weapon.value)
-        self.randomize_weapon_ex = WeaponExModes(options.randomize_weapon_ex.value)
+        self.randomize_weapon_ex = WeaponExMode(options.randomize_weapon_ex.value)
         self.start_maxhealth = options.start_maxhealth.value
-        self.level_shuffle = bool(options.level_shuffle.value)
-        self.level_shuffle_plane_separate = bool(options.level_shuffle_plane_separate)
+        self.level_shuffle = LevelShuffleMode(options.level_shuffle.value)
         self.freemove_isles = bool(options.freemove_isles.value)
         self.weapon_gate = False #bool(options.weapon_gate.value)
         self.randomize_abilities = bool(options.randomize_abilities.value)

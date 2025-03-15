@@ -6,7 +6,7 @@ from random import Random
 from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
 from .names import ItemNames, LocationNames
-from .settings import WorldSettings, WeaponExModes, ChaliceMode, CurseMode
+from .settings import WorldSettings, WeaponExMode, ChaliceMode, CurseMode
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -36,7 +36,7 @@ weapon_p_dict: dict[int,str] = {
 def get_weapon_dict(settings: WorldSettings, dlc_weapons: bool = True) -> dict[int,str]:
     orig_weapon_dict: dict[int,str] = weapon_p_dict if settings.randomize_weapon_ex>0 else weapon_dict
     nweapon_dict: dict[int,str] = {k:v for k,v in orig_weapon_dict.items() if k<6 or dlc_weapons}
-    if settings.randomize_abilities == WeaponExModes.ALL_BUT_START:
+    if settings.randomize_abilities == WeaponExMode.ALL_BUT_START:
         start_weapon = settings.start_weapon
         nweapon_dict[start_weapon] = weapon_dict[start_weapon]
     return nweapon_dict

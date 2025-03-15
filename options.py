@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions, OptionGroup
+from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions, OptionGroup, Visibility
 from .optionbase import ChoiceEx, Weight
 
 class DeliciousLastCourse(Toggle):
@@ -110,24 +110,24 @@ class DlcIngredientGoalRequirements(Range):
     range_end = 5
     default = 5
 
-class LevelShuffle(Toggle):
+class LevelShuffle(Choice):
     """
     --NOT YET IMPLEMENTED--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
     """
     display_name = "Level Shuffle"
-class LevelShufflePlaneSeparate(Toggle):
-    """
-    For Level Shuffle:
-    Plane Levels are shuffled separately from other boss levels.
-    """
+    visibility = Visibility.template | Visibility.spoiler
+    option_disabled = 0
+    option_all_levels = 1
+    option_plane_levels_separate = 2
+    default = 0
 
 class FreeMoveIsles(Toggle):
     """
     Allow all the levels on each island to be freely accessible without completing a previous level first.
     """
-    display_name = "Free Move Islands"
+    display_name = "Free Move Isles"
 
 class WeaponGate(Toggle):
     """
@@ -135,6 +135,7 @@ class WeaponGate(Toggle):
     Add a weapon gate which only allows specific weapons for each fight.
     """
     display_name = "Weapon Gate"
+    visibility = Visibility.none
 
 class RandomizeAbilities(DefaultOnToggle):
     """
@@ -144,11 +145,12 @@ class RandomizeAbilities(DefaultOnToggle):
 
 class RandomizeAimAbilities(Toggle):
     """
-    --NOT YET IMPLEMENTED--
+    --NOT IMPLEMENTED--
     Randomize aiming abilities.
     You will start with only top-right.
     """
     display_name = "Randomize Aim Abilities"
+    visibility = Visibility.none
 
 class BossSecretChecks(Toggle):
     """
@@ -214,6 +216,7 @@ class DicePalaceBossSanity(Toggle):
     There is an indicator for which mini-bosses you defeated.
     """
     display_name = "Kingdice BossSanity"
+    visibility = Visibility.template | Visibility.spoiler
 
 class TrapLoadoutAnyWeapon(Toggle):
     """
@@ -221,6 +224,7 @@ class TrapLoadoutAnyWeapon(Toggle):
     Allow Loadout Mixup to use any item including ones you do not currently have.
     """
     display_name = "Loadout Mixup Any Item"
+    visibility = Visibility.spoiler
 
 class DlcChaliceEnabled(Choice):
     """
@@ -240,6 +244,7 @@ class DlcChaliceEnabled(Choice):
 
 class DlcChaliceItemsSeparate(Choice):
     """
+    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     Make certain items seperate for when playing as Ms. Chalice.
     Options:
@@ -250,6 +255,7 @@ class DlcChaliceItemsSeparate(Choice):
     Progressive Dash has two levels: 1. Dash only, 2. Dash with Parry.
     """
     display_name = "[DLC] Chalice Items Separate"
+    visibility = Visibility.spoiler
     option_none = 0
     option_core_items = 3
     option_abilities = 4
@@ -262,13 +268,14 @@ class DlcChaliceItemsSeparate(Choice):
 
 class DlcCactusGirlQuest(Toggle):
     """
-    ---NOT YET IMPLEMENTED---
+    ---NOT YET IMPLEMENTED ON CLIENT---
     -DLC ONLY-
     Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
     This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
     You can talk to the Cactus Girl to know which bosses you need to defeat still.
     """
     display_name = "[DLC] Cactus Girl Quest"
+    visibility = Visibility.template | Visibility.spoiler
 
 class DlcCurseMode(Choice):
     """
@@ -323,7 +330,7 @@ class MaxHealthUpgrades(Range):
 class MinimumFillerItems(Range):
     """
     Set the minimum amount of filler items that should exist in this world.
-    NOTE: If there is not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
+    NOTE: If there are not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
     """
     display_name = "Minimum Filler Items"
     range_start = 0
@@ -350,14 +357,16 @@ class FillerWeightFastFire(Weight):
     Set to 0 to disable this item.
     """
     display_name = "Fast Fire Weight"
+    visibility = Visibility.none
     default = 0
 
 class Traps(Range):
     """
-    ---NOT YET IMPLEMENTED---
+    ---NOT YET IMPLEMENTED ON CLIENT---
     Set Trap percentage for filler items.
     """
     display_name = "Traps"
+    visibility = Visibility.template | Visibility.spoiler
     range_start = 0
     range_end = 100
     default = 0
@@ -367,6 +376,7 @@ class TrapWeightFingerJam(Weight):
     Set to 0 to disable this trap.
     """
     display_name = "Finger Jam Trap Weight"
+    visibility = Visibility.none
     default = 5
 class TrapWeightSlowFire(Weight):
     """
@@ -374,6 +384,7 @@ class TrapWeightSlowFire(Weight):
     Set to 0 to disable this trap.
     """
     display_name = "Slow Fire Trap Weight"
+    visibility = Visibility.none
     default = 5
 class TrapWeightSuperDrain(Weight):
     """
@@ -381,6 +392,7 @@ class TrapWeightSuperDrain(Weight):
     Set to 0 to disable this trap.
     """
     display_name = "Super Drain Trap Weight"
+    visibility = Visibility.none
     default = 5
 class TrapWeightLoadout(Weight):
     """
@@ -388,6 +400,7 @@ class TrapWeightLoadout(Weight):
     Set to 0 to disable this trap.
     """
     display_name = "Loadout Mixup Trap Weight"
+    visibility = Visibility.none
     default = 5
 class TrapWeightScreen(Weight):
     """
@@ -395,6 +408,7 @@ class TrapWeightScreen(Weight):
     Set to 0 to disable this trap.
     """
     display_name = "Screen Trap Weight"
+    visibility = Visibility.none
     default = 3
 
 class MusicShuffle(Choice):
@@ -404,6 +418,7 @@ class MusicShuffle(Choice):
     NOTE: This option will do nothing until the client is updated
     """
     display_name = "Music Rando"
+    visibility = Visibility.none
     option_disabled = 0
     option_level_music = 1
     option_map_music = 2
@@ -431,7 +446,6 @@ class CupheadOptions(PerGameCommonOptions):
     contract_goal_requirements: ContractGoalRequirements
     dlc_ingredient_goal_requirements: DlcIngredientGoalRequirements
     level_shuffle: LevelShuffle
-    level_shuffle_plane_separate: LevelShufflePlaneSeparate
     freemove_isles: FreeMoveIsles
     deathlink: DeathLink
     #weapon_gate: WeaponGate
@@ -498,10 +512,9 @@ cuphead_option_groups = [
         MaxHealthUpgrades,
         MinimumFillerItems,
         Traps,
-        #DlcChaliceItemsSeparate,
+        DlcChaliceItemsSeparate,
     ]),
     OptionGroup("Misc", [
-        LevelShufflePlaneSeparate,
         TrapLoadoutAnyWeapon,
         MusicShuffle,
     ]),
