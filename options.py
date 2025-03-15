@@ -58,6 +58,17 @@ class StartWeapon(ChoiceEx):
     option_dlc_twistup = 8
     default = "random"
 
+class RandomizeWeaponEx(Choice):
+    """
+    Randomize the weapon EX ability also.
+    Your weapons will be progressive weapons.
+    """
+    display_name = "Randomize Weapon EX"
+    option_disabled = 0
+    option_enabled = 1
+    option_all_but_start = 2
+    default = 0
+
 class ContractRequirements(Range):
     """
     Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
@@ -413,6 +424,7 @@ class CupheadOptions(PerGameCommonOptions):
     mode: GameMode
     expert_mode: ExpertMode
     start_weapon: StartWeapon
+    randomize_weapon_ex: RandomizeWeaponEx
     start_maxhealth: StartMaxHealth
     contract_requirements: ContractRequirements
     dlc_ingredient_requirements: DlcIngredientRequirements
@@ -456,6 +468,7 @@ cuphead_option_groups = [
         GameMode,
         ExpertMode,
         StartWeapon,
+        RandomizeWeaponEx,
         StartMaxHealth,
         FreeMoveIsles,
         #WeaponGate,

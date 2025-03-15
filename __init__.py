@@ -163,6 +163,7 @@ class CupheadWorld(World):
             "mode",
             "expert_mode",
             "start_weapon",
+            "randomize_weapon_ex",
             "contract_goal_requirements",
             "dlc_ingredient_goal_requirements",
             "freemove_isles",

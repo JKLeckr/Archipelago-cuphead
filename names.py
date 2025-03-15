@@ -464,6 +464,7 @@ class LocationNames:
 class ItemNames:
     # Prefixes
     _item_event_ = "Event "
+    _item_progressive = "Progressive "
 
     # Junk
     item_level_generic = "Present"
@@ -484,6 +485,19 @@ class ItemNames:
     item_weapon_dlc_crackshot = "Crackshot"
     item_weapon_dlc_converge = "Converge"
     item_weapon_dlc_twistup = "Twist-Up"
+
+    # Progressive Weapon
+    item_p_weapon = _item_progressive + "Weapon"
+    item_p_weapon_peashooter = _item_progressive + "Peashooter"
+    item_p_weapon_spread = _item_progressive + "Spread"
+    item_p_weapon_chaser = _item_progressive + "Chaser"
+    item_p_weapon_lobber = _item_progressive + "Lobber"
+    item_p_weapon_charge = _item_progressive + "Charge"
+    item_p_weapon_roundabout = _item_progressive + "Roundabout"
+    item_p_dlc_weapon = _item_progressive + "DLC Weapon"
+    item_p_weapon_dlc_crackshot = _item_progressive + "Crackshot"
+    item_p_weapon_dlc_converge = _item_progressive + "Converge"
+    item_p_weapon_dlc_twistup = _item_progressive + "Twist-Up"
 
     # Charms
     item_charm = "Charm"
@@ -516,7 +530,7 @@ class ItemNames:
 
     item_ability_dlc_cparry = "Chalice Parry"
     #item_ability_dlc_cdash = "Chalice Dash"
-    item_ability_dlc_cdash = "Progressive Chalice Dash"
+    item_ability_dlc_cdash = _item_progressive + "Chalice Dash"
     item_ability_dlc_cduck = "Chalice Duck"
     item_ability_dlc_cplane_shrink = "Chalice Plane Shrink"
     item_ability_dlc_cplane_parry = "Chalice Plane Parry"
@@ -543,9 +557,10 @@ class ItemNames:
     item_coin = "Coin"
     item_coin2 = "2 Coins"
     item_coin3 = "3 Coins"
-    item_progressive_plane = "Progressive Plane"
+    item_progressive_plane = _item_progressive + "Plane"
     item_plane = "Plane"
     item_plane_gun = "Plane Gun"
+    item_plane_ex = "Plane EX"
     item_plane_bombs = "Plane Bombs"
     item_plane_super = "Plane Super"
     item_contract = "Contract"
@@ -553,6 +568,7 @@ class ItemNames:
     item_dlc_boat = "Boat Access"
     item_dlc_ingredient = "Ingredient"
     item_dlc_cplane_gun = "Chalice Plane Gun"
+    item_dlc_cplane_ex = "Chalice Plane EX"
     item_dlc_cplane_bombs = "Chalice Plane Bombs"
     item_dlc_cplane_super = "Chalice Plane Super"
 

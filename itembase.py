@@ -5,9 +5,8 @@ from typing import Optional
 from random import Random
 from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
-from .items import CupheadItem
 from .names import ItemNames, LocationNames
-from .settings import WorldSettings, ChaliceMode, CurseMode
+from .settings import WorldSettings, WeaponExModes, ChaliceMode, CurseMode
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -23,6 +22,27 @@ weapon_dict: dict[int,str] = {
     7: ItemNames.item_weapon_dlc_converge,
     8: ItemNames.item_weapon_dlc_twistup,
 }
+weapon_p_dict: dict[int,str] = {
+    0: ItemNames.item_p_weapon_peashooter,
+    1: ItemNames.item_p_weapon_spread,
+    2: ItemNames.item_p_weapon_chaser,
+    3: ItemNames.item_p_weapon_lobber,
+    4: ItemNames.item_p_weapon_charge,
+    5: ItemNames.item_p_weapon_roundabout,
+    6: ItemNames.item_p_weapon_dlc_crackshot,
+    7: ItemNames.item_p_weapon_dlc_converge,
+    8: ItemNames.item_p_weapon_dlc_twistup,
+}
+def get_weapon_dict(settings: WorldSettings, dlc_weapons: bool = True) -> dict[int,str]:
+    orig_weapon_dict: dict[int,str] = weapon_p_dict if settings.randomize_weapon_ex>0 else weapon_dict
+    nweapon_dict: dict[int,str] = {k:v for k,v in orig_weapon_dict.items() if k<6 or dlc_weapons}
+    if settings.randomize_abilities == WeaponExModes.ALL_BUT_START:
+        start_weapon = settings.start_weapon
+        nweapon_dict[start_weapon] = weapon_dict[start_weapon]
+    return nweapon_dict
+
+class CupheadItem(Item):
+    game: str = "Cuphead"
 
 def create_item(name: str, player: int, force_classification: Optional[ItemClassification] = None) -> Item:
     data = items.items_all[name]
@@ -190,6 +210,22 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
             break
     return (total_single_coins, total_double_coins, total_triple_coins)
 
+def setup_weapons(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
+    weapons: list[str] = []
+    _weapon_dict = get_weapon_dict(world.wsettings)
+
+    # Starter weapon
+    weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
+    if world.use_dlc:
+        weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
+    start_weapon_index = world.start_weapon
+    start_weapon = _weapon_dict[start_weapon_index]
+    if start_weapon in weapons:
+        world.multiworld.push_precollected(create_item(start_weapon, world.player))
+        weapons.remove(start_weapon)
+
+    return weapons
+
 def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str],
                  coin_items: tuple[str, str, str]) -> list[Item]:
     res: list[Item] = []
@@ -244,15 +280,8 @@ def create_items(world: CupheadWorld) -> None:
     # if total_locations != unfilled_locations:
     #     print("ERROR: unfilled locations mismatch total non-event locations")
 
-    # Starter weapon
-    weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
-    if world.use_dlc:
-        weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
-    start_weapon_index = world.start_weapon
-    start_weapon = weapon_dict[start_weapon_index]
-    if start_weapon in weapons:
-        world.multiworld.push_precollected(create_item(start_weapon, world.player))
-        weapons.remove(start_weapon)
+    # Setup Weapons with start weapon and progressive upgrade settings in mind
+    weapons = setup_weapons(world, precollected_item_names)
 
     # Item names for coins
     coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
