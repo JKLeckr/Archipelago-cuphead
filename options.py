@@ -121,6 +121,8 @@ class LevelShuffle(Choice):
     option_disabled = 0
     option_all_levels = 1
     option_plane_levels_separate = 2
+    alias_false = 0
+    alias_true = 1
     default = 0
 
 class FreeMoveIsles(Toggle):
