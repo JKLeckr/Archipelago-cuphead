@@ -565,7 +565,7 @@ class ItemNames:
     item_plane_super = "Plane Super"
     item_contract = "Contract"
     item_healthupgrade = "+1 Max Health"
-    item_dlc_boat = "Boat Access"
+    item_dlc_boat = "Boat"
     item_dlc_ingredient = "Ingredient"
     item_dlc_cplane_gun = "Chalice Plane Gun"
     item_dlc_cplane_ex = "Chalice Plane EX"
