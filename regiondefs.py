@@ -112,7 +112,7 @@ region_worlds: list[RegionData] = [
         Target(LocationNames.world_inkwell_2, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_frogs, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_plane_blimp, None, dep.dep_freemove),
-        Target(LocationNames.level_mausoleum_i, None, dep.dep_freemove),
+        LevelTarget(LocationNames.level_mausoleum_i, None, dep.dep_freemove),
     ]),
     WorldRegionData(LocationNames.world_inkwell_2, [
         LocationNames.loc_npc_canteen,
