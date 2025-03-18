@@ -4,7 +4,7 @@ from typing import NamedTuple, Optional
 from random import Random
 from .names import LocationNames
 from .locations import LocationData
-from .settings import WorldSettings, LevelShuffleMode
+from .wsettings import WorldSettings, LevelShuffleMode
 from .auxiliary import scrub_list
 from .levelrules import LevelRule
 from . import levelrules as lr

@@ -7,7 +7,7 @@ from .levelrules import level_rule_kingdice
 from .locations import s_plane_locations
 from .names import ItemNames, LocationNames
 from .rulebase import Rule
-from .settings import GameMode
+from .wsettings import GameMode
 from . import levellocrules, locations, rulebase as rb
 if typing.TYPE_CHECKING:
     from . import CupheadWorld

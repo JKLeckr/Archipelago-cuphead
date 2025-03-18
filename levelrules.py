@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Callable
 from .names import ItemNames
-from .settings import WorldSettings
+from .wsettings import WorldSettings
 from .rulebase import RegionRule, region_rule_none, region_rule_has
 
 LevelRule = Callable[[WorldSettings], RegionRule]

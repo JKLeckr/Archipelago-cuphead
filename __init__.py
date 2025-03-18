@@ -1,12 +1,13 @@
 from __future__ import annotations
-from typing import Optional, TextIO, Dict, Any
+from typing import Optional, TextIO, Dict, Any, Union
 from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from Options import NumericOption
 from worlds.AutoWorld import World, WebWorld
+import settings as ap_settings
 from .names import ItemNames, LocationNames
 from .options import CupheadOptions, cuphead_option_groups
-from .settings import WorldSettings
+from .wsettings import WorldSettings
 from .items import ItemData
 from .locations import LocationData
 from .levels import LevelData, level_map
@@ -24,6 +25,12 @@ class CupheadWebWorld(WebWorld):
     )
     tutorials = [setup_en]
     option_groups = cuphead_option_groups
+
+class CupheadSettings(ap_settings.Group):
+    class LogOptionOverrides(ap_settings.Bool):
+        """Log options that are overridden from incompatible combinations to console."""
+
+    log_option_overrides: Union[LogOptionOverrides, bool] = True
 
 class CupheadWorld(World):
     """
@@ -50,6 +57,8 @@ class CupheadWorld(World):
     item_names = set(items.items_all.keys())
     location_names = set(locations.locations_all.keys())
 
+    settings: CupheadSettings # type: ignore
+
     wsettings: WorldSettings
 
     active_locations: dict[str,LocationData]
@@ -63,6 +72,8 @@ class CupheadWorld(World):
         if reason:
             string += " Reason: {reason}"
         self.option_overrides.append(string)
+        if self.settings.log_option_overrides:
+            print(f"Warning: For player {self.player}: Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\". Reason: {reason}.")
         option.value = value
 
     def resolve_random_options(self) -> None:
@@ -79,7 +90,7 @@ class CupheadWorld(World):
     def sanitize_options(self) -> None:
         _options = self.options
 
-        CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements."
+        CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements"
 
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:

@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Location, Region, LocationProgressType
 from .names import LocationNames
-from .settings import WorldSettings, GameMode, GradeCheckMode
+from .wsettings import WorldSettings, GameMode, GradeCheckMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"

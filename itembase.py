@@ -6,7 +6,7 @@ from random import Random
 from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
 from .names import ItemNames, LocationNames
-from .settings import WorldSettings, WeaponExMode, ChaliceMode, CurseMode
+from .wsettings import WorldSettings, WeaponExMode, ChaliceMode, CurseMode
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld

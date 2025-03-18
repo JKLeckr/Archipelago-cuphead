@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import ItemClassification
 from .names import ItemNames
-from .settings import WorldSettings, ItemGroups
+from .wsettings import WorldSettings, ItemGroups
 from . import itembase
 
 class ItemData(NamedTuple):
