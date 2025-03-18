@@ -90,9 +90,8 @@ item_charms: dict[str, ItemData] = {
     ItemNames.item_charm_whetstone: ItemData(id(30), ItemClassification.useful),
 }
 item_dlc_charms: dict[str, ItemData] = {
-    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(11), ItemClassification.useful, 0),
-    ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(12), ItemClassification.useful),
-    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(13), ItemClassification.useful, 0), # Sequence will not be in logic
+    ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(11), ItemClassification.useful),
+    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(12), ItemClassification.useful, 0), # Sequence will not be in logic
 }
 
 item_super: dict[str, ItemData] = {
@@ -102,10 +101,10 @@ item_super: dict[str, ItemData] = {
     ItemNames.item_plane_super: ItemData(id(34), ItemClassification.useful),
 }
 item_dlc_chalice_super: dict[str, ItemData] = {
-    ItemNames.item_super_dlc_c_i: ItemData(dlc_id(14), ItemClassification.useful),
-    ItemNames.item_super_dlc_c_ii: ItemData(dlc_id(15), ItemClassification.useful),
-    ItemNames.item_super_dlc_c_iii: ItemData(dlc_id(16), ItemClassification.useful),
-    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(17), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_i: ItemData(dlc_id(13), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_ii: ItemData(dlc_id(14), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_iii: ItemData(dlc_id(15), ItemClassification.useful),
+    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(16), ItemClassification.useful),
 }
 
 item_abilities: dict[str, ItemData] = {
@@ -116,11 +115,11 @@ item_abilities: dict[str, ItemData] = {
     ItemNames.item_ability_plane_parry: ItemData(id(39), ItemClassification.useful),
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
-    ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(18), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cdash: ItemData(dlc_id(19), ItemClassification.progression, 2),
-    #ItemNames.item_ability_dlc_cparry: ItemData(dlc_id(20), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(21), ItemClassification.useful),
-    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(22), ItemClassification.useful),
+    ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(17), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cdash: ItemData(dlc_id(18), ItemClassification.progression, 2),
+    #ItemNames.item_ability_dlc_cparry: ItemData(dlc_id(19), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(20), ItemClassification.useful),
+    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(21), ItemClassification.useful),
 }
 item_abilities_aim: dict[str, ItemData] = {
     ItemNames.item_ability_aim_left: ItemData(id(40), ItemClassification.progression),
@@ -163,6 +162,7 @@ item_special: dict[str, ItemData] = {
     #ItemNames.item_event_music: ItemData(None, ItemClassification.progression, 0),
 }
 item_dlc_special: dict[str, ItemData] = {
+    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(22), ItemClassification.useful, 0),
     ItemNames.item_event_mausoleum: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
@@ -212,13 +212,18 @@ def get_item_groups() -> dict[str, set[str]]:
     }
     return n_item_groups
 
+def add_item(items_ref: dict[str, ItemData], item: str):
+    items_ref[item] = items_all[item]
+
 def change_item_type(items_ref: dict[str, ItemData], item: str, type: ItemClassification):
     items_ref[item] = items_ref[item].with_type(type)
 
 def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(items_dlc)
-    if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
-        change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
+    if settings.dlc_chalice>0:
+        add_item(items_ref, ItemNames.item_charm_dlc_cookie)
+        if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
+            change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
     if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
         items_ref.update(item_dlc_chalice_essential)
     if settings.is_dlc_chalice_items_separate(ItemGroups.SUPER):

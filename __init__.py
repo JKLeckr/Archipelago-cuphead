@@ -80,7 +80,6 @@ class CupheadWorld(World):
         _options = self.options
 
         CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements."
-        DLC_REASON = "DLC Off"
 
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:
@@ -88,15 +87,19 @@ class CupheadWorld(World):
         if _options.use_dlc and _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value:
             self.override_option(_options.dlc_ingredient_goal_requirements, _options.dlc_ingredient_requirements.value, CONTRACT_GOAL_REASON)
         if not _options.use_dlc.value:
+            DLC_REASON = "DLC Off"
             # Sanitize mode
             if _options.mode.value>2:
                 self.override_option(_options.mode, self.random.randint(0,2), DLC_REASON)
             # Sanitize start_weapon
             if _options.start_weapon.value>5:
                 self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
-        if _options.dlc_chalice.value >= 0:
+        if _options.dlc_chalice.value == 0:
+            CHALICE_REASON = "Chalice Off"
             if _options.dlc_boss_chalice_checks.value:
-                self.override_option(_options.mode, False, "Chalice Off")
+                self.override_option(_options.mode, False, CHALICE_REASON)
+            if _options.dlc_cactusgirl_quest.value:
+                self.override_option(_options.mode, False, CHALICE_REASON)
         # Sanitize grade checks
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_option(_options.boss_grade_checks, 3, "Expert Off")

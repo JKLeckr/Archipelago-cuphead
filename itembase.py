@@ -139,9 +139,6 @@ def create_locked_items_at(world: CupheadWorld, name: str, locations:  dict[str,
 def create_dlc_locked_items(world: CupheadWorld):
     create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
     create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
-    if world.wsettings.dlc_chalice == ChaliceMode.VANILLA:
-        create_locked_item(world, ItemNames.item_charm_dlc_cookie, LocationNames.loc_dlc_cookie)
-    #create_locked_item(world, ItemNames.item_charm_dlc_broken_relic, LocationNames.loc_level_dlc_graveyard)
     if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
     create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
@@ -169,7 +166,7 @@ def create_locked_items(world: CupheadWorld):
     if world.use_dlc:
         create_dlc_locked_items(world)
 
-def create_special_items(world: CupheadWorld) -> list[Item]:
+def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[Item]:
     player = world.player
     settings = world.wsettings
     items: list[Item] = []
@@ -177,9 +174,9 @@ def create_special_items(world: CupheadWorld) -> list[Item]:
     for _ in range(world.wsettings.maxhealth_upgrades):
         items.append(create_item(ItemNames.item_healthupgrade, world.player))
     if settings.use_dlc:
-        if settings.dlc_chalice == ChaliceMode.RANDOMIZED:
+        if settings.dlc_chalice == ChaliceMode.RANDOMIZED and ItemNames.item_charm_dlc_cookie not in precollected:
             items.append(create_item(ItemNames.item_charm_dlc_cookie, player))
-        if settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE:
+        if settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE and ItemNames.item_charm_dlc_broken_relic not in precollected:
             items.append(create_item(ItemNames.item_charm_dlc_broken_relic, player))
 
     return items
@@ -304,7 +301,7 @@ def create_items(world: CupheadWorld) -> None:
         itempool += create_pool_items(world, abilities, precollected_item_names)
 
     # Add special Items
-    itempool += create_special_items(world)
+    itempool += create_special_items(world, precollected_item_names)
 
     # Add Coins
     leftover_locations = unfilled_locations - len(itempool) - world.wsettings.minimum_filler

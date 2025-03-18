@@ -193,6 +193,7 @@ class DlcBossChaliceChecks(Toggle):
     """
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
+    -REQUIRES CHALICE-
     Enable checks for defeating each boss as Ms. Chalice.
     """
     display_name = "[DLC] Boss Chalice Checks"
@@ -272,6 +273,7 @@ class DlcCactusGirlQuest(Toggle):
     """
     ---NOT YET IMPLEMENTED ON CLIENT---
     -DLC ONLY-
+    -REQUIRES CHALICE-
     Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
     This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
     You can talk to the Cactus Girl to know which bosses you need to defeat still.
