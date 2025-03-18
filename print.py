@@ -7,7 +7,7 @@ from .locations import locations_all
 def print_items():
     print("-- Items --")
     for item, data in items_all.items():
-        print(f"{item}: {data.id} | {data.type}")
+        print(f"{item}: {data.id} | {data.item_type}")
     print("")
 def print_locations():
     print("-- Locations --")

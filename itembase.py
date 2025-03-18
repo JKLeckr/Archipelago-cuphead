@@ -50,7 +50,7 @@ def create_item(name: str, player: int, force_classification: Optional[ItemClass
     if force_classification:
         classification = force_classification
     else:
-        classification = data.type
+        classification = data.item_type
 
     #print("Item: "+name+", "+str(classification))
 
@@ -125,7 +125,7 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
             if qty<0:
                 print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
             if item.id and qty>0:
-                _itempool += [create_item(itemname, world.player, item.type) for _ in range(qty)]
+                _itempool += [create_item(itemname, world.player, item.item_type) for _ in range(qty)]
     return _itempool
 
 def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: Optional[ItemClassification] = None) -> None:

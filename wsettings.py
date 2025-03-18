@@ -14,7 +14,7 @@ class GameMode(IntEnum):
     DLC_BEAT_DEVIL_NO_ISLE4 = 7
     DLC_BEAT_SALTBAKER_ISLE4_ONLY = 8
 class WeaponExMode(IntEnum):
-    NORMAL = 0
+    OFF = 0
     RANDOMIZED = 1
     ALL_BUT_START = 2
 class LevelShuffleMode(IntEnum):

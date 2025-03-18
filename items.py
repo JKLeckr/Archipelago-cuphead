@@ -7,13 +7,15 @@ from . import itembase
 
 class ItemData(NamedTuple):
     id: Optional[int]
-    type: ItemClassification = ItemClassification.filler
+    item_type: ItemClassification = ItemClassification.filler
     quantity: int = 1 # Set to 0 to skip automatic placement (Useful if placing manually)
     event: bool = False
     category: str | None = None
 
-    def with_type(self, type: ItemClassification) -> ItemData:
+    def with_item_type(self, type: ItemClassification) -> ItemData:
         return ItemData(self.id, type, self.quantity, self.event, self.category)
+    def with_quantity(self, quantity: int) -> ItemData:
+        return ItemData(self.id, self.item_type, quantity, self.event, self.category)
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -39,7 +41,7 @@ item_essential: dict[str, ItemData] = {
     ItemNames.item_coin3: ItemData(id(7), ItemClassification.progression_skip_balancing, 0),
     ItemNames.item_contract: ItemData(id(8), ItemClassification.progression_skip_balancing, 17),
     ItemNames.item_plane_gun: ItemData(id(9), ItemClassification.progression),
-    ItemNames.item_plane_ex: ItemData(id(10), ItemClassification.progression),
+    ItemNames.item_plane_ex: ItemData(id(10), ItemClassification.progression, 0),
     ItemNames.item_plane_bombs: ItemData(id(11), ItemClassification.progression),
     ItemNames.item_healthupgrade: ItemData(id(12), ItemClassification.useful, 0)
 }
@@ -49,7 +51,7 @@ item_dlc_essential: dict[str, ItemData] = {
 }
 item_dlc_chalice_essential: dict[str, ItemData] = {
     ItemNames.item_dlc_cplane_gun: ItemData(dlc_id(2), ItemClassification.progression),
-    ItemNames.item_dlc_cplane_ex: ItemData(dlc_id(3), ItemClassification.progression),
+    ItemNames.item_dlc_cplane_ex: ItemData(dlc_id(3), ItemClassification.progression, 0),
     ItemNames.item_dlc_cplane_bombs: ItemData(dlc_id(4), ItemClassification.progression),
 }
 
@@ -216,8 +218,11 @@ def get_item_groups() -> dict[str, set[str]]:
 def add_item(items_ref: dict[str, ItemData], item: str):
     items_ref[item] = items_all[item]
 
-def change_item_type(items_ref: dict[str, ItemData], item: str, type: ItemClassification):
-    items_ref[item] = items_ref[item].with_type(type)
+def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification):
+    items_ref[item] = items_ref[item].with_item_type(item_type)
+
+def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int):
+    items_ref[item] = items_ref[item].with_quantity(quantity)
 
 def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(items_dlc)
@@ -229,6 +234,8 @@ def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
         items_ref.update(item_dlc_chalice_essential)
     if settings.is_dlc_chalice_items_separate(ItemGroups.SUPER):
         items_ref.update(item_dlc_chalice_super)
+    if settings.randomize_weapon_ex:
+        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
 
 def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(item_abilities)
@@ -251,6 +258,8 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
 def setup_weapons(items_ref: dict[str, ItemData], settings: WorldSettings):
     for weapon in itembase.get_weapon_dict(settings, settings.use_dlc).values():
         items_ref[weapon] = items_all[weapon]
+    if settings.randomize_weapon_ex:
+        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
 
 def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**items_base}
