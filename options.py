@@ -518,10 +518,10 @@ cuphead_option_groups = [
         Traps,
         DlcChaliceItemsSeparate,
     ]),
-    OptionGroup("Misc", [
-        TrapLoadoutAnyWeapon,
-        MusicShuffle,
-    ]),
+    #OptionGroup("Misc", [
+    #    TrapLoadoutAnyWeapon,
+    #    MusicShuffle,
+    #]),
     OptionGroup("Item Weights", [
         FillerWeightExtraHealth,
         FillerWeightSuperRecharge,
