@@ -39,13 +39,14 @@ jobs:
         run: |
           # Remove unnecessary files and directories
           find . -type d -name "_pycache_" -exec rm -rf {} \;
+          find . -type d -name ".ruff_cache" -exec rm -rf {} \;
           rm -rf .git .github
 
       - name: Build ZIP package
         working-directory: ../
         run: |
           mv Archipelago-cuphead cuphead
-          zip -r cuphead.zip cuphead -x "*.git*" "*.github*" "*_pycache_*" "examples/"
+          zip -r cuphead.zip cuphead -x "*.git*" "*.github*" "*_pycache_*" "examples/" "*.ruff_cache*"
           mv cuphead Archipelago-cuphead
           mv cuphead.zip Archipelago-cuphead/cuphead.apworld
 
