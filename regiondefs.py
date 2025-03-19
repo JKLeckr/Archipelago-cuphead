@@ -159,7 +159,7 @@ region_dlc_worlds = [
         LocationNames.loc_dlc_npc_newscat,
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [
-        Target(LocationNames.level_dlc_tutorial),
+        Target(LocationNames.level_dlc_tutorial, rule_has(ItemNames.item_charm_dlc_cookie), dep.dep_dlc_chalice),
         Target(LocationNames.level_dlc_shop4),
         Target(LocationNames.level_dlc_chesscastle, rule_has(ItemNames.item_ability_parry)),
         LevelTarget(LocationNames.level_dlc_boss_oldman),
@@ -302,7 +302,7 @@ region_dlc_isle4: list[RegionData] = [
     RegionData(LocationNames.level_dlc_tutorial, [
         LocationNames.loc_level_dlc_tutorial,
         LocationNames.loc_level_dlc_tutorial_coin,
-    ], None),
+    ], None, dep.dep_dlc_chalice),
     LevelRegionData(LocationNames.level_dlc_boss_oldman, None, [LevelTarget(LocationNames.level_dlc_boss_snowcult)]),
     LevelRegionData(LocationNames.level_dlc_boss_rumrunners, None, [
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy),

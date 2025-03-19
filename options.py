@@ -281,6 +281,7 @@ class DlcChaliceItemsSeparate(Choice):
 
 class DlcCactusGirlQuest(Toggle):
     """
+    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     -REQUIRES CHALICE-
     Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.

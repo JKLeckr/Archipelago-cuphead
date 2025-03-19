@@ -227,7 +227,7 @@ def create_coins(world: CupheadWorld, location_count: int, precollected_item_nam
                  coin_items: tuple[str, str, str]) -> list[Item]:
     res: list[Item] = []
     # Coins
-    coin_amounts = world.wsettings.coin_amounts ## TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop
+    coin_amounts = world.wsettings.coin_amounts # TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop  # noqa: E501
     total_single_coins = coin_amounts[0]
     total_double_coins = coin_amounts[1]
     total_triple_coins = coin_amounts[2]

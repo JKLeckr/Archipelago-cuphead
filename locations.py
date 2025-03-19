@@ -449,7 +449,6 @@ locations_event_agrade: dict[str, LocationData] = {
     **location_level_rungun_event_agrade,
 }
 locations_dlc: dict[str, LocationData] = {
-    **location_level_dlc_tutorial,
     **location_level_dlc_boss,
     #**location_level_dlc_boss_final,
     **location_level_dlc_chesscastle,
@@ -492,6 +491,7 @@ locations_all: dict[str, LocationData] = {
     **location_special,
     **location_goal,
     **locations_dlc,
+    **location_level_dlc_tutorial,
     **location_level_dlc_boss_final, # Final
     **locations_dlc_topgrade,
     **location_level_dlc_boss_final_topgrade, # Final
@@ -557,17 +557,18 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSe
         locations_ref.update(location_level_dlc_boss_topgrade)
         if settings.mode != GameMode.DLC_BEAT_SALTBAKER:
             locations_ref.update(location_level_dlc_boss_final_topgrade)
-    if settings.dlc_chalice >= 0:
-        add_location(locations_ref, LocationNames.loc_dlc_cookie)
-    if settings.dlc_boss_chalice_checks:
-        locations_ref.update(locations_dlc_boss_chaliced)
-    if settings.dlc_rungun_chalice_checks:
-        locations_ref.update(location_level_rungun_dlc_chaliced)
-    if settings.dlc_cactusgirl_quest:
-        locations_ref.update(locations_dlc_event_boss_chaliced)
-        add_location(locations_ref, LocationNames.loc_dlc_quest_cactusgirl)
     if settings.dlc_requires_mausoleum:
         add_location(locations_ref, LocationNames.loc_event_mausoleum)
+    if settings.dlc_chalice > 0:
+        locations_ref.update(location_level_dlc_tutorial)
+        add_location(locations_ref, LocationNames.loc_dlc_cookie)
+        if settings.dlc_boss_chalice_checks:
+            locations_ref.update(locations_dlc_boss_chaliced)
+        if settings.dlc_rungun_chalice_checks:
+            locations_ref.update(location_level_rungun_dlc_chaliced)
+        if settings.dlc_cactusgirl_quest:
+            locations_ref.update(locations_dlc_event_boss_chaliced)
+            add_location(locations_ref, LocationNames.loc_dlc_quest_cactusgirl)
     locations_ref.update(location_dlc_goal)
 
 def setup_locations(settings: WorldSettings):
