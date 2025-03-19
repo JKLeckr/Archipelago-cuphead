@@ -93,7 +93,7 @@ region_house_level_tutorial: RegionData = LevelRegionData(LocationNames.level_tu
 
 region_dlc_start: list[RegionData] = [
     RegionData(LocationNames.loc_event_mausoleum, [LocationNames.loc_event_mausoleum], None, dep.dep_dlc_boat_mausoleum),
-    RegionData(LocationNames.reg_dlc_boat, [LocationNames.loc_event_dlc_boatarrival], None, flags=DefFlags.TGT_IGNORE_FREEMOVE)
+    RegionData(LocationNames.reg_dlc_boat, [LocationNames.loc_event_dlc_boatarrival], None, flags=DefFlags.TGT_IGNORE_FREEMOVE),
 ]
 
 region_worlds: list[RegionData] = [
@@ -329,7 +329,6 @@ region_dlc_isle4: list[RegionData] = [
     RegionData(LocationNames.loc_dlc_quest_cactusgirl, [LocationNames.loc_dlc_quest_cactusgirl], None, dep.dep_dlc_cactusgirl_quest),
 ]
 region_dlc_chesscastle: list[RegionData] = [
-    # Setup Regions later
     LevelRegionData(LocationNames.level_dlc_chesscastle_pawn, None, [LevelTarget(LocationNames.level_dlc_chesscastle_knight)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     LevelRegionData(LocationNames.level_dlc_chesscastle_knight, None, [LevelTarget(LocationNames.level_dlc_chesscastle_bishop)], flags=DefFlags.TGT_IGNORE_FREEMOVE),
     LevelRegionData(LocationNames.level_dlc_chesscastle_bishop, None, [LevelTarget(LocationNames.level_dlc_chesscastle_rook)], flags=DefFlags.TGT_IGNORE_FREEMOVE),

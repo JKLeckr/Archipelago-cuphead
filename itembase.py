@@ -104,7 +104,9 @@ def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Ran
     trap_items = list(items.item_trap.keys())
     trap_item_weights = settings.trap_weights
 
-    active_trap_weights = [(trap, weight) for trap, weight in zip(trap_items, trap_item_weights, strict=True) if weight > 0]
+    active_trap_weights = [
+        (trap, weight) for trap, weight in zip(trap_items, trap_item_weights, strict=True) if weight > 0
+    ]
 
     if not active_trap_weights:
         return []
@@ -128,21 +130,37 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
                 _itempool += [create_item(itemname, world.player, item.item_type) for _ in range(qty)]
     return _itempool
 
-def create_locked_item(world: CupheadWorld, name: str, location: str, force_classification: Optional[ItemClassification] = None) -> None:
-    world.multiworld.get_location(location, world.player).place_locked_item(create_item(name, world.player, force_classification))
-def create_locked_items_at(world: CupheadWorld, name: str, locations:  dict[str, locations.LocationData],
-                        force_classification: Optional[ItemClassification] = None) -> None:
+def create_locked_item(
+        world: CupheadWorld,
+        name: str,
+        location: str,
+        force_classification: Optional[ItemClassification] = None
+    ):
+    world.multiworld.get_location(location, world.player) \
+        .place_locked_item(create_item(name, world.player, force_classification))
+def create_locked_items_at(
+        world: CupheadWorld,
+        name: str,
+        locations: dict[str, locations.LocationData],
+        force_classification: Optional[ItemClassification] = None
+    ):
     for loc in locations:
         if loc in world.active_locations:
             create_locked_item(world, name, loc, force_classification)
+        elif world.settings.verbose:
+            print(f"Skipped {name} for {loc}")
 
 def create_dlc_locked_items(world: CupheadWorld):
     create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
     create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
     if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
-    create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_dlc_event_agrade)
     create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
+    create_locked_items_at(
+        world,
+        ItemNames.item_event_dlc_boss_chaliced,
+        locations.locations_dlc_event_boss_final_chaliced
+    )
 
 def create_locked_items(world: CupheadWorld):
     # Locked Items
@@ -158,6 +176,7 @@ def create_locked_items(world: CupheadWorld):
         #create_locked_item(world, ItemNames.item_event_wolfgang, LocationNames.loc_event_quest_wolfgang)
     if world.wsettings.silverworth_quest:
         create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_event_agrade)
+        create_locked_items_at(world, ItemNames.item_event_agrade, locations.location_level_boss_final_event_agrade)
     if world.wsettings.pacifist_quest:
         create_locked_items_at(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
     if world.wsettings.is_goal_used(LocationNames.loc_event_goal_devil):
@@ -176,8 +195,9 @@ def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[I
     if settings.use_dlc:
         if settings.dlc_chalice == ChaliceMode.RANDOMIZED and ItemNames.item_charm_dlc_cookie not in precollected:
             items.append(create_item(ItemNames.item_charm_dlc_cookie, player))
-        if settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE and ItemNames.item_charm_dlc_broken_relic not in precollected:
-            items.append(create_item(ItemNames.item_charm_dlc_broken_relic, player))
+        if (settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE and \
+            ItemNames.item_charm_dlc_broken_relic not in precollected):
+                items.append(create_item(ItemNames.item_charm_dlc_broken_relic, player))
 
     return items
 
@@ -283,7 +303,10 @@ def create_items(world: CupheadWorld) -> None:
     # Item names for coins
     coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
-    essential_items = [y for y in items.item_essential.keys() if y not in coin_items] + (list(items.item_dlc_essential.keys()) if world.use_dlc else [])
+    essential_items = (
+        [y for y in items.item_essential.keys() if y not in coin_items] + \
+            (list(items.item_dlc_essential.keys()) if world.use_dlc else [])
+    )
     charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if world.use_dlc else [])
     supers = list(items.item_super.keys())
 
@@ -297,7 +320,10 @@ def create_items(world: CupheadWorld) -> None:
     itempool += create_pool_items(world, charms, precollected_item_names)
     itempool += create_pool_items(world, supers, precollected_item_names)
     if world.wsettings.randomize_abilities:
-        abilities = list(items.item_abilities.keys()) + (list(items.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
+        abilities = (
+            list(items.item_abilities.keys()) + \
+                (list(items.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
+        )
         itempool += create_pool_items(world, abilities, precollected_item_names)
 
     # Add special Items

@@ -29,8 +29,11 @@ class CupheadWebWorld(WebWorld):
 class CupheadSettings(ap_settings.Group):
     class LogOptionOverrides(ap_settings.Bool):
         """Log options that are overridden from incompatible combinations to console."""
+    class Verbose(ap_settings.Bool):
+        """Log to the console."""
 
     log_option_overrides: Union[LogOptionOverrides, bool] = True
+    verbose: Union[LogOptionOverrides, bool] = False
 
 class CupheadWorld(World):
     """

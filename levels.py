@@ -199,25 +199,25 @@ level_dlc_boss_regular: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_oldman: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_oldman,
         LocationNames.loc_level_dlc_boss_oldman_topgrade,
-        LocationNames.loc_level_dlc_boss_oldman_event_agrade,
+        #LocationNames.loc_level_dlc_boss_oldman_event_agrade,
         LocationNames.loc_level_dlc_boss_oldman_dlc_chaliced,
     ]),
     LocationNames.level_dlc_boss_rumrunners: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_rumrunners,
         LocationNames.loc_level_dlc_boss_rumrunners_topgrade,
-        LocationNames.loc_level_dlc_boss_rumrunners_event_agrade,
+        #LocationNames.loc_level_dlc_boss_rumrunners_event_agrade,
         LocationNames.loc_level_dlc_boss_rumrunners_dlc_chaliced,
     ], lr.level_rule_parry),
     LocationNames.level_dlc_boss_snowcult: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_snowcult,
         LocationNames.loc_level_dlc_boss_snowcult_topgrade,
-        LocationNames.loc_level_dlc_boss_snowcult_event_agrade,
+        #LocationNames.loc_level_dlc_boss_snowcult_event_agrade,
         LocationNames.loc_level_dlc_boss_snowcult_dlc_chaliced,
     ]), # No Rules
     LocationNames.level_dlc_boss_airplane: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_airplane,
         LocationNames.loc_level_dlc_boss_airplane_topgrade,
-        LocationNames.loc_level_dlc_boss_airplane_event_agrade,
+        #LocationNames.loc_level_dlc_boss_airplane_event_agrade,
         LocationNames.loc_level_dlc_boss_airplane_dlc_chaliced,
     ]), # ???
 }
@@ -225,7 +225,7 @@ level_dlc_boss_plane: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_plane_cowboy: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_plane_cowboy,
         LocationNames.loc_level_dlc_boss_plane_cowboy_topgrade,
-        LocationNames.loc_level_dlc_boss_plane_cowboy_event_agrade,
+        #LocationNames.loc_level_dlc_boss_plane_cowboy_event_agrade,
         LocationNames.loc_level_dlc_boss_plane_cowboy_dlc_chaliced,
     ], lr.level_rule_plane),
 }

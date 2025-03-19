@@ -416,7 +416,9 @@ class LocationNames:
     loc_shop_base_weapons = (loc_shop_weapon1, loc_shop_weapon2, loc_shop_weapon3, loc_shop_weapon4, loc_shop_weapon5)
     loc_shop_dlc_weapons = (loc_shop_dlc_weapon6, loc_shop_dlc_weapon7, loc_shop_dlc_weapon8)
     loc_shop_weapons = loc_shop_base_weapons + loc_shop_dlc_weapons
-    loc_shop_base_charms = (loc_shop_charm1, loc_shop_charm2, loc_shop_charm3, loc_shop_charm4, loc_shop_charm5, loc_shop_charm6)
+    loc_shop_base_charms = (
+        loc_shop_charm1, loc_shop_charm2, loc_shop_charm3, loc_shop_charm4, loc_shop_charm5, loc_shop_charm6
+    )
     loc_shop_dlc_charms = (loc_shop_dlc_charm7, loc_shop_dlc_charm8)
     loc_shop_charms = loc_shop_base_charms + loc_shop_dlc_charms
     loc_shop_items = loc_shop_weapons + loc_shop_charms
@@ -439,7 +441,7 @@ class LocationNames:
     loc_coin_isleh_secret = world_inkwell_hell + " Secret Coin"
     loc_dlc_coin_isle4_secret = world_dlc_inkwell_4 + " Secret Coin"
 
-    loc_dlc_cookie = "Astral Cookie Received"
+    loc_dlc_cookie = "Astral Cookie"
     loc_dlc_npc_newscat = "Newsy Cat"
     loc_dlc_quest_cactusgirl = "Cactus Girl Quest"
 

@@ -118,8 +118,8 @@ def set_level_loc_rules(world: CupheadWorld):
         for loc, rule in _loc_rule.loc_rules.items():
             if loc in w.active_locations:
                 set_loc_rule(w, loc, rb.region_rule_to_rule(rule(w.wsettings), w.player))
-            #else:
-            #    print(f"[set_level_loc_rules] Skipping {loc}")
+            elif world.settings.verbose:
+                print(f"[set_level_loc_rules] Skipping {loc}")
 
 def set_level_boss_grade_rules(world: CupheadWorld):
     w = world
@@ -133,8 +133,6 @@ def set_level_boss_grade_rules(world: CupheadWorld):
                 add_level_parry_rule(w, _loc)
         if w.wsettings.use_dlc:
             for _loc in locations.location_level_dlc_boss_topgrade:
-                add_level_parry_rule(w, _loc)
-            for _loc in locations.location_level_dlc_boss_event_agrade:
                 add_level_parry_rule(w, _loc)
 
 def set_level_rules(world: CupheadWorld):

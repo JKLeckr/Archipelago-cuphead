@@ -48,8 +48,8 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
                 else:
                     print(f"WARNING: \"{loc_name}\" already was registered!")
             region.locations.append(location)
-        else:
-            print(f"WARNING: For \"{regc.name}\": location \"{loc_name}\" does not exist.")
+        elif world.settings.verbose:
+            print(f"Skipping location \"{loc_name}\" for \"{regc.name}\" as it does not exist for this configuration.")
 
     multiworld.regions.append(region)
 
@@ -85,8 +85,8 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: Option
                             locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
                 #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
-            #else:
-            #    print("Skipping Target "+target.name) # if debug
+            elif world.settings.verbose:
+                print("Skipping Target "+target.name)
         else:
             print(f"WARNING: For \"{regc.name}\": a target is None!")
 
@@ -99,10 +99,10 @@ def create_regions(world: CupheadWorld) -> None:
         if regc:
             if regc.depends(world.wsettings):
                 create_region(world, regc)
-            #else: # if debug
-            #    print("Skipping Region "+regc.name)
+            elif world.settings.verbose:
+                print("Skipping Region "+regc.name)
         else:
-            print(f"WARNING: For \"{compile_regions}\": region \"is None!\"")
+            print(f"WARNING: For \"{compile_regions}\": region is None!")
 
     # Connect Region Targets
     freemove_isles = world.wsettings.freemove_isles
