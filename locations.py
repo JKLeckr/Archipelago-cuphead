@@ -6,7 +6,16 @@ from .wsettings import WorldSettings, GameMode, GradeCheckMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"
-    def __init__(self, player: int, name: str = '', id: Optional[int] = None, parent: Optional[Region] = None, event: bool = False, progress_type: LocationProgressType = LocationProgressType.DEFAULT, show_in_spoiler: bool = True):
+    def __init__(
+            self,
+            player: int,
+            name: str = '',
+            id: Optional[int] = None,
+            parent: Optional[Region] = None,
+            event: bool = False,
+            progress_type: LocationProgressType = LocationProgressType.DEFAULT,
+            show_in_spoiler: bool = True
+        ):
         super().__init__(player, name, id, parent)
         self.event = event
         self.progress_type = progress_type

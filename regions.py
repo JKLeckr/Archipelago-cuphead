@@ -41,7 +41,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
             loc_id = locations[loc_name].id
             event = locations[loc_name].event if loc_id else True
             progress_type = locations[loc_name].progress_type
-            location = CupheadLocation(player, loc_name, loc_id, region, event, progress_type, True) # TODO: Update show_in_spoilers later
+            location = CupheadLocation(player, loc_name, loc_id, region, event, progress_type, True) # TODO: Update show_in_spoilers later  # noqa: E501
             if locset:
                 if loc_name not in locset:
                     locset.add(loc_name)

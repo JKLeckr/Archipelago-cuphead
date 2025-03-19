@@ -73,7 +73,9 @@ class CupheadWorld(World):
             string += " Reason: {reason}"
         self.option_overrides.append(string)
         if self.settings.log_option_overrides:
-            print(f"Warning: For player {self.player}: Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\". Reason: {reason}.")
+            msg = f"Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\"."
+            msg_reason = f"Reason: {reason}."
+            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
         option.value = value
 
     def resolve_random_options(self) -> None:
@@ -94,9 +96,18 @@ class CupheadWorld(World):
 
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:
-            self.override_option(_options.contract_goal_requirements, _options.contract_requirements.value, CONTRACT_GOAL_REASON)
-        if _options.use_dlc and _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value:
-            self.override_option(_options.dlc_ingredient_goal_requirements, _options.dlc_ingredient_requirements.value, CONTRACT_GOAL_REASON)
+            self.override_option(
+                _options.contract_goal_requirements,
+                _options.contract_requirements.value,
+                CONTRACT_GOAL_REASON
+            )
+        if (_options.use_dlc and \
+            _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value):
+            self.override_option(
+                _options.dlc_ingredient_goal_requirements,
+                _options.dlc_ingredient_requirements.value,
+                CONTRACT_GOAL_REASON
+            )
         if not _options.use_dlc.value:
             DLC_REASON = "DLC Off"
             # Sanitize mode
@@ -156,7 +167,9 @@ class CupheadWorld(World):
         # Filler items and weights
         filler_items = list(items.item_filler.keys())
         filler_item_weights = self.wsettings.filler_item_weights
-        self.filler_item_weights = [(trap, weight) for trap, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0]
+        self.filler_item_weights = [
+            (trap, weight) for trap, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0
+        ]
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
@@ -252,6 +265,9 @@ class CupheadWorld(World):
     def create_items(self) -> None:
         itembase.create_items(self)
 
+    def _gen_shop_list(self, y: list[str]) -> str:
+        return "\n".join([f" {z}" for z in y])
+
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if len(self.option_overrides)>0:
@@ -259,10 +275,14 @@ class CupheadWorld(World):
             spoiler_handle.write('\n'.join([x for x in self.option_overrides]) + '\n')
         if self.level_shuffle and len(self.level_shuffle_map)>0:
             spoiler_handle.write(f"\n{self.player} Level Shuffle Map:\n\n")
-            spoiler_handle.write('\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n')
+            spoiler_handle.write(
+                '\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n'
+            )
         spoiler_handle.write(f"\n{self.player} Shop Items:\n\n")
-        spoiler_handle.write('\n'.join([
-            (x + ':\n' + '\n'.join([f" {z}" for z in y])) for x, y in self.shop_locations.items() if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
+        _nl = "\n"
+        spoiler_handle.write("\n".join([
+            f"{x}:\n{self._gen_shop_list(y)}" for x, y in self.shop_locations.items() \
+                if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
         ]))
 
     @override
@@ -285,7 +305,8 @@ class CupheadWorld(World):
             for level, map in self.level_shuffle_map.items():
                 if level_map[level] in self.active_locations.keys() and level != map:
                     for loc in self.active_levels[level_map[level]].locations:
-                        hint_dict[self.location_name_to_id[loc]] = level_map[self.level_shuffle_map[level]] + " at " + level_map[level]
+                        hint_dict[self.location_name_to_id[loc]] = \
+                            f"{level_map[self.level_shuffle_map[level]]} at {level_map[level]}"
         for shop, locs in self.shop_locations.items():
             if shop != LocationNames.level_dlc_shop4 or self.use_dlc:
                 for loc in locs:

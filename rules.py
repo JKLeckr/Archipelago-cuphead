@@ -66,7 +66,11 @@ def set_dlc_rules(world: CupheadWorld):
     settings = w.wsettings
     ingredient_reqs = settings.dlc_ingredient_requirements
     set_dlc_boat_rules(w)
-    set_region_rules(w, LocationNames.level_dlc_boss_saltbaker, rb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs))
+    set_region_rules(
+        w,
+        LocationNames.level_dlc_boss_saltbaker,
+        rb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs)
+    )
     if settings.dlc_boss_chalice_checks:
         for _loc in locations.locations_dlc_boss_chaliced.keys():
             set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
@@ -193,7 +197,9 @@ def set_goal(world: CupheadWorld):
     w.multiworld.completion_condition[w.player] = (
         rb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
     ) if settings.mode == GameMode.COLLECT_CONTRACTS else (
-        rb.rule_can_reach_all_regions(w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops)
+        rb.rule_can_reach_all_regions(
+            w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops
+        )
     ) if settings.mode == GameMode.BUY_OUT_SHOP else (
         rb.rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
     ) if settings.mode == GameMode.DLC_BEAT_SALTBAKER or settings.mode == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY else (

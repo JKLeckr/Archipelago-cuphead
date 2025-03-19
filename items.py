@@ -93,7 +93,7 @@ item_charms: dict[str, ItemData] = {
 }
 item_dlc_charms: dict[str, ItemData] = {
     ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(11), ItemClassification.useful),
-    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(12), ItemClassification.useful, 0), # Sequence will not be in logic
+    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(12), ItemClassification.useful, 0), # Sequence will not be in logic  # noqa: E501
 }
 
 item_super: dict[str, ItemData] = {
@@ -171,8 +171,12 @@ item_dlc_special: dict[str, ItemData] = {
     ItemNames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_skip_balancing, 0),
 }
 
-item_goal: dict[str, ItemData] = {ItemNames.item_event_goal_devilko: ItemData(None, ItemClassification.progression, 0),}
-item_dlc_goal: dict[str, ItemData] = {ItemNames.item_event_goal_dlc_saltbakerko: ItemData(None, ItemClassification.progression, 0),}
+item_goal: dict[str, ItemData] = {
+    ItemNames.item_event_goal_devilko: ItemData(None, ItemClassification.progression, 0),
+}
+item_dlc_goal: dict[str, ItemData] = {
+    ItemNames.item_event_goal_dlc_saltbakerko: ItemData(None, ItemClassification.progression, 0),
+}
 
 items_base: dict[str, ItemData] = {
     **item_generic,

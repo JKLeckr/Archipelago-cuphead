@@ -59,6 +59,8 @@ class TestOptions(CupheadTestBase):
             for region in self.multiworld.get_regions(player):
                 for loc in region.locations:
                     if not loc.is_event:
-                        assert loc.name in remaining_locs, f"{option_set_name}: '{loc.name}' exists even though it isn't an active location. "
+                        assert loc.name in remaining_locs, \
+                            f"{option_set_name}: '{loc.name}' exists even though it isn't an active location."
                         remaining_locs.remove(loc.name)
-            assert len(remaining_locs) == 0, f"{option_set_name}: The following locations are active but have not been created: {remaining_locs}"
+            assert len(remaining_locs) == 0, \
+                f"{option_set_name}: The following locations are active but have not been created: {remaining_locs}"
