@@ -218,7 +218,7 @@ class SilverworthQuest(DefaultOnToggle):
 class PacifistQuest(Toggle):
     """
     Enable the Pacifist Quest check.
-    This means that you will have to beat all 6 Run n' Gun levels without killing any monsters in order to get this check (not easy).
+    This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
     """
     display_name = "Pacifist Quest"
 
