@@ -198,6 +198,16 @@ class DlcBossChaliceChecks(Toggle):
     """
     display_name = "[DLC] Boss Chalice Checks"
 
+class DlcRunGunChaliceChecks(Toggle):
+    """
+    --NOT YET IMPLEMENTED--
+    -DLC ONLY-
+    -REQUIRES CHALICE-
+    Enable checks for completing each Run N Gun as Ms. Chalice.
+    """
+    display_name = "[DLC] Boss Chalice Checks"
+    visibility = Visibility.template | Visibility.spoiler
+
 class SilverworthQuest(DefaultOnToggle):
     """
     Enable the Silverworth Quest check.
@@ -271,7 +281,6 @@ class DlcChaliceItemsSeparate(Choice):
 
 class DlcCactusGirlQuest(Toggle):
     """
-    ---NOT YET IMPLEMENTED ON CLIENT---
     -DLC ONLY-
     -REQUIRES CHALICE-
     Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
@@ -279,7 +288,6 @@ class DlcCactusGirlQuest(Toggle):
     You can talk to the Cactus Girl to know which bosses you need to defeat still.
     """
     display_name = "[DLC] Cactus Girl Quest"
-    visibility = Visibility.template | Visibility.spoiler
 
 class DlcCurseMode(Choice):
     """
@@ -460,6 +468,7 @@ class CupheadOptions(PerGameCommonOptions):
     rungun_grade_checks: RunGunGradeChecks
     kingdice_bosssanity: DicePalaceBossSanity
     dlc_boss_chalice_checks: DlcBossChaliceChecks
+    dlc_rungun_chalice_checks: DlcRunGunChaliceChecks
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     dlc_chalice: DlcChaliceEnabled
@@ -509,6 +518,7 @@ cuphead_option_groups = [
     ]),
     OptionGroup("DLC Checks", [
         DlcBossChaliceChecks,
+        DlcRunGunChaliceChecks,
         DlcCactusGirlQuest,
     ]),
     OptionGroup("Items", [

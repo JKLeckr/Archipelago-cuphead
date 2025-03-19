@@ -304,6 +304,7 @@ class LocationNames:
     loc_level_rungun_forest_coin3 = level_rungun_forest + " Coin 3"
     loc_level_rungun_forest_coin4 = level_rungun_forest + " Coin 4"
     loc_level_rungun_forest_coin5 = level_rungun_forest + " Coin 5"
+    loc_level_rungun_forest_dlc_chaliced = level_rungun_forest + " Chalice Complete"
     loc_level_rungun_forest_event_agrade = _loc_event_ + loc_level_rungun_forest_agrade
     loc_level_rungun_forest_event_pacifist = _loc_event_ + loc_level_rungun_forest_pacifist
 
@@ -315,6 +316,7 @@ class LocationNames:
     loc_level_rungun_tree_coin3 = level_rungun_tree + " Coin 3"
     loc_level_rungun_tree_coin4 = level_rungun_tree + " Coin 4"
     loc_level_rungun_tree_coin5 = level_rungun_tree + " Coin 5"
+    loc_level_rungun_tree_dlc_chaliced = level_rungun_tree + " Chalice Complete"
     loc_level_rungun_tree_event_agrade = _loc_event_ + loc_level_rungun_tree_agrade
     loc_level_rungun_tree_event_pacifist = _loc_event_ + loc_level_rungun_tree_pacifist
 
@@ -326,6 +328,7 @@ class LocationNames:
     loc_level_rungun_circus_coin3 = level_rungun_circus + " Coin 3"
     loc_level_rungun_circus_coin4 = level_rungun_circus + " Coin 4"
     loc_level_rungun_circus_coin5 = level_rungun_circus + " Coin 5"
+    loc_level_rungun_circus_dlc_chaliced = level_rungun_circus + " Chalice Complete"
     loc_level_rungun_circus_event_agrade = _loc_event_ + loc_level_rungun_circus_agrade
     loc_level_rungun_circus_event_pacifist = _loc_event_ + loc_level_rungun_circus_pacifist
 
@@ -337,6 +340,7 @@ class LocationNames:
     loc_level_rungun_funhouse_coin3 = level_rungun_funhouse + " Coin 3"
     loc_level_rungun_funhouse_coin4 = level_rungun_funhouse + " Coin 4"
     loc_level_rungun_funhouse_coin5 = level_rungun_funhouse + " Coin 5"
+    loc_level_rungun_funhouse_dlc_chaliced = level_rungun_funhouse + " Chalice Complete"
     loc_level_rungun_funhouse_event_agrade = _loc_event_ + loc_level_rungun_funhouse_agrade
     loc_level_rungun_funhouse_event_pacifist = _loc_event_ + loc_level_rungun_funhouse_pacifist
 
@@ -348,6 +352,7 @@ class LocationNames:
     loc_level_rungun_harbour_coin3 = level_rungun_harbour + " Coin 3"
     loc_level_rungun_harbour_coin4 = level_rungun_harbour + " Coin 4"
     loc_level_rungun_harbour_coin5 = level_rungun_harbour + " Coin 5"
+    loc_level_rungun_harbour_dlc_chaliced = level_rungun_harbour + " Chalice Complete"
     loc_level_rungun_harbour_event_agrade = _loc_event_ + loc_level_rungun_harbour_agrade
     loc_level_rungun_harbour_event_pacifist = _loc_event_ + loc_level_rungun_harbour_pacifist
 
@@ -359,6 +364,7 @@ class LocationNames:
     loc_level_rungun_mountain_coin3 = level_rungun_mountain + " Coin 3"
     loc_level_rungun_mountain_coin4 = level_rungun_mountain + " Coin 4"
     loc_level_rungun_mountain_coin5 = level_rungun_mountain + " Coin 5"
+    loc_level_rungun_mountain_dlc_chaliced = level_rungun_mountain + " Chalice Complete"
     loc_level_rungun_mountain_event_agrade = _loc_event_ + loc_level_rungun_mountain_agrade
     loc_level_rungun_mountain_event_pacifist = _loc_event_ + loc_level_rungun_mountain_pacifist
 
