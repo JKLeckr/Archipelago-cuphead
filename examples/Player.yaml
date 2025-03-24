@@ -5,58 +5,115 @@ Cuphead:
   accessibility: items
   start_inventory: {}
 
-  # --DLC NOT FULLY IMPLEMENTED! (Does not work!)--
+  # ---WORKS, WIP---
   # Set whether or not to use Delicious Last Course content (Requires owning the DLC).
+  # Other values: 'true'
   use_dlc: 'false'
 
+  # Set the mode of the randomizer which includes goal.
+  # NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
+  # Other values: beat_devil, collect_contracts, buy_out_shop, dlc_beat_saltbaker, dlc_beat_both, dlc_collect_ingredients, dlc_collect_both
+  mode: beat_devil
+
   # Set the boss difficulty to expert.
+  # Other values: 'true'
   expert_mode: 'false'
 
   # --NOT YET IMPLEMENTED--
   # Shuffle the Boss and Run n' Gun levels.
   level_shuffle: 'false'
 
-  # Allow all the bosses on each island to be freely accessible without completing a previous level first.
+  # Choose weapon to start with.
+  # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
+  # Other values: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
+  start_weapon: random
+
+  # Randomize the weapon EX ability also.
+  # Other values: disabled, enabled, all_but_start
+  randomize_weapon_ex: disabled
+
+  # Set starting max health.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  start_maxhealth: '3'
+
+  # Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
+  # The required contracts for the die houses are evenly distributed.
+  contract_requirements: '17'
+
+  # -DLC ONLY-
+  # Set the amount of ingredients needed to confront Saltbaker.
+  dlc_ingredient_requirements: '5'
+
+  # Set the amount of contracts needed for goal.
+  # Note: Cannot be lower than Contract Requirements
+  contract_goal_requirements: '17'
+
+  # -DLC ONLY-
+  # Set the amount of ingredients needed for goal.
+  # Note: Cannot be lower than Ingredient Requirements
+  dlc_ingredient_goal_requirements: '5'
+
+  # Allow all the levels on each island to be freely accessible without completing a previous level first.
+  # Other values: 'true'
   freemove_isles: 'false'
 
-  # Randomize essential abilities like Duck, Perry, Dash, etc.
-  randomize_abilities: 'false'
+  # When you die, everyone dies. Of course the reverse is true too.
+  # In Cuphead, this only applies while you are in a level.
+  # Other values: 'true'
+  deathlink: 'false'
+
+  # Randomize essential abilities like Duck, Parry, Dash, etc.
+  # Other values: 'false'
+  randomize_abilities: 'true'
+
+  # Also include beating the secret phases of the three bosses as checks.
+  # The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
+  # Other values: 'true'
+  boss_secret_checks: 'false'
 
   # Enable grade checks for Boss Levels.
   # NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
-  # Possible options: a_minus_grade, a_grade, a_plus_grade, s_grade
-  boss_grade_checks: disabled
+  # Other values: disabled, a_minus_grade, a_grade, a_plus_grade, s_grade
+  boss_grade_checks: a_minus_grade
 
   # Enable grade checks for Run n' Gun levels.
   # Pacifist: Beat the level without killing any monsters (not easy).
-  # Possible options: a_minus_grade, a_grade, a_plus_grade, p_grade
-  rungun_grade_checks: disabled
+  # Other values: disabled, a_minus_grade, a_grade, a_plus_grade, p_grade
+  rungun_grade_checks: a_minus_grade
 
   # Enable the Silverworth Quest check.
-  # This means that you will have to beat 15 levels with at least an A-Grade in order to get this check.
-  silverworth_quest: 'false'
+  # This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
+  # Other values: 'false'
+  silverworth_quest: 'true'
 
   # Enable the Pacifist Quest check.
-  # This means that you will have to beat all 6 Run n' Gun levels without killing any monsters in order to get this check (not easy).
+  # This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
+  # Other values: 'true'
   pacifist_quest: 'false'
+
+  # -DLC ONLY-
+  # Set how the cursed and devine relic is handled.
+  #
+  # Modes:
+  # - off: Broken Relic is removed from the game
+  # - normal: Broken Relic is in pool. The graveyard and obtaining the devine relic is excluded from logic.
+  dlc_curse_mode: off
+
+  # Set extra coins in the item pool.
+  extra_coins: '0'
 
   # Set number of max health upgrades in the pool.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
   maxhealth_upgrades: '0'
 
-  # Set Trap percentage for filler items.
-  traps: '0'
+  # Set the minimum amount of filler items that should exist in this world.
+  # NOTE: If there are not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
+  minimum_filler: '0'
 
-  # --NOT YET IMPLEMENTED--
-  # When you die, everyone dies. Of course the reverse is true too.
-  # In Cuphead, this only applies while you are in a level.
-  deathlink: 'false'
+  # Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
+  # Set to 0 to disable this item.
+  filler_weight_extrahealth: '3'
 
-  # Choose weapon to start with.
-  # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
-  # Possible options: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
-  start_weapon: random
-
-  # Set starting max health.
-  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
-  start_maxhealth: '3'
+  # Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
+  # Set to 0 to disable this item.
+  filler_weight_superrecharge: '3'

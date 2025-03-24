@@ -197,6 +197,7 @@ class DlcBossChaliceChecks(Toggle):
     Enable checks for defeating each boss as Ms. Chalice.
     """
     display_name = "[DLC] Boss Chalice Checks"
+    visibility = Visibility.template | Visibility.spoiler
 
 class DlcRunGunChaliceChecks(Toggle):
     """
@@ -241,7 +242,7 @@ class TrapLoadoutAnyWeapon(Toggle):
 
 class DlcChaliceEnabled(Choice):
     """
-    ---NOT YET IMPLEMENTED ON CLIENT---
+    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     Enable Ms. Chalice and the Astral Cookie.
     Options:
@@ -250,6 +251,7 @@ class DlcChaliceEnabled(Choice):
     - Randomized: The cookie is in the item pool. Starting the DLC is a check.
     """
     display_name = "[DLC] Ms. Chalice"
+    visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
     option_vanilla = 1
     option_randomized = 2
@@ -289,6 +291,7 @@ class DlcCactusGirlQuest(Toggle):
     You can talk to the Cactus Girl to know which bosses you need to defeat still.
     """
     display_name = "[DLC] Cactus Girl Quest"
+    visibility = Visibility.template | Visibility.spoiler
 
 class DlcCurseMode(Choice):
     """
