@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Optional, TextIO, Dict, Any, Union
+from typing import TextIO, Any
+from typing import Union # type: ignore
 from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from Options import NumericOption
@@ -8,10 +9,10 @@ import settings as ap_settings
 from .names import ItemNames, LocationNames
 from .options import CupheadOptions, cuphead_option_groups
 from .wsettings import WorldSettings
-from .items import ItemData
 from .locations import LocationData
 from .levels import LevelData, level_map
-from . import items, itembase, levels, locations, regions, rules, debug # type: ignore  # noqa: F401
+from . import items, itembase, levels, locations, regions, rules
+from . import debug # type: ignore
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -33,8 +34,8 @@ class CupheadSettings(ap_settings.Group):
     class Verbose(ap_settings.Bool):
         """Log to the console."""
 
-    log_option_overrides: Union[LogOptionOverrides, bool] = True
-    verbose: Union[LogOptionOverrides, bool] = False
+    log_option_overrides: Union[LogOptionOverrides, bool] = True # type: ignore
+    verbose: Union[LogOptionOverrides, bool] = False # type: ignore
 
 class CupheadWorld(World):
     """
@@ -71,15 +72,19 @@ class CupheadWorld(World):
 
     option_overrides: list[str] = []
 
-    def override_option(self, option: NumericOption, value: int, reason: Optional[str] = None):
-        string = f"{option.current_option_name}: \"{option.value}\" -> \"{value}\"."
+    _started_print: bool = False
+
+    def override_option(self, option: NumericOption, value: int, reason: str | None = None):
+        option_name: str = option.display_name if option.display_name else "MISSINGNAME" # type: ignore
+        new_value: str = option.name_lookup[value]
+        string = f"{option_name}: \"{option.current_key}\" -> \"{new_value}\"."
         if reason:
             string += " Reason: {reason}"
         self.option_overrides.append(string)
         if self.settings.log_option_overrides:
-            msg = f"Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\"."
+            msg = f"Option \"{option_name}\" was overridden from \"{option.current_key}\" to \"{new_value}\"."
             msg_reason = f"Reason: {reason}."
-            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+            print(f"WARNING: For player {self.player}: {msg} {msg_reason}")
         option.value = value
 
     def resolve_random_options(self) -> None:
@@ -97,7 +102,6 @@ class CupheadWorld(World):
         _options = self.options
 
         CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements"
-
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:
             self.override_option(
@@ -120,12 +124,6 @@ class CupheadWorld(World):
             # Sanitize start_weapon
             if _options.start_weapon.value>5:
                 self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
-        if _options.dlc_chalice.value == 0:
-            CHALICE_REASON = "Chalice Off"
-            if _options.dlc_boss_chalice_checks.value:
-                self.override_option(_options.mode, False, CHALICE_REASON)
-            if _options.dlc_cactusgirl_quest.value:
-                self.override_option(_options.mode, False, CHALICE_REASON)
         # Sanitize grade checks
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_option(_options.boss_grade_checks, 3, "Expert Off")
@@ -136,6 +134,7 @@ class CupheadWorld(World):
             self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
             if not self.wsettings.freemove_isles:
                 self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
+        #if self.wsettings.use_dlc and self.wsettings.dlc_chalice
 
     @override
     def generate_early(self) -> None:
@@ -154,9 +153,9 @@ class CupheadWorld(World):
         coin_amounts = self.wsettings.coin_amounts
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        self.active_items: dict[str,ItemData] = items.setup_items(self.wsettings)
+        self.active_items: dict[str,items.ItemData] = items.setup_items(self.wsettings)
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wsettings)
-        #Tests.test_duplicates(self.active_locations)
+
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wsettings,self.active_locations)
         if self.level_shuffle:
             self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
@@ -180,7 +179,7 @@ class CupheadWorld(World):
             self.solo_setup()
 
     @override
-    def fill_slot_data(self) -> Dict[str, Any]:
+    def fill_slot_data(self) -> dict[str, Any]:
         slot_data: dict[str, Any] = {
             "version": 2,
             "world_version": self.version,
@@ -262,8 +261,8 @@ class CupheadWorld(World):
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
     @override
-    def create_item(self, name: str, force_classification: Optional[ItemClassification] = None) -> Item:
-        return itembase.create_item(name, self.player, force_classification)
+    def create_item(self, name: str, force_classification: ItemClassification | None = None) -> Item:
+        return itembase.create_item(name, self.player, items.items_all, force_classification)
 
     @override
     def create_items(self) -> None:
@@ -313,8 +312,8 @@ class CupheadWorld(World):
         return itembase.get_filler_item_name(self)
 
     @override
-    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
-        hint_dict: Dict[int, str] = {}
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+        hint_dict: dict[int, str] = {}
         if self.level_shuffle:
             for level, map in self.level_shuffle_map.items():
                 if level_map[level] in self.active_locations.keys() and level != map:

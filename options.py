@@ -246,7 +246,7 @@ class DlcChaliceEnabled(Choice):
     Enable Ms. Chalice and the Astral Cookie.
     Options:
     - Disabled: The cookie is disabled and cannot be obtained (Ms. Chalice is disabled).
-    - Start: You start with the cookie at the start of the game.
+    - Start: You start with the cookie.
     - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
     - Randomized: The cookie is in the item pool. Starting the DLC is a check.
     """

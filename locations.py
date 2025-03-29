@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 from BaseClasses import Location, Region, LocationProgressType
 from .names import LocationNames
 from .wsettings import WorldSettings, GameMode, GradeCheckMode, ChaliceMode, ChessCastleMode
@@ -10,8 +10,8 @@ class CupheadLocation(Location):
             self,
             player: int,
             name: str = '',
-            id: Optional[int] = None,
-            parent: Optional[Region] = None,
+            id: int | None = None,
+            parent: Region | None = None,
             event: bool = False,
             progress_type: LocationProgressType = LocationProgressType.DEFAULT,
             show_in_spoiler: bool = True
@@ -22,7 +22,7 @@ class CupheadLocation(Location):
         self.show_in_spoiler = show_in_spoiler
 
 class LocationData(NamedTuple):
-    id: Optional[int]
+    id: int | None
     progress_type: LocationProgressType = LocationProgressType.DEFAULT
     event: bool = False
 

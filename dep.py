@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Callable
+from collections.abc import Callable
 from .wsettings import WorldSettings
 
 Dep = Callable[[WorldSettings], bool]

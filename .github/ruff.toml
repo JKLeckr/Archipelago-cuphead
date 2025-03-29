@@ -2,7 +2,7 @@
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
 lint.select = ["E", "F", "W", "B", "C901"]
-lint.ignore = ["E501"] # FIXME: No longer ignore this!
+lint.ignore = ["F401"] # F401 is already being covered by pyright
 
 line-length = 120
 

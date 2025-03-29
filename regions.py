@@ -1,6 +1,6 @@
 from __future__ import annotations
 import typing
-from typing import Optional, Collection
+from collections.abc import Collection
 from BaseClasses import MultiWorld, Region
 from .regiondefs import DefType, RegionData, RegionRule, get_regions
 from .levels import get_level, get_mapped_level_name, level_dicepalace_boss
@@ -37,7 +37,7 @@ def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) 
 
     return locations
 
-def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[str]] = None):
+def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
@@ -64,13 +64,13 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
 
     multiworld.regions.append(region)
 
-def get_rule_def(a: RegionRule, b: Optional[RegionRule] = None) -> RegionRule:
+def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
     if b:
         return lambda s, p: a(s, p) and b(s, p)
     else:
         return a
 
-def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: Optional[set[str]] = None):
+def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
     if not regc.connect_to:
         raise ValueError(f"For {regc.name}: connect_to cannot be None!")
     multiworld = world.multiworld

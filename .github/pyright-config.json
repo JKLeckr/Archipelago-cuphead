@@ -12,6 +12,9 @@
     "typeCheckingMode": "strict",
     "reportImplicitOverride": "error",
     "reportMissingImports": true,
+    "reportDeprecated": "error",
+
+    "deprecateTypingAliases": true,
   
     "pythonVersion": "3.10",
     "pythonPlatform": "Windows",

@@ -1,21 +1,22 @@
 from __future__ import annotations
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 from BaseClasses import ItemClassification
 from .names import ItemNames
 from .wsettings import WorldSettings, ItemGroups, ChaliceMode
 from . import itembase
 
 class ItemData(NamedTuple):
-    id: Optional[int]
+    id: int | None
     item_type: ItemClassification = ItemClassification.filler
     quantity: int = 1 # Set to 0 to skip automatic placement (Useful if placing manually)
-    event: bool = False
     category: str | None = None
 
-    def with_item_type(self, type: ItemClassification) -> ItemData:
-        return ItemData(self.id, type, self.quantity, self.event, self.category)
+    def as_event(self) -> ItemData:
+        return ItemData(None, self.item_type, self.quantity, self.category)
+    def with_item_type(self, item_type: ItemClassification) -> ItemData:
+        return ItemData(self.id, item_type, self.quantity, self.category)
     def with_quantity(self, quantity: int) -> ItemData:
-        return ItemData(self.id, self.item_type, quantity, self.event, self.category)
+        return ItemData(self.id, self.item_type, quantity, self.category)
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -225,8 +226,8 @@ def get_item_groups() -> dict[str, set[str]]:
     }
     return n_item_groups
 
-def add_item(items_ref: dict[str, ItemData], item: str):
-    items_ref[item] = items_all[item]
+def add_item(items_ref: dict[str, ItemData], item: str, as_event: bool = False):
+    items_ref[item] = items_all[item].as_event() if as_event else items_all[item]
 
 def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification):
     items_ref[item] = items_ref[item].with_item_type(item_type)
@@ -240,7 +241,7 @@ def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
         if settings.dlc_chalice == ChaliceMode.RANDOMIZED:
             add_item(items_ref, ItemNames.item_charm_dlc_cookie)
         elif settings.dlc_chalice == ChaliceMode.VANILLA:
-            add_item(items_ref, ItemNames.item_charm_dlc_cookie)
+            add_item(items_ref, ItemNames.item_charm_dlc_cookie, True)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
             change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
     if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Callable
+from collections.abc import Callable
 from .names import ItemNames
 from .wsettings import WorldSettings, ChaliceMode
 from .rulebase import RegionRule, region_rule_none, region_rule_has
@@ -106,7 +106,7 @@ def level_rule_final(settings: WorldSettings) -> RegionRule:
         return level_rule_none(settings)
     return level_rule_and(level_rule_parry, level_rule_dash)(settings)
 def level_rule_dlc_cookie(settings: WorldSettings) -> RegionRule:
-    if settings.dlc_chalice == ChaliceMode.START:
+    if settings.dlc_chalice <= ChaliceMode.START:
         return level_rule_none(settings)
     if settings.dlc_chalice == ChaliceMode.VANILLA:
         return region_rule_has(ItemNames.item_charm_dlc_cookie)
