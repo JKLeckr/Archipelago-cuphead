@@ -18,6 +18,7 @@ class DefFlags(IntFlag):
     NONE = 0
     TGT_IGNORE_FREEMOVE = 1
     DICE_PALACE = 3
+    COOKIE = 4
 
 def rule_has(item: str, count: int = 1) -> RegionRule:
     return region_rule_has(item, count)
@@ -155,13 +156,12 @@ region_worlds: list[RegionData] = [
 ]
 region_dlc_worlds = [
     WorldRegionData(LocationNames.world_dlc_inkwell_4, [
-        LocationNames.loc_dlc_cookie,
         LocationNames.loc_dlc_npc_newscat,
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [
-        Target(LocationNames.level_dlc_tutorial, rule_has(ItemNames.item_charm_dlc_cookie), dep.dep_dlc_chalice),
         Target(LocationNames.level_dlc_shop4),
         Target(LocationNames.level_dlc_chesscastle, rule_has(ItemNames.item_ability_parry)),
+        LevelTarget(LocationNames.level_dlc_tutorial, None, dep.dep_dlc_chalice),
         LevelTarget(LocationNames.level_dlc_boss_oldman),
         LevelTarget(LocationNames.level_dlc_boss_rumrunners),
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy, None, dep.dep_freemove),
@@ -169,7 +169,7 @@ region_dlc_worlds = [
         LevelTarget(LocationNames.level_dlc_boss_airplane, None, dep.dep_freemove),
         #LevelTarget(LocationNames.level_dlc_graveyard, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_dlc_boss_saltbaker, None)
-    ]),
+    ], flags=DefFlags.COOKIE),
 ]
 
 region_isle1 =  [
@@ -299,10 +299,7 @@ region_isleh: list[RegionData] = [
     LevelRegionData(LocationNames.level_boss_devil, None, None),
 ]
 region_dlc_isle4: list[RegionData] = [
-    RegionData(LocationNames.level_dlc_tutorial, [
-        LocationNames.loc_level_dlc_tutorial,
-        LocationNames.loc_level_dlc_tutorial_coin,
-    ], None, dep.dep_dlc_chalice),
+    LevelRegionData(LocationNames.level_dlc_tutorial, None, None, dep.dep_dlc_chalice),
     LevelRegionData(LocationNames.level_dlc_boss_oldman, None, [LevelTarget(LocationNames.level_dlc_boss_snowcult)]),
     LevelRegionData(LocationNames.level_dlc_boss_rumrunners, None, [
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy),

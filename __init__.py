@@ -267,6 +267,7 @@ class CupheadWorld(World):
 
     @override
     def create_items(self) -> None:
+        #debug.print_list(self.active_locations)
         itembase.create_items(self)
 
     def _gen_shop_list(self, y: list[str]) -> str:

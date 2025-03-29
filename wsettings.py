@@ -30,8 +30,9 @@ class GradeCheckMode(IntEnum):
     PACIFIST = 5
 class ChaliceMode(IntEnum):
     DISABLED = 0
-    VANILLA = 1
-    RANDOMIZED = 2
+    START = 1
+    VANILLA = 2
+    RANDOMIZED = 3
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1

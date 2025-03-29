@@ -347,7 +347,21 @@ level_dlc_chesscastle_boss: dict[str, LevelData] = {
     LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,], lr.level_rule_parry)
 }
 level_special: dict[str, LevelData] = {
-    LocationNames.level_tutorial: LevelData(LocationNames.level_house, [LocationNames.loc_level_tutorial, LocationNames.loc_level_tutorial_coin,], lr.level_rule_duck_dash_and_parry)
+    LocationNames.level_tutorial: LevelData(
+        LocationNames.level_house,
+        [
+            LocationNames.loc_level_tutorial,
+            LocationNames.loc_level_tutorial_coin,
+        ],
+        lr.level_rule_duck_dash_and_parry
+    ),
+    LocationNames.level_dlc_tutorial: LevelData(
+        LocationNames.level_house,
+        [
+            LocationNames.loc_level_dlc_tutorial,
+            LocationNames.loc_level_dlc_tutorial_coin,
+        ],
+    ),
 }
 level_dlc_special: dict[str, LevelData] = {
     #LocationNames.level_dlc_graveyard: LevelData(LocationNames.world_dlc_inkwell_4, [LocationNames.loc_level_dlc_graveyard,], level_dlc_rule_relic),
@@ -363,7 +377,6 @@ levels_dlc: dict[str, LevelData] = {
     **level_dlc_boss,
     **level_dlc_boss_final,
     **level_dlc_chesscastle_boss,
-    **level_dlc_special,
 }
 
 levels_all: dict[str, LevelData] = {
@@ -371,6 +384,7 @@ levels_all: dict[str, LevelData] = {
     **level_dicepalace_boss,
     **levels_dlc,
     **level_special,
+    **level_dlc_special,
 }
 
 def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
@@ -386,7 +400,8 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
         for lev,data in {**level_dlc_boss, **level_dlc_boss_final}.items():
             levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
         levels.update(level_dlc_chesscastle_boss)
-        levels.update(level_dlc_special)
+        if settings.dlc_chalice > 0:
+            levels[LocationNames.level_dlc_tutorial] = level_special[LocationNames.level_dlc_tutorial]
 
     return levels
 

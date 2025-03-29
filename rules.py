@@ -143,6 +143,8 @@ def set_level_boss_grade_rules(world: CupheadWorld):
                 if _loc not in levellocrules.level_loc_rule_locs:
                     add_level_parry_rule(w, _loc)
 
+#TODO: Complete Chaliced rules
+
 def set_level_rules(world: CupheadWorld):
     w = world
     #rungun_grade_checks = w.wsettings.rungun_grade_checks

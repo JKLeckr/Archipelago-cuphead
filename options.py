@@ -242,19 +242,20 @@ class TrapLoadoutAnyWeapon(Toggle):
 
 class DlcChaliceEnabled(Choice):
     """
-    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     Enable Ms. Chalice and the Astral Cookie.
     Options:
     - Disabled: The cookie is disabled and cannot be obtained (Ms. Chalice is disabled).
+    - Start: You start with the cookie at the start of the game.
     - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
     - Randomized: The cookie is in the item pool. Starting the DLC is a check.
     """
     display_name = "[DLC] Ms. Chalice"
     visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
-    option_vanilla = 1
-    option_randomized = 2
+    option_start = 1
+    option_vanilla = 2
+    option_randomized = 3
     default = 0
 
 class DlcChaliceItemsSeparate(Choice):

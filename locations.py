@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Location, Region, LocationProgressType
 from .names import LocationNames
-from .wsettings import WorldSettings, GameMode, GradeCheckMode, ChessCastleMode
+from .wsettings import WorldSettings, GameMode, GradeCheckMode, ChaliceMode, ChessCastleMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"
@@ -566,7 +566,10 @@ def setup_boss_final_locations(
 
 def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
     locations_ref.update(location_level_dlc_tutorial)
-    add_location(locations_ref, LocationNames.loc_dlc_cookie)
+    if settings.dlc_chalice == ChaliceMode.RANDOMIZED:
+        add_location(locations_ref, LocationNames.loc_dlc_cookie)
+    if settings.dlc_chalice == ChaliceMode.VANILLA:
+        add_location(locations_ref, LocationNames.loc_event_dlc_cookie)
     if settings.dlc_boss_chalice_checks:
         locations_ref.update(locations_dlc_boss_chaliced)
         if settings.mode != GameMode.DLC_BEAT_SALTBAKER:

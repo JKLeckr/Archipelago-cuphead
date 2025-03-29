@@ -6,7 +6,7 @@ from random import Random
 from BaseClasses import Item, ItemClassification
 from .auxiliary import count_in_list
 from .names import ItemNames, LocationNames
-from .wsettings import WorldSettings, WeaponExMode, ChaliceMode, CurseMode
+from .wsettings import WorldSettings, WeaponExMode, ChaliceMode, CurseMode, ItemGroups
 from . import items, locations
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
@@ -153,6 +153,9 @@ def create_locked_items_at(
 def create_dlc_locked_items(world: CupheadWorld):
     create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
     create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
+    if world.wsettings.dlc_chalice == ChaliceMode.VANILLA:
+        
+        create_locked_item(world, ItemNames.item_charm_dlc_cookie, LocationNames.loc_event_dlc_cookie)
     if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
     create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
@@ -239,9 +242,18 @@ def setup_weapons(world: CupheadWorld, precollected_item_names: list[str]) -> li
     start_weapon = _weapon_dict[start_weapon_index]
     if start_weapon in weapons:
         world.multiworld.push_precollected(create_item(start_weapon, world.player))
+        precollected_item_names.append(start_weapon)
         weapons.remove(start_weapon)
 
     return weapons
+
+def setup_abilities(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
+    abilities = list(items.item_abilities.keys())
+    if world.wsettings.dlc_chalice_items_separate & ItemGroups.ABILITIES:
+        abilities.extend(items.item_dlc_chalice_abilities.keys())
+    else:
+        abilities.append(ItemNames.item_ability_dlc_cdoublejump)
+    return abilities
 
 def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str],
                  coin_items: tuple[str, str, str]) -> list[Item]:
@@ -282,8 +294,13 @@ def create_coins(world: CupheadWorld, location_count: int, precollected_item_nam
 
     return res
 
+def resolve_precollected_items(world: CupheadWorld) -> None:
+    pass
+
 def create_items(world: CupheadWorld) -> None:
     itempool: list[Item] = []
+
+    resolve_precollected_items(world)
 
     precollected_item_names = [x.name for x in world.multiworld.precollected_items[world.player]]
 
@@ -320,10 +337,7 @@ def create_items(world: CupheadWorld) -> None:
     itempool += create_pool_items(world, charms, precollected_item_names)
     itempool += create_pool_items(world, supers, precollected_item_names)
     if world.wsettings.randomize_abilities:
-        abilities = (
-            list(items.item_abilities.keys()) + \
-                (list(items.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
-        )
+        abilities = setup_abilities(world, precollected_item_names)
         itempool += create_pool_items(world, abilities, precollected_item_names)
 
     # Add special Items

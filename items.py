@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import ItemClassification
 from .names import ItemNames
-from .wsettings import WorldSettings, ItemGroups
+from .wsettings import WorldSettings, ItemGroups, ChaliceMode
 from . import itembase
 
 class ItemData(NamedTuple):
@@ -164,7 +164,8 @@ item_special: dict[str, ItemData] = {
     #ItemNames.item_event_music: ItemData(None, ItemClassification.progression, 0),
 }
 item_dlc_special: dict[str, ItemData] = {
-    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(22), ItemClassification.useful, 0),
+    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(22), ItemClassification.progression, 0),
+    ItemNames.item_event_charm_dlc_cookie: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_mausoleum: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
@@ -235,8 +236,11 @@ def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: in
 
 def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(items_dlc)
-    if settings.dlc_chalice>0:
-        add_item(items_ref, ItemNames.item_charm_dlc_cookie)
+    if settings.dlc_chalice > 0:
+        if settings.dlc_chalice == ChaliceMode.RANDOMIZED:
+            add_item(items_ref, ItemNames.item_charm_dlc_cookie)
+        elif settings.dlc_chalice == ChaliceMode.VANILLA:
+            add_item(items_ref, ItemNames.item_charm_dlc_cookie)
         if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
             change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
     if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
@@ -248,8 +252,11 @@ def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
 
 def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
     items_ref.update(item_abilities)
-    if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
-        items_ref.update(item_dlc_chalice_abilities)
+    if settings.use_dlc:
+        if settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+            items_ref.update(item_dlc_chalice_abilities)
+        else:
+            add_item(items_ref, ItemNames.item_ability_dlc_cdoublejump)
     change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
     if settings.boss_secret_checks:
         change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)

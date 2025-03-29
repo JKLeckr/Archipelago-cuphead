@@ -5,10 +5,13 @@ from BaseClasses import MultiWorld, Region
 from .regiondefs import DefType, RegionData, RegionRule, get_regions
 from .levels import get_level, get_mapped_level_name, level_dicepalace_boss
 from .locations import CupheadLocation
+from .names import LocationNames
+from .wsettings import ChaliceMode
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
 def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) -> list[str]:
+    settings = world.wsettings
     locations: list[str] = []
 
     if regc.region_type == DefType.LEVEL:
@@ -18,9 +21,17 @@ def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) 
         locations = _level.locations
         if regc.locations:
             locations = locations + regc.locations
-        if (regc.flags & 2)>0 and world.wsettings.kingdice_bosssanity:
+        if (regc.flags & 2)>0 and settings.kingdice_bosssanity:
             for ldata in level_dicepalace_boss.values():
                 locations = locations + ldata.locations
+    elif regc.region_type == DefType.WORLD and (regc.flags & 4)>0:
+        if settings.dlc_chalice > ChaliceMode.START:
+            locations += (
+                [LocationNames.loc_dlc_cookie] if settings.dlc_chalice == ChaliceMode.RANDOMIZED \
+                                                else [LocationNames.loc_event_dlc_cookie]
+            )
+        if regc.locations:
+            locations += regc.locations
     elif regc.locations:
         locations = regc.locations
 
