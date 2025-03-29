@@ -118,8 +118,8 @@ item_abilities: dict[str, ItemData] = {
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
     ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(17), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cdash: ItemData(dlc_id(18), ItemClassification.progression, 2),
-    #ItemNames.item_ability_dlc_cparry: ItemData(dlc_id(19), ItemClassification.progression),
+    ItemNames.item_ability_dlc_p_cdash: ItemData(dlc_id(18), ItemClassification.progression, 2),
+    ItemNames.item_ability_dlc_cdoublejump: ItemData(dlc_id(19), ItemClassification.progression),
     ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(20), ItemClassification.useful),
     ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(21), ItemClassification.useful),
 }

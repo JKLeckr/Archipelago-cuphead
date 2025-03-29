@@ -537,8 +537,9 @@ class ItemNames:
     item_ability_plane_parry = "Plane Parry"
 
     item_ability_dlc_cparry = "Chalice Parry"
-    #item_ability_dlc_cdash = "Chalice Dash"
-    item_ability_dlc_cdash = _item_progressive + "Chalice Dash"
+    item_ability_dlc_cdash = "Chalice Dash"
+    item_ability_dlc_p_cdash = _item_progressive + "Chalice Dash"
+    item_ability_dlc_cdoublejump = "Chalice Double Jump"
     item_ability_dlc_cduck = "Chalice Duck"
     item_ability_dlc_cplane_shrink = "Chalice Plane Shrink"
     item_ability_dlc_cplane_parry = "Chalice Plane Parry"
@@ -599,6 +600,7 @@ class ItemNames:
     item_event_wolfgang = _item_event_ + "Wolfgang"
     item_event_music = _item_event_ + "Music Changed"
     item_event_dlc_start = _item_event_ + "DLC Start"
+    item_event_charm_dlc_cookie = _item_event_ + item_charm_dlc_cookie
     item_event_dlc_boataccess = _item_event_ + "Boat Access"
     item_event_dlc_boss_chaliced = _item_event_ + "Boss Chalice Defeated"
 
