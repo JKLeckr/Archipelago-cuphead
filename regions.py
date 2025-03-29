@@ -59,8 +59,8 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: Optional[set[st
                 else:
                     print(f"WARNING: \"{loc_name}\" already was registered!")
             region.locations.append(location)
-        elif world.settings.verbose:
-            print(f"Skipping location \"{loc_name}\" for \"{regc.name}\" as it does not exist for this configuration.")
+        else:
+            print(f"WARNING: For \"{regc.name}\": \"{loc_name}\" does not exist!")
 
     multiworld.regions.append(region)
 
