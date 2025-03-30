@@ -3,6 +3,18 @@ from .names import LocationNames
 from .levellocrulebase import LevelRuleData, LRule, LevelRuleModes
 from . import levelrules as lr
 
+level_loc_rule_locs: set[str] = set()
+
+def register_level_loc_rules(
+        base_region: str,
+        base_rule: lr.LevelRule | None,
+        loc_rules: dict[str, LRule | None]
+    ) -> LevelRuleData:
+    res = LevelRuleData(base_region, base_rule, loc_rules)
+    for loc in loc_rules.keys():
+        level_loc_rule_locs.union(loc)
+    return res
+
 level_loc_rule_forest = LevelRuleData(LocationNames.level_rungun_forest, lr.level_rule_dash, {
     LocationNames.loc_level_rungun_forest_coin1: LRule(lr.level_rule_none),
     LocationNames.loc_level_rungun_forest_coin2: LRule(lr.level_rule_none),

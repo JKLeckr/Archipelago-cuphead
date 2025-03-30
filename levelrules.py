@@ -58,6 +58,10 @@ def level_rule_dash_and_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return level_rule_and(level_rule_dash, level_rule_parry)(settings)
+def level_rule_duck_and_parry(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_and(level_rule_dash, level_rule_parry)(settings)
 def level_rule_duck_dash_and_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
@@ -95,5 +99,9 @@ def level_rule_final(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return level_rule_and(level_rule_parry, level_rule_dash)(settings)
-def level_dlc_rule_relic(settings: WorldSettings) -> RegionRule:
+def level_rule_dlc_oldman(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return level_rule_and(level_rule_parry_or_psugar, level_rule_dash)(settings)
+def level_rule_dlc_relic(settings: WorldSettings) -> RegionRule:
     return region_rule_has(ItemNames.item_charm_dlc_broken_relic, 1)

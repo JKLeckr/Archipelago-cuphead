@@ -201,13 +201,13 @@ level_dlc_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_oldman_topgrade,
         #LocationNames.loc_level_dlc_boss_oldman_event_agrade,
         LocationNames.loc_level_dlc_boss_oldman_dlc_chaliced,
-    ]),
+    ], lr.level_rule_dlc_oldman),
     LocationNames.level_dlc_boss_rumrunners: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_rumrunners,
         LocationNames.loc_level_dlc_boss_rumrunners_topgrade,
         #LocationNames.loc_level_dlc_boss_rumrunners_event_agrade,
         LocationNames.loc_level_dlc_boss_rumrunners_dlc_chaliced,
-    ], lr.level_rule_parry),
+    ], lr.level_rule_duck_and_parry),
     LocationNames.level_dlc_boss_snowcult: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_snowcult,
         LocationNames.loc_level_dlc_boss_snowcult_topgrade,
@@ -219,7 +219,7 @@ level_dlc_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_airplane_topgrade,
         #LocationNames.loc_level_dlc_boss_airplane_event_agrade,
         LocationNames.loc_level_dlc_boss_airplane_dlc_chaliced,
-    ]), # ???
+    ], lr.level_rule_duck),
 }
 level_dlc_boss_plane: dict[str, LevelData] = {
     LocationNames.level_dlc_boss_plane_cowboy: LevelData(LocationNames.world_dlc_inkwell_4, [
