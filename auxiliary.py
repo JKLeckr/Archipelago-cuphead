@@ -1,14 +1,16 @@
 from __future__ import annotations
-from typing import Iterable, Any
+from typing import Iterable, TypeVar
 
-def count_in_list(e: Any, ls: Iterable[Any]):
+T = TypeVar("T")
+
+def count_in_list(e: T, ls: Iterable[T]):
     count = 0
     for el in ls:
         if el == e:
             count += 1
     return count
 
-def format_list(ls: Iterable[Any]) -> str:
+def format_list(ls: Iterable[T]) -> str:
     res = "["
     first = True
     if ls:
@@ -21,8 +23,8 @@ def format_list(ls: Iterable[Any]) -> str:
     res += "]"
     return res
 
-def scrub_list(a: list[Any], b: Iterable[Any]) -> list[Any]:
-    newlist: list[Any] = []
+def scrub_list(a: list[T], b: Iterable[T]) -> list[T]:
+    newlist: list[T] = []
     for item in a:
         if item in b:
             newlist.append(item)

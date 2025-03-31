@@ -1,13 +1,15 @@
 from __future__ import annotations
 import Utils
-from typing import Any, Iterable
+from typing import TypeVar, Iterable
 from worlds.AutoWorld import World
 from BaseClasses import Region
 from .auxiliary import format_list
 
-def test_duplicates(ls: Iterable[Any]) -> int:
-    seen: set[Any] = set()
-    dups: list[Any] = []
+T = TypeVar("T")
+
+def test_duplicates(ls: Iterable[T]) -> int:
+    seen: set[T] = set()
+    dups: list[T] = []
     for x in ls:
         if x in seen:
             dups.append(x)
@@ -17,11 +19,11 @@ def test_duplicates(ls: Iterable[Any]) -> int:
     print("Total Duplicates: "+str(len(dups)))
     return len(dups)
 
-def print_list_each_line(ls: Iterable[Any]) -> None:
+def print_list_each_line(ls: Iterable[T]) -> None:
     for item in ls:
         print(item)
 
-def print_list(ls: Iterable[Any]) -> None:
+def print_list(ls: Iterable[T]) -> None:
     print(format_list(ls))
 
 def print_locations(world: World) -> None:
