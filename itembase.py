@@ -123,7 +123,7 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
     for itemname in items:
         if itemname in world.active_items.keys():
             item = world.active_items[itemname]
-            qty = item.quantity - count_in_list(item, precollected)
+            qty = item.quantity - count_in_list(itemname, precollected)
             if qty<0:
                 print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
             if item.id and qty>0:
