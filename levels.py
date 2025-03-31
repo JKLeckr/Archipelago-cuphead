@@ -80,7 +80,7 @@ level_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_boss_slime_topgrade,
         LocationNames.loc_level_boss_slime_event_agrade,
         LocationNames.loc_level_boss_slime_dlc_chaliced,
-    ], lr.level_rule_duck_and_dash),
+    ], lr.level_rule_duck_or_dash),
     LocationNames.level_boss_frogs: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_frogs,
         LocationNames.loc_level_boss_frogs_topgrade,

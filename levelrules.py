@@ -32,8 +32,10 @@ def level_rule_dash(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return region_rule_has(ItemNames.item_ability_dash)
-def level_rule_duck_and_dash(settings: WorldSettings) -> RegionRule:
+def level_rule_duck_or_dash(settings: WorldSettings) -> RegionRule:
     return level_rule_or(level_rule_duck, level_rule_dash)(settings)
+def level_rule_duck_and_dash(settings: WorldSettings) -> RegionRule:
+    return level_rule_and(level_rule_duck, level_rule_dash)(settings)
 def level_rule_parry(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
