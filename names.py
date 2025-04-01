@@ -89,7 +89,7 @@ class LocationNames:
     level_dlc_chesscastle_bishop = "The Bishop"
     level_dlc_chesscastle_rook = "The Rook"
     level_dlc_chesscastle_queen = "The Queen"
-    level_dlc_chesscastle_run = level_dlc_chesscastle + " Full Run"
+    level_dlc_chesscastle_run = level_dlc_chesscastle + " Gauntlet"
 
     level_shop = "Porkrind's Emporium"
     level_shop1 = level_shop + _isle1_
