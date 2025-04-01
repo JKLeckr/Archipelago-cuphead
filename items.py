@@ -113,15 +113,15 @@ item_abilities: dict[str, ItemData] = {
     ItemNames.item_ability_duck: ItemData(id(35), ItemClassification.progression),
     ItemNames.item_ability_dash: ItemData(id(36), ItemClassification.progression),
     ItemNames.item_ability_parry: ItemData(id(37), ItemClassification.progression),
-    ItemNames.item_ability_plane_shrink: ItemData(id(38), ItemClassification.useful),
-    ItemNames.item_ability_plane_parry: ItemData(id(39), ItemClassification.useful),
+    ItemNames.item_ability_plane_parry: ItemData(id(38), ItemClassification.progression),
+    ItemNames.item_ability_plane_shrink: ItemData(id(39), ItemClassification.useful),
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
     ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(17), ItemClassification.progression),
     ItemNames.item_ability_dlc_p_cdash: ItemData(dlc_id(18), ItemClassification.progression, 2),
     ItemNames.item_ability_dlc_cdoublejump: ItemData(dlc_id(19), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(20), ItemClassification.useful),
-    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(21), ItemClassification.useful),
+    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(20), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(21), ItemClassification.useful),
 }
 item_abilities_aim: dict[str, ItemData] = {
     ItemNames.item_ability_aim_left: ItemData(id(40), ItemClassification.progression),
@@ -251,7 +251,6 @@ def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
     if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
         items_ref.update(item_dlc_chalice_abilities)
     change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
-    change_item_type(items_ref, ItemNames.item_ability_plane_parry, ItemClassification.progression)
     if settings.boss_secret_checks:
         change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
 
