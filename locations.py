@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import Location, Region, LocationProgressType
 from .names import LocationNames
-from .wsettings import WorldSettings, GameMode, GradeCheckMode
+from .wsettings import WorldSettings, GameMode, GradeCheckMode, ChessCastleMode
 
 class CupheadLocation(Location):
     game: str = "Cuphead"
@@ -25,7 +25,9 @@ class LocationData(NamedTuple):
     id: Optional[int]
     progress_type: LocationProgressType = LocationProgressType.DEFAULT
     event: bool = False
-    category: Optional[str] = None
+
+    def with_progress_type(self, progress_type: LocationProgressType) -> LocationData:
+        return LocationData(self.id, progress_type, self.event)
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -507,6 +509,9 @@ locations_all: dict[str, LocationData] = {
 def add_location(locations_ref: dict[str,LocationData], loc_name: str):
     locations_ref[loc_name] = locations_all[loc_name]
 
+def exclude_location(locations_ref: dict[str,LocationData], loc_name: str):
+    locations_ref[loc_name] = locations_ref[loc_name].with_progress_type(LocationProgressType.EXCLUDED)
+
 def setup_grade_check_locations(locations_ref: dict[str,LocationData], settings: WorldSettings):
     boss_grade_checks = settings.boss_grade_checks
     rungun_grade_checks = settings.rungun_grade_checks
@@ -590,6 +595,14 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSe
         add_location(locations_ref, LocationNames.loc_event_mausoleum)
     if settings.dlc_chalice > 0:
         setup_dlc_chalice_locations(locations_ref, settings)
+    if settings.dlc_kingsleap != ChessCastleMode.INCLUDE_ALL:
+        for loc in location_level_dlc_chesscastle.keys():
+            if (
+                loc != LocationNames.level_dlc_chesscastle_run or
+                settings.dlc_kingsleap == ChessCastleMode.EXCLUDE
+            ):
+                exclude_location(locations_ref, loc)
+
     locations_ref.update(location_dlc_goal)
 
 def setup_locations(settings: WorldSettings):

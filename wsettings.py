@@ -32,6 +32,10 @@ class ChaliceMode(IntEnum):
     DISABLED = 0
     VANILLA = 1
     RANDOMIZED = 2
+class ChessCastleMode(IntEnum):
+    EXCLUDE = 0
+    EXCLUDE_GAUNTLET = 1
+    INCLUDE_ALL = 3
 class CurseMode(IntEnum):
     OFF = 0
     NORMAL = 1
@@ -86,6 +90,7 @@ class WorldSettings:
     pacifist_quest: bool
     dlc_chalice: ChaliceMode
     music_quest: bool
+    dlc_kingsleap: ChessCastleMode
     dlc_cactusgirl_quest: bool
     coin_amounts: tuple[int, int, int]
     contract_requirements: tuple[int, int, int]
@@ -128,6 +133,7 @@ class WorldSettings:
         self.pacifist_quest = bool(options.pacifist_quest.value)
         self.music_quest = False
         self.dlc_chalice = ChaliceMode(options.dlc_chalice.value)
+        self.dlc_kingsleap = ChessCastleMode(options.dlc_kingsleap.value)
         self.dlc_cactusgirl_quest = bool(options.dlc_cactusgirl_quest.value)
         self.maxhealth_upgrades = options.maxhealth_upgrades.value
         self.traps = options.traps.value

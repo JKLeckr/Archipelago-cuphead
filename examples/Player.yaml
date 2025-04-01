@@ -92,6 +92,12 @@ Cuphead:
   pacifist_quest: 'false'
 
   # -DLC ONLY-
+  # Choose how to handle the locations of The King's Leap.
+  # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
+  # Other values: exclude, include_all
+  dlc_kingsleap: exclude_gauntlet
+
+  # -DLC ONLY-
   # Set how the cursed and devine relic is handled.
   #
   # Modes:

@@ -281,6 +281,18 @@ class DlcChaliceItemsSeparate(Choice):
     option_all = 255
     default = 0
 
+class DlcChessCastle(Choice):
+    """
+    -DLC ONLY-
+    Choose how to handle the locations of The King's Leap.
+    Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
+    """
+    display_name = "[DLC] The King's Leap"
+    option_exclude = 0
+    option_exclude_gauntlet = 1
+    option_include_all = 3
+    default = 1
+
 class DlcCactusGirlQuest(Toggle):
     """
     ---NOT YET IMPLEMENTED---
@@ -477,6 +489,7 @@ class CupheadOptions(PerGameCommonOptions):
     pacifist_quest: PacifistQuest
     dlc_chalice: DlcChaliceEnabled
     #dlc_chalice_items_separate: DlcChaliceItemsSeparate
+    dlc_kingsleap: DlcChessCastle
     dlc_cactusgirl_quest: DlcCactusGirlQuest
     dlc_curse_mode: DlcCurseMode
     extra_coins: ExtraCoins
@@ -521,6 +534,7 @@ cuphead_option_groups = [
         DicePalaceBossSanity,
     ]),
     OptionGroup("DLC Checks", [
+        DlcChessCastle,
         DlcBossChaliceChecks,
         DlcRunGunChaliceChecks,
         DlcCactusGirlQuest,
