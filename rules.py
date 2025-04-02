@@ -131,12 +131,13 @@ def set_level_boss_grade_rules(world: CupheadWorld):
                 _loc not in levellocrules.level_loc_rule_locs
                 ):
                 add_level_parry_rule(w, _loc)
-        for _loc in locations.location_level_boss_event_agrade:
-            if (
-                _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
-                _loc not in levellocrules.level_loc_rule_locs
-                ):
-                add_level_parry_rule(w, _loc)
+        if w.wsettings.silverworth_quest:
+            for _loc in locations.location_level_boss_event_agrade:
+                if (
+                    _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
+                    _loc not in levellocrules.level_loc_rule_locs
+                    ):
+                    add_level_parry_rule(w, _loc)
         if w.wsettings.use_dlc:
             for _loc in locations.location_level_dlc_boss_topgrade:
                 if _loc not in levellocrules.level_loc_rule_locs:
