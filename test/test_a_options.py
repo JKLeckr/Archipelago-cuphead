@@ -4,7 +4,6 @@ from . import CupheadTestBase
 # Borrowed from Hammerwatch (thx @Parcosmic)
 class TestOptions(CupheadTestBase):
     option_dict: Dict[str, Dict[str, Any]] = {
-        "Default options": {},
         "Freemove": {
             "freemove_isles": True,
         },
@@ -45,6 +44,11 @@ class TestOptions(CupheadTestBase):
         },
     }
 
+    def test_default_options(self):
+        test_world = TestOptions()
+        test_world.world_setup()
+        test_world._check_all_locations_are_active("Default Options")
+
     def test_options(self):
         for option_set, opts in self.option_dict.items():
             with self.subTest(option_set):
@@ -52,6 +56,11 @@ class TestOptions(CupheadTestBase):
                 test_world.options = opts
                 test_world.world_setup()
                 test_world._check_all_locations_are_active(option_set)
+                test_world.test_fill()
+                test_world.world_setup()
+                test_world.test_empty_state_can_reach_something()
+                test_world.world_setup()
+                test_world.test_all_state_can_reach_everything()
 
     def _check_all_locations_are_active(self, option_set_name: str):
         for player in self.multiworld.get_game_players(self.game):

@@ -598,8 +598,13 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSe
     if settings.dlc_kingsleap != ChessCastleMode.INCLUDE_ALL:
         for loc in location_level_dlc_chesscastle.keys():
             if (
-                loc != LocationNames.level_dlc_chesscastle_run or
-                settings.dlc_kingsleap == ChessCastleMode.EXCLUDE
+                (
+                    settings.dlc_kingsleap == ChessCastleMode.EXCLUDE_GAUNTLET and
+                    loc == LocationNames.level_dlc_chesscastle_run
+                ) or (
+                    settings.dlc_kingsleap == ChessCastleMode.GAUNTLET_ONLY and
+                    loc != LocationNames.level_dlc_chesscastle_run
+                ) or settings.dlc_kingsleap == ChessCastleMode.EXCLUDE
             ):
                 exclude_location(locations_ref, loc)
 

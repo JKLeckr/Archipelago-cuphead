@@ -35,6 +35,7 @@ class ChaliceMode(IntEnum):
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1
+    GAUNTLET_ONLY = 2
     INCLUDE_ALL = 3
 class CurseMode(IntEnum):
     OFF = 0
