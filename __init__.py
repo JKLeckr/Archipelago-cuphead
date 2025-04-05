@@ -42,7 +42,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "preview03c"
+    APWORLD_VERSION: str = "preview03d"
 
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
@@ -71,12 +71,12 @@ class CupheadWorld(World):
 
     option_overrides: list[str] = []
 
-    def override_option(self, option: NumericOption, value: int, reason: Optional[str] = None):
+    def override_option(self, option: NumericOption, value: int, reason: Optional[str] = None, quiet: bool = False):
         string = f"{option.current_option_name}: \"{option.value}\" -> \"{value}\"."
         if reason:
             string += " Reason: {reason}"
         self.option_overrides.append(string)
-        if self.settings.log_option_overrides:
+        if self.settings.log_option_overrides and not quiet:
             msg = f"Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\"."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
@@ -112,6 +112,13 @@ class CupheadWorld(World):
                 _options.dlc_ingredient_requirements.value,
                 CONTRACT_GOAL_REASON
             )
+        self.sanitize_dlc_options()
+        # Sanitize grade checks
+        if not _options.expert_mode and _options.boss_grade_checks.value>3:
+            self.override_option(_options.boss_grade_checks, 3, "Expert Off")
+
+    def sanitize_dlc_options(self) -> None:
+        _options = self.options
         if not _options.use_dlc.value:
             DLC_REASON = "DLC Off"
             # Sanitize mode
@@ -123,12 +130,15 @@ class CupheadWorld(World):
         if _options.dlc_chalice.value == 0:
             CHALICE_REASON = "Chalice Off"
             if _options.dlc_boss_chalice_checks.value:
-                self.override_option(_options.mode, False, CHALICE_REASON)
+                self.override_option(_options.dlc_boss_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_rungun_chalice_checks.value:
+                self.override_option(_options.dlc_rungun_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_kingdice_chalice_checks.value:
+                self.override_option(_options.dlc_kingdice_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_chess_chalice_checks.value:
+                self.override_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
             if _options.dlc_cactusgirl_quest.value:
-                self.override_option(_options.mode, False, CHALICE_REASON)
-        # Sanitize grade checks
-        if not _options.expert_mode and _options.boss_grade_checks.value>3:
-            self.override_option(_options.boss_grade_checks, 3, "Expert Off")
+                self.override_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON)
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
@@ -274,6 +284,7 @@ class CupheadWorld(World):
 
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
+        spoiler_handle.write(f"\nArchipelago-cuphead {self.version}\n")
         if len(self.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player} Option Changes:\n\n")
             spoiler_handle.write('\n'.join([x for x in self.option_overrides]) + '\n')

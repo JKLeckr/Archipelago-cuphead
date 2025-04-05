@@ -42,6 +42,15 @@ class TestOptions(CupheadTestBase):
             "boss_grade_checks": "disabled",
             "rungun_grade_checks": "disabled",
         },
+        "DLC Devil Goal": {
+            "use_dlc": True,
+            "mode": "beat_devil"
+        },
+        "DLC Devil Goal No Abilities": {
+            "use_dlc": True,
+            "mode": "beat_devil",
+            "randomize_abilities": False,
+        },
     }
 
     def test_default_options(self):

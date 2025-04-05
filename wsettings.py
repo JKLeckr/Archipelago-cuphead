@@ -83,6 +83,8 @@ class WorldSettings:
     kingdice_bosssanity: bool
     dlc_boss_chalice_checks: bool
     dlc_rungun_chalice_checks: bool
+    dlc_kingdice_chalice_checks: bool
+    dlc_chess_chalice_checks: bool
     fourparries_quest: bool
     ginger_quest: bool
     fourmel_quest: bool
@@ -126,6 +128,8 @@ class WorldSettings:
         self.kingdice_bosssanity = bool(options.kingdice_bosssanity.value)
         self.dlc_boss_chalice_checks = bool(options.dlc_boss_chalice_checks.value)
         self.dlc_rungun_chalice_checks = False #bool(options.dlc_rungun_chalice_checks.value)
+        self.dlc_kingdice_chalice_checks = False #bool(options.dlc_kingdice_chalice_checks.value)
+        self.dlc_chess_chalice_checks = False #bool(options.dlc_chess_chalice_checks.value)
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True

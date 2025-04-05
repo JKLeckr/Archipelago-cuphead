@@ -209,6 +209,28 @@ class DlcRunGunChaliceChecks(Toggle):
     display_name = "[DLC] Boss Chalice Checks"
     visibility = Visibility.template | Visibility.spoiler
 
+class DlcDicePalaceChaliceChecks(Toggle):
+    """
+    --NOT YET IMPLEMENTED--
+    -DLC ONLY-
+    -REQUIRES CHALICE-
+    -REQUIRES KINGDICE BOSSSANITY-
+    Enable checks for completing Kingdice Bossanity checks as Ms. Chalice.
+    """
+    display_name = "[DLC] Kingdice Chalice Checks"
+    visibility = Visibility.template | Visibility.spoiler
+
+class DlcChessChaliceChecks(Toggle):
+    """
+    --NOT YET IMPLEMENTED--
+    -DLC ONLY-
+    -REQUIRES CHALICE-
+    -REQUIRES THE KING'S LEAP-
+    Enable checks for completing The King's Leap checks as Ms. Chalice.
+    """
+    display_name = "[DLC] Chess Chalice Checks"
+    visibility = Visibility.template | Visibility.spoiler
+
 class SilverworthQuest(DefaultOnToggle):
     """
     Enable the Silverworth Quest check.
@@ -485,6 +507,8 @@ class CupheadOptions(PerGameCommonOptions):
     kingdice_bosssanity: DicePalaceBossSanity
     dlc_boss_chalice_checks: DlcBossChaliceChecks
     dlc_rungun_chalice_checks: DlcRunGunChaliceChecks
+    dlc_kingdice_chalice_checks: DlcDicePalaceChaliceChecks
+    dlc_chess_chalice_checks: DlcChessChaliceChecks
     silverworth_quest: SilverworthQuest
     pacifist_quest: PacifistQuest
     dlc_chalice: DlcChaliceEnabled
@@ -537,6 +561,8 @@ cuphead_option_groups = [
         DlcChessCastle,
         DlcBossChaliceChecks,
         DlcRunGunChaliceChecks,
+        DlcDicePalaceChaliceChecks,
+        DlcChessChaliceChecks,
         DlcCactusGirlQuest,
     ]),
     OptionGroup("Items", [

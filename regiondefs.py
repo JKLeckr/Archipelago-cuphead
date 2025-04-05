@@ -161,7 +161,7 @@ region_dlc_worlds = [
     ], [
         Target(LocationNames.level_dlc_tutorial, rule_has(ItemNames.item_charm_dlc_cookie), dep.dep_dlc_chalice),
         Target(LocationNames.level_dlc_shop4),
-        Target(LocationNames.level_dlc_chesscastle, rule_has(ItemNames.item_ability_parry)),
+        Target(LocationNames.level_dlc_chesscastle),
         LevelTarget(LocationNames.level_dlc_boss_oldman),
         LevelTarget(LocationNames.level_dlc_boss_rumrunners),
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy, None, dep.dep_freemove),

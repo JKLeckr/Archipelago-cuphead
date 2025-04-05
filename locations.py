@@ -608,8 +608,6 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSe
             ):
                 exclude_location(locations_ref, loc)
 
-    locations_ref.update(location_dlc_goal)
-
 def setup_locations(settings: WorldSettings):
     use_dlc = settings.use_dlc
     locations: dict[str,LocationData] = {**locations_base}
@@ -623,7 +621,7 @@ def setup_locations(settings: WorldSettings):
 
     if settings.is_goal_used(LocationNames.loc_event_goal_devil):
         locations.update(location_goal)
-    if settings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+    if use_dlc and settings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
         locations.update(location_dlc_goal)
 
     setup_boss_final_locations(
