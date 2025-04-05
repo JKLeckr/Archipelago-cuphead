@@ -66,8 +66,8 @@ class CupheadWorld(World):
     options: CupheadOptions # type: ignore
     version = APWORLD_VERSION
 
-    required_client_version = (0, 5, 1)
-    required_server_version = (0, 5, 1)
+    required_client_version = (0, 6, 0)
+    required_server_version = (0, 6, 0)
 
     item_name_to_id = idef.name_to_id
     location_name_to_id = ld.name_to_id
