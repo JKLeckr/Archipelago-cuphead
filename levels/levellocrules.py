@@ -1,5 +1,5 @@
 from __future__ import annotations
-from .names import LocationNames
+from ..names import LocationNames
 from .levellocrulebase import LevelRuleData, LRule, LevelRuleModes
 from . import levelrules as lr
 
@@ -59,7 +59,9 @@ level_loc_rule_harbour = LevelRuleData(LocationNames.level_rungun_harbour, lr.le
     LocationNames.loc_level_rungun_harbour_coin1: LRule(lr.level_rule_dash_parry_or_psugar),
     LocationNames.loc_level_rungun_harbour_coin2: LRule(lr.level_rule_none),
     LocationNames.loc_level_rungun_harbour_coin3: LRule(lr.level_rule_parry_or_psugar),
-    LocationNames.loc_level_rungun_harbour_coin4: LRule(lr.level_rule_or(lr.level_rule_parry, lr.level_rule_and(lr.level_rule_psugar, lr.level_rule_dash))),
+    LocationNames.loc_level_rungun_harbour_coin4: LRule(
+        lr.level_rule_or(lr.level_rule_parry, lr.level_rule_and(lr.level_rule_psugar, lr.level_rule_dash))
+    ),
     LocationNames.loc_level_rungun_harbour_coin5: LRule(lr.level_rule_harbour),
     LocationNames.loc_level_rungun_harbour_agrade: LRule(lr.level_rule_parry, LevelRuleModes.INHERIT),
     #LocationNames.loc_level_rungun_harbour_pacifist: LRule(lr.level_rule_none, LevelRuleModes.INHERIT),

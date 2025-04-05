@@ -1,6 +1,6 @@
 from __future__ import annotations
-from typing import Callable
-from .wsettings import WorldSettings
+from collections.abc import Callable
+from ..wsettings import WorldSettings
 
 Dep = Callable[[WorldSettings], bool]
 
@@ -35,7 +35,5 @@ def dep_dlc_boat_mausoleum(s: WorldSettings) -> bool:
     return s.use_dlc and s.dlc_requires_mausoleum
 def dep_dlc_chalice(s: WorldSettings) -> bool:
     return s.dlc_chalice > 0
-def dep_dlc_chesscastle_run(s: WorldSettings) -> bool:
-    return s.dlc_chesscastle_fullrun
 def dep_dlc_cactusgirl_quest(s: WorldSettings) -> bool:
     return s.use_dlc and s.dlc_cactusgirl_quest

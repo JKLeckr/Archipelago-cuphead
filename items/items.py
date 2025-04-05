@@ -1,51 +1,89 @@
 from __future__ import annotations
 import math
 import typing
-from typing import Optional
 from random import Random
 from BaseClasses import Item, ItemClassification
-from .auxiliary import count_in_list
-from .names import ItemNames, LocationNames
-from .wsettings import WorldSettings, WeaponExMode, ChaliceMode, CurseMode
-from . import items, locations
+from ..auxiliary import count_in_list
+from ..names import ItemNames, LocationNames
+from ..wsettings import WorldSettings, ItemGroups, WeaponExMode, ChaliceMode, CurseMode
+from ..locations import locationdefs as ldef
+from ..locations.locationbase import LocationData
+from .itembase import ItemData
+from . import itembase, itemdefs as idef
 if typing.TYPE_CHECKING:
-    from . import CupheadWorld
-
-weapon_dict: dict[int,str] = {
-    0: ItemNames.item_weapon_peashooter,
-    1: ItemNames.item_weapon_spread,
-    2: ItemNames.item_weapon_chaser,
-    3: ItemNames.item_weapon_lobber,
-    4: ItemNames.item_weapon_charge,
-    5: ItemNames.item_weapon_roundabout,
-    6: ItemNames.item_weapon_dlc_crackshot,
-    7: ItemNames.item_weapon_dlc_converge,
-    8: ItemNames.item_weapon_dlc_twistup,
-}
-weapon_p_dict: dict[int,str] = {
-    0: ItemNames.item_p_weapon_peashooter,
-    1: ItemNames.item_p_weapon_spread,
-    2: ItemNames.item_p_weapon_chaser,
-    3: ItemNames.item_p_weapon_lobber,
-    4: ItemNames.item_p_weapon_charge,
-    5: ItemNames.item_p_weapon_roundabout,
-    6: ItemNames.item_p_weapon_dlc_crackshot,
-    7: ItemNames.item_p_weapon_dlc_converge,
-    8: ItemNames.item_p_weapon_dlc_twistup,
-}
-def get_weapon_dict(settings: WorldSettings, dlc_weapons: bool = True) -> dict[int,str]:
-    orig_weapon_dict: dict[int,str] = weapon_p_dict if settings.randomize_weapon_ex>0 else weapon_dict
-    nweapon_dict: dict[int,str] = {k:v for k,v in orig_weapon_dict.items() if k<6 or dlc_weapons}
-    if settings.randomize_abilities == WeaponExMode.ALL_BUT_START:
-        start_weapon = settings.start_weapon
-        nweapon_dict[start_weapon] = weapon_dict[start_weapon]
-    return nweapon_dict
+    from .. import CupheadWorld
 
 class CupheadItem(Item):
     game: str = "Cuphead"
 
-def create_item(name: str, player: int, force_classification: Optional[ItemClassification] = None) -> Item:
-    data = items.items_all[name]
+# Setup Section
+
+def add_item(items_ref: dict[str, ItemData], item: str):
+    items_ref[item] = idef.items_all[item]
+
+def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification):
+    items_ref[item] = items_ref[item].with_item_type(item_type)
+
+def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int):
+    items_ref[item] = items_ref[item].with_quantity(quantity)
+
+def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
+    items_ref.update(idef.items_dlc)
+    if settings.dlc_chalice>0:
+        add_item(items_ref, ItemNames.item_charm_dlc_cookie)
+        if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
+            change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
+    if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
+        items_ref.update(idef.item_dlc_chalice_essential)
+    if settings.is_dlc_chalice_items_separate(ItemGroups.SUPER):
+        items_ref.update(idef.item_dlc_chalice_super)
+    if settings.randomize_weapon_ex:
+        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+
+def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
+    items_ref.update(idef.item_abilities)
+    if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+        items_ref.update(idef.item_dlc_chalice_abilities)
+    change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
+    if settings.boss_secret_checks:
+        change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
+
+def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
+    weapon_keys = {
+        **idef.item_weapons,
+        **idef.item_dlc_weapons,
+    }
+    for w in weapon_keys:
+        if w in items_ref.keys():
+            change_item_type(items_ref, w, ItemClassification.progression)
+
+def setup_weapons(items_ref: dict[str, ItemData], settings: WorldSettings):
+    for weapon in itembase.get_weapon_dict(settings, settings.use_dlc).values():
+        items_ref[weapon] = idef.items_all[weapon]
+    if settings.randomize_weapon_ex:
+        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+
+def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
+    items: dict[str, ItemData] = {**idef.items_base}
+    setup_weapons(items, settings)
+    if settings.use_dlc:
+        setup_dlc_items(items, settings)
+    if settings.weapon_gate:
+        setup_weapon_gate(items, settings)
+    if settings.randomize_abilities:
+        setup_abilities(items, settings)
+    if settings.randomize_abilities_aim:
+        items.update(idef.item_abilities_aim)
+        if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.AIM_ABILITIES):
+            items.update(idef.item_dlc_chalice_abilities_aim)
+    if settings.traps>0:
+        items.update(idef.item_trap)
+    return items
+
+# Creation Section
+
+def create_item(name: str, player: int, force_classification: ItemClassification | None = None) -> Item:
+    data = idef.items_all[name]
 
     if force_classification:
         classification = force_classification
@@ -101,7 +139,7 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     return _itempool
 
 def create_traps(trap_count: int, player:int, settings: WorldSettings, rand: Random) -> list[Item]:
-    trap_items = list(items.item_trap.keys())
+    trap_items = list(idef.item_trap.keys())
     trap_item_weights = settings.trap_weights
 
     active_trap_weights = [
@@ -134,15 +172,15 @@ def create_locked_item(
         world: CupheadWorld,
         name: str,
         location: str,
-        force_classification: Optional[ItemClassification] = None
+        force_classification: ItemClassification | None = None
     ):
     world.multiworld.get_location(location, world.player) \
         .place_locked_item(create_item(name, world.player, force_classification))
 def create_locked_items_at(
         world: CupheadWorld,
         name: str,
-        locations: dict[str, locations.LocationData],
-        force_classification: Optional[ItemClassification] = None
+        locations: dict[str, LocationData],
+        force_classification: ItemClassification | None = None
     ):
     for loc in locations:
         if loc in world.active_locations:
@@ -157,11 +195,11 @@ def create_dlc_locked_items(world: CupheadWorld):
         if not world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
             print("WARNING: Saltbaker Goal location created even if it shouldn't")
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
-    create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
+    create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, ldef.locations_dlc_event_boss_chaliced)
     create_locked_items_at(
         world,
         ItemNames.item_event_dlc_boss_chaliced,
-        locations.locations_dlc_event_boss_final_chaliced
+        ldef.locations_dlc_event_boss_final_chaliced
     )
 
 def create_locked_items(world: CupheadWorld):
@@ -177,10 +215,10 @@ def create_locked_items(world: CupheadWorld):
         create_locked_item(world, ItemNames.item_event_ludwig, LocationNames.loc_event_quest_ludwig)
         #create_locked_item(world, ItemNames.item_event_wolfgang, LocationNames.loc_event_quest_wolfgang)
     if world.wsettings.silverworth_quest:
-        create_locked_items_at(world, ItemNames.item_event_agrade, locations.locations_event_agrade)
-        create_locked_items_at(world, ItemNames.item_event_agrade, locations.location_level_boss_final_event_agrade)
+        create_locked_items_at(world, ItemNames.item_event_agrade, ldef.locations_event_agrade)
+        create_locked_items_at(world, ItemNames.item_event_agrade, ldef.location_level_boss_final_event_agrade)
     if world.wsettings.pacifist_quest:
-        create_locked_items_at(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
+        create_locked_items_at(world, ItemNames.item_event_pacifist, ldef.location_level_rungun_event_pacifist)
     if LocationNames.loc_event_goal_devil in world.active_locations:
         if not world.wsettings.is_goal_used(LocationNames.loc_event_goal_devil):
             print("WARNING: Devil Goal location created even if it shouldn't")
@@ -231,19 +269,19 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
             break
     return (total_single_coins, total_double_coins, total_triple_coins)
 
-def setup_weapons(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
+def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
     weapons: list[str] = []
-    _weapon_dict = get_weapon_dict(world.wsettings)
+    _weapon_dict = itembase.get_weapon_dict(world.wsettings)
 
     # Starter weapon
     if world.wsettings.randomize_weapon_ex > 0:
-        weapons = [x for x in set(items.item_p_weapons.keys()) if x not in precollected_item_names]
+        weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
-            weapons.extend([x for x in set(items.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
+            weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
     else:
-        weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
+        weapons = [x for x in set(idef.item_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
-            weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
+            weapons.extend([x for x in set(idef.item_dlc_weapons.keys()) if x not in precollected_item_names])
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
     if start_weapon in weapons and world.wsettings.randomize_weapon_ex != WeaponExMode.RANDOMIZED:
@@ -307,20 +345,20 @@ def create_items(world: CupheadWorld) -> None:
     #     print("ERROR: unfilled locations mismatch total non-event locations")
 
     # Setup Weapons with start weapon and progressive upgrade settings in mind
-    weapons = setup_weapons(world, precollected_item_names)
+    weapons = setup_weapon_pool(world, precollected_item_names)
 
     # Item names for coins
     coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
     essential_items = (
-        [y for y in items.item_essential.keys() if y not in coin_items] + \
-            (list(items.item_dlc_essential.keys()) if world.use_dlc else [])
+        [y for y in idef.item_essential.keys() if y not in coin_items] + \
+            (list(idef.item_dlc_essential.keys()) if world.use_dlc else [])
     )
-    charms = list(items.item_charms.keys()) + (list(items.item_dlc_charms.keys()) if world.use_dlc else [])
-    supers = list(items.item_super.keys())
+    charms = list(idef.item_charms.keys()) + (list(idef.item_dlc_charms.keys()) if world.use_dlc else [])
+    supers = list(idef.item_super.keys())
 
     if world.use_dlc and world.wsettings.dlc_chalice_items_separate:
-        essential_items += list(items.item_dlc_chalice_essential.keys())
+        essential_items += list(idef.item_dlc_chalice_essential.keys())
         #supers += list(items.item_dlc_chalice_super) # TODO: Investigate addding this later
 
     # Add the grouped fill items
@@ -330,8 +368,8 @@ def create_items(world: CupheadWorld) -> None:
     itempool += create_pool_items(world, supers, precollected_item_names)
     if world.wsettings.randomize_abilities:
         abilities = (
-            list(items.item_abilities.keys()) + \
-                (list(items.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
+            list(idef.item_abilities.keys()) + \
+                (list(idef.item_dlc_chalice_abilities.keys()) if world.wsettings.dlc_chalice_items_separate else [])
         )
         itempool += create_pool_items(world, abilities, precollected_item_names)
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-from .items import items_all
-from .locations import locations_all
+from .items.itemdefs import items_all
+from .locations.locationdefs import locations_all
 
 def print_items():
     print("-- Items --")

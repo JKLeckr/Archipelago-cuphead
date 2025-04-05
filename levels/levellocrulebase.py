@@ -1,8 +1,8 @@
 from __future__ import annotations
 from enum import IntEnum
-from typing import Optional, NamedTuple
-from .names import LocationNames
-from .levels import levels_all
+from typing import NamedTuple
+from ..names import LocationNames
+from .leveldefs import levels_all
 from .levelrules import LevelRule
 from . import levelrules as lr
 
@@ -17,10 +17,10 @@ class LRule(NamedTuple):
 
 class LevelRuleData:
     base_region: str
-    base_rule: Optional[LevelRule]
+    base_rule: LevelRule | None
     loc_rules: dict[str, LevelRule]
 
-    def _get_loc_rules(self, loc_rules: dict[str, Optional[LRule]]) -> dict[str, LevelRule]: # noqa: C901
+    def _get_loc_rules(self, loc_rules: dict[str, LRule | None]) -> dict[str, LevelRule]: # noqa: C901
         _loc_rules = loc_rules.copy()
         _event_locs: set[str] = set()
         nloc_rules: dict[str, LevelRule] = {}
@@ -53,7 +53,7 @@ class LevelRuleData:
                 #print(f"Adding event rule {_eloc}...")
         return nloc_rules
 
-    def __init__(self, base_region: str, base_rule: Optional[LevelRule], loc_rules: dict[str, Optional[LRule]]):
+    def __init__(self, base_region: str, base_rule: LevelRule | None, loc_rules: dict[str, LRule | None]):
         self.base_region = base_region
         self.base_rule = base_rule
         self.loc_rules = self._get_loc_rules(loc_rules)

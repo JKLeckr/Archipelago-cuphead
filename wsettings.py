@@ -1,7 +1,7 @@
 from __future__ import annotations
 from enum import IntEnum, IntFlag
 from .names import LocationNames
-from .options import CupheadOptions
+from .options.options import CupheadOptions
 
 class GameMode(IntEnum):
     BEAT_DEVIL = 0
@@ -104,7 +104,6 @@ class WorldSettings:
     dlc_randomize_boat: bool
     dlc_requires_mausoleum: bool
     dlc_chalice_items_separate: ItemGroups
-    dlc_chesscastle_fullrun: bool
     dlc_curse_mode: CurseMode
     minimum_filler: int
     trap_loadout_anyweapon: bool
@@ -153,7 +152,6 @@ class WorldSettings:
         self.dlc_randomize_boat = True
         self.dlc_requires_mausoleum = True
         self.dlc_chalice_items_separate = ItemGroups.NONE
-        self.dlc_chesscastle_fullrun = True
         self.dlc_curse_mode = CurseMode.NORMAL
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)

@@ -1,25 +1,25 @@
 {
-    "include": [
-      "pyright_check.py",
-      "ruff_check.py",
-      "../**/*.py"
-    ],
-  
-    "exclude": [
-      "**/__pycache__"
-    ],
-  
-    "typeCheckingMode": "strict",
-    "reportImplicitOverride": "error",
-    "reportMissingImports": true,
-  
-    "pythonVersion": "3.10",
-    "pythonPlatform": "Windows",
-  
-    "executionEnvironments": [
-      {
-        "root": "../../.."
-      }
-    ]
+  "include": [
+    "../**/*.py"
+  ],
+
+  "exclude": [
+    "**/__pycache__"
+  ],
+
+  "typeCheckingMode": "strict",
+  "reportImplicitOverride": "error",
+  "reportMissingImports": true,
+  "reportDeprecated": "error",
+
+  "deprecateTypingAliases": true,
+
+  "pythonVersion": "3.10",
+  "pythonPlatform": "Windows",
+
+  "executionEnvironments": [
+    {
+      "root": "../../.."
+    }
+  ]
 }
-  

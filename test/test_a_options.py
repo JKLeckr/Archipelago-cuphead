@@ -1,9 +1,9 @@
-from typing import Dict, Any
+from typing import Any
 from . import CupheadTestBase
 
 # Borrowed from Hammerwatch (thx @Parcosmic)
 class TestOptions(CupheadTestBase):
-    option_dict: Dict[str, Dict[str, Any]] = {
+    option_dict: dict[str, dict[str, Any]] = {
         "Freemove": {
             "freemove_isles": True,
         },

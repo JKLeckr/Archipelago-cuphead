@@ -1,17 +1,27 @@
 from __future__ import annotations
-from typing import Optional, TextIO, Dict, Any, Union
+from typing import Optional, Dict, Union # type: ignore
+from typing import TextIO, Any
 from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from Options import NumericOption
 from worlds.AutoWorld import World, WebWorld
-import settings as ap_settings
+from .rules import rules
+from .regions import regions
 from .names import ItemNames, LocationNames
-from .options import CupheadOptions, cuphead_option_groups
+from .options import options
+from .options.options import CupheadOptions
 from .wsettings import WorldSettings
-from .items import ItemData
-from .locations import LocationData
-from .levels import LevelData, level_map
-from . import items, itembase, levels, locations, regions, rules, debug # type: ignore  # noqa: F401
+from .items import items, itemdefs as idef
+from .items.itembase import ItemData
+from .locations import locations, locationdefs as ld
+from .locations.locationbase import LocationData
+from .levels import levels
+from .levels.leveldefs import level_map
+from .levels.levelbase import LevelData
+from .shop import ShopData
+from . import shop
+from . import debug # type: ignore
+import settings
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -24,21 +34,22 @@ class CupheadWebWorld(WebWorld):
         ["JKLeckr"]
     )
     tutorials = [setup_en]
-    option_groups = cuphead_option_groups
+    option_groups = options.cuphead_option_groups
+    #options_presets =
 
-class CupheadSettings(ap_settings.Group):
-    class LogOptionOverrides(ap_settings.Bool):
+class CupheadSettings(settings.Group):
+    class LogOptionOverrides(settings.Bool):
         """Log options that are overridden from incompatible combinations to console."""
 
-    class WriteOverridesToSpoiler(ap_settings.Bool):
+    class WriteOverridesToSpoiler(settings.Bool):
         """Write options that are overridden from incompatible combinations to spoiler."""
 
-    class Verbose(ap_settings.Bool):
+    class Verbose(settings.Bool):
         """Log extra information to the console."""
 
-    log_option_overrides: Union[LogOptionOverrides, bool] = True
-    write_overrides_to_spoiler: Union[WriteOverridesToSpoiler, bool] = True
-    verbose: Union[LogOptionOverrides, bool] = False
+    log_option_overrides: Union[LogOptionOverrides, bool] = True # type: ignore
+    write_overrides_to_spoiler: Union[WriteOverridesToSpoiler, bool] = True # type: ignore
+    verbose: Union[LogOptionOverrides, bool] = False # type: ignore
 
 class CupheadWorld(World):
     """
@@ -46,7 +57,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "preview03f"
+    APWORLD_VERSION: str = "preview04a"
 
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
@@ -54,16 +65,16 @@ class CupheadWorld(World):
     options: CupheadOptions # type: ignore
     version = APWORLD_VERSION
 
-    required_client_version = (0, 5, 1)
-    required_server_version = (0, 5, 1)
+    required_client_version = (0, 6, 0)
+    required_server_version = (0, 6, 0)
 
-    item_name_to_id = items.name_to_id
-    location_name_to_id = locations.name_to_id
+    item_name_to_id = idef.name_to_id
+    location_name_to_id = ld.name_to_id
 
-    item_name_groups = items.get_item_groups()
+    item_name_groups = idef.item_groups
 
-    item_names = set(items.items_all.keys())
-    location_names = set(locations.locations_all.keys())
+    item_names = set(idef.items_all.keys())
+    location_names = set(ld.locations_all.keys())
 
     settings: CupheadSettings # type: ignore
 
@@ -75,7 +86,7 @@ class CupheadWorld(World):
 
     option_overrides: list[str] = []
 
-    def override_option(self, option: NumericOption, value: int, reason: Optional[str] = None, quiet: bool = False):
+    def override_option(self, option: NumericOption, value: int, reason: str | None = None, quiet: bool = False):
         string = f"{option.current_option_name}: \"{option.value}\" -> \"{value}\"."
         if reason:
             string += " Reason: {reason}"
@@ -177,14 +188,13 @@ class CupheadWorld(World):
             self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
         # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-        self.shop_map: list[tuple[int, int]] = self.get_shop_map()
-        self.shop_locations: dict[str,list[str]] = self.get_shop_locations()
+        self.shop: ShopData = shop.setup_shop_data(self.wsettings)
 
         self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
         self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
 
         # Filler items and weights
-        filler_items = list(items.item_filler.keys())
+        filler_items = list(idef.item_filler.keys())
         filler_item_weights = self.wsettings.filler_item_weights
         self.filler_item_weights = [
             (trap, weight) for trap, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0
@@ -195,12 +205,12 @@ class CupheadWorld(World):
             self.solo_setup()
 
     @override
-    def fill_slot_data(self) -> Dict[str, Any]:
+    def fill_slot_data(self) -> Dict[str, Any]: # type: ignore
         slot_data: dict[str, Any] = {
             "version": 2,
             "world_version": self.version,
             "level_shuffle_map": self.level_shuffle_map,
-            "shop_map": self.shop_map,
+            "shop_map": self.shop.shop_map,
             "contract_requirements": self.contract_requirements,
             "dlc_ingredient_requirements": self.dlc_ingredient_requirements,
         }
@@ -227,48 +237,6 @@ class CupheadWorld(World):
             slot_data.update(self.options.as_dict(option))
         return slot_data
 
-    def get_shop_map(self) -> list[tuple[int, int]]:
-        return [(2,2), (2,2), (1,2), (3,2)] if not self.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
-
-    def get_shop_locations(self) -> dict[str,list[str]]:
-        _shop_weapons = [
-            LocationNames.loc_shop_weapon1,
-            LocationNames.loc_shop_weapon2,
-            LocationNames.loc_shop_weapon3,
-            LocationNames.loc_shop_weapon4,
-            LocationNames.loc_shop_weapon5,
-            LocationNames.loc_shop_dlc_weapon6,
-            LocationNames.loc_shop_dlc_weapon7,
-            LocationNames.loc_shop_dlc_weapon8
-        ]
-        _shop_charms = [
-            LocationNames.loc_shop_charm1,
-            LocationNames.loc_shop_charm2,
-            LocationNames.loc_shop_charm3,
-            LocationNames.loc_shop_charm4,
-            LocationNames.loc_shop_charm5,
-            LocationNames.loc_shop_charm6,
-            LocationNames.loc_shop_dlc_charm7,
-            LocationNames.loc_shop_dlc_charm8
-        ]
-
-        shop_locations: dict[str,list[str]] = {}
-        weapon_index = 0
-        charm_index = 0
-        for i in range(4):
-            shop_region: list[str] = []
-            if (i == 3):
-                shop_region += _shop_weapons[weapon_index:]+_shop_charms[charm_index:]
-            else:
-                wcount = min(self.shop_map[i][0], len(_shop_weapons)-weapon_index)
-                ccount = min(self.shop_map[i][1], len(_shop_charms)-charm_index)
-                shop_region += _shop_weapons[weapon_index:(weapon_index+wcount)]
-                shop_region += _shop_charms[charm_index:(charm_index+ccount)]
-                weapon_index+=wcount
-                charm_index+=ccount
-            shop_locations[LocationNames.level_shops[i]] = shop_region ## TODO: Rename to shop sets
-        return shop_locations
-
     @override
     def create_regions(self) -> None:
         regions.create_regions(self)
@@ -277,12 +245,12 @@ class CupheadWorld(World):
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
     @override
-    def create_item(self, name: str, force_classification: Optional[ItemClassification] = None) -> Item:
-        return itembase.create_item(name, self.player, force_classification)
+    def create_item(self, name: str, force_classification: Optional[ItemClassification] = None) -> Item: # type: ignore
+        return items.create_item(name, self.player, force_classification)
 
     @override
     def create_items(self) -> None:
-        itembase.create_items(self)
+        items.create_items(self)
 
     def _gen_shop_list(self, y: list[str]) -> str:
         return "\n".join([f" {z}" for z in y])
@@ -300,7 +268,7 @@ class CupheadWorld(World):
         spoiler_handle.write(f"\n{self.player} Shop Items:\n\n")
         _nl = "\n"
         spoiler_handle.write("\n".join([
-            f"{x}:\n{self._gen_shop_list(y)}" for x, y in self.shop_locations.items() \
+            f"{x}:\n{self._gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
                 if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
         ]))
 
@@ -324,21 +292,21 @@ class CupheadWorld(World):
 
     @override
     def get_filler_item_name(self) -> str:
-        return itembase.get_filler_item_name(self)
+        return items.get_filler_item_name(self)
 
     @override
-    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]):
-        hint_dict: Dict[int, str] = {}
+    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]): # type: ignore
+        hint_dict: dict[int, str] = {}
         if self.level_shuffle:
             for level, map in self.level_shuffle_map.items():
                 if level_map[level] in self.active_locations.keys() and level != map:
                     for loc in self.active_levels[level_map[level]].locations:
                         hint_dict[self.location_name_to_id[loc]] = \
                             f"{level_map[self.level_shuffle_map[level]]} at {level_map[level]}"
-        for shop, locs in self.shop_locations.items():
-            if shop != LocationNames.level_dlc_shop4 or self.use_dlc:
+        for shopl, locs in self.shop.shop_locations.items():
+            if shopl != LocationNames.level_dlc_shop4 or self.use_dlc:
                 for loc in locs:
-                    hint_dict[self.location_name_to_id[loc]] = shop ## TODO: Use Shop Sets
+                    hint_dict[self.location_name_to_id[loc]] = shopl
         hint_data.update({self.player: hint_dict})
 
     @override
