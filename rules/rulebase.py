@@ -1,9 +1,9 @@
 from __future__ import annotations
 import typing
-from typing import Callable, Iterable
+from collections.abc import Callable, Iterable
 from BaseClasses import CollectionState
 if typing.TYPE_CHECKING:
-    from . import CupheadWorld
+    from .. import CupheadWorld
 
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
