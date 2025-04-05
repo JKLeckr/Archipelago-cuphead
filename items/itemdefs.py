@@ -1,21 +1,7 @@
 from __future__ import annotations
-from typing import NamedTuple, Optional
 from BaseClasses import ItemClassification
-from .names import ItemNames
-from .wsettings import WorldSettings, ItemGroups, WeaponExMode
-from . import itembase
-
-class ItemData(NamedTuple):
-    id: Optional[int]
-    item_type: ItemClassification = ItemClassification.filler
-    quantity: int = 1 # Set to 0 to skip automatic placement (Useful if placing manually)
-    event: bool = False
-    category: str | None = None
-
-    def with_item_type(self, type: ItemClassification) -> ItemData:
-        return ItemData(self.id, type, self.quantity, self.event, self.category)
-    def with_quantity(self, quantity: int) -> ItemData:
-        return ItemData(self.id, self.item_type, quantity, self.event, self.category)
+from ..names import ItemNames
+from .itembase import ItemData
 
 base_id = 12905168
 base_dlc_id = 12909264
@@ -210,84 +196,16 @@ items_all: dict[str, ItemData] = {
     **item_trap,
 }
 
-def get_item_groups() -> dict[str, set[str]]:
-    n_item_groups: dict[str, set[str]] = {
-        "Weapon": {*item_weapons.keys(), *item_p_weapons.keys(), *item_dlc_weapons.keys(), *item_dlc_p_weapons.keys()},
-        "Charm": {*item_charms.keys(), *item_dlc_charms.keys(), ItemNames.item_charm_dlc_cookie},
-        "Super": {*item_super.keys(), *item_dlc_chalice_super.keys()},
-        "Ability": {
-            *item_abilities.keys(),
-            #*item_abilities_aim.keys(),
-            *item_dlc_chalice_abilities.keys(),
-            #*item_dlc_chalice_abilities_aim.keys()
-        },
-    }
-    return n_item_groups
-
-def add_item(items_ref: dict[str, ItemData], item: str):
-    items_ref[item] = items_all[item]
-
-def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification):
-    items_ref[item] = items_ref[item].with_item_type(item_type)
-
-def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int):
-    items_ref[item] = items_ref[item].with_quantity(quantity)
-
-def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
-    items_ref.update(items_dlc)
-    if settings.dlc_chalice>0:
-        add_item(items_ref, ItemNames.item_charm_dlc_cookie)
-        if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
-            change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
-    if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
-        items_ref.update(item_dlc_chalice_essential)
-    if settings.is_dlc_chalice_items_separate(ItemGroups.SUPER):
-        items_ref.update(item_dlc_chalice_super)
-    if settings.randomize_weapon_ex:
-        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
-
-def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
-    items_ref.update(item_abilities)
-    if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
-        items_ref.update(item_dlc_chalice_abilities)
-    change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
-    if settings.boss_secret_checks:
-        change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
-
-def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
-    weapon_keys = {
-        **item_weapons,
-        **item_dlc_weapons,
-    }
-    for w in weapon_keys:
-        if w in items_ref.keys():
-            change_item_type(items_ref, w, ItemClassification.progression)
-
-def setup_weapons(items_ref: dict[str, ItemData], settings: WorldSettings):
-    _weapon_dict = itembase.get_weapon_dict(settings, settings.use_dlc)
-    for weapon in _weapon_dict.values():
-        items_ref[weapon] = items_all[weapon]
-    if settings.randomize_weapon_ex > 0:
-        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
-    if settings.randomize_weapon_ex == WeaponExMode.RANDOMIZED:
-        _start_weapon = _weapon_dict[settings.start_weapon]
-        change_item_quantity(items_ref, _start_weapon, 1)
-
-def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
-    items: dict[str, ItemData] = {**items_base}
-    setup_weapons(items, settings)
-    if settings.use_dlc:
-        setup_dlc_items(items, settings)
-    if settings.weapon_gate:
-        setup_weapon_gate(items, settings)
-    if settings.randomize_abilities:
-        setup_abilities(items, settings)
-    if settings.randomize_abilities_aim:
-        items.update(item_abilities_aim)
-        if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.AIM_ABILITIES):
-            items.update(item_dlc_chalice_abilities_aim)
-    if settings.traps>0:
-        items.update(item_trap)
-    return items
-
 name_to_id = {name: data.id for name, data in items_all.items() if data.id}
+
+item_groups: dict[str, set[str]] = {
+    "Weapon": {*item_weapons.keys(), *item_p_weapons.keys(), *item_dlc_weapons.keys(), *item_dlc_p_weapons.keys()},
+    "Charm": {*item_charms.keys(), *item_dlc_charms.keys(), ItemNames.item_charm_dlc_cookie},
+    "Super": {*item_super.keys(), *item_dlc_chalice_super.keys()},
+    "Ability": {
+        *item_abilities.keys(),
+        #*item_abilities_aim.keys(),
+        *item_dlc_chalice_abilities.keys(),
+        #*item_dlc_chalice_abilities_aim.keys()
+    },
+}
