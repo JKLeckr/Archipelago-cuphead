@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Dict, Union # type: ignore
+from typing import Union # type: ignore
 from typing import TextIO, Any
 from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
@@ -205,7 +205,7 @@ class CupheadWorld(World):
             self.solo_setup()
 
     @override
-    def fill_slot_data(self) -> Dict[str, Any]: # type: ignore
+    def fill_slot_data(self) -> dict[str, Any]:
         slot_data: dict[str, Any] = {
             "version": 2,
             "world_version": self.version,
@@ -245,7 +245,7 @@ class CupheadWorld(World):
         #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
 
     @override
-    def create_item(self, name: str, force_classification: Optional[ItemClassification] = None) -> Item: # type: ignore
+    def create_item(self, name: str, force_classification: ItemClassification | None = None) -> Item:
         return items.create_item(name, self.player, force_classification)
 
     @override
@@ -295,7 +295,7 @@ class CupheadWorld(World):
         return items.get_filler_item_name(self)
 
     @override
-    def extend_hint_information(self, hint_data: Dict[int, Dict[int, str]]): # type: ignore
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         hint_dict: dict[int, str] = {}
         if self.level_shuffle:
             for level, map in self.level_shuffle_map.items():
