@@ -5,21 +5,18 @@ from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from Options import NumericOption
 from worlds.AutoWorld import World, WebWorld
-from .rules import rules
-from .regions import regions
 from .names import ItemNames, LocationNames
-from .options import options
-from .options.options import CupheadOptions
+from .options import CupheadOptions
 from .wsettings import WorldSettings
-from .items import items, itemdefs as idef
+from .items import itemdefs as idef
 from .items.itembase import ItemData
-from .locations import locations, locationdefs as ld
+from .locations import locationdefs as ld
 from .locations.locationbase import LocationData
-from .levels import levels
+from . import levels
 from .levels.leveldefs import level_map
 from .levels.levelbase import LevelData
 from .shop import ShopData
-from . import shop
+from . import items, locations, options, regions, rules, shop
 from . import debug # type: ignore
 import settings
 

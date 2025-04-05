@@ -2,7 +2,7 @@ from __future__ import annotations
 import typing
 from random import Random
 from ..names import LocationNames
-from ..locations.locations import LocationData
+from ..locations import LocationData
 from ..wsettings import WorldSettings, LevelShuffleMode
 from ..auxiliary import scrub_list
 from .levelbase import LevelData

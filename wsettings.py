@@ -1,7 +1,7 @@
 from __future__ import annotations
 from enum import IntEnum, IntFlag
 from .names import LocationNames
-from .options.options import CupheadOptions
+from .options import CupheadOptions
 
 class GameMode(IntEnum):
     BEAT_DEVIL = 0
