@@ -1,6 +1,7 @@
 from __future__ import annotations
 import Utils
-from typing import TypeVar, Iterable
+from collections.abc import Iterable
+from typing import TypeVar
 from worlds.AutoWorld import World
 from BaseClasses import Region
 from .auxiliary import format_list
@@ -31,5 +32,13 @@ def print_locations(world: World) -> None:
     for loc in locations:
         print(f"{loc.name}: {loc.access_rule}")
 
-def visualize_regions(root_region: Region, file_name: str) -> None:
-    Utils.visualize_regions(root_region, file_name, show_entrance_names=True, show_locations=True, show_other_regions=True, linetype_ortho=True)
+def visualize_regions(root_region: Region, highlight_regions: set[Region] | None, file_name: str) -> None:
+    Utils.visualize_regions(
+        root_region,
+        file_name,
+        show_entrance_names=True,
+        show_locations=True,
+        show_other_regions=True,
+        linetype_ortho=True,
+        regions_to_highlight=highlight_regions
+    )

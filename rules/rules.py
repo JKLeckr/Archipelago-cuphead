@@ -2,15 +2,15 @@ from __future__ import annotations
 import typing
 from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
-from .items import item_filler
-from .levelrules import level_rule_kingdice
-from .locations import s_plane_locations
-from .names import ItemNames, LocationNames
+from . import rulebase as rb
+from ..levels import levelrules, levellocrules
+from ..items import itemdefs as idef
+from ..locations import locationdefs as ld
+from ..names import ItemNames, LocationNames
 from .rulebase import Rule
-from .wsettings import GameMode
-from . import levellocrules, locations, rulebase as rb
+from ..wsettings import GameMode
 if typing.TYPE_CHECKING:
-    from . import CupheadWorld
+    from .. import CupheadWorld
 
 def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
     return world.multiworld.get_entrance(exit+" -> "+entrance, world.player)
@@ -46,7 +46,7 @@ def set_rules(world: CupheadWorld):
     set_region_rules(w, LocationNames.level_boss_kingdice,
                      rb.rule_and(
                          rb.rule_has(w, ItemNames.item_contract, contract_reqs[2]),
-                         rb.region_rule_to_rule(level_rule_kingdice(settings), w.player)
+                         rb.region_rule_to_rule(levelrules.level_rule_kingdice(settings), w.player)
                      ))
     set_shop_rules(w)
 
@@ -72,12 +72,12 @@ def set_dlc_rules(world: CupheadWorld):
         rb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs)
     )
     if settings.dlc_boss_chalice_checks:
-        for _loc in locations.locations_dlc_boss_chaliced.keys():
+        for _loc in ld.locations_dlc_boss_chaliced.keys():
             set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
     if settings.dlc_cactusgirl_quest:
-        for _loc in locations.locations_dlc_event_boss_chaliced.keys():
+        for _loc in ld.locations_dlc_event_boss_chaliced.keys():
             set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
-        chaliced_events = set(locations.locations_dlc_event_boss_chaliced.keys())
+        chaliced_events = set(ld.locations_dlc_event_boss_chaliced.keys())
         set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rb.rule_has_all(w, chaliced_events))
 
 def set_dlc_boat_rules(world: CupheadWorld):
@@ -106,7 +106,7 @@ def set_quest_rules(world: CupheadWorld):
 
 def add_level_parry_rule(world: CupheadWorld, loc: str):
     w = world
-    if loc in s_plane_locations:
+    if loc in ld.s_plane_locations:
         add_item_rule(w, loc, ItemNames.item_ability_plane_parry)
     else:
         add_item_rule(w, loc, ItemNames.item_ability_parry)
@@ -125,21 +125,21 @@ def set_level_boss_grade_rules(world: CupheadWorld):
     w = world
     boss_grade_checks = w.wsettings.boss_grade_checks
     if boss_grade_checks > 0:
-        for _loc in locations.location_level_boss_topgrade:
+        for _loc in ld.location_level_boss_topgrade:
             if (
                 _loc != LocationNames.loc_level_boss_kingdice_topgrade and
                 _loc not in levellocrules.level_loc_rule_locs
                 ):
                 add_level_parry_rule(w, _loc)
         if w.wsettings.silverworth_quest:
-            for _loc in locations.location_level_boss_event_agrade:
+            for _loc in ld.location_level_boss_event_agrade:
                 if (
                     _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
                     _loc not in levellocrules.level_loc_rule_locs
                     ):
                     add_level_parry_rule(w, _loc)
         if w.wsettings.use_dlc:
-            for _loc in locations.location_level_dlc_boss_topgrade:
+            for _loc in ld.location_level_dlc_boss_topgrade:
                 if _loc not in levellocrules.level_loc_rule_locs:
                     add_level_parry_rule(w, _loc)
 
@@ -160,9 +160,9 @@ def set_shop_rules(world: CupheadWorld):
     player = w.player
     use_dlc = w.use_dlc
     total_coins = w.total_coins
-    shop_map = w.shop_map
+    shop_map = w.shop.shop_map
 
-    shop_items = {**locations.location_shop, **(locations.location_shop_dlc if use_dlc else {})}
+    shop_items = {**ld.location_shop, **(ld.location_shop_dlc if use_dlc else {})}
     coins = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
 
     # Prevent certain items from appearing in the shop
@@ -171,7 +171,7 @@ def set_shop_rules(world: CupheadWorld):
         # Prevent putting money in the shop
         [forbid_item(_loc, x, player) for x in coins]
         # Prevent putting local filler items in the shop
-        forbid_items_for_player(_loc, {x for x in item_filler.keys()}, player)
+        forbid_items_for_player(_loc, {x for x in idef.item_filler.keys()}, player)
 
     # Set coin requirements for the shops
     shop_costs: list[int] = [0, 0, 0, 0]

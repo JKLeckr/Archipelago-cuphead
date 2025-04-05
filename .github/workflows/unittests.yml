@@ -8,13 +8,13 @@ on:
     paths:
       - "**.py"
       - '!examples/**'
-      - '!scriptstash.py'
+      - '!extras/**'
       - '.github/workflows/unittests.yml'
   pull_request:
     paths:
       - "**.py"
       - '!examples/**'
-      - '!scriptstash.py'
+      - '!extras/**'
       - '.github/workflows/unittests.yml'
 
 jobs:
