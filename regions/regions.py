@@ -20,7 +20,7 @@ def get_regions(world: CupheadWorld) -> list[RegionData]:
 
     for shop_name, locs in shop_locations.items():
         shop_region = RegionData(shop_name, locs, None)
-        if shop_name == LocationNames.level_dlc_shop4:
+        if shop_name == LocationNames.shop_set4:
             region_dlc_shops.append(shop_region)
         else:
             region_shops.append(shop_region)
