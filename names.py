@@ -92,11 +92,11 @@ class LocationNames:
     level_dlc_chesscastle_run = level_dlc_chesscastle + " Gauntlet"
 
     level_shop = "Porkrind's Emporium"
-    level_shop1 = level_shop + "Set 1"
-    level_shop2 = level_shop + "Set 2"
-    level_shop3 = level_shop + "Set 3"
+    level_shop1 = level_shop + _isle1_
+    level_shop2 = level_shop + _isle2_
+    level_shop3 = level_shop + _isle3_
     level_base_shops = (level_shop1, level_shop2, level_shop3)
-    level_dlc_shop4 = level_shop + "Set 4"
+    level_dlc_shop4 = level_shop + _isle4_
     level_dlc_shop = level_dlc_shop4
     level_dlc_shops = (level_dlc_shop4,)
     level_shops = level_base_shops + level_dlc_shops
@@ -115,6 +115,17 @@ class LocationNames:
     world_inkwell_3 = world_inkwell + _num3_
     world_inkwell_hell = "Inkwell Hell"
     world_dlc_inkwell_4 = world_inkwell + _num4_
+
+    # Shop Set Defs
+    shop_set = "Shop Set"
+    shop_set1 = shop_set + " 1"
+    shop_set2 = shop_set + " 2"
+    shop_set3 = shop_set + " 3"
+    base_shop_sets = (shop_set1, shop_set2, shop_set3)
+    shop_set4 = shop_set + " 4"
+    dlc_shop_set = shop_set4
+    dlc_shop_sets = (shop_set4,)
+    shop_sets = base_shop_sets + dlc_shop_sets
 
     # Location Defs
     loc_level_tutorial = level_tutorial + " Complete"
