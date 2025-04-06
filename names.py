@@ -92,14 +92,14 @@ class LocationNames:
     level_dlc_chesscastle_run = level_dlc_chesscastle + " Gauntlet"
 
     level_shop = "Porkrind's Emporium"
-    level_shop1 = level_shop + _isle1_
-    level_shop2 = level_shop + _isle2_
-    level_shop3 = level_shop + _isle3_
-    level_base_shops = (level_shop1, level_shop2, level_shop3)
-    level_dlc_shop4 = level_shop + _isle4_
-    level_dlc_shop = level_dlc_shop4
-    level_dlc_shops = (level_dlc_shop4,)
-    level_shops = level_base_shops + level_dlc_shops
+    #level_shop1 = level_shop + _isle1_
+    #level_shop2 = level_shop + _isle2_
+    #level_shop3 = level_shop + _isle3_
+    #level_base_shops = (level_shop1, level_shop2, level_shop3)
+    #level_dlc_shop4 = level_shop + _isle4_
+    #level_dlc_shop = level_dlc_shop4
+    #level_dlc_shops = (level_dlc_shop4,)
+    #level_shops = level_base_shops + level_dlc_shops
 
     level_tutorial = "Tutorial"
     level_plane_tutorial = "Plane Tutorial"

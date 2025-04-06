@@ -31,12 +31,14 @@ region_dlc_start: list[RegionData] = [
     ),
 ]
 
+# Shop Regions are defined in shop.py
+
 region_worlds: list[RegionData] = [
     WorldRegionData(LocationNames.world_inkwell_1, [
         LocationNames.loc_npc_mac,
         LocationNames.loc_coin_isle1_secret,
     ], [
-        Target(LocationNames.level_shop1),
+        Target(LocationNames.shop_set1),
         Target(LocationNames.reg_dlc_boat, None, dep.dep_and(dep.dep_dlc, dep.dep_freemove)),
         Target(LocationNames.world_dlc_inkwell_4, rule_has(ItemNames.item_event_dlc_boataccess), dep.dep_dlc),
         LevelTarget(LocationNames.level_boss_veggies),
@@ -53,7 +55,7 @@ region_worlds: list[RegionData] = [
         LocationNames.loc_npc_canteen,
         LocationNames.loc_quest_4mel,
     ], [
-        Target(LocationNames.level_shop2, None, dep.dep_freemove),
+        Target(LocationNames.shop_set2, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_baroness),
         LevelTarget(LocationNames.level_boss_clown),
         LevelTarget(LocationNames.level_boss_plane_genie),
@@ -67,7 +69,7 @@ region_worlds: list[RegionData] = [
         Target(LocationNames.reg_dlc_boat, None, dep.dep_dlc),
     ]),
     WorldRegionData(LocationNames.world_inkwell_3, None, [
-        Target(LocationNames.level_shop3, None, dep.dep_freemove),
+        Target(LocationNames.shop_set3, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_boss_bee),
         LevelTarget(LocationNames.level_boss_pirate),
         Target(LocationNames.world_inkwell_hell, None, dep.dep_freemove),
@@ -95,7 +97,7 @@ region_dlc_worlds = [
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [
         Target(LocationNames.level_dlc_tutorial, rule_has(ItemNames.item_charm_dlc_cookie), dep.dep_dlc_chalice),
-        Target(LocationNames.level_dlc_shop4),
+        Target(LocationNames.shop_set4),
         Target(LocationNames.level_dlc_chesscastle),
         LevelTarget(LocationNames.level_dlc_boss_oldman),
         LevelTarget(LocationNames.level_dlc_boss_rumrunners),
@@ -136,7 +138,7 @@ region_isle2: list[RegionData] = [
     LevelRegionData(LocationNames.level_boss_plane_genie, None, [
         LevelTarget(LocationNames.level_mausoleum_ii),
         Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
-        Target(LocationNames.level_shop2),
+        Target(LocationNames.shop_set2),
     ]),
     LevelRegionData(LocationNames.level_boss_clown, None, [
         LevelTarget(LocationNames.level_boss_dragon),
@@ -147,14 +149,14 @@ region_isle2: list[RegionData] = [
     LevelRegionData(LocationNames.level_boss_plane_bird, None, [
         LevelTarget(LocationNames.level_mausoleum_ii),
         Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
-        Target(LocationNames.level_shop2),
+        Target(LocationNames.shop_set2),
     ]),
     LevelRegionData(LocationNames.level_boss_dragon, [
         LocationNames.loc_quest_4parries,
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
         Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
-        Target(LocationNames.level_shop2),
+        Target(LocationNames.shop_set2),
     ]),
     LevelRegionData(LocationNames.level_rungun_circus, [
         LocationNames.loc_event_quest_4mel_4th,
@@ -162,12 +164,12 @@ region_isle2: list[RegionData] = [
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
         Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
-        Target(LocationNames.level_shop2),
+        Target(LocationNames.shop_set2),
     ]),
     LevelRegionData(LocationNames.level_rungun_funhouse, [LocationNames.loc_coin_isle2_secret], [
         LevelTarget(LocationNames.level_mausoleum_ii),
         Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),
-        Target(LocationNames.level_shop2),
+        Target(LocationNames.shop_set2),
     ]),
     LevelRegionData(
         LocationNames.level_mausoleum_ii, None,
@@ -216,7 +218,7 @@ region_isle3: list[RegionData] = [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
         LevelTarget(LocationNames.level_boss_train),
-        Target(LocationNames.level_shop3),
+        Target(LocationNames.shop_set3),
         Target(LocationNames.loc_quest_silverworth, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_boss_mouse, None, [
@@ -227,13 +229,13 @@ region_isle3: list[RegionData] = [
     LevelRegionData(LocationNames.level_rungun_harbour, None, [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
-        Target(LocationNames.level_shop3),
+        Target(LocationNames.shop_set3),
         Target(LocationNames.loc_quest_silverworth, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(LocationNames.level_rungun_mountain, None, [
         LevelTarget(LocationNames.level_boss_mouse),
         LevelTarget(LocationNames.level_mausoleum_iii),
-        Target(LocationNames.level_shop3),
+        Target(LocationNames.shop_set3),
         Target(LocationNames.loc_quest_silverworth, None, dep.dep_agrade_quest)
     ]),
     LevelRegionData(

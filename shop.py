@@ -28,6 +28,7 @@ class ShopData(NamedTuple):
     shop_map: list[tuple[int, int]]
     shop_locations: dict[str,list[str]]
 
+# Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
 def get_shop_map(settings: WorldSettings) -> list[tuple[int, int]]:
         return [(2,2), (2,2), (1,2), (3,2)] if not settings.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
 
@@ -48,6 +49,6 @@ def setup_shop_data(settings: WorldSettings) -> ShopData:
             shop_region += shop_charms[charm_index:(charm_index+ccount)]
             weapon_index+=wcount
             charm_index+=ccount
-        shop_locations[LocationNames.level_shops[i]] = shop_region
+        shop_locations[LocationNames.shop_sets[i]] = shop_region
 
     return ShopData(shop_map, shop_locations)
