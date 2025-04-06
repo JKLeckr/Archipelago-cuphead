@@ -187,7 +187,6 @@ class CupheadWorld(World):
         if self.level_shuffle:
             self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
 
-        # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
         self.shop: ShopData = shop.setup_shop_data(self.wsettings)
 
         self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
@@ -269,7 +268,7 @@ class CupheadWorld(World):
         _nl = "\n"
         spoiler_handle.write("\n".join([
             f"{x}:\n{self._gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
-                if (x != LocationNames.level_dlc_shop4 or self.use_dlc)
+                if (x != LocationNames.shop_set4 or self.use_dlc)
         ]))
 
     @override
@@ -304,7 +303,7 @@ class CupheadWorld(World):
                         hint_dict[self.location_name_to_id[loc]] = \
                             f"{level_map[self.level_shuffle_map[level]]} at {level_map[level]}"
         for shopl, locs in self.shop.shop_locations.items():
-            if shopl != LocationNames.level_dlc_shop4 or self.use_dlc:
+            if shopl != LocationNames.shop_set4 or self.use_dlc:
                 for loc in locs:
                     hint_dict[self.location_name_to_id[loc]] = shopl
         hint_data.update({self.player: hint_dict})

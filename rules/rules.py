@@ -193,7 +193,7 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
     cost = 0
     for i in range(shop_index+1):
         cost += shop_costs[i]
-    region = get_region(world, LocationNames.level_shops[shop_index])
+    region = get_region(world, LocationNames.shop_sets[shop_index])
     for entrance in region.entrances:
         set_rule(entrance, lambda state: state.has(ItemNames.item_coin, player, cost))
 
@@ -204,7 +204,7 @@ def set_goal(world: CupheadWorld):
         rb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
     ) if settings.mode == GameMode.COLLECT_CONTRACTS else (
         rb.rule_can_reach_all_regions(
-            w, LocationNames.level_shops if settings.use_dlc else LocationNames.level_base_shops
+            w, LocationNames.shop_sets if settings.use_dlc else LocationNames.base_shop_sets
         )
     ) if settings.mode == GameMode.BUY_OUT_SHOP else (
         rb.rule_has(w, ItemNames.item_event_goal_dlc_saltbakerko)
