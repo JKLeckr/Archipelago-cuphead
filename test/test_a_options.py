@@ -54,9 +54,12 @@ class TestOptions(CupheadTestBase):
     }
 
     def test_default_options(self):
+        option_set_name = "Default Options"
         test_world = TestOptions()
         test_world.world_setup()
-        test_world._check_all_locations_are_active("Default Options")
+        test_world._check_all_locations_are_active(option_set_name)
+        print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
+        test_world.test_fill()
 
     def test_options(self):
         for option_set, opts in self.option_dict.items():
@@ -65,6 +68,7 @@ class TestOptions(CupheadTestBase):
                 test_world.options = opts
                 test_world.world_setup()
                 test_world._check_all_locations_are_active(option_set)
+                print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
                 test_world.test_fill()
                 test_world.world_setup()
                 test_world.test_empty_state_can_reach_something()
