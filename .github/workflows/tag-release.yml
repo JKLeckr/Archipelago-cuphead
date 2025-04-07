@@ -26,7 +26,7 @@ jobs:
           # Remove unnecessary files and directories
           find . -type d -name "_pycache_" -exec rm -rf {} \;
           find . -type d -name ".ruff_cache" -exec rm -rf {} \;
-          rm -rf .git .github
+          rm -rf .git .github .gitignore
           rm -rf extras
           rm -f ruff.toml
 
