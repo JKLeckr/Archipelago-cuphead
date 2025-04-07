@@ -281,7 +281,7 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
     if start_weapon in weapons:
-        world.multiworld.push_precollected(create_item(start_weapon, world.player))
+        #world.multiworld.push_precollected(create_item(start_weapon, world.player))
         weapons.remove(start_weapon)
 
     return weapons
