@@ -16,7 +16,7 @@ item_generic: dict[str, ItemData] = {
 }
 item_filler: dict[str, ItemData] = {
     ItemNames.item_level_extrahealth: ItemData(id(1), ItemClassification.filler, 0),
-    ItemNames.item_level_superrecharge: ItemData(id(2), ItemClassification.filler, 0),
+    ItemNames.item_level_supercharge: ItemData(id(2), ItemClassification.filler, 0),
     ItemNames.item_level_fastfire: ItemData(id(3), ItemClassification.filler, 0),
     #ItemNames.item_level_4: ItemData(id(4), ItemClassification.filler, 0),
 }

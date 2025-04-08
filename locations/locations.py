@@ -91,6 +91,10 @@ def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], settings:
             locations_ref.update(ld.location_level_dlc_boss_final_dlc_chaliced)
     if settings.dlc_rungun_chalice_checks:
         locations_ref.update(ld.location_level_rungun_dlc_chaliced)
+    if settings.dlc_kingdice_chalice_checks:
+        locations_ref.update(ld.location_level_dicepalace_dlc_chaliced)
+    if settings.dlc_chess_chalice_checks:
+        locations_ref.update(ld.location_level_dlc_chesscastle_dlc_chaliced)
     if settings.dlc_cactusgirl_quest:
         locations_ref.update(ld.locations_dlc_event_boss_chaliced)
         setup_boss_final_locations(

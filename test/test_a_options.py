@@ -1,5 +1,17 @@
 from typing import Any
+from dataclasses import fields
+from Options import PerGameCommonOptions
+from ..options import options
 from . import CupheadTestBase
+
+class TestOptionNames(CupheadTestBase):
+    def test_option_names(self):
+        common_fieldnames = {f for f in fields(PerGameCommonOptions)}
+        option_fields = [f for f in fields(options.CupheadOptions) if f not in common_fieldnames]
+
+        for field in option_fields:
+            with self.subTest(field.name):
+                assert field.name == field.type.name, f"{field.name} != {field.type.name}" # type: ignore
 
 # Borrowed from Hammerwatch (thx @Parcosmic)
 class TestOptions(CupheadTestBase):
@@ -11,8 +23,8 @@ class TestOptions(CupheadTestBase):
             "use_dlc": True,
             "mode": "dlc_beat_both",
         },
-        "Ability Rando": {
-            "randomize_abilities": True,
+        "No Ability Rando": {
+            "randomize_abilities": False,
         },
         "Boss Secrets": {
             "boss_secret_checks": True,
