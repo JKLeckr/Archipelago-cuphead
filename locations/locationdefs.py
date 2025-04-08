@@ -9,7 +9,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Locations
-# Next ids: 128, 62
+# Next ids: 128, 77
 # Level Locations
 location_level_tutorial: dict[str, LocationData] = {
     LocationNames.loc_level_tutorial: LocationData(id(0)),
@@ -202,6 +202,17 @@ location_level_dicepalace: dict[str, LocationData] = {
     LocationNames.loc_level_dicepalace_boss8: LocationData(id(48)),
     LocationNames.loc_level_dicepalace_boss9: LocationData(id(49)),
 }
+location_level_dicepalace_dlc_chaliced: dict[str, LocationData] = {
+    LocationNames.loc_level_dicepalace_boss1_dlc_chaliced: LocationData(dlc_id(39)),
+    LocationNames.loc_level_dicepalace_boss2_dlc_chaliced: LocationData(dlc_id(40)),
+    LocationNames.loc_level_dicepalace_boss3_dlc_chaliced: LocationData(dlc_id(41)),
+    LocationNames.loc_level_dicepalace_boss4_dlc_chaliced: LocationData(dlc_id(42)),
+    LocationNames.loc_level_dicepalace_boss5_dlc_chaliced: LocationData(dlc_id(43)),
+    LocationNames.loc_level_dicepalace_boss6_dlc_chaliced: LocationData(dlc_id(44)),
+    LocationNames.loc_level_dicepalace_boss7_dlc_chaliced: LocationData(dlc_id(45)),
+    LocationNames.loc_level_dicepalace_boss8_dlc_chaliced: LocationData(dlc_id(46)),
+    LocationNames.loc_level_dicepalace_boss9_dlc_chaliced: LocationData(dlc_id(47)),
+}
 
 location_level_rungun: dict[str, LocationData] = {
     LocationNames.loc_level_rungun_forest: LocationData(id(50)),
@@ -263,12 +274,12 @@ location_level_rungun_pacifist: dict[str, LocationData] = {
     LocationNames.loc_level_rungun_mountain_pacifist: LocationData(id(92)),
 }
 location_level_rungun_dlc_chaliced: dict[str, LocationData] = {
-    LocationNames.loc_level_rungun_forest_dlc_chaliced: LocationData(dlc_id(39)),
-    LocationNames.loc_level_rungun_tree_dlc_chaliced: LocationData(dlc_id(40)),
-    LocationNames.loc_level_rungun_circus_dlc_chaliced: LocationData(dlc_id(41)),
-    LocationNames.loc_level_rungun_funhouse_dlc_chaliced: LocationData(dlc_id(42)),
-    LocationNames.loc_level_rungun_harbour_dlc_chaliced: LocationData(dlc_id(43)),
-    LocationNames.loc_level_rungun_mountain_dlc_chaliced: LocationData(dlc_id(44)),
+    LocationNames.loc_level_rungun_forest_dlc_chaliced: LocationData(dlc_id(48)),
+    LocationNames.loc_level_rungun_tree_dlc_chaliced: LocationData(dlc_id(49)),
+    LocationNames.loc_level_rungun_circus_dlc_chaliced: LocationData(dlc_id(50)),
+    LocationNames.loc_level_rungun_funhouse_dlc_chaliced: LocationData(dlc_id(51)),
+    LocationNames.loc_level_rungun_harbour_dlc_chaliced: LocationData(dlc_id(52)),
+    LocationNames.loc_level_rungun_mountain_dlc_chaliced: LocationData(dlc_id(53)),
 }
 location_level_rungun_event_agrade: dict[str, LocationData] = {
     LocationNames.loc_level_rungun_forest_event_agrade: LocationData(None),
@@ -294,16 +305,24 @@ location_level_mausoleum: dict[str, LocationData] = {
 }
 
 location_level_dlc_chesscastle: dict[str, LocationData] = {
-    LocationNames.loc_level_dlc_chesscastle_run: LocationData(dlc_id(45)),
-    LocationNames.loc_level_dlc_chesscastle_pawn: LocationData(dlc_id(46)),
-    LocationNames.loc_level_dlc_chesscastle_knight: LocationData(dlc_id(47)),
-    LocationNames.loc_level_dlc_chesscastle_bishop: LocationData(dlc_id(48)),
-    LocationNames.loc_level_dlc_chesscastle_rook: LocationData(dlc_id(49)),
-    LocationNames.loc_level_dlc_chesscastle_queen: LocationData(dlc_id(50)),
+    LocationNames.loc_level_dlc_chesscastle_pawn: LocationData(dlc_id(54)),
+    LocationNames.loc_level_dlc_chesscastle_knight: LocationData(dlc_id(55)),
+    LocationNames.loc_level_dlc_chesscastle_bishop: LocationData(dlc_id(56)),
+    LocationNames.loc_level_dlc_chesscastle_rook: LocationData(dlc_id(57)),
+    LocationNames.loc_level_dlc_chesscastle_queen: LocationData(dlc_id(58)),
+    LocationNames.loc_level_dlc_chesscastle_run: LocationData(dlc_id(59)),
+}
+location_level_dlc_chesscastle_dlc_chaliced: dict[str, LocationData] = {
+    LocationNames.loc_level_dlc_chesscastle_pawn_dlc_chaliced: LocationData(dlc_id(60)),
+    LocationNames.loc_level_dlc_chesscastle_knight_dlc_chaliced: LocationData(dlc_id(61)),
+    LocationNames.loc_level_dlc_chesscastle_bishop_dlc_chaliced: LocationData(dlc_id(62)),
+    LocationNames.loc_level_dlc_chesscastle_rook_dlc_chaliced: LocationData(dlc_id(63)),
+    LocationNames.loc_level_dlc_chesscastle_queen_dlc_chaliced: LocationData(dlc_id(64)),
+    LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced: LocationData(dlc_id(65)),
 }
 
 location_level_dlc_special: dict[str, LocationData] = {
-    #LocationNames.loc_level_dlc_graveyard: LocationData(dlc_id(51)),
+    #LocationNames.loc_level_dlc_graveyard: LocationData(dlc_id(66)),
 }
 
 # Shop Locations
@@ -321,11 +340,11 @@ location_shop: dict[str, LocationData] = {
     LocationNames.loc_shop_charm6: LocationData(id(111)),
 }
 location_shop_dlc: dict[str, LocationData] = {
-    LocationNames.loc_shop_dlc_weapon6: LocationData(dlc_id(52)),
-    LocationNames.loc_shop_dlc_weapon7: LocationData(dlc_id(53)),
-    LocationNames.loc_shop_dlc_weapon8: LocationData(dlc_id(54)),
-    LocationNames.loc_shop_dlc_charm7: LocationData(dlc_id(55)),
-    LocationNames.loc_shop_dlc_charm8: LocationData(dlc_id(56)),
+    LocationNames.loc_shop_dlc_weapon6: LocationData(dlc_id(67)),
+    LocationNames.loc_shop_dlc_weapon7: LocationData(dlc_id(68)),
+    LocationNames.loc_shop_dlc_weapon8: LocationData(dlc_id(69)),
+    LocationNames.loc_shop_dlc_charm7: LocationData(dlc_id(70)),
+    LocationNames.loc_shop_dlc_charm8: LocationData(dlc_id(71)),
 }
 
 # World Locations
@@ -359,14 +378,14 @@ location_level_boss_secret: dict[str, LocationData] = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(id(127)),
 }
 location_dlc_world: dict[str, LocationData] = {
-    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(57)),
-    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(58)),
+    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_id(72)),
+    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_id(73)),
 }
 location_dlc_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_dlc_boatarrival: LocationData(None),
 }
 location_dlc_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(59)),
+    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_id(74)),
 }
 
 # Special Locations
@@ -378,10 +397,10 @@ location_special: dict[str, LocationData] = {
     #LocationNames.loc_event_music: LocationData(None),
 }
 location_dlc_special: dict[str, LocationData] = {
-    LocationNames.loc_dlc_cookie: LocationData(dlc_id(60)),
+    LocationNames.loc_dlc_cookie: LocationData(dlc_id(75)),
     LocationNames.loc_event_mausoleum: LocationData(None),
     LocationNames.loc_event_dlc_cookie: LocationData(None),
-    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_id(61)),
+    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_id(76)),
 }
 
 # Goal Locations
@@ -472,6 +491,8 @@ locations_all: dict[str, LocationData] = {
     **location_level_rungun_dlc_chaliced,
     **location_level_boss_final_dlc_chaliced, # Final
     **location_level_dlc_boss_final_dlc_chaliced, # Final
+    **location_level_dicepalace_dlc_chaliced,
+    **location_level_dlc_chesscastle_dlc_chaliced,
     **locations_dlc_event_boss_chaliced,
     **location_dlc_world_quest,
     **location_dlc_special,

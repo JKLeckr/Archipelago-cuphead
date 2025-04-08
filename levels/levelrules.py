@@ -1,7 +1,7 @@
 from __future__ import annotations
 from collections.abc import Callable
 from ..names import ItemNames
-from ..wsettings import WorldSettings
+from ..wsettings import WorldSettings, ChaliceMode
 from ..rules.rulebase import RegionRule, region_rule_none, region_rule_has
 
 LevelRule = Callable[[WorldSettings], RegionRule]
@@ -105,6 +105,16 @@ def level_rule_final(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
     return level_rule_and(level_rule_parry, level_rule_dash)(settings)
+def level_rule_dlc_cookie(settings: WorldSettings) -> RegionRule:
+    if settings.dlc_chalice <= ChaliceMode.START:
+        return level_rule_none(settings)
+    return region_rule_has(ItemNames.item_charm_dlc_cookie)
+def level_rule_dlc_doublejump(settings: WorldSettings) -> RegionRule:
+    if not settings.randomize_abilities:
+        return level_rule_none(settings)
+    return region_rule_has(ItemNames.item_ability_dlc_cdoublejump)
+def level_rule_dlc_tutorial_coin(settings: WorldSettings) -> RegionRule:
+    return level_rule_and(level_rule_dash_and_parry, level_rule_dlc_doublejump)(settings)
 def level_rule_dlc_oldman(settings: WorldSettings) -> RegionRule:
     if not settings.randomize_abilities:
         return level_rule_none(settings)
