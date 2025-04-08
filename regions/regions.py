@@ -7,6 +7,7 @@ from ..locations.locations import CupheadLocation
 from ..names import LocationNames
 from .regionbase import DefType
 from .regiondefs import RegionData, RegionRule
+from ..rules import rulebase as rb
 from . import regiondefs as rd
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
@@ -94,7 +95,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
                 if target.tgt_type == DefType.LEVEL:
                     _ruleb = target.rule
                     _level = levels.get_level(world, target.name)
-                    _rulea = _level.rule(wsettings)
+                    _rulea = _level.rule(wsettings) if _level.rule else rb.region_rule_none()
                 else:
                     _ruleb = None
                     _rulea = target.rule

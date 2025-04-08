@@ -30,8 +30,9 @@ class GradeCheckMode(IntEnum):
     PACIFIST = 5
 class ChaliceMode(IntEnum):
     DISABLED = 0
-    VANILLA = 1
-    RANDOMIZED = 2
+    START = 1
+    VANILLA = 2
+    RANDOMIZED = 3
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1
@@ -126,9 +127,9 @@ class WorldSettings:
         self.boss_secret_checks = bool(options.boss_secret_checks.value)
         self.kingdice_bosssanity = bool(options.kingdice_bosssanity.value)
         self.dlc_boss_chalice_checks = bool(options.dlc_boss_chalice_checks.value)
-        self.dlc_rungun_chalice_checks = False #bool(options.dlc_rungun_chalice_checks.value)
-        self.dlc_kingdice_chalice_checks = False #bool(options.dlc_kingdice_chalice_checks.value)
-        self.dlc_chess_chalice_checks = False #bool(options.dlc_chess_chalice_checks.value)
+        self.dlc_rungun_chalice_checks = bool(options.dlc_rungun_chalice_checks.value)
+        self.dlc_kingdice_chalice_checks = bool(options.dlc_kingdice_chalice_checks.value)
+        self.dlc_chess_chalice_checks = bool(options.dlc_chess_chalice_checks.value)
         self.fourparries_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
@@ -175,7 +176,7 @@ class WorldSettings:
     def _get_filler_item_weights(self, options: CupheadOptions) -> list[int]:
         return [
             options.filler_weight_extrahealth.value,
-            options.filler_weight_superrecharge.value,
+            options.filler_weight_supercharge.value,
             options.filler_weight_fastfire.value,
         ]
 

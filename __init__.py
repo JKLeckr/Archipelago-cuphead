@@ -8,7 +8,7 @@ from worlds.AutoWorld import World, WebWorld
 from .rules import rules
 from .regions import regions
 from .names import ItemNames, LocationNames
-from .options import options
+from .options import options, presets
 from .options.options import CupheadOptions
 from .wsettings import WorldSettings
 from .items import items, itemdefs as idef
@@ -35,7 +35,7 @@ class CupheadWebWorld(WebWorld):
     )
     tutorials = [setup_en]
     option_groups = options.cuphead_option_groups
-    #options_presets =
+    options_presets = presets.option_presets
 
 class CupheadSettings(settings.Group):
     class LogOptionOverrides(settings.Bool):
@@ -132,16 +132,8 @@ class CupheadWorld(World):
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_option(_options.boss_grade_checks, 3, "Expert Off")
 
-    def sanitize_dlc_options(self) -> None:
+    def sanitize_dlc_chalice_options(self) -> None:
         _options = self.options
-        if not _options.use_dlc.value:
-            DLC_REASON = "DLC Off"
-            # Sanitize mode
-            if _options.mode.value>2:
-                self.override_option(_options.mode, self.random.randint(0,2), DLC_REASON)
-            # Sanitize start_weapon
-            if _options.start_weapon.value>5:
-                self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
         if _options.dlc_chalice.value == 0:
             CHALICE_REASON = "Chalice Off"
             if _options.dlc_boss_chalice_checks.value:
@@ -154,6 +146,22 @@ class CupheadWorld(World):
                 self.override_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
             if _options.dlc_cactusgirl_quest.value:
                 self.override_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON)
+        CI_SEPARATE_ABILITIES_B = 4
+        if (_options.dlc_chalice_items_separate.value & CI_SEPARATE_ABILITIES_B)>0 and not _options.randomize_abilities:
+            _new_value = _options.dlc_chalice_items_separate.value & ~CI_SEPARATE_ABILITIES_B
+            self.override_option(_options.dlc_chalice_items_separate, _new_value, "Randomize Abilities Off")
+
+    def sanitize_dlc_options(self) -> None:
+        _options = self.options
+        if not _options.use_dlc.value:
+            DLC_REASON = "DLC Off"
+            # Sanitize mode
+            if _options.mode.value>2:
+                self.override_option(_options.mode, self.random.randint(0,2), DLC_REASON)
+            # Sanitize start_weapon
+            if _options.start_weapon.value>5:
+                self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
+        self.sanitize_dlc_chalice_options()
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.

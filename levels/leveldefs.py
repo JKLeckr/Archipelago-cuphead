@@ -230,33 +230,42 @@ level_dlc_boss_final: dict[str, LevelData] = {
     ], lr.level_rule_final),
 }
 level_dicepalace_boss = {
-    LocationNames.level_dicepalace_boss_booze: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_booze,]
-    ),
-    LocationNames.level_dicepalace_boss_chips: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_chips,]
-    ),
-    LocationNames.level_dicepalace_boss_cigar: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_cigar,]
-    ),
-    LocationNames.level_dicepalace_boss_domino: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_domino,]
-    ),
-    LocationNames.level_dicepalace_boss_rabbit: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_rabbit,]
-    ),
-    LocationNames.level_dicepalace_boss_plane_horse: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_plane_horse,]
-    ),
-    LocationNames.level_dicepalace_boss_roulette: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_roulette,]
-    ),
-    LocationNames.level_dicepalace_boss_eightball: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_eightball,]
-    ),
-    LocationNames.level_dicepalace_boss_plane_memory: LevelData(
-        LocationNames.level_boss_kingdice, [LocationNames.loc_level_dicepalace_boss_plane_memory,]
-    ),
+    LocationNames.level_dicepalace_boss_booze: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_booze,
+        LocationNames.loc_level_dicepalace_boss_booze_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_chips: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_chips,
+        LocationNames.loc_level_dicepalace_boss_chips_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_cigar: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_cigar,
+        LocationNames.loc_level_dicepalace_boss_cigar_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_domino: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_domino,
+        LocationNames.loc_level_dicepalace_boss_domino_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_rabbit: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_rabbit,
+        LocationNames.loc_level_dicepalace_boss_rabbit_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_plane_horse: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_plane_horse,
+        LocationNames.loc_level_dicepalace_boss_plane_horse_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_roulette: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_roulette,
+        LocationNames.loc_level_dicepalace_boss_roulette_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_eightball: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_eightball,
+        LocationNames.loc_level_dicepalace_boss_eightball_dlc_chaliced,
+    ]),
+    LocationNames.level_dicepalace_boss_plane_memory: LevelData(LocationNames.level_boss_kingdice, [
+        LocationNames.loc_level_dicepalace_boss_plane_memory,
+        LocationNames.loc_level_dicepalace_boss_plane_memory_dlc_chaliced,
+    ]),
 }
 level_rungun: dict[str, LevelData] = {
     LocationNames.level_rungun_forest: LevelData(LocationNames.world_inkwell_1, [
@@ -350,24 +359,30 @@ level_mausoleum: dict[str, LevelData] = {
     ),
 }
 level_dlc_chesscastle_boss: dict[str, LevelData] = {
-    LocationNames.level_dlc_chesscastle_pawn: LevelData(
-        LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_pawn,], lr.level_rule_parry
-    ),
-    LocationNames.level_dlc_chesscastle_knight: LevelData(
-        LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_knight,], lr.level_rule_parry
-    ),
-    LocationNames.level_dlc_chesscastle_bishop: LevelData(
-        LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_bishop,], lr.level_rule_parry
-    ),
-    LocationNames.level_dlc_chesscastle_rook: LevelData(
-        LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_rook,], lr.level_rule_parry
-    ),
-    LocationNames.level_dlc_chesscastle_queen: LevelData(
-        LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_queen,], lr.level_rule_parry
-    ),
-    LocationNames.level_dlc_chesscastle_run: LevelData(
-        LocationNames.level_dlc_chesscastle, [LocationNames.loc_level_dlc_chesscastle_run,], lr.level_rule_parry
-    ),
+    LocationNames.level_dlc_chesscastle_pawn: LevelData(LocationNames.level_dlc_chesscastle, [
+        LocationNames.loc_level_dlc_chesscastle_pawn,
+        LocationNames.loc_level_dlc_chesscastle_pawn_dlc_chaliced,
+    ], lr.level_rule_parry),
+    LocationNames.level_dlc_chesscastle_knight: LevelData(LocationNames.level_dlc_chesscastle, [
+        LocationNames.loc_level_dlc_chesscastle_knight,
+        LocationNames.loc_level_dlc_chesscastle_knight_dlc_chaliced,
+    ], lr.level_rule_parry),
+    LocationNames.level_dlc_chesscastle_bishop: LevelData(LocationNames.level_dlc_chesscastle, [
+        LocationNames.loc_level_dlc_chesscastle_bishop,
+        LocationNames.loc_level_dlc_chesscastle_bishop_dlc_chaliced,
+    ], lr.level_rule_parry),
+    LocationNames.level_dlc_chesscastle_rook: LevelData(LocationNames.level_dlc_chesscastle, [
+        LocationNames.loc_level_dlc_chesscastle_rook,
+        LocationNames.loc_level_dlc_chesscastle_rook_dlc_chaliced,
+    ], lr.level_rule_parry),
+    LocationNames.level_dlc_chesscastle_queen: LevelData(LocationNames.level_dlc_chesscastle, [
+        LocationNames.loc_level_dlc_chesscastle_queen,
+        LocationNames.loc_level_dlc_chesscastle_queen_dlc_chaliced,
+    ], lr.level_rule_parry),
+    LocationNames.level_dlc_chesscastle_run: LevelData(LocationNames.level_dlc_chesscastle, [
+        LocationNames.loc_level_dlc_chesscastle_run,
+        LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced,
+    ], lr.level_rule_parry),
 }
 level_special: dict[str, LevelData] = {
     LocationNames.level_tutorial: LevelData(
