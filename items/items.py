@@ -9,7 +9,7 @@ from ..wsettings import WorldSettings, ItemGroups, WeaponExMode, ChaliceMode, Cu
 from ..locations import locationdefs as ldef
 from ..locations.locationbase import LocationData
 from .itembase import ItemData
-from . import itembase, itemdefs as idef
+from . import weapons, itemdefs as idef
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -58,7 +58,7 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
             change_item_type(items_ref, w, ItemClassification.progression)
 
 def setup_weapons(items_ref: dict[str, ItemData], settings: WorldSettings):
-    for weapon in itembase.get_weapon_dict(settings, settings.use_dlc).values():
+    for weapon in weapons.get_weapon_dict(settings, settings.use_dlc).values():
         items_ref[weapon] = idef.items_all[weapon]
     if settings.randomize_weapon_ex:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
@@ -270,25 +270,25 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
     return (total_single_coins, total_double_coins, total_triple_coins)
 
 def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
-    weapons: list[str] = []
-    _weapon_dict = itembase.get_weapon_dict(world.wsettings)
+    _weapons: list[str] = []
+    _weapon_dict = weapons.get_weapon_dict(world.wsettings)
 
     # Starter weapon
     if world.wsettings.randomize_weapon_ex > 0:
-        weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
+        _weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
-            weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
+            _weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
     else:
-        weapons = [x for x in set(idef.item_weapons.keys()) if x not in precollected_item_names]
+        _weapons = [x for x in set(idef.item_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
-            weapons.extend([x for x in set(idef.item_dlc_weapons.keys()) if x not in precollected_item_names])
+            _weapons.extend([x for x in set(idef.item_dlc_weapons.keys()) if x not in precollected_item_names])
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
-    if start_weapon in weapons and world.wsettings.randomize_weapon_ex != WeaponExMode.RANDOMIZED:
+    if start_weapon in _weapons and world.wsettings.randomize_weapon_ex != WeaponExMode.RANDOMIZED:
         #world.multiworld.push_precollected(create_item(start_weapon, world.player))
-        weapons.remove(start_weapon)
+        _weapons.remove(start_weapon)
 
-    return weapons
+    return _weapons
 
 def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str],
                  coin_items: tuple[str, str, str]) -> list[Item]:
