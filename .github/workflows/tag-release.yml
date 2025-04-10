@@ -8,23 +8,8 @@ on:
       - '*.*.*'
 
 jobs:
-  create-release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set Env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          draft: true
-          prerelease: true
-          name: Preview (${{ env.RELEASE_VERSION }})
-          token: ${{ secrets.AP_TOKEN }}
-
-  build-release:
-    name: Build and Upload Release
+  create-build-release:
+    name: Create, Build, and Upload Release
     runs-on: ubuntu-latest
     steps:
       - name: Set Env
@@ -37,11 +22,13 @@ jobs:
 
       - name: Clean project directory
         run: |
+          # Move examples dir out as it is not needed in the apworld
+          mv examples ..
           # Remove unnecessary files and directories
           find . -type d -name "_pycache_" -exec rm -rf {} \;
           find . -type d -name ".ruff_cache" -exec rm -rf {} \;
           rm -rf .git .github
-          rm -rf extras examples
+          rm -rf extras
           rm -f ruff.toml
 
       - name: Build ZIP package
@@ -50,9 +37,10 @@ jobs:
           mv Archipelago-cuphead cuphead
           zip -r cuphead.zip cuphead -x "*.git*" "*.github*" "*_pycache_*" "examples/" "*.ruff_cache*"
           mv cuphead Archipelago-cuphead
-          mv cuphead.zip Archipelago-cuphead/cuphead.apworld
+          mv cuphead.zip cuphead.apworld
 
       - name: Calculate SHA256 checksum
+        working-directory: ../
         run: |
           sha256sum cuphead.apworld > cuphead.apworld.sha256
 
@@ -64,6 +52,6 @@ jobs:
           name: Preview (${{ env.RELEASE_VERSION }})
           token: ${{ secrets.AP_TOKEN }}
           files: |
-            cuphead.apworld
-            cuphead.apworld.sha256
-            examples/*
+            ../cuphead.apworld
+            ../cuphead.apworld.sha256
+            ../examples/*
