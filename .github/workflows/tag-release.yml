@@ -48,7 +48,7 @@ jobs:
         with:
           draft: true
           prerelease: true
-          name: Preview (${{ env.RELEASE_VERSION }})
+          name: Cuphead APWorld ${{ env.RELEASE_VERSION }}
           token: ${{ secrets.AP_TOKEN }}
           files: |
             ../cuphead.apworld
