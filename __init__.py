@@ -50,7 +50,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "preview03d"
+    APWORLD_VERSION: str = "preview03e"
 
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
@@ -151,9 +151,8 @@ class CupheadWorld(World):
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
         if self.wsettings.randomize_abilities:
+            self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
             self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
-            if not self.wsettings.freemove_isles:
-                self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
 
     @override
     def generate_early(self) -> None:

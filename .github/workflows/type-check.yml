@@ -42,6 +42,6 @@ jobs:
           python -m pip install --upgrade pip pyright==1.1.398
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
 
-      - name: "Run ruff"
+      - name: "Run pyright"
         working-directory: Archipelago/worlds/cuphead
-        run: python .github/pyright_check.py
+        run: pyright -p .github/pyright-config.json

@@ -44,4 +44,4 @@ jobs:
 
       - name: "Run ruff"
         working-directory: Archipelago/worlds/cuphead
-        run: python .github/ruff_check.py
+        run: ruff --config ./ruff.toml check

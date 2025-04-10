@@ -232,9 +232,14 @@ def setup_weapons(world: CupheadWorld, precollected_item_names: list[str]) -> li
     _weapon_dict = get_weapon_dict(world.wsettings)
 
     # Starter weapon
-    weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
-    if world.use_dlc:
-        weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
+    if world.wsettings.randomize_weapon_ex:
+        weapons = [x for x in set(items.item_p_weapons.keys()) if x not in precollected_item_names]
+        if world.use_dlc:
+            weapons.extend([x for x in set(items.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
+    else:
+        weapons = [x for x in set(items.item_weapons.keys()) if x not in precollected_item_names]
+        if world.use_dlc:
+            weapons.extend([x for x in set(items.item_dlc_weapons.keys()) if x not in precollected_item_names])
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
     if start_weapon in weapons:

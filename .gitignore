@@ -110,7 +110,6 @@ shell.nix
 /*.bat
 
 # Ruff
-/ruff.toml
 .ruff_cache/
 
 # Spyder project settings

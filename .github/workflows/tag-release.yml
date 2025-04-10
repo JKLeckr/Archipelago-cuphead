@@ -41,6 +41,7 @@ jobs:
           find . -type d -name "_pycache_" -exec rm -rf {} \;
           find . -type d -name ".ruff_cache" -exec rm -rf {} \;
           rm -rf .git .github
+          rm -f ruff.toml
 
       - name: Build ZIP package
         working-directory: ../
