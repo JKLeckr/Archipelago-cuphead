@@ -265,14 +265,14 @@ class CupheadWorld(World):
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if self.settings.write_overrides_to_spoiler and len(self.option_overrides)>0:
-            spoiler_handle.write(f"\n{self.player} Option Changes:\n\n")
+            spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
             spoiler_handle.write('\n'.join([x for x in self.option_overrides]) + '\n')
         if self.level_shuffle and len(self.level_shuffle_map)>0:
-            spoiler_handle.write(f"\n{self.player} Level Shuffle Map:\n\n")
+            spoiler_handle.write(f"\n{self.player_name} Level Shuffle Map:\n\n")
             spoiler_handle.write(
                 '\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n'
             )
-        spoiler_handle.write(f"\n{self.player} Shop Items:\n\n")
+        spoiler_handle.write(f"\n{self.player_name} Shop Items:\n\n")
         _nl = "\n"
         spoiler_handle.write("\n".join([
             f"{x}:\n{self._gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
