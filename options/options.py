@@ -1,10 +1,20 @@
 from typing import ClassVar, Protocol
 from dataclasses import dataclass
-from Options import Toggle, DefaultOnToggle, Range, Choice, PerGameCommonOptions, OptionGroup, Visibility
+from Options import Toggle, DefaultOnToggle, Range, Choice, FreeText, PerGameCommonOptions, OptionGroup, Visibility
 from .optionbase import ChoiceEx, Weight
 
 class CupheadOption(Protocol):
     name: ClassVar[str]
+
+class Version(FreeText):
+    """
+    Internal. Set during generation.
+    The version of the APWorld
+    """
+    name = "version"
+    display_name = name
+    visibility = Visibility.spoiler
+    default = "MISSINGVER"
 
 class DeliciousLastCourse(Toggle):
     """
@@ -530,6 +540,7 @@ class DeathLink(Toggle):
 
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
+    version: Version
     use_dlc: DeliciousLastCourse
     mode: GameMode
     expert_mode: ExpertMode
