@@ -372,12 +372,12 @@ class DlcCurseMode(Choice):
 
     Modes:
     - Off: Broken Relic is removed from the game
-    - Normal: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
+    - Vanilla: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
     """
     name = "dlc_curse_mode"
     display_name = "[DLC] Curse Mode"
     option_off = 0
-    option_normal = 1
+    option_vanilla = 1
     #option_reverse = 2
     #option_always_on = 3
     #option_always_on_r = 4

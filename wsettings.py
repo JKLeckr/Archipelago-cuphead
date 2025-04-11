@@ -40,7 +40,7 @@ class ChessCastleMode(IntEnum):
     INCLUDE_ALL = 3
 class CurseMode(IntEnum):
     OFF = 0
-    NORMAL = 1
+    VANILLA = 1
     REVERSE = 2
     ALWAYS_ON = 3
     ALWAYS_ON_R = 4
@@ -153,7 +153,7 @@ class WorldSettings:
         self.dlc_randomize_boat = True
         self.dlc_requires_mausoleum = True
         self.dlc_chalice_items_separate = ItemGroups.NONE
-        self.dlc_curse_mode = CurseMode.NORMAL
+        self.dlc_curse_mode = CurseMode.VANILLA
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
 
