@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import NamedTuple, Optional
 from BaseClasses import ItemClassification
 from .names import ItemNames
-from .wsettings import WorldSettings, ItemGroups
+from .wsettings import WorldSettings, ItemGroups, WeaponExMode
 from . import itembase
 
 class ItemData(NamedTuple):
@@ -264,10 +264,14 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
             change_item_type(items_ref, w, ItemClassification.progression)
 
 def setup_weapons(items_ref: dict[str, ItemData], settings: WorldSettings):
-    for weapon in itembase.get_weapon_dict(settings, settings.use_dlc).values():
+    _weapon_dict = itembase.get_weapon_dict(settings, settings.use_dlc)
+    for weapon in _weapon_dict.values():
         items_ref[weapon] = items_all[weapon]
-    if settings.randomize_weapon_ex:
+    if settings.randomize_weapon_ex > 0:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+    if settings.randomize_weapon_ex == WeaponExMode.RANDOMIZED:
+        _start_weapon = _weapon_dict[settings.start_weapon]
+        change_item_quantity(items_ref, _start_weapon, 1)
 
 def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**items_base}
