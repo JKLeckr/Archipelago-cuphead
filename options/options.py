@@ -332,13 +332,12 @@ class DlcChaliceItemsSeparate(Choice):
     visibility = Visibility.spoiler
     option_none = 0
     option_core_items = 3
-    option_abilities = 4
-    #option_core_and_abilities = 7
-    #option_aim_abilities = 8
-    #option_core_and_aim = 11
-    #option_abilities_and_aim = 12
+    option_weapon_ex = 4
+    option_abilities = 16
+    option_aim_abilities = 32
     option_all = 255
     default = 0
+    #FIXME: Make this an OptionDict or something like that.
 
 class DlcChessCastle(Choice):
     """
