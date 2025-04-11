@@ -237,7 +237,7 @@ def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[I
     if settings.use_dlc:
         if settings.dlc_chalice == ChaliceMode.RANDOMIZED and ItemNames.item_charm_dlc_cookie not in precollected:
             items.append(create_item(ItemNames.item_charm_dlc_cookie, player))
-        if (settings.dlc_curse_mode == CurseMode.NORMAL or settings.dlc_curse_mode == CurseMode.REVERSE and \
+        if (settings.dlc_curse_mode == CurseMode.VANILLA or settings.dlc_curse_mode == CurseMode.REVERSE and \
             ItemNames.item_charm_dlc_broken_relic not in precollected):
                 items.append(create_item(ItemNames.item_charm_dlc_broken_relic, player))
 
