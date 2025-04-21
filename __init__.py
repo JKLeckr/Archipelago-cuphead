@@ -30,9 +30,6 @@ class CupheadSettings(ap_settings.Group):
     class LogOptionOverrides(ap_settings.Bool):
         """Log options that are overridden from incompatible combinations to console."""
 
-    class WriteVersionToSpoiler(ap_settings.Bool):
-        """Write the APWorld version spoiler."""
-
     class WriteOverridesToSpoiler(ap_settings.Bool):
         """Write options that are overridden from incompatible combinations to spoiler."""
 
@@ -40,7 +37,6 @@ class CupheadSettings(ap_settings.Group):
         """Log extra information to the console."""
 
     log_option_overrides: Union[LogOptionOverrides, bool] = True
-    write_version_to_spoiler: Union[WriteVersionToSpoiler, bool] = True
     write_overrides_to_spoiler: Union[WriteOverridesToSpoiler, bool] = True
     verbose: Union[LogOptionOverrides, bool] = False
 
@@ -50,7 +46,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "preview03e.1"
+    APWORLD_VERSION: str = "preview03f"
 
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
@@ -156,6 +152,8 @@ class CupheadWorld(World):
 
     @override
     def generate_early(self) -> None:
+        self.options.version.value = self.version
+
         self.resolve_random_options()
         self.sanitize_options()
 
@@ -291,8 +289,6 @@ class CupheadWorld(World):
 
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
-        if self.settings.write_version_to_spoiler:
-            spoiler_handle.write(f"\nArchipelago-cuphead {self.version}\n")
         if self.settings.write_overrides_to_spoiler and len(self.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player} Option Changes:\n\n")
             spoiler_handle.write('\n'.join([x for x in self.option_overrides]) + '\n')

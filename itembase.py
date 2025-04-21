@@ -153,7 +153,9 @@ def create_locked_items_at(
 def create_dlc_locked_items(world: CupheadWorld):
     create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
     create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
-    if world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+    if LocationNames.loc_event_dlc_goal_saltbaker in world.active_locations:
+        if not world.wsettings.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+            print("WARNING: Saltbaker Goal location created even if it shouldn't")
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
     create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, locations.locations_dlc_event_boss_chaliced)
     create_locked_items_at(
@@ -179,7 +181,9 @@ def create_locked_items(world: CupheadWorld):
         create_locked_items_at(world, ItemNames.item_event_agrade, locations.location_level_boss_final_event_agrade)
     if world.wsettings.pacifist_quest:
         create_locked_items_at(world, ItemNames.item_event_pacifist, locations.location_level_rungun_event_pacifist)
-    if world.wsettings.is_goal_used(LocationNames.loc_event_goal_devil):
+    if LocationNames.loc_event_goal_devil in world.active_locations:
+        if not world.wsettings.is_goal_used(LocationNames.loc_event_goal_devil):
+            print("WARNING: Devil Goal location created even if it shouldn't")
         create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
     if world.use_dlc:
