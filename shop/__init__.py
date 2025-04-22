@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import NamedTuple
-from .names import LocationNames
-from .wsettings import WorldSettings
+from ..names import LocationNames
+from ..wsettings import WorldSettings
 
 shop_weapons = [
     LocationNames.loc_shop_weapon1,

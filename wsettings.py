@@ -1,6 +1,7 @@
 from __future__ import annotations
-from enum import IntEnum, IntFlag
+from enum import IntEnum
 from .names import LocationNames
+from .items.itembase import ItemGroups
 from .options.options import CupheadOptions
 
 class GameMode(IntEnum):
@@ -48,17 +49,6 @@ class CurseMode(IntEnum):
     ALWAYS_ON_2 = 6
     ALWAYS_ON_3 = 7
     ALWAYS_ON_4 = 8
-class ItemGroups(IntFlag):
-    NONE = 0
-    ESSENTIAL = 1
-    SUPER = 2
-    CORE_ITEMS = 3
-    ABILITIES = 4
-    CORE_AND_ABILITIES = 7
-    AIM_ABILITIES = 8
-    CORE_AND_AIM = 11
-    ABILITIES_AND_AIM = 12
-    ALL = 255
 
 # These are settings stored and accessed by other classes
 class WorldSettings:

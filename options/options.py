@@ -1,6 +1,7 @@
 from typing import ClassVar, Protocol
 from dataclasses import dataclass
-from Options import Toggle, DefaultOnToggle, Range, Choice, FreeText, PerGameCommonOptions, OptionGroup, Visibility
+from Options import Toggle, DefaultOnToggle, Range, Choice, OptionSet, \
+    FreeText, PerGameCommonOptions, OptionGroup, Visibility
 from .optionbase import ChoiceEx, Weight
 
 class CupheadOption(Protocol):
@@ -309,11 +310,12 @@ class DlcChaliceEnabled(Choice):
     name = "dlc_chalice"
     display_name = "[DLC] Ms. Chalice"
     option_disabled = 0
-    option_vanilla = 1
-    option_randomized = 2
+    option_start = 1
+    option_vanilla = 2
+    option_randomized = 3
     default = 0
 
-class DlcChaliceItemsSeparate(Choice):
+class DlcChaliceItemsSeparate(OptionSet):
     """
     ---NOT YET IMPLEMENTED---
     -DLC ONLY-
@@ -329,14 +331,13 @@ class DlcChaliceItemsSeparate(Choice):
     """
     name = "dlc_chalice_items_separate"
     display_name = "[DLC] Chalice Items Separate"
-    visibility = Visibility.spoiler
+    #visibility = Visibility.spoiler
     option_none = 0
     option_core_items = 3
     option_weapon_ex = 4
     option_abilities = 16
     option_aim_abilities = 32
     option_all = 255
-    default = 0
     #FIXME: Make this an OptionDict or something like that.
 
 class DlcChessCastle(Choice):

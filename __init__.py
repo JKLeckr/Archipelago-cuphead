@@ -152,9 +152,9 @@ class CupheadWorld(World):
             if _options.dlc_cactusgirl_quest.value:
                 self.override_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
         CI_SEPARATE_ABILITIES_B = 4
-        if (_options.dlc_chalice_items_separate.value & CI_SEPARATE_ABILITIES_B)>0 and not _options.randomize_abilities:
-            _new_value = _options.dlc_chalice_items_separate.value & ~CI_SEPARATE_ABILITIES_B
-            self.override_option(_options.dlc_chalice_items_separate, _new_value, "Randomize Abilities Off", quiet)
+        #if (_options.dlc_chalice_items_separate.value & CI_SEPARATE_ABILITIES_B)>0 and not _options.randomize_abilities:
+        #    _new_value = _options.dlc_chalice_items_separate.value & ~CI_SEPARATE_ABILITIES_B
+        #    self.override_option(_options.dlc_chalice_items_separate, _new_value, "Randomize Abilities Off", quiet)
 
     def sanitize_dlc_options(self) -> None:
         _options = self.options
