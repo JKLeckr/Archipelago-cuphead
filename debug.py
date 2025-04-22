@@ -5,6 +5,8 @@ from typing import TypeVar
 from worlds.AutoWorld import World
 from BaseClasses import Region
 from .auxiliary import format_list
+from .items.itemdefs import items_all
+from .locations.locationdefs import locations_all
 
 T = TypeVar("T")
 
@@ -31,6 +33,18 @@ def print_locations(world: World) -> None:
     locations = world.multiworld.get_locations(world.player)
     for loc in locations:
         print(f"{loc.name}: {loc.access_rule}")
+
+def print_all_items():
+    print("-- Items --")
+    for item, data in items_all.items():
+        print(f"{item}: {data.id} | {data.item_type}")
+    print("")
+
+def print_all_locations():
+    print("-- Locations --")
+    for item, data in locations_all.items():
+        print(f"{item}: {data.id} | {data.progress_type}")
+    print("")
 
 def visualize_regions(root_region: Region, highlight_regions: set[Region] | None, file_name: str) -> None:
     Utils.visualize_regions(

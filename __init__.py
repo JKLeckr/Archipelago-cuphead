@@ -20,7 +20,7 @@ from .levels.leveldefs import level_map
 from .levels.levelbase import LevelData
 from .shop import ShopData
 from . import shop
-from . import debug # type: ignore
+#from . import debug as dbg
 import settings
 
 class CupheadWebWorld(WebWorld):
@@ -47,9 +47,13 @@ class CupheadSettings(settings.Group):
     class Verbose(settings.Bool):
         """Log extra information to the console."""
 
+    class Debug:
+        """Debug mode."""
+
     log_option_overrides: Union[LogOptionOverrides, bool] = True # type: ignore
     write_overrides_to_spoiler: Union[WriteOverridesToSpoiler, bool] = True # type: ignore
     verbose: Union[LogOptionOverrides, bool] = False # type: ignore
+    debug: Union[Debug, int] = 0 # type: ignore
 
 class CupheadWorld(World):
     """
@@ -133,7 +137,7 @@ class CupheadWorld(World):
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_option(_options.boss_grade_checks, 3, "Expert Off")
 
-    def sanitize_dlc_chalice_options(self) -> None:
+    def sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
         _options = self.options
         if _options.dlc_chalice.value == 0:
             CHALICE_REASON = "Chalice Off"
@@ -146,15 +150,16 @@ class CupheadWorld(World):
             if _options.dlc_chess_chalice_checks.value:
                 self.override_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
             if _options.dlc_cactusgirl_quest.value:
-                self.override_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON)
+                self.override_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
         CI_SEPARATE_ABILITIES_B = 4
         if (_options.dlc_chalice_items_separate.value & CI_SEPARATE_ABILITIES_B)>0 and not _options.randomize_abilities:
             _new_value = _options.dlc_chalice_items_separate.value & ~CI_SEPARATE_ABILITIES_B
-            self.override_option(_options.dlc_chalice_items_separate, _new_value, "Randomize Abilities Off")
+            self.override_option(_options.dlc_chalice_items_separate, _new_value, "Randomize Abilities Off", quiet)
 
     def sanitize_dlc_options(self) -> None:
         _options = self.options
-        if not _options.use_dlc.value:
+        use_dlc = _options.use_dlc.value
+        if not use_dlc:
             DLC_REASON = "DLC Off"
             # Sanitize mode
             if _options.mode.value>2:
@@ -162,7 +167,7 @@ class CupheadWorld(World):
             # Sanitize start_weapon
             if _options.start_weapon.value>5:
                 self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
-        self.sanitize_dlc_chalice_options()
+        self.sanitize_dlc_chalice_options(not use_dlc)
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
@@ -260,9 +265,6 @@ class CupheadWorld(World):
     def create_items(self) -> None:
         items.create_items(self)
 
-    def _gen_shop_list(self, y: list[str]) -> str:
-        return "\n".join([f" {z}" for z in y])
-
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if self.settings.write_overrides_to_spoiler and len(self.option_overrides)>0:
@@ -273,10 +275,14 @@ class CupheadWorld(World):
             spoiler_handle.write(
                 '\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n'
             )
+
+        def _gen_shop_list(y: list[str]) -> str:
+            return "\n".join([f" {z}" for z in y])
+
         spoiler_handle.write(f"\n{self.player_name} Shop Items:\n\n")
         _nl = "\n"
         spoiler_handle.write("\n".join([
-            f"{x}:\n{self._gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
+            f"{x}:\n{_gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
                 if (x != LocationNames.shop_set4 or self.use_dlc)
         ]))
 
