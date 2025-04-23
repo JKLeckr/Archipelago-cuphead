@@ -1,7 +1,8 @@
 from __future__ import annotations
 from collections.abc import Callable
 from ..names import ItemNames
-from ..wsettings import WorldSettings, ChaliceMode
+from ..wsettings import WorldSettings
+from ..enums import ChaliceMode
 from ..rules.rulebase import RegionRule, region_rule_none, region_rule_has
 
 LevelRule = Callable[[WorldSettings], RegionRule]

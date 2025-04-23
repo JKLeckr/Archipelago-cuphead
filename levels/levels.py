@@ -3,7 +3,8 @@ import typing
 from random import Random
 from ..names import LocationNames
 from ..locations.locations import LocationData
-from ..wsettings import WorldSettings, LevelShuffleMode
+from ..wsettings import WorldSettings
+from ..enums import LevelShuffleMode
 from ..auxiliary import scrub_list
 from .levelbase import LevelData
 from . import leveldefs as ldef

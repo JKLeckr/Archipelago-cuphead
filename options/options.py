@@ -331,14 +331,10 @@ class DlcChaliceItemsSeparate(OptionSet):
     """
     name = "dlc_chalice_items_separate"
     display_name = "[DLC] Chalice Items Separate"
-    #visibility = Visibility.spoiler
-    option_none = 0
-    option_core_items = 3
-    option_weapon_ex = 4
-    option_abilities = 16
-    option_aim_abilities = 32
-    option_all = 255
-    #FIXME: Make this an OptionDict or something like that.
+    #visibility = Visibility.complex_ui
+    visibility = Visibility.spoiler
+    valid_keys = frozenset({"core_items", "weapon_ex", "abilities"})
+    valid_keys_casefold = True
 
 class DlcChessCastle(Choice):
     """

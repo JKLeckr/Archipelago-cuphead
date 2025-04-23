@@ -3,13 +3,13 @@ from typing import Union # type: ignore
 from typing import TextIO, Any
 from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
-from Options import NumericOption
 from worlds.AutoWorld import World, WebWorld
 from .rules import rules
 from .regions import regions
 from .names import ItemNames, LocationNames
 from .options import options, presets
 from .options.options import CupheadOptions
+from .options.optionsanitizer import OptionSanitizer
 from .wsettings import WorldSettings
 from .items import items, itemdefs as idef
 from .items.itembase import ItemData
@@ -89,19 +89,6 @@ class CupheadWorld(World):
 
     level_shuffle_map: dict[int, int] = {}
 
-    option_overrides: list[str] = []
-
-    def override_option(self, option: NumericOption, value: int, reason: str | None = None, quiet: bool = False):
-        string = f"{option.current_option_name}: \"{option.value}\" -> \"{value}\"."
-        if reason:
-            string += " Reason: {reason}"
-        self.option_overrides.append(string)
-        if self.settings.log_option_overrides and not quiet:
-            msg = f"Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\"."
-            msg_reason = f"Reason: {reason}."
-            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
-        option.value = value
-
     def resolve_random_options(self) -> None:
         _options = self.options
 
@@ -113,62 +100,6 @@ class CupheadWorld(World):
         if _options.boss_grade_checks.value==-1:
             _options.boss_grade_checks.value = self.random.randint(0,4 if _options.use_dlc else 3)
 
-    def sanitize_options(self) -> None:
-        _options = self.options
-
-        CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements"
-
-        # Sanitize settings
-        if _options.contract_goal_requirements.value < _options.contract_requirements.value:
-            self.override_option(
-                _options.contract_goal_requirements,
-                _options.contract_requirements.value,
-                CONTRACT_GOAL_REASON
-            )
-        if (_options.use_dlc and \
-            _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value):
-            self.override_option(
-                _options.dlc_ingredient_goal_requirements,
-                _options.dlc_ingredient_requirements.value,
-                CONTRACT_GOAL_REASON
-            )
-        self.sanitize_dlc_options()
-        # Sanitize grade checks
-        if not _options.expert_mode and _options.boss_grade_checks.value>3:
-            self.override_option(_options.boss_grade_checks, 3, "Expert Off")
-
-    def sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
-        _options = self.options
-        if _options.dlc_chalice.value == 0:
-            CHALICE_REASON = "Chalice Off"
-            if _options.dlc_boss_chalice_checks.value:
-                self.override_option(_options.dlc_boss_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_rungun_chalice_checks.value:
-                self.override_option(_options.dlc_rungun_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_kingdice_chalice_checks.value:
-                self.override_option(_options.dlc_kingdice_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_chess_chalice_checks.value:
-                self.override_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_cactusgirl_quest.value:
-                self.override_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
-        CI_SEPARATE_ABILITIES_B = 4
-        #if (_options.dlc_chalice_items_separate.value & CI_SEPARATE_ABILITIES_B)>0 and not _options.randomize_abilities:
-        #    _new_value = _options.dlc_chalice_items_separate.value & ~CI_SEPARATE_ABILITIES_B
-        #    self.override_option(_options.dlc_chalice_items_separate, _new_value, "Randomize Abilities Off", quiet)
-
-    def sanitize_dlc_options(self) -> None:
-        _options = self.options
-        use_dlc = _options.use_dlc.value
-        if not use_dlc:
-            DLC_REASON = "DLC Off"
-            # Sanitize mode
-            if _options.mode.value>2:
-                self.override_option(_options.mode, self.random.randint(0,2), DLC_REASON)
-            # Sanitize start_weapon
-            if _options.start_weapon.value>5:
-                self.override_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
-        self.sanitize_dlc_chalice_options(not use_dlc)
-
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
         if self.wsettings.randomize_abilities:
@@ -179,8 +110,12 @@ class CupheadWorld(World):
     def generate_early(self) -> None:
         self.options.version.value = self.version
 
+        self.option_sanitizer = OptionSanitizer(
+            self.player, self.options, self.random, bool(self.settings.log_option_overrides)
+        )
+
         self.resolve_random_options()
-        self.sanitize_options()
+        self.option_sanitizer.sanitize_options()
 
         # Settings (See Settings.py)
         self.wsettings = WorldSettings(self.options)
@@ -267,9 +202,9 @@ class CupheadWorld(World):
 
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
-        if self.settings.write_overrides_to_spoiler and len(self.option_overrides)>0:
+        if self.settings.write_overrides_to_spoiler and len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
-            spoiler_handle.write('\n'.join([x for x in self.option_overrides]) + '\n')
+            spoiler_handle.write('\n'.join([x for x in self.option_sanitizer.option_overrides]) + '\n')
         if self.level_shuffle and len(self.level_shuffle_map)>0:
             spoiler_handle.write(f"\n{self.player_name} Level Shuffle Map:\n\n")
             spoiler_handle.write(

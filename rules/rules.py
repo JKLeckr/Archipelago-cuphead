@@ -8,7 +8,7 @@ from ..items import itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
 from .rulebase import Rule
-from ..wsettings import GameMode
+from ..enums import GameMode
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 

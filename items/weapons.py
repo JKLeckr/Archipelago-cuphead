@@ -1,5 +1,6 @@
 from ..names import ItemNames
-from ..wsettings import WorldSettings, WeaponExMode
+from ..enums import WeaponExMode
+from ..wsettings import WorldSettings
 
 weapon_dict: dict[int,str] = {
     0: ItemNames.item_weapon_peashooter,

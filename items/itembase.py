@@ -1,19 +1,6 @@
 from __future__ import annotations
 from typing import NamedTuple
-from enum import IntFlag
 from BaseClasses import ItemClassification
-
-class ItemGroups(IntFlag):
-    NONE = 0
-    ESSENTIAL = 1
-    SUPER = 2
-    CORE_ITEMS = 3
-    ABILITIES = 4
-    CORE_AND_ABILITIES = 7
-    AIM_ABILITIES = 8
-    CORE_AND_AIM = 11
-    ABILITIES_AND_AIM = 12
-    ALL = 255
 
 class ItemData(NamedTuple):
     id: int | None

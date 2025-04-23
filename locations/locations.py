@@ -1,8 +1,9 @@
 from __future__ import annotations
 from BaseClasses import Location, Region, LocationProgressType
 from .locationbase import LocationData
+from ..enums import GameMode, GradeCheckMode, ChessCastleMode
 from ..names import LocationNames
-from ..wsettings import WorldSettings, GameMode, GradeCheckMode, ChessCastleMode
+from ..wsettings import WorldSettings
 from . import locationdefs as ld
 
 class CupheadLocation(Location):

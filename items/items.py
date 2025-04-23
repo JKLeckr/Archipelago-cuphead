@@ -5,7 +5,8 @@ from random import Random
 from BaseClasses import Item, ItemClassification
 from ..auxiliary import count_in_list
 from ..names import ItemNames, LocationNames
-from ..wsettings import WorldSettings, ItemGroups, WeaponExMode, ChaliceMode, CurseMode
+from ..enums import ItemGroups, WeaponExMode, ChaliceMode, CurseMode
+from ..wsettings import WorldSettings
 from ..locations import locationdefs as ldef
 from ..locations.locationbase import LocationData
 from .itembase import ItemData
