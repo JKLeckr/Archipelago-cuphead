@@ -1,6 +1,6 @@
 from __future__ import annotations
 from .names import LocationNames
-from .options.options import CupheadOptions
+from .options import CupheadOptions
 from . import enums as e
 
 # These are settings stored and accessed by other classes

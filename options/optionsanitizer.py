@@ -3,7 +3,7 @@ from random import Random
 from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
-from .options import CupheadOptions
+from . import CupheadOptions
 
 class OptionSanitizer:
     option_overrides: list[str] = []

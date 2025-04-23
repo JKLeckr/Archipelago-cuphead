@@ -1,7 +1,5 @@
 from . import names
 
-class ItemNames(names.ItemNames):
-    pass
+ItemNames = names.ItemNames
 
-class LocationNames(names.LocationNames):
-    pass
+LocationNames = names.LocationNames

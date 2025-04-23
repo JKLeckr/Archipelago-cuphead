@@ -5,83 +5,14 @@ from random import Random
 from BaseClasses import Item, ItemClassification
 from ..auxiliary import count_in_list
 from ..names import ItemNames, LocationNames
-from ..enums import ItemGroups, WeaponExMode, ChaliceMode, CurseMode
+from ..enums import WeaponExMode, ChaliceMode, CurseMode
 from ..wsettings import WorldSettings
 from ..locations import locationdefs as ldef
 from ..locations.locationbase import LocationData
-from .itembase import ItemData
+from .itembase import CupheadItem, get_filler_item_name, weighted_item_choice
 from . import weapons, itemdefs as idef
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
-
-class CupheadItem(Item):
-    game: str = "Cuphead"
-
-# Setup Section
-
-def add_item(items_ref: dict[str, ItemData], item: str):
-    items_ref[item] = idef.items_all[item]
-
-def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification):
-    items_ref[item] = items_ref[item].with_item_type(item_type)
-
-def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int):
-    items_ref[item] = items_ref[item].with_quantity(quantity)
-
-def setup_dlc_items(items_ref: dict[str, ItemData], settings: WorldSettings):
-    items_ref.update(idef.items_dlc)
-    if settings.dlc_chalice>0:
-        add_item(items_ref, ItemNames.item_charm_dlc_cookie)
-        if settings.dlc_boss_chalice_checks or settings.dlc_cactusgirl_quest:
-            change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
-    if settings.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
-        items_ref.update(idef.item_dlc_chalice_essential)
-    if settings.is_dlc_chalice_items_separate(ItemGroups.SUPER):
-        items_ref.update(idef.item_dlc_chalice_super)
-    if settings.randomize_weapon_ex:
-        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
-
-def setup_abilities(items_ref: dict[str, ItemData], settings: WorldSettings):
-    items_ref.update(idef.item_abilities)
-    if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
-        items_ref.update(idef.item_dlc_chalice_abilities)
-    change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
-    if settings.boss_secret_checks:
-        change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
-
-def setup_weapon_gate(items_ref: dict[str, ItemData], settings: WorldSettings):
-    weapon_keys = {
-        **idef.item_weapons,
-        **idef.item_dlc_weapons,
-    }
-    for w in weapon_keys:
-        if w in items_ref.keys():
-            change_item_type(items_ref, w, ItemClassification.progression)
-
-def setup_weapons(items_ref: dict[str, ItemData], settings: WorldSettings):
-    for weapon in weapons.get_weapon_dict(settings, settings.use_dlc).values():
-        items_ref[weapon] = idef.items_all[weapon]
-    if settings.randomize_weapon_ex:
-        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
-
-def setup_items(settings: WorldSettings) -> dict[str, ItemData]:
-    items: dict[str, ItemData] = {**idef.items_base}
-    setup_weapons(items, settings)
-    if settings.use_dlc:
-        setup_dlc_items(items, settings)
-    if settings.weapon_gate:
-        setup_weapon_gate(items, settings)
-    if settings.randomize_abilities:
-        setup_abilities(items, settings)
-    if settings.randomize_abilities_aim:
-        items.update(idef.item_abilities_aim)
-        if settings.use_dlc and settings.is_dlc_chalice_items_separate(ItemGroups.AIM_ABILITIES):
-            items.update(idef.item_dlc_chalice_abilities_aim)
-    if settings.traps>0:
-        items.update(idef.item_trap)
-    return items
-
-# Creation Section
 
 def create_item(name: str, player: int, force_classification: ItemClassification | None = None) -> Item:
     data = idef.items_all[name]
@@ -97,28 +28,7 @@ def create_item(name: str, player: int, force_classification: ItemClassification
 
     return new_item
 
-def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> str:
-    if len(item_weights)<1:
-        raise ValueError("item_weights must not be empty!")
 
-    active_items, active_weights = zip(*item_weights, strict=True)
-
-    total_weight = sum(active_weights)
-
-    if total_weight <= 0:
-        raise ValueError("Total weight must be greater than 0!")
-
-    choice = rand.randint(1, total_weight)
-
-    culum_sum = 0
-    for i, weight in enumerate(active_weights):
-        culum_sum += weight
-        if choice <= culum_sum:
-            return active_items[i]
-    raise ValueError("Failed to choose an item from weighted_item_choice!")
-
-def get_filler_item_name(world: CupheadWorld) -> str:
-    return weighted_item_choice(world.filler_item_weights, world.random)
 
 def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Filler count: {filler_count}")

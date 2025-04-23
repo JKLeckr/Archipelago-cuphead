@@ -2,7 +2,7 @@ from typing import Any
 from collections import Counter
 from dataclasses import fields
 from Options import PerGameCommonOptions
-from ..options import options
+from .. import options
 from . import CupheadTestBase
 
 class TestOptionNames(CupheadTestBase):

@@ -2,8 +2,8 @@ from __future__ import annotations
 import typing
 from collections.abc import Collection
 from BaseClasses import MultiWorld, Region
-from ..levels import levels, leveldefs as ldef
-from ..locations.locations import CupheadLocation
+from ..levels import leveldefs as ldef, get_level, get_mapped_level_name
+from ..locations import CupheadLocation
 from ..names import LocationNames
 from .regionbase import DefType
 from .regiondefs import RegionData, RegionRule
@@ -36,9 +36,9 @@ def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) 
     locations: list[str] = []
 
     if regc.region_type == DefType.LEVEL:
-        _level_name = levels.get_mapped_level_name(world, regc.name)
+        _level_name = get_mapped_level_name(world, regc.name)
         region.name = _level_name
-        _level = levels.get_level(world, _level_name, False)
+        _level = get_level(world, _level_name, False)
         locations = _level.locations
         if regc.locations:
             locations = locations + regc.locations
@@ -94,7 +94,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
             if target.depends(wsettings):
                 if target.tgt_type == DefType.LEVEL:
                     _ruleb = target.rule
-                    _level = levels.get_level(world, target.name)
+                    _level = get_level(world, target.name)
                     _rulea = _level.rule(wsettings) if _level.rule else rb.region_rule_none()
                 else:
                     _ruleb = None

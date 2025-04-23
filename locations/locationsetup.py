@@ -1,27 +1,10 @@
 from __future__ import annotations
-from BaseClasses import Location, Region, LocationProgressType
+from BaseClasses import LocationProgressType
 from .locationbase import LocationData
 from ..enums import GameMode, GradeCheckMode, ChessCastleMode
 from ..names import LocationNames
 from ..wsettings import WorldSettings
 from . import locationdefs as ld
-
-class CupheadLocation(Location):
-    game: str = "Cuphead"
-    def __init__(
-            self,
-            player: int,
-            name: str = '',
-            id: int | None = None,
-            parent: Region | None = None,
-            event: bool = False,
-            progress_type: LocationProgressType = LocationProgressType.DEFAULT,
-            show_in_spoiler: bool = True
-        ):
-        super().__init__(player, name, id, parent)
-        self.event = event
-        self.progress_type = progress_type
-        self.show_in_spoiler = show_in_spoiler
 
 def add_location(locations_ref: dict[str,LocationData], loc_name: str):
     locations_ref[loc_name] = ld.locations_all[loc_name]
@@ -129,7 +112,7 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], settings: WorldSe
             ):
                 exclude_location(locations_ref, loc)
 
-def setup_locations(settings: WorldSettings):
+def setup_locations(settings: WorldSettings) -> dict[str,LocationData]:
     use_dlc = settings.use_dlc
     locations: dict[str,LocationData] = {**ld.locations_base}
 
@@ -153,3 +136,4 @@ def setup_locations(settings: WorldSettings):
     )
 
     return locations
+
