@@ -3,17 +3,19 @@ from random import Random
 from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
+from ..settings import CupheadSettings
 from . import CupheadOptions
 
 class OptionSanitizer:
     option_overrides: list[str] = []
 
-    def __init__(self, player: int, options: CupheadOptions, random: Random, log_overrides: bool):
+    def __init__(self, player: int, options: CupheadOptions, random: Random, settings: CupheadSettings):
         self.option_overrides = []
         self.player = player
         self.options = options
         self.random = random
-        self.log_overrides: bool = log_overrides
+        self.log_overrides = bool(settings.log_option_overrides)
+        self.strict_goal_options = bool(settings.strict_goal_options)
 
     def override_num_option(
             self,
@@ -89,25 +91,32 @@ class OptionSanitizer:
                 self.override_num_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
         self._sanitize_dlc_chalice_options(not use_dlc)
 
-    def sanitize_options(self) -> None:
+    def _sanitize_goal_requirements(self) -> None:
         _options = self.options
 
-        CONTRACT_GOAL_REASON = "Contract Goal cannot be less than requirements"
+        _GOAL_REASON = "Goal cannot be less than requirements"
 
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:
             self.override_num_option(
                 _options.contract_goal_requirements,
                 _options.contract_requirements.value,
-                CONTRACT_GOAL_REASON
+                f"Contract {_GOAL_REASON}"
             )
         if (_options.use_dlc and \
             _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value):
             self.override_num_option(
                 _options.dlc_ingredient_goal_requirements,
                 _options.dlc_ingredient_requirements.value,
-                CONTRACT_GOAL_REASON
+                f"Ingredient {_GOAL_REASON}"
             )
+
+    def sanitize_options(self) -> None:
+        _options = self.options
+
+        if self.strict_goal_options:
+            self._sanitize_goal_requirements()
+
         self._sanitize_dlc_options()
         # Sanitize grade checks
         if not _options.expert_mode and _options.boss_grade_checks.value>3:

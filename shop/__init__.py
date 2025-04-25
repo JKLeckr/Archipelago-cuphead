@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import NamedTuple
 from ..names import LocationNames
-from ..wsettings import WorldSettings
+from ..wconf import WorldConfig
 
 shop_weapons = [
     LocationNames.loc_shop_weapon1,
@@ -29,11 +29,11 @@ class ShopData(NamedTuple):
     shop_locations: dict[str,list[str]]
 
 # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-def get_shop_map(settings: WorldSettings) -> list[tuple[int, int]]:
-        return [(2,2), (2,2), (1,2), (3,2)] if not settings.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
+def get_shop_map(wconf: WorldConfig) -> list[tuple[int, int]]:
+        return [(2,2), (2,2), (1,2), (3,2)] if not wconf.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
 
-def setup_shop_data(settings: WorldSettings) -> ShopData:
-    shop_map: list[tuple[int, int]] = get_shop_map(settings)
+def setup_shop_data(wconf: WorldConfig) -> ShopData:
+    shop_map: list[tuple[int, int]] = get_shop_map(wconf)
     shop_locations: dict[str,list[str]] = {}
 
     weapon_index = 0

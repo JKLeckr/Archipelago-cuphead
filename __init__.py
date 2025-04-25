@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import Union # type: ignore
 from typing import TextIO, Any
 from typing_extensions import override
 from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
@@ -9,7 +8,8 @@ from .names import ItemNames, LocationNames
 from .options import presets
 from .options import CupheadOptions
 from .options.optionsanitizer import OptionSanitizer
-from .wsettings import WorldSettings
+from .wconf import WorldConfig
+from .settings import CupheadSettings
 from .items import itemdefs as idef
 from .items.itembase import ItemData
 from .locations import locationdefs as ld
@@ -19,7 +19,6 @@ from .levels.levelbase import LevelData
 from .shop import ShopData
 from . import options, locations, levels, regions, items, shop
 #from . import debug as dbg
-import settings
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -34,24 +33,6 @@ class CupheadWebWorld(WebWorld):
     tutorials = [setup_en]
     option_groups = options.cuphead_option_groups
     options_presets = presets.option_presets
-
-class CupheadSettings(settings.Group):
-    class LogOptionOverrides(settings.Bool):
-        """Log options that are overridden from incompatible combinations to console."""
-
-    class WriteOverridesToSpoiler(settings.Bool):
-        """Write options that are overridden from incompatible combinations to spoiler."""
-
-    class Verbose(settings.Bool):
-        """Log extra information to the console."""
-
-    class Debug:
-        """Debug mode."""
-
-    log_option_overrides: Union[LogOptionOverrides, bool] = True # type: ignore
-    write_overrides_to_spoiler: Union[WriteOverridesToSpoiler, bool] = True # type: ignore
-    verbose: Union[LogOptionOverrides, bool] = False # type: ignore
-    debug: Union[Debug, int] = 0 # type: ignore
 
 class CupheadWorld(World):
     """
@@ -80,7 +61,7 @@ class CupheadWorld(World):
 
     settings: CupheadSettings # type: ignore
 
-    wsettings: WorldSettings
+    wconfig: WorldConfig
 
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
@@ -100,7 +81,7 @@ class CupheadWorld(World):
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
-        if self.wsettings.randomize_abilities:
+        if self.wconfig.randomize_abilities:
             self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
             self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
 
@@ -109,39 +90,39 @@ class CupheadWorld(World):
         self.options.version.value = self.version
 
         self.option_sanitizer = OptionSanitizer(
-            self.player, self.options, self.random, bool(self.settings.log_option_overrides)
+            self.player, self.options, self.random, self.settings
         )
 
         self.resolve_random_options()
         self.option_sanitizer.sanitize_options()
 
-        # Settings (See Settings.py)
-        self.wsettings = WorldSettings(self.options)
+        # World Config (See wconfig.py)
+        self.wconfig = WorldConfig(self.options)
 
-        self.topology_present = not self.wsettings.freemove_isles
+        self.topology_present = not self.wconfig.freemove_isles
 
-        self.use_dlc = self.wsettings.use_dlc
-        self.start_weapon = self.wsettings.start_weapon
-        self.level_shuffle = self.wsettings.level_shuffle
+        self.use_dlc = self.wconfig.use_dlc
+        self.start_weapon = self.wconfig.start_weapon
+        self.level_shuffle = self.wconfig.level_shuffle
 
-        coin_amounts = self.wsettings.coin_amounts
+        coin_amounts = self.wconfig.coin_amounts
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        self.active_items: dict[str,ItemData] = items.setup_items(self.wsettings)
-        self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wsettings)
+        self.active_items: dict[str,ItemData] = items.setup_items(self.wconfig)
+        self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wconfig)
         #Tests.test_duplicates(self.active_locations)
-        self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wsettings,self.active_locations)
+        self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wconfig,self.active_locations)
         if self.level_shuffle:
-            self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wsettings)
+            self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wconfig)
 
-        self.shop: ShopData = shop.setup_shop_data(self.wsettings)
+        self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
-        self.contract_requirements: tuple[int,int,int] = self.wsettings.contract_requirements
-        self.dlc_ingredient_requirements: int = self.wsettings.dlc_ingredient_requirements
+        self.contract_requirements: tuple[int,int,int] = self.wconfig.contract_requirements
+        self.dlc_ingredient_requirements: int = self.wconfig.dlc_ingredient_requirements
 
         # Filler items and weights
         filler_items = list(idef.item_filler.keys())
-        filler_item_weights = self.wsettings.filler_item_weights
+        filler_item_weights = self.wconfig.filler_item_weights
         self.filler_item_weights = [
             (trap, weight) for trap, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0
         ]

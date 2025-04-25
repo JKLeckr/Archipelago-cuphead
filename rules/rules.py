@@ -37,7 +37,7 @@ def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
 
 def set_rules(world: CupheadWorld):
     w = world
-    settings = w.wsettings
+    settings = w.wconfig
     use_dlc = w.use_dlc
     contract_reqs = settings.contract_requirements
 
@@ -63,7 +63,7 @@ def set_rules(world: CupheadWorld):
 
 def set_dlc_rules(world: CupheadWorld):
     w = world
-    settings = w.wsettings
+    settings = w.wconfig
     ingredient_reqs = settings.dlc_ingredient_requirements
     set_dlc_boat_rules(w)
     set_region_rules(
@@ -82,7 +82,7 @@ def set_dlc_rules(world: CupheadWorld):
 
 def set_dlc_boat_rules(world: CupheadWorld):
     w = world
-    settings = w.wsettings
+    settings = w.wconfig
     randomize_boat = settings.dlc_randomize_boat
     require_mausoleum = settings.dlc_requires_mausoleum
     if require_mausoleum:
@@ -92,7 +92,7 @@ def set_dlc_boat_rules(world: CupheadWorld):
 
 def set_quest_rules(world: CupheadWorld):
     w = world
-    settings = w.wsettings
+    settings = w.wconfig
     if settings.fourmel_quest:
         set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
     if settings.ginger_quest:
@@ -117,13 +117,13 @@ def set_level_loc_rules(world: CupheadWorld):
     for _loc_rule in loc_rules:
         for loc, rule in _loc_rule.loc_rules.items():
             if loc in w.active_locations:
-                set_loc_rule(w, loc, rb.region_rule_to_rule(rule(w.wsettings), w.player))
+                set_loc_rule(w, loc, rb.region_rule_to_rule(rule(w.wconfig), w.player))
             elif world.settings.verbose:
                 print(f"[set_level_loc_rules] Skipping {loc}")
 
 def set_level_boss_grade_rules(world: CupheadWorld):
     w = world
-    boss_grade_checks = w.wsettings.boss_grade_checks
+    boss_grade_checks = w.wconfig.boss_grade_checks
     if boss_grade_checks > 0:
         for _loc in ld.location_level_boss_topgrade:
             if (
@@ -131,14 +131,14 @@ def set_level_boss_grade_rules(world: CupheadWorld):
                 _loc not in levellocrules.level_loc_rule_locs
                 ):
                 add_level_parry_rule(w, _loc)
-        if w.wsettings.silverworth_quest:
+        if w.wconfig.silverworth_quest:
             for _loc in ld.location_level_boss_event_agrade:
                 if (
                     _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
                     _loc not in levellocrules.level_loc_rule_locs
                     ):
                     add_level_parry_rule(w, _loc)
-        if w.wsettings.use_dlc:
+        if w.wconfig.use_dlc:
             for _loc in ld.location_level_dlc_boss_topgrade:
                 if _loc not in levellocrules.level_loc_rule_locs:
                     add_level_parry_rule(w, _loc)
@@ -146,10 +146,10 @@ def set_level_boss_grade_rules(world: CupheadWorld):
 def set_level_rules(world: CupheadWorld):
     w = world
     #rungun_grade_checks = w.wsettings.rungun_grade_checks
-    boss_secret_checks = w.wsettings.boss_secret_checks
+    boss_secret_checks = w.wconfig.boss_secret_checks
     set_level_loc_rules(w)
     # TODO: Eventually phase this over to the level_loc_rules
-    if w.wsettings.randomize_abilities:
+    if w.wconfig.randomize_abilities:
         set_level_boss_grade_rules(w)
         if boss_secret_checks:
             add_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
@@ -199,7 +199,7 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
 
 def set_goal(world: CupheadWorld):
     w = world
-    settings = w.wsettings
+    settings = w.wconfig
     w.multiworld.completion_condition[w.player] = (
         rb.rule_has(w, ItemNames.item_contract, settings.contract_goal_requirements)
     ) if settings.mode == GameMode.COLLECT_CONTRACTS else (

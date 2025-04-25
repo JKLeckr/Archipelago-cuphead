@@ -2,14 +2,14 @@ from __future__ import annotations
 from random import Random
 from ..names import LocationNames
 from ..locations.locationbase import LocationData
-from ..wsettings import WorldSettings
+from ..wconf import WorldConfig
 from ..enums import LevelShuffleMode
 from ..auxiliary import scrub_list
 from .levelbase import LevelData
 from . import leveldefs as ldef
 
-def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
-    use_dlc = settings.use_dlc
+def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
+    use_dlc = wconf.use_dlc
     levels: dict[str,LevelData] = {}
 
     levels[LocationNames.level_tutorial] = ldef.level_special[LocationNames.level_tutorial]
@@ -25,9 +25,9 @@ def setup_levels(settings: WorldSettings, active_locations: dict[str,LocationDat
 
     return levels
 
-def setup_level_shuffle_map(rand: Random, settings: WorldSettings) -> dict[int,int]:
-    use_dlc = settings.use_dlc
-    separate_plane = settings.level_shuffle == LevelShuffleMode.PLANE_LEVELS_SEPARATE
+def setup_level_shuffle_map(rand: Random, wconf: WorldConfig) -> dict[int,int]:
+    use_dlc = wconf.use_dlc
+    separate_plane = wconf.level_shuffle == LevelShuffleMode.PLANE_LEVELS_SEPARATE
     level_shuffle_map: dict[int,int] = {}
 
     # level_lists format: (level_list, exclude_list)

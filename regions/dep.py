@@ -1,39 +1,39 @@
 from __future__ import annotations
 from collections.abc import Callable
-from ..wsettings import WorldSettings
+from ..wconf import WorldConfig
 
-Dep = Callable[[WorldSettings], bool]
+Dep = Callable[[WorldConfig], bool]
 
-# Deps determine if a region or target is enabled
+# Deps define a dependency with specific configurations.
 def dep_and(a: Dep, b: Dep) -> Dep:
-    return lambda s: a(s) and b(s)
+    return lambda c: a(c) and b(c)
 def dep_not(a: Dep) -> Dep:
-    return lambda s: not a(s)
+    return lambda c: not a(c)
 def dep_or(a: Dep, b: Dep) -> Dep:
-    return lambda s: a(s) or b(s)
-def dep_none(s: WorldSettings) -> bool:
+    return lambda c: a(c) or b(c)
+def dep_none(c: WorldConfig) -> bool:
     return True
-def dep_dlc(s: WorldSettings) -> bool:
-    return s.use_dlc
-def dep_freemove(s: WorldSettings) -> bool:
-    return s.freemove_isles
-def dep_shortcuts(s: WorldSettings) -> bool:
-    return s.require_secret_shortcuts
-def dep_agrade_quest(s: WorldSettings) -> bool:
-    return s.silverworth_quest
-def dep_pacifist_quest(s: WorldSettings) -> bool:
-    return s.pacifist_quest
-def dep_lucien_quest(s: WorldSettings) -> bool:
-    return s.lucien_quest
-def dep_music_quest(s: WorldSettings) -> bool:
-    return s.music_quest
-def dep_dicepalace(s: WorldSettings) -> bool:
-    return s.kingdice_bosssanity
-def dep_dlc_boatitem(s: WorldSettings) -> bool:
-    return s.use_dlc and s.dlc_randomize_boat
-def dep_dlc_boat_mausoleum(s: WorldSettings) -> bool:
-    return s.use_dlc and s.dlc_requires_mausoleum
-def dep_dlc_chalice(s: WorldSettings) -> bool:
-    return s.dlc_chalice > 0
-def dep_dlc_cactusgirl_quest(s: WorldSettings) -> bool:
-    return s.use_dlc and s.dlc_cactusgirl_quest
+def dep_dlc(c: WorldConfig) -> bool:
+    return c.use_dlc
+def dep_freemove(c: WorldConfig) -> bool:
+    return c.freemove_isles
+def dep_shortcuts(c: WorldConfig) -> bool:
+    return c.require_secret_shortcuts
+def dep_agrade_quest(c: WorldConfig) -> bool:
+    return c.silverworth_quest
+def dep_pacifist_quest(c: WorldConfig) -> bool:
+    return c.pacifist_quest
+def dep_lucien_quest(c: WorldConfig) -> bool:
+    return c.lucien_quest
+def dep_music_quest(c: WorldConfig) -> bool:
+    return c.music_quest
+def dep_dicepalace(c: WorldConfig) -> bool:
+    return c.kingdice_bosssanity
+def dep_dlc_boatitem(c: WorldConfig) -> bool:
+    return c.use_dlc and c.dlc_randomize_boat
+def dep_dlc_boat_mausoleum(c: WorldConfig) -> bool:
+    return c.use_dlc and c.dlc_requires_mausoleum
+def dep_dlc_chalice(c: WorldConfig) -> bool:
+    return c.dlc_chalice > 0
+def dep_dlc_cactusgirl_quest(c: WorldConfig) -> bool:
+    return c.use_dlc and c.dlc_cactusgirl_quest

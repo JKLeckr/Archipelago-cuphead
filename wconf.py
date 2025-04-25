@@ -4,7 +4,7 @@ from .options import CupheadOptions
 from . import enums as e
 
 # These are settings stored and accessed by other classes
-class WorldSettings:
+class WorldConfig:
     use_dlc: bool
     mode: e.GameMode
     hard_logic: bool

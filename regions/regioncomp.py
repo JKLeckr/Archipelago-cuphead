@@ -14,7 +14,7 @@ if typing.TYPE_CHECKING:
 
 def get_regions(world: CupheadWorld) -> list[RegionData]:
     shop_locations = world.shop.shop_locations
-    using_dlc = world.wsettings.use_dlc
+    using_dlc = world.wconfig.use_dlc
 
     region_shops: list[RegionData] = []
     region_dlc_shops: list[RegionData] = []
@@ -42,7 +42,7 @@ def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) 
         locations = _level.locations
         if regc.locations:
             locations = locations + regc.locations
-        if (regc.flags & 2)>0 and world.wsettings.kingdice_bosssanity:
+        if (regc.flags & 2)>0 and world.wconfig.kingdice_bosssanity:
             for ldata in ldef.level_dicepalace_boss.values():
                 locations = locations + ldata.locations
     elif regc.locations:
@@ -88,7 +88,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
         raise ValueError(f"For {regc.name}: connect_to cannot be None!")
     multiworld = world.multiworld
     player = world.player
-    wsettings = world.wsettings
+    wsettings = world.wconfig
     for target in regc.connect_to:
         if target:
             if target.depends(wsettings):
@@ -121,7 +121,7 @@ def create_regions(world: CupheadWorld) -> None:
     # Create Regions
     for regc in compile_regions:
         if regc:
-            if regc.depends(world.wsettings):
+            if regc.depends(world.wconfig):
                 create_region(world, regc)
             elif world.settings.verbose:
                 print("Skipping Region "+regc.name)
@@ -129,9 +129,9 @@ def create_regions(world: CupheadWorld) -> None:
             print(f"WARNING: For \"{compile_regions}\": region is None!")
 
     # Connect Region Targets
-    freemove_isles = world.wsettings.freemove_isles
+    freemove_isles = world.wconfig.freemove_isles
     for regc in compile_regions:
-        if regc and regc.depends(world.wsettings) and regc.connect_to:
+        if regc and regc.depends(world.wconfig) and regc.connect_to:
             if not freemove_isles or (regc.flags & 1)>0: # If flags contains LV_IGNORE_FREEMOVE
                 connect_region_targets(world, regc)
 
