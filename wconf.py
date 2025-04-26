@@ -139,7 +139,7 @@ class WorldConfig:
         def _get_bit(opt: str, item_group: e.ItemGroups) -> int:
             return item_group if opt in _set else e.ItemGroups.NONE
 
-        _val |= _get_bit("core_items", e.ItemGroups.CORE_ITEMS)
+        _val |= _get_bit("core_items", e.ItemGroups.CORE_ITEMS) # TODO: Finish
         _val |= _get_bit("weapon_ex", e.ItemGroups.WEAPON_EX)
         _val |= _get_bit("abilities", e.ItemGroups.ABILITIES)
 

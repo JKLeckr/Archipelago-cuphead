@@ -51,7 +51,8 @@ class ItemGroups(IntFlag):
     ESSENTIAL = 1
     SUPER = 2
     CORE_ITEMS = 3
-    WEAPON_EX = 4
-    ABILITIES = 16
-    AIM_ABILITIES = 32
+    WEAPON_BASIC = 4
+    WEAPON_EX = 8
+    ABILITIES = 32
+    AIM_ABILITIES = 64
     ALL = 255
