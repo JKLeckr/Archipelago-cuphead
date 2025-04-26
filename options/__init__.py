@@ -9,7 +9,7 @@ class CupheadOptions(PerGameCommonOptions):
     mode: odefs.GameMode
     expert_mode: odefs.ExpertMode
     start_weapon: odefs.StartWeapon
-    randomize_weapon_ex: odefs.RandomizeWeaponEx
+    weapon_mode: odefs.WeaponMode
     start_maxhealth: odefs.StartMaxHealth
     contract_requirements: odefs.ContractRequirements
     dlc_ingredient_requirements: odefs.DlcIngredientRequirements
@@ -56,7 +56,7 @@ cuphead_option_groups = [
         odefs.GameMode,
         odefs.ExpertMode,
         odefs.StartWeapon,
-        odefs.RandomizeWeaponEx,
+        odefs.WeaponMode,
         odefs.ContractRequirements,
         odefs.ContractGoalRequirements,
         odefs.StartMaxHealth,

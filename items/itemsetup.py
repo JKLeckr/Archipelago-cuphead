@@ -25,7 +25,7 @@ def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
         items_ref.update(idef.item_dlc_chalice_essential)
     if wconf.is_dlc_chalice_items_separate(ItemGroups.SUPER):
         items_ref.update(idef.item_dlc_chalice_super)
-    if wconf.randomize_weapon_ex:
+    if wconf.weapon_mode:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
 
 def setup_abilities(items_ref: dict[str, ItemData], wconf: WorldConfig):
@@ -48,7 +48,7 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], wconf: WorldConfig):
 def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
     for weapon in weapons.get_weapon_dict(wconf, wconf.use_dlc).values():
         items_ref[weapon] = idef.items_all[weapon]
-    if wconf.randomize_weapon_ex:
+    if wconf.weapon_mode:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
 
 def setup_items(wconf: WorldConfig) -> dict[str, ItemData]:

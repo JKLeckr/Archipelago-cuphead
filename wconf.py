@@ -10,7 +10,7 @@ class WorldConfig:
     hard_logic: bool
     expert_mode: bool
     start_weapon: int
-    randomize_weapon_ex: e.WeaponExMode
+    weapon_mode: e.WeaponMode
     start_maxhealth: int
     level_shuffle: e.LevelShuffleMode
     freemove_isles: bool
@@ -58,7 +58,7 @@ class WorldConfig:
         self.hard_logic = False #bool(options.hard_logic.value)
         self.expert_mode = bool(options.expert_mode.value)
         self.start_weapon = int(options.start_weapon.value)
-        self.randomize_weapon_ex = e.WeaponExMode(options.randomize_weapon_ex.value)
+        self.weapon_mode = e.WeaponMode(options.weapon_mode.value)
         self.start_maxhealth = options.start_maxhealth.value
         self.level_shuffle = e.LevelShuffleMode(options.level_shuffle.value)
         self.freemove_isles = bool(options.freemove_isles.value)

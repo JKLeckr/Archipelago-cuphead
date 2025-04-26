@@ -1,5 +1,5 @@
 from ..names import ItemNames
-from ..enums import WeaponExMode
+from ..enums import WeaponMode
 from ..wconf import WorldConfig
 
 weapon_dict: dict[int,str] = {
@@ -25,9 +25,9 @@ weapon_p_dict: dict[int,str] = {
     8: ItemNames.item_p_weapon_dlc_twistup,
 }
 def get_weapon_dict(wconf: WorldConfig, dlc_weapons: bool = True) -> dict[int,str]:
-    orig_weapon_dict: dict[int,str] = weapon_p_dict if wconf.randomize_weapon_ex>0 else weapon_dict
+    orig_weapon_dict: dict[int,str] = weapon_p_dict if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0 else weapon_dict
     nweapon_dict: dict[int,str] = {k:v for k,v in orig_weapon_dict.items() if k<6 or dlc_weapons}
-    if wconf.randomize_abilities == WeaponExMode.ALL_BUT_START:
+    if wconf.randomize_abilities == WeaponMode.PROGRESSIVE_NO_START:
         start_weapon = wconf.start_weapon
         nweapon_dict[start_weapon] = weapon_dict[start_weapon]
     return nweapon_dict

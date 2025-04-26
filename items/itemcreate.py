@@ -5,7 +5,7 @@ from random import Random
 from BaseClasses import Item, ItemClassification
 from ..auxiliary import count_in_list
 from ..names import ItemNames, LocationNames
-from ..enums import WeaponExMode, ChaliceMode, CurseMode
+from ..enums import WeaponMode, ChaliceMode, CurseMode
 from ..wconf import WorldConfig
 from ..locations import locationdefs as ldef
 from ..locations.locationbase import LocationData
@@ -185,7 +185,7 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
     _weapon_dict = weapons.get_weapon_dict(world.wconfig)
 
     # Starter weapon
-    if world.wconfig.randomize_weapon_ex > 0:
+    if world.wconfig.weapon_mode > 0:
         _weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
             _weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
@@ -195,7 +195,7 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
             _weapons.extend([x for x in set(idef.item_dlc_weapons.keys()) if x not in precollected_item_names])
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
-    if start_weapon in _weapons and world.wconfig.randomize_weapon_ex != WeaponExMode.RANDOMIZED:
+    if start_weapon in _weapons and world.wconfig.weapon_mode != WeaponMode.PROGRESSIVE:
         #world.multiworld.push_precollected(create_item(start_weapon, world.player))
         _weapons.remove(start_weapon)
 

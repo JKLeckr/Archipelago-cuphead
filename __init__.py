@@ -134,7 +134,7 @@ class CupheadWorld(World):
     @override
     def fill_slot_data(self) -> dict[str, Any]:
         slot_data: dict[str, Any] = {
-            "version": 2,
+            "version": 3,
             "world_version": self.version,
             "level_shuffle_map": self.level_shuffle_map,
             "shop_map": self.shop.shop_map,
@@ -146,7 +146,7 @@ class CupheadWorld(World):
             "mode",
             "expert_mode",
             "start_weapon",
-            "randomize_weapon_ex",
+            "weapon_mode",
             "contract_goal_requirements",
             "dlc_ingredient_goal_requirements",
             "freemove_isles",

@@ -36,7 +36,7 @@ class GameMode(ChoiceEx):
     option_dlc_beat_both = 4
     option_dlc_collect_ingredients = 5
     option_dlc_collect_both = 6
-    #option_dlc_beat_devil_no_isle4 = 7
+    #option_dlc_beat_devil_no_isle4 = 7 # TODO: Modularize Goal
     #option_dlc_beat_saltbaker_isle4_only = 8
     default = 0
 
@@ -75,17 +75,19 @@ class StartWeapon(ChoiceEx):
     option_dlc_twistup = 8
     default = "random"
 
-class RandomizeWeaponEx(Choice):
+class WeaponMode(Choice):
     """
-    Randomize the weapon EX ability also.
-    Your weapons will be progressive weapons.
+    Set how the weapons are shuffled in the pool.
+    Progressive turns the weapons in the pool into progressive weapons.
+
+    "Progressive" means that weapon EX is unlocked from having two of the same weapon.
     """
-    name = "randomize_weapon_ex"
-    display_name = "Randomize Weapon EX"
-    option_disabled = 0
-    option_enabled = 1
-    option_all_but_start = 2
-    default = 0
+    name = "weapon_mode"
+    display_name = "Weapon Mode"
+    option_normal = 1
+    option_progressive = 2
+    option_progressive_except_start = 3
+    default = 1
 
 class ContractRequirements(Range):
     """
