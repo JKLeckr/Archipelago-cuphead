@@ -197,15 +197,3 @@ items_all: dict[str, ItemData] = {
 }
 
 name_to_id = {name: data.id for name, data in items_all.items() if data.id}
-
-item_groups: dict[str, set[str]] = {
-    "Weapon": {*item_weapons.keys(), *item_p_weapons.keys(), *item_dlc_weapons.keys(), *item_dlc_p_weapons.keys()},
-    "Charm": {*item_charms.keys(), *item_dlc_charms.keys(), ItemNames.item_charm_dlc_cookie},
-    "Super": {*item_super.keys(), *item_dlc_chalice_super.keys()},
-    "Ability": {
-        *item_abilities.keys(),
-        #*item_abilities_aim.keys(),
-        *item_dlc_chalice_abilities.keys(),
-        #*item_dlc_chalice_abilities_aim.keys()
-    },
-}

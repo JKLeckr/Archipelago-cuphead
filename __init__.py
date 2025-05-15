@@ -10,7 +10,7 @@ from .options import CupheadOptions
 from .options.optionsanitizer import OptionSanitizer
 from .wconf import WorldConfig
 from .settings import CupheadSettings
-from .items import itemdefs as idef
+from .items import itemgroups, itemdefs as idef
 from .items.itembase import ItemData
 from .locations import locationdefs as ld
 from .locations.locationbase import LocationData
@@ -54,7 +54,7 @@ class CupheadWorld(World):
     item_name_to_id = idef.name_to_id
     location_name_to_id = ld.name_to_id
 
-    item_name_groups = idef.item_groups
+    item_name_groups = itemgroups.item_groups
 
     item_names = set(idef.items_all.keys())
     location_names = set(ld.locations_all.keys())
@@ -241,4 +241,4 @@ class CupheadWorld(World):
     def set_rules(self) -> None:
         rules.set_rules(self)
         #debug.print_locations(self)
-        #debug.visualize_regions(self.multiworld.get_region("Menu", self.player), "./output/regionmap.puml")
+        #dbg.visualize_regions(self.multiworld.get_region("Menu", self.player), None, "./output/regionmap.puml")
