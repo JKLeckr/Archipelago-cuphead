@@ -1,7 +1,7 @@
 from __future__ import annotations
 from BaseClasses import LocationProgressType
 from .locationbase import LocationData
-from ..enums import GameMode, GradeCheckMode, ChessCastleMode
+from ..enums import GameMode, GradeCheckMode, ChessCastleMode, ChaliceMode
 from ..names import LocationNames
 from ..wconf import WorldConfig
 from . import locationdefs as ld
@@ -66,7 +66,10 @@ def setup_boss_final_locations(
 
 def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
     locations_ref.update(ld.location_level_dlc_tutorial)
-    add_location(locations_ref, LocationNames.loc_dlc_cookie)
+    if wconf.dlc_chalice == ChaliceMode.RANDOMIZED:
+        add_location(locations_ref, LocationNames.loc_dlc_cookie)
+    elif wconf.dlc_chalice == ChaliceMode.VANILLA:
+        add_location(locations_ref, LocationNames.loc_event_dlc_cookie)
     if wconf.dlc_boss_chalice_checks:
         locations_ref.update(ld.locations_dlc_boss_chaliced)
         if wconf.mode != GameMode.DLC_BEAT_SALTBAKER:

@@ -93,6 +93,7 @@ region_worlds: list[RegionData] = [
 region_dlc_worlds = [
     WorldRegionData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_dlc_cookie,
+        LocationNames.loc_event_dlc_cookie,
         LocationNames.loc_dlc_npc_newscat,
         LocationNames.loc_dlc_coin_isle4_secret,
     ], [

@@ -313,7 +313,7 @@ class DlcChaliceEnabled(Choice):
     option_start = 1
     option_vanilla = 2
     option_randomized = 3
-    default = 0
+    default = 3
 
 class DlcChaliceItemsSeparate(OptionSet):
     """

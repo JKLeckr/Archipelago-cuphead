@@ -392,6 +392,10 @@ level_special: dict[str, LevelData] = {
     )
 }
 level_dlc_special: dict[str, LevelData] = {
+    LocationNames.level_dlc_tutorial: LevelData(
+        LocationNames.level_dlc_tutorial,
+        [LocationNames.loc_level_dlc_tutorial, LocationNames.loc_level_dlc_tutorial_coin],
+    )
     #LocationNames.level_dlc_graveyard: LevelData(
     #    LocationNames.world_dlc_inkwell_4,
     #    [LocationNames.loc_level_dlc_graveyard,],
@@ -409,7 +413,6 @@ levels_dlc: dict[str, LevelData] = {
     **level_dlc_boss,
     **level_dlc_boss_final,
     **level_dlc_chesscastle_boss,
-    **level_dlc_special,
 }
 
 levels_all: dict[str, LevelData] = {
@@ -417,4 +420,5 @@ levels_all: dict[str, LevelData] = {
     **level_dicepalace_boss,
     **levels_dlc,
     **level_special,
+    **level_dlc_special,
 }

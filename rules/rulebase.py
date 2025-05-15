@@ -46,6 +46,8 @@ def rule_can_reach_any_region(world: "CupheadWorld", regions: Iterable[str]) -> 
 def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, p=player: rrule(state, p)
 
+def region_rule_or(a: RegionRule, b: RegionRule) -> RegionRule:
+    return lambda state, player: a(state, player) or b(state, player)
 def region_rule_and(a: RegionRule, b: RegionRule) -> RegionRule:
     return lambda state, player: a(state, player) and b(state, player)
 def region_rule_none() -> RegionRule:

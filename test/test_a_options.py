@@ -64,6 +64,18 @@ class TestOptions(CupheadTestBase):
             "mode": "beat_devil",
             "randomize_abilities": False,
         },
+        "DLC No Chalice": {
+            "use_dlc": True,
+            "dlc_chalice": "disabled"
+        },
+        "DLC Chalice Vanilla": {
+            "use_dlc": True,
+            "dlc_chalice": "vanilla"
+        },
+        "DLC Chalice Star": {
+            "use_dlc": True,
+            "dlc_chalice": "start"
+        },
     }
 
     def test_default_options(self):

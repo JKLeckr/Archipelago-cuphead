@@ -30,8 +30,11 @@ def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
 
 def setup_abilities(items_ref: dict[str, ItemData], wconf: WorldConfig):
     items_ref.update(idef.item_abilities)
-    if wconf.use_dlc and wconf.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
-        items_ref.update(idef.item_dlc_chalice_abilities)
+    if wconf.use_dlc:
+        if wconf.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+            items_ref.update(idef.item_dlc_chalice_abilities)
+        else:
+            add_item(items_ref, ItemNames.item_ability_dlc_cdoublejump)
     change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
     if wconf.boss_secret_checks:
         change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
