@@ -1,5 +1,5 @@
 from ..names import ItemNames
-from .weapons import weapon_dict, weapon_p_dict
+#from .weapons import weapon_dict, weapon_p_dict
 from . import itemdefs as idefs
 
 item_groups: dict[str, set[str]] = {
@@ -26,5 +26,6 @@ item_groups: dict[str, set[str]] = {
     },
 }
 
-for i in range(len(weapon_dict)):
-    item_groups[weapon_dict[i]] = {weapon_p_dict[i]}
+# TODO: Make aliases a thing, but avoid the conflicts
+#for i in range(len(weapon_dict)):
+#    item_groups[weapon_dict[i]] = {weapon_p_dict[i]}
