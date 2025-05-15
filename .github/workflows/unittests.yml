@@ -47,6 +47,7 @@ jobs:
       with:
         repository: JKLeckr/Archipelago
         path: Archipelago
+        ref: base
     
     - name: Clean up
       shell: python

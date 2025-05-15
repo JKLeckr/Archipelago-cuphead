@@ -223,7 +223,7 @@ class CupheadWorld(World):
         return items.get_filler_item_name(self)
 
     @override
-    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]) -> None:
         hint_dict: dict[int, str] = {}
         if self.level_shuffle:
             for level, map in self.level_shuffle_map.items():
@@ -240,5 +240,9 @@ class CupheadWorld(World):
     @override
     def set_rules(self) -> None:
         rules.set_rules(self)
+
+    @override
+    def post_fill(self) -> None:
         #debug.print_locations(self)
-        #dbg.visualize_regions(self.multiworld.get_region("Menu", self.player), None, "./output/regionmap.puml")
+        #dbg.debug_visualize_regions(self)
+        return super().post_fill()

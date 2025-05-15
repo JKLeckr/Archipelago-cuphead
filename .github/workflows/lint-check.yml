@@ -27,6 +27,7 @@ jobs:
         with:
           repository: JKLeckr/Archipelago
           path: Archipelago
+          ref: base
 
       - name: Checkout Cuphead
         uses: actions/checkout@v4
