@@ -85,7 +85,7 @@ level_loc_rule_mountain = LevelRuleData(LocationNames.level_rungun_mountain, lr.
 
 level_loc_rule_dlc_tutorial = LevelRuleData(LocationNames.level_dlc_tutorial, lr.level_rule_dlc_cookie, {
     LocationNames.loc_level_dlc_tutorial: LRule(lr.level_rule_none),
-    LocationNames.loc_level_dlc_tutorial_coin: LRule(lr.level_rule_dlc_doublejump),
+    LocationNames.loc_level_dlc_tutorial_coin: LRule(lr.level_rule_dlc_tutorial_coin),
 })
 
 level_loc_rules: list[LevelRuleData] = [
