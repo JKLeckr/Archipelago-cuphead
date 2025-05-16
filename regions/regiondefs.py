@@ -99,6 +99,9 @@ region_dlc_worlds = [
     ], [
         Target(LocationNames.shop_set4),
         Target(LocationNames.level_dlc_chesscastle),
+        Target(
+            LocationNames.loc_dlc_quest_cactusgirl, None, dep.dep_and(dep.dep_freemove, dep.dep_dlc_cactusgirl_quest)
+        ),
         LevelTarget(LocationNames.level_dlc_tutorial, None, dep.dep_dlc_chalice),
         LevelTarget(LocationNames.level_dlc_boss_oldman),
         LevelTarget(LocationNames.level_dlc_boss_rumrunners),

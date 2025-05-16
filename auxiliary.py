@@ -36,4 +36,6 @@ def scrub_list(a: list[T], b: Iterable[T]) -> list[T]:
     for item in a:
         if item in b:
             newlist.append(item)
+        #else:
+        #    print(f"Excluding: {item}")
     return newlist

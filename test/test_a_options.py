@@ -72,9 +72,14 @@ class TestOptions(CupheadTestBase):
             "use_dlc": True,
             "dlc_chalice": "vanilla"
         },
-        "DLC Chalice Star": {
+        "DLC Chalice Start": {
             "use_dlc": True,
             "dlc_chalice": "start"
+        },
+        "DLC Cactusgirl": {
+            "use_dlc": True,
+            "dlc_chalice": "randomized",
+            "dlc_cactusgirl_quest": True
         },
     }
 

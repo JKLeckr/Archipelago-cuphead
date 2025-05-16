@@ -57,6 +57,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
     region = Region(regc.name, player, multiworld, None)
     #print(f"Region: {regc.name}, {regc.region_type}")
     region_locations = get_region_locations(world, region, regc)
+    #print(region_locations)
 
     for loc_name in region_locations:
         if not loc_name: # If entry is None
@@ -132,7 +133,7 @@ def create_regions(world: CupheadWorld) -> None:
     freemove_isles = world.wconfig.freemove_isles
     for regc in compile_regions:
         if regc and regc.depends(world.wconfig) and regc.connect_to:
-            if not freemove_isles or (regc.flags & 1)>0: # If flags contains LV_IGNORE_FREEMOVE
+            if not freemove_isles or (regc.flags & 1)>0: # If flags contains TGT_IGNORE_FREEMOVE
                 connect_region_targets(world, regc)
 
 def list_regions_names(regions: Collection[Region]) -> list[str]:

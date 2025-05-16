@@ -1,6 +1,7 @@
 from __future__ import annotations
 import math
 import typing
+from collections.abc import Iterable
 from random import Random
 from BaseClasses import Item, ItemClassification
 from ..auxiliary import count_in_list
@@ -8,7 +9,6 @@ from ..names import ItemNames, LocationNames
 from ..enums import WeaponMode, ItemGroups, ChaliceMode, CurseMode
 from ..wconf import WorldConfig
 from ..locations import locationdefs as ldef
-from ..locations.locationbase import LocationData
 from .itembase import CupheadItem, ItemData, get_filler_item_name, weighted_item_choice
 from . import weapons, itemdefs as idef
 if typing.TYPE_CHECKING:
@@ -99,11 +99,11 @@ def create_locked_item(
 def create_locked_items_at(
         world: CupheadWorld,
         name: str,
-        locations: dict[str, LocationData],
+        locations: Iterable[str],
         force_classification: ItemClassification | None = None
     ):
     for loc in locations:
-        if loc in world.active_locations:
+        if loc in world.active_locations.keys():
             create_locked_item(world, name, loc, force_classification)
         elif world.settings.verbose:
             print(f"Skipped {name} for {loc}")

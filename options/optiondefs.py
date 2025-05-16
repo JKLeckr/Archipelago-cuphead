@@ -354,7 +354,6 @@ class DlcChessCastle(Choice):
 
 class DlcCactusGirlQuest(Toggle):
     """
-    ---NOT YET IMPLEMENTED---
     -DLC ONLY-
     -REQUIRES CHALICE-
     Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
@@ -363,7 +362,6 @@ class DlcCactusGirlQuest(Toggle):
     """
     name = "dlc_cactusgirl_quest"
     display_name = "[DLC] Cactus Girl Quest"
-    visibility = Visibility.template | Visibility.spoiler
 
 class DlcCurseMode(Choice):
     """

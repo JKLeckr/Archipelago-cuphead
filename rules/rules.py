@@ -77,8 +77,12 @@ def set_dlc_rules(world: CupheadWorld):
     if settings.dlc_cactusgirl_quest:
         for _loc in ld.locations_dlc_event_boss_chaliced.keys():
             set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
-        chaliced_events = set(ld.locations_dlc_event_boss_chaliced.keys())
-        set_loc_rule(w, LocationNames.loc_dlc_quest_cactusgirl, rb.rule_has_all(w, chaliced_events))
+        num_chaliced_events = len(ld.locations_dlc_event_boss_chaliced.keys())
+        set_loc_rule(
+            w,
+            LocationNames.loc_dlc_quest_cactusgirl,
+            rb.rule_has(w, ItemNames.item_event_dlc_boss_chaliced, num_chaliced_events)
+        )
 
 def set_dlc_boat_rules(world: CupheadWorld):
     w = world

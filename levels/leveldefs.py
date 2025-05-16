@@ -61,60 +61,70 @@ level_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_boss_veggies_secret,
         LocationNames.loc_level_boss_veggies_event_agrade,
         LocationNames.loc_level_boss_veggies_dlc_chaliced,
+        LocationNames.loc_level_boss_veggies_event_dlc_chaliced,
     ]), # No rules
     LocationNames.level_boss_slime: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_slime,
         LocationNames.loc_level_boss_slime_topgrade,
         LocationNames.loc_level_boss_slime_event_agrade,
         LocationNames.loc_level_boss_slime_dlc_chaliced,
+        LocationNames.loc_level_boss_slime_event_dlc_chaliced,
     ], lr.level_rule_duck_or_dash),
     LocationNames.level_boss_frogs: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_frogs,
         LocationNames.loc_level_boss_frogs_topgrade,
         LocationNames.loc_level_boss_frogs_event_agrade,
         LocationNames.loc_level_boss_frogs_dlc_chaliced,
+        LocationNames.loc_level_boss_frogs_event_dlc_chaliced,
     ], lr.level_rule_parry_or_psugar),
     LocationNames.level_boss_flower: LevelData(LocationNames.world_inkwell_1, [
         LocationNames.loc_level_boss_flower,
         LocationNames.loc_level_boss_flower_topgrade,
         LocationNames.loc_level_boss_flower_event_agrade,
         LocationNames.loc_level_boss_flower_dlc_chaliced,
+        LocationNames.loc_level_boss_flower_event_dlc_chaliced,
     ]), # No rules
     LocationNames.level_boss_baroness: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_baroness,
         LocationNames.loc_level_boss_baroness_topgrade,
         LocationNames.loc_level_boss_baroness_event_agrade,
         LocationNames.loc_level_boss_baroness_dlc_chaliced,
+        LocationNames.loc_level_boss_baroness_event_dlc_chaliced,
     ], lr.level_rule_parry_or_psugar),
     LocationNames.level_boss_clown: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_clown,
         LocationNames.loc_level_boss_clown_topgrade,
         LocationNames.loc_level_boss_clown_event_agrade,
         LocationNames.loc_level_boss_clown_dlc_chaliced,
+        LocationNames.loc_level_boss_clown_event_dlc_chaliced,
     ], lr.level_rule_dash_or_parry),
     LocationNames.level_boss_dragon: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_dragon,
         LocationNames.loc_level_boss_dragon_topgrade,
         LocationNames.loc_level_boss_dragon_event_agrade,
         LocationNames.loc_level_boss_dragon_dlc_chaliced,
+        LocationNames.loc_level_boss_dragon_event_dlc_chaliced,
     ]), # No Rules
     LocationNames.level_boss_bee: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_bee,
         LocationNames.loc_level_boss_bee_topgrade,
         LocationNames.loc_level_boss_bee_event_agrade,
         LocationNames.loc_level_boss_bee_dlc_chaliced,
+        LocationNames.loc_level_boss_bee_event_dlc_chaliced,
     ]), # No Rules
     LocationNames.level_boss_pirate: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_pirate,
         LocationNames.loc_level_boss_pirate_topgrade,
         LocationNames.loc_level_boss_pirate_event_agrade,
         LocationNames.loc_level_boss_pirate_dlc_chaliced,
+        LocationNames.loc_level_boss_pirate_event_dlc_chaliced,
     ], lr.level_rule_pirate),
     LocationNames.level_boss_mouse: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_mouse,
         LocationNames.loc_level_boss_mouse_topgrade,
         LocationNames.loc_level_boss_mouse_event_agrade,
         LocationNames.loc_level_boss_mouse_dlc_chaliced,
+        LocationNames.loc_level_boss_mouse_event_dlc_chaliced,
     ], lr.level_rule_parry),
     LocationNames.level_boss_sallystageplay: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_sallystageplay,
@@ -122,18 +132,21 @@ level_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_boss_sallystageplay_secret,
         LocationNames.loc_level_boss_sallystageplay_event_agrade,
         LocationNames.loc_level_boss_sallystageplay_dlc_chaliced,
+        LocationNames.loc_level_boss_sallystageplay_event_dlc_chaliced,
     ], lr.level_rule_parry),
     LocationNames.level_boss_train: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_train,
         LocationNames.loc_level_boss_train_topgrade,
         LocationNames.loc_level_boss_train_event_agrade,
         LocationNames.loc_level_boss_train_dlc_chaliced,
+        LocationNames.loc_level_boss_train_event_dlc_chaliced,
     ], lr.level_rule_parry),
     LocationNames.level_boss_kingdice: LevelData(LocationNames.world_inkwell_hell, [
         LocationNames.loc_level_boss_kingdice,
         LocationNames.loc_level_boss_kingdice_topgrade,
         LocationNames.loc_level_boss_kingdice_event_agrade,
         LocationNames.loc_level_boss_kingdice_dlc_chaliced,
+        LocationNames.loc_level_boss_kingdice_event_dlc_chaliced,
     ], lr.level_rule_kingdice), # Has special rules set in rules.py
 }
 level_boss_plane: dict[str, LevelData] = {
@@ -142,6 +155,7 @@ level_boss_plane: dict[str, LevelData] = {
         LocationNames.loc_level_boss_plane_blimp_topgrade,
         LocationNames.loc_level_boss_plane_blimp_event_agrade,
         LocationNames.loc_level_boss_plane_blimp_dlc_chaliced,
+        LocationNames.loc_level_boss_plane_blimp_event_dlc_chaliced,
     ], lr.level_rule_plane),
     LocationNames.level_boss_plane_genie: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_plane_genie,
@@ -149,24 +163,28 @@ level_boss_plane: dict[str, LevelData] = {
         LocationNames.loc_level_boss_plane_genie_secret,
         LocationNames.loc_level_boss_plane_genie_event_agrade,
         LocationNames.loc_level_boss_plane_genie_dlc_chaliced,
+        LocationNames.loc_level_boss_plane_genie_event_dlc_chaliced,
     ], lr.level_rule_plane),
     LocationNames.level_boss_plane_bird: LevelData(LocationNames.world_inkwell_2, [
         LocationNames.loc_level_boss_plane_bird,
         LocationNames.loc_level_boss_plane_bird_topgrade,
         LocationNames.loc_level_boss_plane_bird_event_agrade,
         LocationNames.loc_level_boss_plane_bird_dlc_chaliced,
+        LocationNames.loc_level_boss_plane_bird_event_dlc_chaliced,
     ], lr.level_rule_bird),
     LocationNames.level_boss_plane_mermaid: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_plane_mermaid,
         LocationNames.loc_level_boss_plane_mermaid_topgrade,
         LocationNames.loc_level_boss_plane_mermaid_event_agrade,
         LocationNames.loc_level_boss_plane_mermaid_dlc_chaliced,
+        LocationNames.loc_level_boss_plane_mermaid_event_dlc_chaliced,
     ], lr.level_rule_plane),
     LocationNames.level_boss_plane_robot: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_plane_robot,
         LocationNames.loc_level_boss_plane_robot_topgrade,
         LocationNames.loc_level_boss_plane_robot_event_agrade,
         LocationNames.loc_level_boss_plane_robot_dlc_chaliced,
+        LocationNames.loc_level_boss_plane_robot_event_dlc_chaliced,
     ], lr.level_rule_plane),
 }
 level_boss: dict[str, LevelData] = {
@@ -179,6 +197,7 @@ level_boss_final: dict[str, LevelData] = {
         LocationNames.loc_level_boss_devil_topgrade,
         LocationNames.loc_level_boss_devil_event_agrade,
         LocationNames.loc_level_boss_devil_dlc_chaliced,
+        LocationNames.loc_level_boss_devil_event_dlc_chaliced,
         LocationNames.loc_event_goal_devil,
     ], lr.level_rule_final)
 }
@@ -188,24 +207,28 @@ level_dlc_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_oldman_topgrade,
         #LocationNames.loc_level_dlc_boss_oldman_event_agrade,
         LocationNames.loc_level_dlc_boss_oldman_dlc_chaliced,
+        LocationNames.loc_level_dlc_boss_oldman_event_dlc_chaliced,
     ], lr.level_rule_dlc_oldman),
     LocationNames.level_dlc_boss_rumrunners: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_rumrunners,
         LocationNames.loc_level_dlc_boss_rumrunners_topgrade,
         #LocationNames.loc_level_dlc_boss_rumrunners_event_agrade,
         LocationNames.loc_level_dlc_boss_rumrunners_dlc_chaliced,
+        LocationNames.loc_level_dlc_boss_rumrunners_event_dlc_chaliced,
     ], lr.level_rule_duck_and_parry),
     LocationNames.level_dlc_boss_snowcult: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_snowcult,
         LocationNames.loc_level_dlc_boss_snowcult_topgrade,
         #LocationNames.loc_level_dlc_boss_snowcult_event_agrade,
         LocationNames.loc_level_dlc_boss_snowcult_dlc_chaliced,
+        LocationNames.loc_level_dlc_boss_snowcult_event_dlc_chaliced,
     ]), # No Rules
     LocationNames.level_dlc_boss_airplane: LevelData(LocationNames.world_dlc_inkwell_4, [
         LocationNames.loc_level_dlc_boss_airplane,
         LocationNames.loc_level_dlc_boss_airplane_topgrade,
         #LocationNames.loc_level_dlc_boss_airplane_event_agrade,
         LocationNames.loc_level_dlc_boss_airplane_dlc_chaliced,
+        LocationNames.loc_level_dlc_boss_airplane_event_dlc_chaliced,
     ], lr.level_rule_duck),
 }
 level_dlc_boss_plane: dict[str, LevelData] = {
@@ -214,6 +237,7 @@ level_dlc_boss_plane: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_plane_cowboy_topgrade,
         #LocationNames.loc_level_dlc_boss_plane_cowboy_event_agrade,
         LocationNames.loc_level_dlc_boss_plane_cowboy_dlc_chaliced,
+        LocationNames.loc_level_dlc_boss_plane_cowboy_event_dlc_chaliced,
     ], lr.level_rule_plane),
 }
 level_dlc_boss: dict[str, LevelData] = {
@@ -226,6 +250,7 @@ level_dlc_boss_final: dict[str, LevelData] = {
         LocationNames.loc_level_dlc_boss_saltbaker_topgrade,
         LocationNames.loc_level_dlc_boss_saltbaker_event_agrade,
         LocationNames.loc_level_dlc_boss_saltbaker_dlc_chaliced,
+        LocationNames.loc_level_dlc_boss_saltbaker_event_dlc_chaliced,
         LocationNames.loc_event_dlc_goal_saltbaker,
     ], lr.level_rule_final),
 }
