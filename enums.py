@@ -13,7 +13,7 @@ class GameMode(IntEnum):
 class WeaponMode(IntEnum):
     NORMAL = 1
     PROGRESSIVE = 2
-    PROGRESSIVE_NO_START = 3
+    PROGRESSIVE_BUT_START = 3
 class LevelShuffleMode(IntEnum):
     DISABLED = 0
     ENABLED = 1

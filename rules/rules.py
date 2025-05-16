@@ -4,11 +4,11 @@ from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
 from . import rulebase as rb
 from ..levels import levelrules, levellocrules
-from ..items import itemdefs as idef
+from ..items import weapons, itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
 from .rulebase import Rule
-from ..enums import GameMode
+from ..enums import GameMode, WeaponMode
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -20,20 +20,20 @@ def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
 def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
     set_loc_rule(world, loc, rb.rule_has(world, item, count))
-def add_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
-    add_loc_rule(world, loc, rb.rule_has(world, item, count))
+def add_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
+    add_loc_rule(world, loc, rb.rule_has(world, item, count), combine_and)
 def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
     set_rule(get_location(world, loc), rule)
-def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
-    add_rule(get_location(world, loc), rule)
+def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule, combine_and: bool = True) -> None:
+    add_rule(get_location(world, loc), rule, "and" if combine_and else "or")
 def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
         set_rule(entrance, rule)
-def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
+def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
     region = get_region(world, region_name)
     for entrance in region.entrances:
-        add_rule(entrance, rule)
+        add_rule(entrance, rule, "and" if combine_and else "or")
 
 def set_rules(world: CupheadWorld):
     w = world
@@ -104,12 +104,36 @@ def set_quest_rules(world: CupheadWorld):
     if settings.music_quest:
         set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
 
-def add_level_parry_rule(world: CupheadWorld, loc: str):
+def get_weapon_ex_rules(world: CupheadWorld) -> Rule:
+    w = world
+    res: Rule = rb.rule_none()
+    for i in range(len(weapons.weapon_dict)):
+        rule = rb.rule_has_all(w, {
+            weapons.weapon_dict[i],
+            weapons.weapon_p_dict[i],
+        })
+        if i == 0:
+            res = rule
+        else:
+            res = rb.rule_or(res, rule)
+    return res
+
+def add_level_grade_rule(world: CupheadWorld, loc: str):
     w = world
     if loc in ld.s_plane_locations:
         add_item_rule(w, loc, ItemNames.item_ability_plane_parry)
+        if w.wconfig.weapon_mode == WeaponMode.PROGRESSIVE:
+            add_loc_rule(w, loc, rb.rule_has_any(w, {
+                ItemNames.item_plane_ex,
+                ItemNames.item_plane_super,
+                ItemNames.item_dlc_cplane_ex,
+                ItemNames.item_dlc_cplane_super,
+            }), False)
     else:
         add_item_rule(w, loc, ItemNames.item_ability_parry)
+        if w.wconfig.weapon_mode == WeaponMode.PROGRESSIVE:
+            add_loc_rule(w, loc, rb.rule_or(rb.rule_has(w, "Super"), get_weapon_ex_rules(w)), False)
+        # TODO: Chalice?
 
 def set_level_loc_rules(world: CupheadWorld):
     w = world
@@ -130,18 +154,18 @@ def set_level_boss_grade_rules(world: CupheadWorld):
                 _loc != LocationNames.loc_level_boss_kingdice_topgrade and
                 _loc not in levellocrules.level_loc_rule_locs
                 ):
-                add_level_parry_rule(w, _loc)
+                add_level_grade_rule(w, _loc)
         if w.wconfig.silverworth_quest:
             for _loc in ld.location_level_boss_event_agrade:
                 if (
                     _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
                     _loc not in levellocrules.level_loc_rule_locs
                     ):
-                    add_level_parry_rule(w, _loc)
+                    add_level_grade_rule(w, _loc)
         if w.wconfig.use_dlc:
             for _loc in ld.location_level_dlc_boss_topgrade:
                 if _loc not in levellocrules.level_loc_rule_locs:
-                    add_level_parry_rule(w, _loc)
+                    add_level_grade_rule(w, _loc)
 
 def set_level_rules(world: CupheadWorld):
     w = world
