@@ -98,6 +98,14 @@ Cuphead:
   dlc_kingsleap: exclude_gauntlet
 
   # -DLC ONLY-
+  # Enable Ms. Chalice and the Astral Cookie.
+  # Options:
+  # - Disabled: The cookie is disabled and cannot be obtained (Ms. Chalice is disabled).
+  # - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
+  # - Randomized: The cookie is in the item pool. Starting the DLC is a check.
+  dlc_chalice: randomized
+
+  # -DLC ONLY-
   # Set how the cursed and devine relic is handled.
   #
   # Modes:
