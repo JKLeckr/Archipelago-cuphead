@@ -107,7 +107,7 @@ def level_rule_final(wconf: WorldConfig) -> RegionRule:
         return level_rule_none(wconf)
     return level_rule_and(level_rule_parry, level_rule_dash)(wconf)
 def level_rule_dlc_cookie(wconf: WorldConfig) -> RegionRule:
-    if wconf.dlc_chalice <= ChaliceMode.START:
+    if wconf.dlc_chalice <= ChaliceMode.START or wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
         return level_rule_none(wconf)
     return region_rule_has(ItemNames.item_charm_dlc_cookie)
 def level_rule_dlc_doublejump(wconf: WorldConfig) -> RegionRule:

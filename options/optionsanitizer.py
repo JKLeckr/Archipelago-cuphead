@@ -3,6 +3,7 @@ from random import Random
 from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
+from ..enums import ChaliceMode
 from ..settings import CupheadSettings
 from . import CupheadOptions
 
@@ -52,7 +53,26 @@ class OptionSanitizer:
             msg = f"Option \"{option.current_option_name}\" was overridden with \"{values_str}\" {mode_str} set."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
-        option.value.difference_update(values)
+        if add_mode:
+            option.value.update(values)
+        else:
+            option.value.difference_update(values)
+
+    def override_option_set_clear(
+            self,
+            option: OptionSet,
+            reason: str | None = None,
+            quiet: bool = False
+        ):
+        string = f"{option.current_option_name}: Set cleared."
+        if reason:
+            string += " Reason: {reason}"
+        self.option_overrides.append(string)
+        if self.log_overrides and not quiet:
+            msg = f"Option \"{option.current_option_name}\" was overridden with set cleared."
+            msg_reason = f"Reason: {reason}."
+            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+        option.value.clear()
 
     def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
         _options = self.options
@@ -69,14 +89,21 @@ class OptionSanitizer:
             if _options.dlc_cactusgirl_quest.value:
                 self.override_num_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
         ABILITIES_VAL = "abilities"
-        if ABILITIES_VAL in _options.dlc_chalice_items_separate.value and not _options.randomize_abilities:
-            self.override_option_set(
-                _options.dlc_chalice_items_separate,
-                {ABILITIES_VAL},
-                False,
-                "Randomize Abilities Off",
-                quiet
-            )
+        if len(_options.dlc_chalice_items_separate.value) > 0:
+            if ABILITIES_VAL in _options.dlc_chalice_items_separate.value and not _options.randomize_abilities:
+                self.override_option_set(
+                    _options.dlc_chalice_items_separate,
+                    {ABILITIES_VAL},
+                    False,
+                    "Randomize Abilities Off",
+                    quiet
+                )
+            if not _options.dlc_chalice.value == int(ChaliceMode.CHALICE_ONLY):
+                self.override_option_set_clear(
+                    _options.dlc_chalice_items_separate,
+                    "Chalice Mode is Chalice Only",
+                    True
+                )
 
     def _sanitize_dlc_options(self) -> None:
         _options = self.options

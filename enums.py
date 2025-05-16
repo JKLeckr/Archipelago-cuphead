@@ -30,6 +30,7 @@ class ChaliceMode(IntEnum):
     START = 1
     VANILLA = 2
     RANDOMIZED = 3
+    CHALICE_ONLY = 4
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1
