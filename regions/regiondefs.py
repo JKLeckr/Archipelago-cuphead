@@ -10,6 +10,8 @@ def rule_has(item: str, count: int = 1) -> RegionRule:
 def rule_has_all(items: Iterable[str]) -> RegionRule:
     return region_rule_has_all(items)
 
+# TODO: Added locations are not dragged when shuffled.
+
 region_begin: RegionData = RegionData(
     "Menu", None, [Target(LocationNames.level_house)], flags=DefFlags.TGT_IGNORE_FREEMOVE
 )
