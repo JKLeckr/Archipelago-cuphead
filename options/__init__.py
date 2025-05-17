@@ -16,6 +16,7 @@ class CupheadOptions(PerGameCommonOptions):
     contract_goal_requirements: odefs.ContractGoalRequirements
     dlc_ingredient_goal_requirements: odefs.DlcIngredientGoalRequirements
     level_shuffle: odefs.LevelShuffle
+    level_shuffle_placement: odefs.LevelShufflePlacement
     freemove_isles: odefs.FreeMoveIsles
     deathlink: odefs.DeathLink
     #weapon_gate: odefs.WeaponGate

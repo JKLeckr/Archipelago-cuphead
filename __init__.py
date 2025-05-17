@@ -14,7 +14,7 @@ from .items import itemgroups, itemdefs as idef
 from .items.itembase import ItemData
 from .locations import locationdefs as ld
 from .locations.locationbase import LocationData
-from .levels.leveldefs import level_map
+from .levels.levelmap import level_map
 from .levels.levelbase import LevelData
 from .shop import ShopData
 from . import options, locations, levels, regions, items, shop
