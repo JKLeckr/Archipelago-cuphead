@@ -29,10 +29,6 @@ Cuphead:
   # Other values: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
   start_weapon: random
 
-  # Set starting max health.
-  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
-  start_maxhealth: '3'
-
   # Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
   # The required contracts for the die houses are evenly distributed.
   contract_requirements: '17'
