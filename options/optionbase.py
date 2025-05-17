@@ -1,5 +1,8 @@
 from typing_extensions import override
-from Options import Range, Choice, OptionError
+from typing import Any
+from collections.abc import Iterable
+from Options import Range, Choice, OptionDict, OptionError
+from ..levels import levelmap
 
 class ChoiceEx(Choice):
     random_value: int = -1
@@ -23,3 +26,17 @@ class Weight(Range):
         elif value > self.weight_max:
             raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
         self.value = value
+
+class LevelDict(OptionDict):
+    valid_keys: Iterable[str] = frozenset(levelmap.level_map.values())
+    valid_values: Iterable[str] = valid_keys
+    supports_weighting = True
+
+    def __init__(self, value: dict[str, Any]):
+        res: dict[str, str] = {}
+        for x, y in value.items():
+            if x in self.valid_keys and y in self.valid_values:
+                res[x] = y
+            else:
+                raise OptionError(f"Option {self.__class__.__name__} contains invalid levels. \"{x}: {y}\" is invalid")
+        super().__init__(res)

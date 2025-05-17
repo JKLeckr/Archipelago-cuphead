@@ -1,6 +1,6 @@
 from typing import ClassVar, Protocol
 from Options import Toggle, DefaultOnToggle, Range, Choice, OptionSet, FreeText, Visibility
-from .optionbase import ChoiceEx, Weight
+from .optionbase import ChoiceEx, Weight, LevelDict
 
 class CupheadOption(Protocol):
     name: ClassVar[str]
@@ -138,13 +138,25 @@ class LevelShuffle(Choice):
     """
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
+    Note: Be careful with this option. This can easily break generation if used with plando.
     """
     name = "level_shuffle"
     display_name = "Level Shuffle"
     option_disabled = 0
-    option_all_levels = 1
+    option_enabled = 1
     option_plane_separate = 2
     default = 0
+
+class LevelShufflePlacement(LevelDict):
+    """
+    Define which levels will be placed in which spots when shuffling the levels.
+    Note: Some levels cannot be shuffled, and some levels cannot be placed in specific spots.
+    Key: original, Value: new
+    """
+    name = "level_shuffle_placement"
+    display_name = "Level Shuffle Placements"
+    visibility = Visibility.complex_ui | Visibility.spoiler | Visibility.template
+    default = {}
 
 class FreeMoveIsles(Toggle):
     """

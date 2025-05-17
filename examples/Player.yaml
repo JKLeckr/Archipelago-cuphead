@@ -52,7 +52,7 @@ Cuphead:
 
   # Shuffle the Boss and Run n' Gun levels.
   # Bosses and Run n' Guns are shuffled within their own group.
-  # Other values: all_levels, plane_separate, disabled
+  # Other values: enabled, plane_separate, disabled
   level_shuffle: disabled
 
   # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.

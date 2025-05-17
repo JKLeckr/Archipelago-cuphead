@@ -10,6 +10,8 @@ from . import CupheadOptions
 class OptionSanitizer:
     option_overrides: list[str] = []
 
+    # TODO: Level shuffle placement
+
     def __init__(self, player: int, options: CupheadOptions, random: Random, settings: CupheadSettings):
         self.option_overrides = []
         self.player = player
