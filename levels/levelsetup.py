@@ -27,7 +27,7 @@ def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -
 
 def setup_level_shuffle_map(rand: Random, wconf: WorldConfig) -> dict[int,int]:
     use_dlc = wconf.use_dlc
-    separate_plane = wconf.level_shuffle == LevelShuffleMode.PLANE_LEVELS_SEPARATE
+    separate_plane = wconf.level_shuffle == LevelShuffleMode.PLANE_SEPARATE
     level_shuffle_map: dict[int,int] = {}
 
     # level_lists format: (level_list, exclude_list)
