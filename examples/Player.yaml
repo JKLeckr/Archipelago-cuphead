@@ -5,7 +5,6 @@ Cuphead:
   accessibility: items
   start_inventory: {}
 
-  # ---WORKS, WIP---
   # Set whether or not to use Delicious Last Course content (Requires owning the DLC).
   # Other values: 'true'
   use_dlc: 'false'
@@ -15,22 +14,20 @@ Cuphead:
   # Other values: beat_devil, collect_contracts, buy_out_shop, dlc_beat_saltbaker, dlc_beat_both, dlc_collect_ingredients, dlc_collect_both
   mode: beat_devil
 
+  # Set how the weapons are shuffled in the pool.
+  # Progressive turns the weapons in the pool into progressive weapons.
+  # "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+  # Other values: progressive, progressive_except_start, normal
+  weapon_mode: normal
+
   # Set the boss difficulty to expert.
   # Other values: 'true'
   expert_mode: 'false'
-
-  # --NOT YET IMPLEMENTED--
-  # Shuffle the Boss and Run n' Gun levels.
-  level_shuffle: 'false'
 
   # Choose weapon to start with.
   # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
   # Other values: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
   start_weapon: random
-
-  # Randomize the weapon EX ability also.
-  # Other values: disabled, enabled, all_but_start
-  randomize_weapon_ex: disabled
 
   # Set starting max health.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
@@ -57,7 +54,7 @@ Cuphead:
   # Other values: 'true'
   freemove_isles: 'false'
 
-  # When you die, everyone dies. Of course the reverse is true too.
+  # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
   # In Cuphead, this only applies while you are in a level.
   # Other values: 'true'
   deathlink: 'false'
@@ -68,6 +65,7 @@ Cuphead:
 
   # Also include beating the secret phases of the three bosses as checks.
   # The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
+  # The secret phases are more difficult than the normal fight.
   # Other values: 'true'
   boss_secret_checks: 'false'
 
@@ -92,30 +90,56 @@ Cuphead:
   pacifist_quest: 'false'
 
   # -DLC ONLY-
-  # Choose how to handle the locations of The King's Leap.
-  # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
-  # Other values: exclude, include_all
-  dlc_kingsleap: exclude_gauntlet
+  # -REQUIRES CHALICE-
+  # Enable checks for defeating each boss as Ms. Chalice.
+  # Other values: 'true'
+  dlc_boss_chalice_checks: 'false'
+
+  # -DLC ONLY-
+  # -REQUIRES CHALICE-
+  # Enable checks for completing each Run n' Gun as Ms. Chalice.
+  # Other values: 'true'
+  dlc_rungun_chalice_checks: 'false'
+
+  # -DLC ONLY-
+  # -REQUIRES CHALICE-
+  # Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
+  # This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
+  # You can talk to the Cactus Girl to know which bosses you need to defeat still.
+  # Other values: 'true'
+  dlc_cactusgirl_quest: 'false'
 
   # -DLC ONLY-
   # Enable Ms. Chalice and the Astral Cookie.
   # Options:
   # - Disabled: The cookie is disabled and cannot be obtained (Ms. Chalice is disabled).
+  # - Start: The cookie is available at the start of the game.
   # - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
   # - Randomized: The cookie is in the item pool. Starting the DLC is a check.
+  # Other values: disabled, start, vanilla, randomized
   dlc_chalice: randomized
+
+  # -DLC ONLY-
+  # Choose how to handle the locations of The King's Leap.
+  # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
+  # Other values: exclude, exclude_gauntlet, include_all
+  dlc_kingsleap: exclude_gauntlet
 
   # -DLC ONLY-
   # Set how the cursed and devine relic is handled.
   #
   # Modes:
-  # - off: Broken Relic is removed from the game
-  # - vanilla: Broken Relic is in pool. The graveyard and obtaining the devine relic is excluded from logic.
-  # Other values: vanilla
+  # - Off: Broken Relic is removed from the game
+  # - Vanilla: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
+  # Other values: off, vanilla
   dlc_curse_mode: off
 
   # Set extra coins in the item pool.
   extra_coins: '0'
+
+  # Set starting max health.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  start_maxhealth: '3'
 
   # Set number of max health upgrades in the pool.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
@@ -131,4 +155,4 @@ Cuphead:
 
   # Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
-  filler_weight_superrecharge: '3'
+  filler_weight_supercharge: '3'

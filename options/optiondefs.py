@@ -234,7 +234,7 @@ class DlcRunGunChaliceChecks(Toggle):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
-    Enable checks for completing each Run N Gun as Ms. Chalice.
+    Enable checks for completing each Run n' Gun as Ms. Chalice.
     """
     name = "dlc_rungun_chalice_checks"
     display_name = "[DLC] Boss Chalice Checks"
@@ -531,7 +531,7 @@ class MusicShuffle(Choice):
 
 class DeathLink(Toggle):
     """
-    Enable Deathlink. When you die, everyone dies. Of course the reverse is true too.
+    Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
     In Cuphead, this only applies while you are in a level.
     """
     name = "deathlink"
