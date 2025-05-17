@@ -50,6 +50,7 @@ level_map = {
     109: LocationNames.level_dlc_chesscastle_bishop,
     110: LocationNames.level_dlc_chesscastle_rook,
     111: LocationNames.level_dlc_chesscastle_queen,
+    112: LocationNames.level_dlc_chesscastle_run,
 }
 level_id_map = {v: k for k, v in level_map.items()}
 

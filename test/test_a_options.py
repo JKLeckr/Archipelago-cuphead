@@ -24,6 +24,15 @@ class TestOptions(CupheadTestBase):
             "use_dlc": True,
             "mode": "dlc_beat_both",
         },
+        "Level Shuffle": {
+            "level_shuffle": "all_levels"
+        },
+        "Level Shuffle Plane": {
+            "level_shuffle": "plane_separate"
+        },
+        "Weapon Ex": {
+            "weapon_mode": "progressive",
+        },
         "No Ability Rando": {
             "randomize_abilities": False,
         },
@@ -81,10 +90,18 @@ class TestOptions(CupheadTestBase):
             "dlc_chalice": "randomized",
             "dlc_cactusgirl_quest": True
         },
-        "Weapon Ex": {
+        "DLC Weapon Ex": {
             "use_dlc": True,
             "weapon_mode": "progressive",
-        }
+        },
+        "DLC Level Shuffle": {
+            "use_dlc": True,
+            "level_shuffle": "all_levels"
+        },
+        "DLC Level Shuffle Plane": {
+            "use_dlc": True,
+            "level_shuffle": "plane_separate"
+        },
     }
 
     def test_default_options(self):

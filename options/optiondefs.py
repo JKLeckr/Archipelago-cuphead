@@ -136,18 +136,14 @@ class DlcIngredientGoalRequirements(Range):
 
 class LevelShuffle(Choice):
     """
-    --NOT YET IMPLEMENTED--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
     """
     name = "level_shuffle"
     display_name = "Level Shuffle"
-    visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
     option_all_levels = 1
-    option_plane_levels_separate = 2
-    alias_false = 0
-    alias_true = 1
+    option_plane_separate = 2
     default = 0
 
 class FreeMoveIsles(Toggle):

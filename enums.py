@@ -17,7 +17,7 @@ class WeaponMode(IntEnum):
 class LevelShuffleMode(IntEnum):
     DISABLED = 0
     ENABLED = 1
-    PLANE_LEVELS_SEPARATE = 2
+    PLANE_SEPARATE = 2
 class GradeCheckMode(IntEnum):
     DISABLED = 0
     A_MINUS_GRADE = 1
