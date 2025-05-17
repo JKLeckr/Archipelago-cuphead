@@ -25,7 +25,7 @@ class TestOptions(CupheadTestBase):
             "mode": "dlc_beat_both",
         },
         "Level Shuffle": {
-            "level_shuffle": "all_levels"
+            "level_shuffle": "enabled"
         },
         "Level Shuffle Plane": {
             "level_shuffle": "plane_separate"
@@ -96,7 +96,7 @@ class TestOptions(CupheadTestBase):
         },
         "DLC Level Shuffle": {
             "use_dlc": True,
-            "level_shuffle": "all_levels"
+            "level_shuffle": "enabled"
         },
         "DLC Level Shuffle Plane": {
             "use_dlc": True,
