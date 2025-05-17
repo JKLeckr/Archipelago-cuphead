@@ -156,7 +156,7 @@ region_isle2: list[RegionData] = [
         Target(LocationNames.shop_set2),
     ]),
     LevelRegionData(LocationNames.level_boss_dragon, [
-        LocationNames.loc_quest_4parries,
+        LocationNames.loc_quest_buster,
     ], [
         LevelTarget(LocationNames.level_mausoleum_ii),
         Target(LocationNames.loc_quest_lucien, None, dep.dep_lucien_quest),

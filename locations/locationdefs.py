@@ -364,7 +364,7 @@ location_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_isle1_secret_prereq5: LocationData(None),
 }
 location_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_quest_4parries: LocationData(id(118)),
+    LocationNames.loc_quest_buster: LocationData(id(118)),
     LocationNames.loc_quest_ginger: LocationData(id(119)),
     LocationNames.loc_quest_4mel: LocationData(id(120)),
     LocationNames.loc_quest_lucien: LocationData(id(121)),

@@ -29,7 +29,7 @@ class WorldConfig:
     dlc_rungun_chalice_checks: bool
     dlc_kingdice_chalice_checks: bool
     dlc_chess_chalice_checks: bool
-    fourparries_quest: bool
+    buster_quest: bool
     ginger_quest: bool
     fourmel_quest: bool
     lucien_quest: bool
@@ -73,7 +73,7 @@ class WorldConfig:
         self.dlc_rungun_chalice_checks = bool(options.dlc_rungun_chalice_checks.value)
         self.dlc_kingdice_chalice_checks = bool(options.dlc_kingdice_chalice_checks.value)
         self.dlc_chess_chalice_checks = bool(options.dlc_chess_chalice_checks.value)
-        self.fourparries_quest = True
+        self.buster_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
         self.lucien_quest = False

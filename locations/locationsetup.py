@@ -30,8 +30,8 @@ def setup_grade_check_locations(locations_ref: dict[str,LocationData], wconf: Wo
 def setup_quest_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
     def _add_location(name: str):
         add_location(locations_ref, name)
-    if wconf.fourparries_quest:
-        _add_location(LocationNames.loc_quest_4parries)
+    if wconf.buster_quest:
+        _add_location(LocationNames.loc_quest_buster)
     if wconf.ginger_quest:
         _add_location(LocationNames.loc_quest_ginger)
         _add_location(LocationNames.loc_event_isle2_shortcut)

@@ -8,7 +8,7 @@ from ..items import weapons, itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
 from .rulebase import Rule
-from ..enums import GameMode, WeaponMode
+from ..enums import GameMode, WeaponMode, ItemGroups
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -101,6 +101,13 @@ def set_quest_rules(world: CupheadWorld):
         set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
     if settings.ginger_quest:
         set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
+    if settings.buster_quest and settings.randomize_abilities:
+        set_item_rule(w, LocationNames.loc_quest_buster, ItemNames.item_ability_parry)
+        if settings.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+            add_loc_rule(w, LocationNames.loc_quest_buster, rb.rule_has_all(w, {
+                ItemNames.item_ability_dlc_cdash,
+                ItemNames.item_ability_dlc_cparry,
+            }), False)
     if settings.silverworth_quest:
         set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
     if settings.pacifist_quest:

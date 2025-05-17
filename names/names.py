@@ -460,7 +460,7 @@ class LocationNames:
 
     loc_npc_mac = "Mac"
     loc_npc_canteen = "Canteen Hughes"
-    loc_quest_4parries = "Buster Quest"
+    loc_quest_buster = "Buster Quest"
     loc_quest_ginger = "Ginger Quest"
     loc_quest_4mel = "Barbershop Quartet Quest"
     loc_quest_lucien = "Lucien Quest"
