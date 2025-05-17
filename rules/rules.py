@@ -112,10 +112,11 @@ def get_weapon_ex_rules(world: CupheadWorld) -> Rule:
     w = world
     res: Rule = rb.rule_none()
     for i in range(len(weapons.weapon_dict)):
-        rule = rb.rule_has_all(w, {
-            weapons.weapon_dict[i],
+        rule = rb.rule_has(
+            w,
             weapons.weapon_p_dict[i],
-        })
+            2
+        )
         if i == 0:
             res = rule
         else:

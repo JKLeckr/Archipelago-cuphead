@@ -81,6 +81,10 @@ class TestOptions(CupheadTestBase):
             "dlc_chalice": "randomized",
             "dlc_cactusgirl_quest": True
         },
+        "Weapon Ex": {
+            "use_dlc": True,
+            "weapon_mode": "progressive",
+        }
     }
 
     def test_default_options(self):

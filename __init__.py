@@ -40,7 +40,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "alpha01b"
+    APWORLD_VERSION: str = "alpha01c"
 
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
