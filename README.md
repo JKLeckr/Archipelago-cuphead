@@ -1,4 +1,4 @@
-# CupheadArchipelago World
+# CupheadArchipelago AP World
 
 *Archipelago World Created by JKLeckr*
 
