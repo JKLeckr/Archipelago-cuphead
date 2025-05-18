@@ -4,7 +4,6 @@ from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
 from ..enums import ChaliceMode
-from ..settings import CupheadSettings
 from . import CupheadOptions
 
 class OptionSanitizer:
@@ -12,13 +11,19 @@ class OptionSanitizer:
 
     # TODO: Level shuffle placement
 
-    def __init__(self, player: int, options: CupheadOptions, random: Random, settings: CupheadSettings):
+    def __init__(
+            self, player: int,
+            options: CupheadOptions,
+            random: Random,
+            log_overrides: bool = True,
+            sanitize_goal_options: bool = False
+        ):
         self.option_overrides = []
         self.player = player
         self.options = options
         self.random = random
-        self.log_overrides = bool(settings.log_option_overrides)
-        self.strict_goal_options = bool(settings.strict_goal_options)
+        self.log_overrides = log_overrides
+        self.strict_goal_options = sanitize_goal_options
 
     def override_num_option(
             self,

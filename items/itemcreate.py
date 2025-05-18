@@ -105,7 +105,7 @@ def create_locked_items_at(
     for loc in locations:
         if loc in world.active_locations.keys():
             create_locked_item(world, name, loc, force_classification)
-        elif world.settings.verbose:
+        elif world.settings.is_debug_bit_on(1):
             print(f"Skipped {name} for {loc}")
 
 def create_dlc_locked_items(world: CupheadWorld):

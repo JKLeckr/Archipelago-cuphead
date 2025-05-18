@@ -89,9 +89,7 @@ class CupheadWorld(World):
     def generate_early(self) -> None:
         self.options.version.value = self.version
 
-        self.option_sanitizer = OptionSanitizer(
-            self.player, self.options, self.random, self.settings
-        )
+        self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
 
         self.resolve_random_options()
         self.option_sanitizer.sanitize_options()
@@ -181,7 +179,7 @@ class CupheadWorld(World):
 
     @override
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
-        if self.settings.write_overrides_to_spoiler and len(self.option_sanitizer.option_overrides)>0:
+        if len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
             spoiler_handle.write('\n'.join([x for x in self.option_sanitizer.option_overrides]) + '\n')
         if self.level_shuffle and len(self.level_shuffle_map)>0:
@@ -194,7 +192,6 @@ class CupheadWorld(World):
             return "\n".join([f" {z}" for z in y])
 
         spoiler_handle.write(f"\n{self.player_name} Shop Items:\n\n")
-        _nl = "\n"
         spoiler_handle.write("\n".join([
             f"{x}:\n{_gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
                 if (x != LocationNames.shop_set4 or self.use_dlc)

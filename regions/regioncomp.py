@@ -73,7 +73,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
                 else:
                     print(f"WARNING: \"{loc_name}\" already was registered!")
             region.locations.append(location)
-        elif world.settings.verbose:
+        elif world.settings.is_debug_bit_on(1):
             print(f"Skipping location \"{loc_name}\" for \"{regc.name}\" as it does not exist for this configuration.")
 
     multiworld.regions.append(region)
@@ -110,7 +110,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
                             locset.add(loc.name)
                 src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
                 #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
-            elif world.settings.verbose:
+            elif world.settings.is_debug_bit_on(1):
                 print("Skipping Target "+target.name)
         else:
             print(f"WARNING: For \"{regc.name}\": a target is None!")
@@ -124,7 +124,7 @@ def create_regions(world: CupheadWorld) -> None:
         if regc:
             if regc.depends(world.wconfig):
                 create_region(world, regc)
-            elif world.settings.verbose:
+            elif world.settings.is_debug_bit_on(1):
                 print("Skipping Region "+regc.name)
         else:
             print(f"WARNING: For \"{compile_regions}\": region is None!")
