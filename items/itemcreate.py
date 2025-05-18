@@ -195,7 +195,7 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
     _weapon_dict = weapons.get_weapon_dict(world.wconfig)
 
     # Starter weapon
-    if world.wconfig.weapon_mode > 0:
+    if world.wconfig.weapon_mode > 1:
         _weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
             _weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
@@ -278,6 +278,8 @@ def create_items(world: CupheadWorld) -> None:
 
     # Setup Weapons with start weapon and progressive upgrade settings in mind
     weapons = setup_weapon_pool(world, precollected_item_names)
+
+    #print(weapons)
 
     # Item names for coins
     coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
