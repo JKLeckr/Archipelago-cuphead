@@ -1,7 +1,7 @@
 from __future__ import annotations
 from ..names import LocationNames
 
-level_map = {
+level_map: dict[int, str] = {
     0: LocationNames.level_boss_veggies,
     1: LocationNames.level_boss_slime,
     2: LocationNames.level_boss_frogs,

@@ -84,10 +84,12 @@ class WeaponMode(Choice):
     """
     name = "weapon_mode"
     display_name = "Weapon Mode"
-    option_normal = 1
-    option_progressive = 2
-    option_progressive_except_start = 3
-    default = 1
+    option_normal = 0
+    option_progressive = 1
+    option_progressive_except_start = 5
+    option_ex_separate = 2
+    option_ex_separate_except_start = 6
+    default = 0
 
 class ContractRequirements(Range):
     """

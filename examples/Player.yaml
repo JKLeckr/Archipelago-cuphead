@@ -17,7 +17,7 @@ Cuphead:
   # Set how the weapons are shuffled in the pool.
   # Progressive turns the weapons in the pool into progressive weapons.
   # "Progressive" means that weapon EX is unlocked from having two of the same weapon.
-  # Other values: progressive, progressive_except_start, normal
+  # Other values: progressive, progressive_except_start, ex_separate, ex_separate_except_start, normal
   weapon_mode: normal
 
   # Set the boss difficulty to expert.

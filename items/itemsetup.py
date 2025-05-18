@@ -1,7 +1,7 @@
 from __future__ import annotations
 from BaseClasses import ItemClassification
 from ..names import ItemNames
-from ..enums import ItemGroups
+from ..enums import ItemGroups, WeaponMode
 from ..wconf import WorldConfig
 from .itembase import ItemData
 from . import weapons, itemdefs as idef
@@ -51,8 +51,14 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], wconf: WorldConfig):
 def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
     for weapon in weapons.get_weapon_dict(wconf, wconf.use_dlc).values():
         items_ref[weapon] = idef.items_all[weapon]
-    if wconf.weapon_mode:
+    if (wconf.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+        items_ref.update(idef.item_weapon_ex)
+        if wconf.use_dlc:
+            items_ref.update(idef.item_dlc_weapon_ex)
+    if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+    # Grade checks
+    # Silverworth Progression Items
 
 def setup_items(wconf: WorldConfig) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}

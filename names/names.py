@@ -529,6 +529,20 @@ class ItemNames:
     item_weapon_dlc_converge = "Converge"
     item_weapon_dlc_twistup = "Twist-Up"
 
+    # Weapon EX
+    _weapon_ex = " EX"
+    item_weapon_ex = item_weapon + _weapon_ex
+    item_weapon_peashooter_ex = item_weapon_peashooter + _weapon_ex
+    item_weapon_spread_ex = item_weapon_spread + _weapon_ex
+    item_weapon_chaser_ex = item_weapon_chaser + _weapon_ex
+    item_weapon_lobber_ex = item_weapon_lobber + _weapon_ex
+    item_weapon_charge_ex = item_weapon_charge + _weapon_ex
+    item_weapon_roundabout_ex = item_weapon_roundabout + _weapon_ex
+    item_dlc_weapon_ex = item_dlc_weapon + _weapon_ex
+    item_weapon_dlc_crackshot_ex = item_weapon_dlc_crackshot + _weapon_ex
+    item_weapon_dlc_converge_ex = item_weapon_dlc_converge + _weapon_ex
+    item_weapon_dlc_twistup_ex = item_weapon_dlc_twistup + _weapon_ex
+
     # Progressive Weapon
     item_p_weapon = _item_progressive + "Weapon"
     item_p_weapon_peashooter = _item_progressive + "Peashooter"
