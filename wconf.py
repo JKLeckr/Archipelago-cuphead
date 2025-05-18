@@ -13,6 +13,7 @@ class WorldConfig:
     weapon_mode: e.WeaponMode
     start_maxhealth: int
     level_shuffle: e.LevelShuffleMode
+    level_shuffle_placement: dict[str, str]
     freemove_isles: bool
     weapon_gate: bool
     randomize_abilities: bool
@@ -52,7 +53,7 @@ class WorldConfig:
     minimum_filler: int
     trap_loadout_anyweapon: bool
 
-    def __init__(self, options: CupheadOptions) -> None:
+    def _setup(self, options: CupheadOptions) -> None:
         self.use_dlc = bool(options.use_dlc.value)
         self.mode = e.GameMode(options.mode.value)
         self.hard_logic = False #bool(options.hard_logic.value)
@@ -61,6 +62,7 @@ class WorldConfig:
         self.weapon_mode = e.WeaponMode(options.weapon_mode.value)
         self.start_maxhealth = options.start_maxhealth.value
         self.level_shuffle = e.LevelShuffleMode(options.level_shuffle.value)
+        self.level_shuffle_placement = options.level_shuffle_placement.value
         self.freemove_isles = bool(options.freemove_isles.value)
         self.weapon_gate = False #bool(options.weapon_gate.value)
         self.randomize_abilities = bool(options.randomize_abilities.value)
@@ -100,40 +102,108 @@ class WorldConfig:
         self.minimum_filler = options.minimum_filler.value
         self.trap_loadout_anyweapon = bool(options.trap_loadout_anyweapon.value)
 
-    def _get_coin_amounts(self, options: CupheadOptions) -> tuple[int, int, int]:
-        total_single_coins = (40 if self.use_dlc else 37) + options.extra_coins.value
+    def _setup_default(self) -> None:
+        self.use_dlc = bool(CupheadOptions.use_dlc.default)
+        self.mode = e.GameMode(CupheadOptions.mode.default)
+        self.hard_logic = False #bool(CupheadOptions.hard_logic.default)
+        self.expert_mode = bool(CupheadOptions.expert_mode.default)
+        self.start_weapon = int(CupheadOptions.start_weapon.default)
+        self.weapon_mode = e.WeaponMode(CupheadOptions.weapon_mode.default)
+        self.start_maxhealth = CupheadOptions.start_maxhealth.default
+        self.level_shuffle = e.LevelShuffleMode(CupheadOptions.level_shuffle.default)
+        self.level_shuffle_placement = CupheadOptions.level_shuffle_placement.default
+        self.freemove_isles = bool(CupheadOptions.freemove_isles.default)
+        self.weapon_gate = False #bool(CupheadOptions.weapon_gate.default)
+        self.randomize_abilities = bool(CupheadOptions.randomize_abilities.default)
+        self.randomize_abilities_aim = False #bool(CupheadOptions.randomize_abilities_aim.default)
+        self.boss_grade_checks = e.GradeCheckMode(CupheadOptions.boss_grade_checks.default)
+        self.rungun_grade_checks = e.GradeCheckMode(CupheadOptions.rungun_grade_checks.default)
+        self.boss_secret_checks = bool(CupheadOptions.boss_secret_checks.default)
+        self.kingdice_bosssanity = bool(CupheadOptions.kingdice_bosssanity.default)
+        self.dlc_boss_chalice_checks = bool(CupheadOptions.dlc_boss_chalice_checks.default)
+        self.dlc_rungun_chalice_checks = bool(CupheadOptions.dlc_rungun_chalice_checks.default)
+        self.dlc_kingdice_chalice_checks = bool(CupheadOptions.dlc_kingdice_chalice_checks.default)
+        self.dlc_chess_chalice_checks = bool(CupheadOptions.dlc_chess_chalice_checks.default)
+        self.buster_quest = True
+        self.ginger_quest = True
+        self.fourmel_quest = True
+        self.lucien_quest = False
+        self.silverworth_quest = bool(CupheadOptions.silverworth_quest.default)
+        self.pacifist_quest = bool(CupheadOptions.pacifist_quest.default)
+        self.music_quest = False
+        self.dlc_chalice = e.ChaliceMode(CupheadOptions.dlc_chalice.default)
+        self.dlc_kingsleap = e.ChessCastleMode(CupheadOptions.dlc_kingsleap.default)
+        self.dlc_cactusgirl_quest = bool(CupheadOptions.dlc_cactusgirl_quest.default)
+        self.maxhealth_upgrades = CupheadOptions.maxhealth_upgrades.default
+        self.traps = CupheadOptions.traps.default
+        self.trap_weights = self._get_trap_weights(None)
+        self.filler_item_weights = self._get_filler_item_weights(None)
+        self.coin_amounts = self._get_coin_amounts(None)
+        self.contract_requirements = self._get_contract_requirements(None)
+        self.dlc_ingredient_requirements = CupheadOptions.dlc_ingredient_requirements.default
+        self.contract_goal_requirements = CupheadOptions.contract_goal_requirements.default
+        self.dlc_ingredient_goal_requirements = CupheadOptions.dlc_ingredient_goal_requirements.default
+        self.require_secret_shortcuts = True
+        self.dlc_randomize_boat = True
+        self.dlc_requires_mausoleum = True
+        self.dlc_chalice_items_separate = self._get_separate_items_mode(None)
+        self.dlc_curse_mode = e.CurseMode.VANILLA
+        self.minimum_filler = CupheadOptions.minimum_filler.default
+        self.trap_loadout_anyweapon = bool(CupheadOptions.trap_loadout_anyweapon.default)
+
+    def __init__(self, options: CupheadOptions | None = None) -> None:
+        if options:
+            self._setup(options)
+        else:
+            self._setup_default()
+
+    def _get_coin_amounts(self, options: CupheadOptions | None) -> tuple[int, int, int]:
+        extra_coins = options.extra_coins.value if options else CupheadOptions.extra_coins.default
+        total_single_coins = (40 if self.use_dlc else 37) + extra_coins
         total_double_coins = 5 if self.use_dlc else 0
         total_triple_coins = 2 if self.use_dlc else 1
 
         return (total_single_coins, total_double_coins, total_triple_coins)
 
-    def _get_contract_requirements(self, options: CupheadOptions) -> tuple[int, int, int]:
+    def _get_contract_requirements(self, options: CupheadOptions | None) -> tuple[int, int, int]:
         max_contracts = (5, 10, 17)
-        total_req = options.contract_requirements.value
+        total_req = options.contract_requirements.value if options else CupheadOptions.contract_requirements.default
         distrib = total_req // 3
         die1 = min(distrib, max_contracts[0])
         die2 = die1 + min(distrib, max_contracts[1])
 
         return (die1, die2, total_req)
 
-    def _get_filler_item_weights(self, options: CupheadOptions) -> list[int]:
+    def _get_filler_item_weights(self, options: CupheadOptions | None) -> list[int]:
         return [
             options.filler_weight_extrahealth.value,
             options.filler_weight_supercharge.value,
             options.filler_weight_fastfire.value,
+        ] if options else [
+            CupheadOptions.filler_weight_extrahealth.default,
+            CupheadOptions.filler_weight_supercharge.default,
+            CupheadOptions.filler_weight_fastfire.default,
         ]
 
-    def _get_trap_weights(self, options: CupheadOptions) -> list[int]:
+    def _get_trap_weights(self, options: CupheadOptions | None) -> list[int]:
         return [
             options.trap_weight_fingerjam.value,
             options.trap_weight_slowfire.value,
             options.trap_weight_superdrain.value,
             options.trap_weight_loadout.value,
             0,
+        ] if options else [
+            CupheadOptions.trap_weight_fingerjam.default,
+            CupheadOptions.trap_weight_slowfire.default,
+            CupheadOptions.trap_weight_superdrain.default,
+            CupheadOptions.trap_weight_loadout.default,
+            0,
         ]
 
-    def _get_separate_items_mode(self, options: CupheadOptions) -> e.ItemGroups:
-        _set = options.dlc_chalice_items_separate.value
+    def _get_separate_items_mode(self, options: CupheadOptions | None) -> e.ItemGroups:
+        _set = (
+            options.dlc_chalice_items_separate.value if options else CupheadOptions.dlc_chalice_items_separate.default
+        )
         _val = e.ItemGroups.NONE
 
         def _get_bit(opt: str, item_group: e.ItemGroups) -> int:

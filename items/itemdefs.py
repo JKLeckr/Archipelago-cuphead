@@ -10,7 +10,7 @@ def id(i: int): return base_id+i
 def dlc_id(i: int): return base_dlc_id+i
 
 # Items
-# Next ids: 61, 23
+# Next ids: 67, 26
 item_generic: dict[str, ItemData] = {
     ItemNames.item_level_generic: ItemData(id(0), ItemClassification.filler, 0),
 }
@@ -43,99 +43,117 @@ item_dlc_chalice_essential: dict[str, ItemData] = {
 
 item_weapons: dict[str, ItemData] = {
     ItemNames.item_weapon_peashooter: ItemData(id(13), ItemClassification.useful),
-    ItemNames.item_weapon_spread: ItemData(id(15), ItemClassification.useful),
-    ItemNames.item_weapon_chaser: ItemData(id(17), ItemClassification.useful),
-    ItemNames.item_weapon_lobber: ItemData(id(19), ItemClassification.useful),
-    ItemNames.item_weapon_charge: ItemData(id(21), ItemClassification.useful),
-    ItemNames.item_weapon_roundabout: ItemData(id(23), ItemClassification.useful),
+    ItemNames.item_weapon_spread: ItemData(id(16), ItemClassification.useful),
+    ItemNames.item_weapon_chaser: ItemData(id(19), ItemClassification.useful),
+    ItemNames.item_weapon_lobber: ItemData(id(22), ItemClassification.useful),
+    ItemNames.item_weapon_charge: ItemData(id(25), ItemClassification.useful),
+    ItemNames.item_weapon_roundabout: ItemData(id(28), ItemClassification.useful),
 }
 item_dlc_weapons: dict[str, ItemData] = {
     ItemNames.item_weapon_dlc_crackshot: ItemData(dlc_id(5), ItemClassification.useful),
-    ItemNames.item_weapon_dlc_converge: ItemData(dlc_id(7), ItemClassification.useful),
-    ItemNames.item_weapon_dlc_twistup: ItemData(dlc_id(9), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_converge: ItemData(dlc_id(8), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_twistup: ItemData(dlc_id(11), ItemClassification.useful),
 }
+item_all_weapons: dict[str, ItemData] = {**item_weapons, **item_dlc_weapons}
+
+item_weapon_ex: dict[str, ItemData] = {
+    ItemNames.item_weapon_peashooter_ex: ItemData(id(14), ItemClassification.useful, 2),
+    ItemNames.item_weapon_spread_ex: ItemData(id(17), ItemClassification.useful, 2),
+    ItemNames.item_weapon_chaser_ex: ItemData(id(20), ItemClassification.useful, 2),
+    ItemNames.item_weapon_lobber_ex: ItemData(id(23), ItemClassification.useful, 2),
+    ItemNames.item_weapon_charge_ex: ItemData(id(26), ItemClassification.useful, 2),
+    ItemNames.item_weapon_roundabout_ex: ItemData(id(29), ItemClassification.useful, 2),
+}
+item_dlc_weapon_ex: dict[str, ItemData] = {
+    ItemNames.item_weapon_dlc_crackshot_ex: ItemData(dlc_id(6), ItemClassification.useful, 2),
+    ItemNames.item_weapon_dlc_converge_ex: ItemData(dlc_id(9), ItemClassification.useful, 2),
+    ItemNames.item_weapon_dlc_twistup_ex: ItemData(dlc_id(12), ItemClassification.useful, 2),
+}
+item_all_weapon_ex: dict[str, ItemData] = {**item_weapon_ex, **item_dlc_weapon_ex}
 
 item_p_weapons: dict[str, ItemData] = {
-    ItemNames.item_p_weapon_peashooter: ItemData(id(14), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_spread: ItemData(id(16), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_chaser: ItemData(id(18), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_lobber: ItemData(id(20), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_charge: ItemData(id(22), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_roundabout: ItemData(id(24), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_peashooter: ItemData(id(15), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_spread: ItemData(id(18), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_chaser: ItemData(id(21), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_lobber: ItemData(id(24), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_charge: ItemData(id(27), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_roundabout: ItemData(id(30), ItemClassification.useful, 2),
 }
 item_dlc_p_weapons: dict[str, ItemData] = {
-    ItemNames.item_p_weapon_dlc_crackshot: ItemData(dlc_id(6), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_dlc_converge: ItemData(dlc_id(8), ItemClassification.useful, 2),
-    ItemNames.item_p_weapon_dlc_twistup: ItemData(dlc_id(10), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_dlc_crackshot: ItemData(dlc_id(7), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_dlc_converge: ItemData(dlc_id(10), ItemClassification.useful, 2),
+    ItemNames.item_p_weapon_dlc_twistup: ItemData(dlc_id(13), ItemClassification.useful, 2),
 }
+item_all_p_weapons: dict[str, ItemData] = {**item_p_weapons, **item_dlc_p_weapons}
 
 item_charms: dict[str, ItemData] = {
-    ItemNames.item_charm_heart: ItemData(id(25), ItemClassification.useful),
-    ItemNames.item_charm_smokebomb: ItemData(id(26), ItemClassification.useful),
-    ItemNames.item_charm_psugar: ItemData(id(27), ItemClassification.useful),
-    ItemNames.item_charm_coffee: ItemData(id(28), ItemClassification.useful),
-    ItemNames.item_charm_twinheart: ItemData(id(29), ItemClassification.useful),
-    ItemNames.item_charm_whetstone: ItemData(id(30), ItemClassification.useful),
+    ItemNames.item_charm_heart: ItemData(id(31), ItemClassification.useful),
+    ItemNames.item_charm_smokebomb: ItemData(id(32), ItemClassification.useful),
+    ItemNames.item_charm_psugar: ItemData(id(33), ItemClassification.useful),
+    ItemNames.item_charm_coffee: ItemData(id(34), ItemClassification.useful),
+    ItemNames.item_charm_twinheart: ItemData(id(35), ItemClassification.useful),
+    ItemNames.item_charm_whetstone: ItemData(id(36), ItemClassification.useful),
 }
 item_dlc_charms: dict[str, ItemData] = {
-    ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(11), ItemClassification.useful),
-    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(12), ItemClassification.useful, 0), # Sequence will not be in logic  # noqa: E501
+    ItemNames.item_charm_dlc_heartring: ItemData(dlc_id(14), ItemClassification.useful),
+    ItemNames.item_charm_dlc_broken_relic: ItemData(dlc_id(15), ItemClassification.useful, 0), # Sequence will not be in logic  # noqa: E501
 }
+item_all_charms: dict[str, ItemData] = {**item_charms, **item_dlc_charms}
 
 item_super: dict[str, ItemData] = {
-    ItemNames.item_super_i: ItemData(id(31), ItemClassification.useful),
-    ItemNames.item_super_ii: ItemData(id(32), ItemClassification.useful),
-    ItemNames.item_super_iii: ItemData(id(33), ItemClassification.useful),
-    ItemNames.item_plane_super: ItemData(id(34), ItemClassification.useful),
+    ItemNames.item_super_i: ItemData(id(37), ItemClassification.useful),
+    ItemNames.item_super_ii: ItemData(id(38), ItemClassification.useful),
+    ItemNames.item_super_iii: ItemData(id(39), ItemClassification.useful),
+    ItemNames.item_plane_super: ItemData(id(40), ItemClassification.useful),
 }
 item_dlc_chalice_super: dict[str, ItemData] = {
-    ItemNames.item_super_dlc_c_i: ItemData(dlc_id(13), ItemClassification.useful),
-    ItemNames.item_super_dlc_c_ii: ItemData(dlc_id(14), ItemClassification.useful),
-    ItemNames.item_super_dlc_c_iii: ItemData(dlc_id(15), ItemClassification.useful),
-    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(16), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_i: ItemData(dlc_id(16), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_ii: ItemData(dlc_id(17), ItemClassification.useful),
+    ItemNames.item_super_dlc_c_iii: ItemData(dlc_id(18), ItemClassification.useful),
+    ItemNames.item_dlc_cplane_super: ItemData(dlc_id(19), ItemClassification.useful),
 }
 
 item_abilities: dict[str, ItemData] = {
-    ItemNames.item_ability_duck: ItemData(id(35), ItemClassification.progression),
-    ItemNames.item_ability_dash: ItemData(id(36), ItemClassification.progression),
-    ItemNames.item_ability_parry: ItemData(id(37), ItemClassification.progression),
-    ItemNames.item_ability_plane_parry: ItemData(id(38), ItemClassification.progression),
-    ItemNames.item_ability_plane_shrink: ItemData(id(39), ItemClassification.useful),
+    ItemNames.item_ability_duck: ItemData(id(41), ItemClassification.progression),
+    ItemNames.item_ability_dash: ItemData(id(42), ItemClassification.progression),
+    ItemNames.item_ability_parry: ItemData(id(43), ItemClassification.progression),
+    ItemNames.item_ability_plane_parry: ItemData(id(44), ItemClassification.progression),
+    ItemNames.item_ability_plane_shrink: ItemData(id(45), ItemClassification.useful),
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
-    ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(17), ItemClassification.progression),
-    ItemNames.item_ability_dlc_p_cdash: ItemData(dlc_id(18), ItemClassification.progression, 2),
-    ItemNames.item_ability_dlc_cdoublejump: ItemData(dlc_id(19), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(20), ItemClassification.progression),
-    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(21), ItemClassification.useful),
+    ItemNames.item_ability_dlc_cduck: ItemData(dlc_id(20), ItemClassification.progression),
+    ItemNames.item_ability_dlc_p_cdash: ItemData(dlc_id(21), ItemClassification.progression, 2),
+    ItemNames.item_ability_dlc_cdoublejump: ItemData(dlc_id(22), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cplane_parry: ItemData(dlc_id(23), ItemClassification.progression),
+    ItemNames.item_ability_dlc_cplane_shrink: ItemData(dlc_id(24), ItemClassification.useful),
 }
 item_abilities_aim: dict[str, ItemData] = {
-    ItemNames.item_ability_aim_left: ItemData(id(40), ItemClassification.progression),
-    ItemNames.item_ability_aim_right: ItemData(id(41), ItemClassification.progression),
-    ItemNames.item_ability_aim_up: ItemData(id(42), ItemClassification.progression),
-    ItemNames.item_ability_aim_down: ItemData(id(43), ItemClassification.progression),
-    ItemNames.item_ability_aim_upleft: ItemData(id(44), ItemClassification.progression),
-    ItemNames.item_ability_aim_upright: ItemData(id(45), ItemClassification.progression),
-    ItemNames.item_ability_aim_downleft: ItemData(id(46), ItemClassification.progression),
-    ItemNames.item_ability_aim_downright: ItemData(id(47), ItemClassification.progression),
+    ItemNames.item_ability_aim_left: ItemData(id(46), ItemClassification.progression),
+    ItemNames.item_ability_aim_right: ItemData(id(47), ItemClassification.progression),
+    ItemNames.item_ability_aim_up: ItemData(id(48), ItemClassification.progression),
+    ItemNames.item_ability_aim_down: ItemData(id(49), ItemClassification.progression),
+    ItemNames.item_ability_aim_upleft: ItemData(id(50), ItemClassification.progression),
+    ItemNames.item_ability_aim_upright: ItemData(id(51), ItemClassification.progression),
+    ItemNames.item_ability_aim_downleft: ItemData(id(52), ItemClassification.progression),
+    ItemNames.item_ability_aim_downright: ItemData(id(53), ItemClassification.progression),
 }
 item_dlc_chalice_abilities_aim: dict[str, ItemData] = {
-    ItemNames.item_ability_dlc_c_aim_left: ItemData(id(48), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_right: ItemData(id(49), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_up: ItemData(id(50), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_down: ItemData(id(51), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_upleft: ItemData(id(52), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_upright: ItemData(id(53), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_downleft: ItemData(id(54), ItemClassification.progression),
-    ItemNames.item_ability_dlc_c_aim_downright: ItemData(id(55), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_left: ItemData(id(54), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_right: ItemData(id(55), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_up: ItemData(id(56), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_down: ItemData(id(57), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_upleft: ItemData(id(58), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_upright: ItemData(id(59), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_downleft: ItemData(id(60), ItemClassification.progression),
+    ItemNames.item_ability_dlc_c_aim_downright: ItemData(id(61), ItemClassification.progression),
 }
 
 item_trap: dict[str, ItemData] = {
-    ItemNames.item_level_trap_fingerjam: ItemData(id(56), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_slowfire: ItemData(id(57), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_superdrain: ItemData(id(58), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_loadout: ItemData(id(59), ItemClassification.trap, 0),
-    ItemNames.item_level_trap_screen: ItemData(id(60), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_fingerjam: ItemData(id(62), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_slowfire: ItemData(id(63), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_superdrain: ItemData(id(64), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_loadout: ItemData(id(65), ItemClassification.trap, 0),
+    ItemNames.item_level_trap_screen: ItemData(id(66), ItemClassification.trap, 0),
 }
 
 item_special: dict[str, ItemData] = {
@@ -150,7 +168,7 @@ item_special: dict[str, ItemData] = {
     #ItemNames.item_event_music: ItemData(None, ItemClassification.progression, 0),
 }
 item_dlc_special: dict[str, ItemData] = {
-    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(22), ItemClassification.useful, 0),
+    ItemNames.item_charm_dlc_cookie: ItemData(dlc_id(25), ItemClassification.useful, 0),
     ItemNames.item_event_mausoleum: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     ItemNames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
@@ -185,6 +203,8 @@ items_all: dict[str, ItemData] = {
     **items_dlc,
     **item_weapons,
     **item_dlc_weapons,
+    **item_weapon_ex,
+    **item_dlc_weapon_ex,
     **item_p_weapons,
     **item_dlc_p_weapons,
     **item_dlc_chalice_essential,

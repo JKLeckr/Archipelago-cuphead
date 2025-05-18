@@ -195,7 +195,7 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
     _weapon_dict = weapons.get_weapon_dict(world.wconfig)
 
     # Starter weapon
-    if world.wconfig.weapon_mode > 1:
+    if (world.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
         _weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
         if world.use_dlc:
             _weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
