@@ -15,8 +15,13 @@ Cuphead:
   mode: beat_devil
 
   # Set how the weapons are shuffled in the pool.
-  # Progressive turns the weapons in the pool into progressive weapons.
-  # "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+  # Options:
+  # - Progressive: turns the weapons in the pool into progressive weapons (plane has a separate EX item).
+  # - EX Separate: makes each weapon's EX ability a separate item.
+  # - ... Except Start: makes the start weapon have normal behavior.
+  # Notes:
+  # - "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+  # - A weapon EX item without the base weapon will give you a weapon that only can do EX shots.
   # Other values: progressive, progressive_except_start, ex_separate, ex_separate_except_start, normal
   weapon_mode: normal
 
