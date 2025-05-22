@@ -56,6 +56,7 @@ class ItemGroups(IntFlag):
     CORE_ITEMS = 3
     WEAPON_BASIC = 4
     WEAPON_EX = 8
+    WEAPONS = 12
     ABILITIES = 32
     AIM_ABILITIES = 64
     ALL = 255
