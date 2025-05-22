@@ -143,9 +143,10 @@ class DlcIngredientGoalRequirements(Range):
 
 class LevelShuffle(Choice):
     """
+    --EXPERIMENTAL--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
-    Note: Be careful with this option. This can easily break generation if used with plando.
+    Note: Be careful with this option (it's very naive right now). This can easily break generation if used with plando.
     """
     name = "level_shuffle"
     display_name = "Level Shuffle"
