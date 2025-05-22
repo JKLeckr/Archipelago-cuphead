@@ -78,9 +78,14 @@ class StartWeapon(ChoiceEx):
 class WeaponMode(Choice):
     """
     Set how the weapons are shuffled in the pool.
-    Progressive turns the weapons in the pool into progressive weapons.
-
-    "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+    Options:
+    - Normal: EX is part of the weapon you receive (vanilla behavior).
+    - Progressive: turns the weapons in the pool into progressive weapons (plane has a separate EX item).
+    - EX Separate makes each weapon's EX ability a separate item.
+    - ... Except Start: makes the start weapon have normal behavior.
+    Notes:
+    - "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+    - A weapon EX item without the base weapon will give you a weapon that only can do EX shots.
     """
     name = "weapon_mode"
     display_name = "Weapon Mode"
