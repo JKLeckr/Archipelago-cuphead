@@ -1,8 +1,8 @@
 from ..names import ItemNames
-#from .weapons import weapon_dict, weapon_p_dict
 from . import itemdefs as idefs
 
 item_groups: dict[str, set[str]] = {
+    ## Main Groups
     "Weapon": {
         *idefs.item_weapons.keys(),
         *idefs.item_p_weapons.keys(),
@@ -24,8 +24,8 @@ item_groups: dict[str, set[str]] = {
         *idefs.item_dlc_chalice_abilities.keys(),
         #*idefs.item_dlc_chalice_abilities_aim.keys()
     },
-}
 
-# TODO: Make aliases a thing, but avoid the conflicts
-#for i in range(len(weapon_dict)):
-#    item_groups[weapon_dict[i]] = {weapon_p_dict[i]}
+    ## Aliases
+    ItemNames.item_plane_gun_a: {ItemNames.item_plane_gun},
+    ItemNames.item_dlc_cplane_gun_a: {ItemNames.item_dlc_cplane_gun},
+}
