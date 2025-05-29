@@ -58,7 +58,7 @@ Cuphead:
   # --EXPERIMENTAL--
   # Shuffle the Boss and Run n' Gun levels.
   # Bosses and Run n' Guns are shuffled within their own group.
-  # Note: Be careful with this option (it's very naive right now). This can easily break generation if used with plando.
+  # Note: Be careful with this option! This can easily break generation if used with plando.
   # Other values: enabled, plane_separate, disabled
   level_shuffle: disabled
 
