@@ -145,7 +145,7 @@ def add_level_grade_rule(world: CupheadWorld, loc: str):
         add_item_rule(w, loc, ItemNames.item_ability_parry)
         if w.wconfig.weapon_mode == WeaponMode.PROGRESSIVE:
             add_loc_rule(w, loc, rb.rule_or(rb.rule_has(w, "Super"), get_weapon_ex_rules(w)), False)
-        # TODO: Chalice?
+        # Chalice weapons once that's in goes here.
 
 def set_level_loc_rules(world: CupheadWorld):
     w = world
