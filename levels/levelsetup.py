@@ -5,7 +5,7 @@ from ..locations.locationbase import LocationData
 from ..wconf import WorldConfig
 from ..auxiliary import scrub_list
 from .levelbase import LevelData
-from . import levelshuffle, leveldefs as ldef
+from . import levelshuffle, levelids, leveldefs as ldef
 
 def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
     use_dlc = wconf.use_dlc
@@ -24,5 +24,15 @@ def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -
 
     return levels
 
-def setup_level_shuffle_map(rand: Random, wconf: WorldConfig) -> dict[int,int]:
-    return levelshuffle.setup_level_shuffle_map(rand, wconf)
+def setup_level_map(rand: Random, wconf: WorldConfig) -> dict[int,int]:
+    level_map: dict[int,int] = {}
+
+    if wconf.level_shuffle:
+        level_map.update(
+            levelshuffle.get_level_shuffle_map(rand, wconf.use_dlc, wconf.level_shuffle)
+        )
+
+    for k,v in wconf.level_placements.items():
+        level_map[levelids.level_to_id[k]] = levelids.level_to_id[v]
+
+    return level_map

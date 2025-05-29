@@ -1,7 +1,7 @@
 from __future__ import annotations
 from ..names import LocationNames
 
-level_map: dict[int, str] = {
+level_ids: dict[int, str] = {
     0: LocationNames.level_boss_veggies,
     1: LocationNames.level_boss_slime,
     2: LocationNames.level_boss_frogs,
@@ -50,4 +50,4 @@ level_map: dict[int, str] = {
     111: LocationNames.level_dlc_chesscastle_queen,
     112: LocationNames.level_dlc_chesscastle_run,
 }
-level_id_map = {v: k for k, v in level_map.items()}
+level_to_id = {v: k for k, v in level_ids.items()}

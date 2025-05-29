@@ -219,7 +219,7 @@ def set_shop_rules(world: CupheadWorld):
 
     if total_cost > total_coins:
         raise Exception(f"Error: Total cost is {total_cost}, but there are {total_coins} coins!")
-        # TODO: Add a resolution if this occurs
+        # FIXME: Add a resolution if this occurs
 
     for i in range(4 if use_dlc else 3):
         set_shop_cost_rule(w, i, shop_costs)

@@ -3,13 +3,12 @@ from random import Random
 from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
-from ..enums import ChaliceMode
+from ..enums import ChaliceMode, LevelShuffleMode
+from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 
 class OptionSanitizer:
     option_overrides: list[str] = []
-
-    # TODO: Level shuffle placement
 
     def __init__(
             self, player: int,
@@ -145,6 +144,44 @@ class OptionSanitizer:
                 f"Ingredient {_GOAL_REASON}"
             )
 
+    def _sanitize_level_placement(self) -> None:
+        _options = self.options
+        _value = _options.level_placements.value
+
+        if len(_value) < 1:
+            return
+
+        valid_levels = {
+            x
+            for y in
+                levelshuffle.get_level_shuffle_lists(
+                        bool(_options.use_dlc),
+                        LevelShuffleMode(_options.mode)
+                )
+            for x in y[0] if x not in y[1]
+        }
+
+        INVALID_LEVEL_REASON = "Invalid level"
+        INVALID_LEVEL_COMBO_REASON = "Invalid level combination"
+
+        for k,v in _value.items():
+            drop = False
+            drop_reason = ""
+            if k in valid_levels and v in valid_levels:
+                drop = True
+                drop_reason = INVALID_LEVEL_REASON
+            elif leveltype.get_level_type(k) != leveltype.get_level_type(v):
+                drop = True
+                drop_reason = INVALID_LEVEL_COMBO_REASON
+            if drop:
+                string = f"level_placements: \"{k}: {v}\" removed from dict. Reason: {drop_reason}."
+                self.option_overrides.append(string)
+                if self.log_overrides:
+                    msg = f"Option \"level_placements\" was overridden with \"{k}: {v}\" removed from dict."
+                    msg_reason = f"Reason: {drop_reason}."
+                    print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+                _value.pop(k)
+
     def sanitize_options(self) -> None:
         _options = self.options
 
@@ -152,6 +189,9 @@ class OptionSanitizer:
             self._sanitize_goal_requirements()
 
         self._sanitize_dlc_options()
+
+        self._sanitize_level_placement()
+
         # Sanitize grade checks
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_num_option(_options.boss_grade_checks, 3, "Expert Off")
