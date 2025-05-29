@@ -1,21 +1,21 @@
 from __future__ import annotations
 import typing
 from .levelbase import LevelData
-from . import levelsetup, levelmap
+from . import levelids, levelsetup
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
 setup_levels = levelsetup.setup_levels
 
-setup_level_shuffle_map = levelsetup.setup_level_shuffle_map
+setup_level_map = levelsetup.setup_level_map
 
 def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
     if world.level_shuffle:
-        level_shuffle_map = world.level_shuffle_map
-        if level in levelmap.level_id_map:
-            level_map_id = levelmap.level_id_map[level]
+        level_shuffle_map = world.level_map
+        if level in levelids.level_to_id:
+            level_map_id = levelids.level_to_id[level]
             if level_map_id in level_shuffle_map:
-                return levelmap.level_map[level_shuffle_map[level_map_id]]
+                return levelids.level_ids[level_shuffle_map[level_map_id]]
     return level
 
 def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:

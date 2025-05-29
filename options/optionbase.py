@@ -2,7 +2,7 @@ from typing_extensions import override
 from typing import Any
 from collections.abc import Iterable
 from Options import Range, Choice, OptionDict, OptionError
-from ..levels import levelmap
+from ..levels import levelids
 
 class ChoiceEx(Choice):
     random_value: int = -1
@@ -28,7 +28,7 @@ class Weight(Range):
         self.value = value
 
 class LevelDict(OptionDict):
-    valid_keys: Iterable[str] = frozenset(levelmap.level_map.values())
+    valid_keys: Iterable[str] = frozenset(levelids.level_ids.values())
     valid_values: Iterable[str] = valid_keys
     supports_weighting = True
 

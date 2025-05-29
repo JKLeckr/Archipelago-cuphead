@@ -14,7 +14,7 @@ from .items import itemgroups, itemdefs as idef
 from .items.itembase import ItemData
 from .locations import locationdefs as ld
 from .locations.locationbase import LocationData
-from .levels.levelmap import level_map
+from .levels.levelids import level_ids
 from .levels.levelbase import LevelData
 from .shop import ShopData
 from . import options, locations, levels, regions, items, shop
@@ -66,7 +66,7 @@ class CupheadWorld(World):
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
 
-    level_shuffle_map: dict[int, int] = {}
+    level_map: dict[int, int] = {}
 
     def resolve_random_options(self) -> None:
         _options = self.options
@@ -110,8 +110,8 @@ class CupheadWorld(World):
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wconfig)
         #Tests.test_duplicates(self.active_locations)
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wconfig,self.active_locations)
-        if self.level_shuffle:
-            self.level_shuffle_map: dict[int,int] = levels.setup_level_shuffle_map(self.random, self.wconfig)
+
+        self.level_map: dict[int,int] = levels.setup_level_map(self.random, self.wconfig)
 
         self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
@@ -134,7 +134,7 @@ class CupheadWorld(World):
         slot_data: dict[str, Any] = {
             "version": 4,
             "world_version": self.version,
-            "level_shuffle_map": self.level_shuffle_map,
+            "level_map": self.level_map,
             "shop_map": self.shop.shop_map,
             "contract_requirements": self.contract_requirements,
             "dlc_ingredient_requirements": self.dlc_ingredient_requirements,
@@ -182,10 +182,10 @@ class CupheadWorld(World):
         if len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
             spoiler_handle.write('\n'.join([x for x in self.option_sanitizer.option_overrides]) + '\n')
-        if self.level_shuffle and len(self.level_shuffle_map)>0:
+        if self.level_shuffle and len(self.level_map)>0:
             spoiler_handle.write(f"\n{self.player_name} Level Shuffle Map:\n\n")
             spoiler_handle.write(
-                '\n'.join([f"{level_map[x]} -> {level_map[y]}" for x, y in self.level_shuffle_map.items()]) + '\n'
+                '\n'.join([f"{level_ids[x]} -> {level_ids[y]}" for x, y in self.level_map.items()]) + '\n'
             )
 
         def _gen_shop_list(y: list[str]) -> str:
@@ -223,11 +223,11 @@ class CupheadWorld(World):
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]) -> None:
         hint_dict: dict[int, str] = {}
         if self.level_shuffle:
-            for level, map in self.level_shuffle_map.items():
-                if level_map[level] in self.active_locations.keys() and level != map:
-                    for loc in self.active_levels[level_map[level]].locations:
+            for level, map in self.level_map.items():
+                if level_ids[level] in self.active_locations.keys() and level != map:
+                    for loc in self.active_levels[level_ids[level]].locations:
                         hint_dict[self.location_name_to_id[loc]] = \
-                            f"{level_map[self.level_shuffle_map[level]]} at {level_map[level]}"
+                            f"{level_ids[self.level_map[level]]} at {level_ids[level]}"
         for shopl, locs in self.shop.shop_locations.items():
             if shopl != LocationNames.shop_set4 or self.use_dlc:
                 for loc in locs:

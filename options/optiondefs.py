@@ -146,7 +146,7 @@ class LevelShuffle(Choice):
     --EXPERIMENTAL--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
-    Note: Be careful with this option (it's very naive right now). This can easily break generation if used with plando.
+    Note: Be careful with this option! This can easily break generation if used with plando.
     """
     name = "level_shuffle"
     display_name = "Level Shuffle"
@@ -155,16 +155,16 @@ class LevelShuffle(Choice):
     option_plane_separate = 2
     default = 0
 
-class LevelShufflePlacement(LevelDict):
+class LevelPlacements(LevelDict):
     """
     Define which levels will be placed in which spots when shuffling the levels.
     Note: Some levels cannot be shuffled, and some levels cannot be placed in specific spots.
     Key: original, Value: new
     """
-    name = "level_shuffle_placement"
-    display_name = "Level Shuffle Placements"
+    name = "level_placements"
+    display_name = "Level Placements"
     visibility = Visibility.complex_ui | Visibility.spoiler | Visibility.template
-    default = {}
+    default: dict[str, str] = {}
 
 class FreeMoveIsles(Toggle):
     """
@@ -352,7 +352,7 @@ class DlcChaliceItemsSeparate(OptionSet):
     display_name = "[DLC] Chalice Items Separate"
     #visibility = Visibility.complex_ui
     visibility = Visibility.spoiler
-    valid_keys = frozenset({"core_items", "weapon_ex", "abilities"}) # TODO: Finish
+    valid_keys = frozenset({"core_items", "abilities"}) # TODO: Finish
     valid_keys_casefold = True
 
 class DlcChessCastle(Choice):
@@ -535,7 +535,7 @@ class MusicShuffle(Choice):
     """
     name = "music_shuffle"
     display_name = "Music Shuffle"
-    visibility = Visibility.none
+    visibility = Visibility.spoiler
     option_disabled = 0
     option_level_music = 1
     option_map_music = 2
