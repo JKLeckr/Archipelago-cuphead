@@ -113,7 +113,7 @@ class WorldConfig:
         self.weapon_mode = e.WeaponMode(CupheadOptions.weapon_mode.default)
         self.start_maxhealth = CupheadOptions.start_maxhealth.default
         self.level_shuffle = e.LevelShuffleMode(CupheadOptions.level_shuffle.default)
-        self.level_shuffle_seed = CupheadOptions.level_shuffle_seed.default
+        self.level_shuffle_seed = "0"
         self.level_placements = CupheadOptions.level_placements.default
         self.freemove_isles = bool(CupheadOptions.freemove_isles.default)
         self.weapon_gate = False #bool(CupheadOptions.weapon_gate.default)
