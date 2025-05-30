@@ -278,8 +278,10 @@ class CupheadWorld(World):
         if _version != CupheadWorld.SLOT_DATA_VERSION:
             raise ValueError(f"Slot data version mismatch. {_version}!={CupheadWorld.SLOT_DATA_VERSION}")
 
+        _world_version = slot_data["world_version"]
+
         print(f"SlotData version: {_version}")
-        print(f"Server APWorld Version: {slot_data["world_version"]}")
+        print(f"Server APWorld Version: {_world_version}")
         print(f"This APWorld Version: {CupheadWorld.APWORLD_VERSION}")
 
         return slot_data
