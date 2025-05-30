@@ -13,6 +13,7 @@ class WorldConfig:
     weapon_mode: e.WeaponMode
     start_maxhealth: int
     level_shuffle: e.LevelShuffleMode
+    level_shuffle_seed: str
     level_placements: dict[str, str]
     freemove_isles: bool
     weapon_gate: bool
@@ -62,6 +63,7 @@ class WorldConfig:
         self.weapon_mode = e.WeaponMode(options.weapon_mode.value)
         self.start_maxhealth = options.start_maxhealth.value
         self.level_shuffle = e.LevelShuffleMode(options.level_shuffle.value)
+        self.level_shuffle_seed = options.level_shuffle_seed.value
         self.level_placements = options.level_placements.value
         self.freemove_isles = bool(options.freemove_isles.value)
         self.weapon_gate = False #bool(options.weapon_gate.value)
@@ -111,6 +113,7 @@ class WorldConfig:
         self.weapon_mode = e.WeaponMode(CupheadOptions.weapon_mode.default)
         self.start_maxhealth = CupheadOptions.start_maxhealth.default
         self.level_shuffle = e.LevelShuffleMode(CupheadOptions.level_shuffle.default)
+        self.level_shuffle_seed = CupheadOptions.level_shuffle_seed.default
         self.level_placements = CupheadOptions.level_placements.default
         self.freemove_isles = bool(CupheadOptions.freemove_isles.default)
         self.weapon_gate = False #bool(CupheadOptions.weapon_gate.default)

@@ -78,6 +78,8 @@ class CupheadWorld(World):
             _options.start_weapon.value = self.random.randint(0,8 if _options.use_dlc else 5)
         if _options.boss_grade_checks.value==-1:
             _options.boss_grade_checks.value = self.random.randint(0,4 if _options.use_dlc else 3)
+        if _options.level_shuffle_seed.value=="":
+            _options.level_shuffle_seed.value = str(self.random.getrandbits(16))
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
@@ -111,7 +113,7 @@ class CupheadWorld(World):
         #Tests.test_duplicates(self.active_locations)
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wconfig,self.active_locations)
 
-        self.level_map: dict[int,int] = levels.setup_level_map(self.random, self.wconfig)
+        self.level_map: dict[int,int] = levels.setup_level_map(self.wconfig)
 
         self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
@@ -147,6 +149,7 @@ class CupheadWorld(World):
             "weapon_mode",
             "contract_goal_requirements",
             "dlc_ingredient_goal_requirements",
+            "level_shuffle_seed",
             "freemove_isles",
             "randomize_abilities",
             "boss_grade_checks",

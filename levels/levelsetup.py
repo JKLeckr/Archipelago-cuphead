@@ -24,7 +24,8 @@ def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -
 
     return levels
 
-def setup_level_map(rand: Random, wconf: WorldConfig) -> dict[int,int]:
+def setup_level_map(wconf: WorldConfig) -> dict[int,int]:
+    rand = Random(wconf.level_shuffle_seed)
     level_map: dict[int,int] = {}
 
     if wconf.level_shuffle:
