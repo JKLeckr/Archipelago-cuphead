@@ -155,6 +155,16 @@ class LevelShuffle(Choice):
     option_plane_separate = 2
     default = 0
 
+class LevelShuffleSeed(FreeText):
+    """
+    Seed for Level Shuffle.
+    Leave blank to use a seed based on the multiworld's seed.
+    """
+    name = "level_shuffle_seed"
+    display_name = "Level Shuffle Seed"
+    visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
+    default = ""
+
 class LevelPlacements(LevelDict):
     """
     Define which levels will be placed in which spots when shuffling the levels.
