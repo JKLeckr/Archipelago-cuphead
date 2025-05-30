@@ -5,7 +5,7 @@ from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
 from worlds.AutoWorld import World, WebWorld
 from .rules import rules
 from .names import ItemNames, LocationNames
-from .options import CupheadOptions, presets, optionparse
+from .options import CupheadOptions, presets
 from .options.optionsanitizer import OptionSanitizer
 from .wconf import WorldConfig
 from .settings import CupheadSettings
@@ -69,10 +69,6 @@ class CupheadWorld(World):
 
     level_map: dict[int, int] = {}
 
-    def parse_from_slot_data(self, slot_data: dict[str, Any]):
-        if "level_map" in slot_data:
-            self.level_map = slot_data["level_map"]
-
     def resolve_random_options(self) -> None:
         _options = self.options
 
@@ -94,19 +90,9 @@ class CupheadWorld(World):
 
     @override
     def generate_early(self) -> None:
-        # Universal Tracker Stuffs
-        re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
-        _slot_data: dict[str, Any] = {}
-
         self.options.version.value = self.version
 
         self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
-
-        if re_gen_passthrough and self.game in re_gen_passthrough:
-            print("re_gen_passthrough mode")
-            print("parsing options from slotdata...")
-            _slot_data = re_gen_passthrough[self.game]
-            optionparse.parse_options_from_slot_data(self.options, _slot_data)
 
         self.resolve_random_options()
 
@@ -114,10 +100,6 @@ class CupheadWorld(World):
 
         # World Config (See wconfig.py)
         self.wconfig = WorldConfig(self.options)
-
-        if _slot_data:
-            print("parsing config from slotdata...")
-            self.parse_from_slot_data(_slot_data)
 
         self.topology_present = not self.wconfig.freemove_isles
 
@@ -186,7 +168,6 @@ class CupheadWorld(World):
 
     @override
     def create_regions(self) -> None:
-        print("reg")
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
@@ -268,8 +249,7 @@ class CupheadWorld(World):
         return super().post_fill()
 
     # For Universal Tracker
-    @staticmethod
-    def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
+    def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:
         if "version" not in slot_data:
             raise KeyError("\"version\" is missing from slot data!")
         if "world_version" not in slot_data:
@@ -284,4 +264,13 @@ class CupheadWorld(World):
         print(f"Server APWorld Version: {_world_version}")
         print(f"This APWorld Version: {CupheadWorld.APWORLD_VERSION}")
 
-        return slot_data
+        if "level_map" in slot_data:
+            self.level_map = slot_data["level_map"]
+
+        self.multiworld.regions.region_cache[self.player] = {}
+        self.multiworld.regions.entrance_cache[self.player] = {}
+        self.multiworld.regions.location_cache[self.player] = {}
+
+        self.generate_early()
+        self.create_regions()
+        self.set_rules()
