@@ -42,6 +42,8 @@ class CupheadWorld(World):
     GAME_NAME: str = "Cuphead"
     APWORLD_VERSION: str = "alpha02a"
 
+    SLOT_DATA_VERSION: int = 4
+
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
@@ -110,10 +112,10 @@ class CupheadWorld(World):
 
         self.active_items: dict[str,ItemData] = items.setup_items(self.wconfig)
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wconfig)
-        #Tests.test_duplicates(self.active_locations)
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wconfig,self.active_locations)
 
-        self.level_map: dict[int,int] = levels.setup_level_map(self.wconfig)
+        if len(self.level_map) < 1:
+            self.level_map = levels.setup_level_map(self.wconfig)
 
         self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
@@ -134,7 +136,7 @@ class CupheadWorld(World):
     @override
     def fill_slot_data(self) -> dict[str, Any]:
         slot_data: dict[str, Any] = {
-            "version": 4,
+            "version": CupheadWorld.SLOT_DATA_VERSION,
             "world_version": self.version,
             "level_map": self.level_map,
             "shop_map": self.shop.shop_map,
@@ -149,7 +151,6 @@ class CupheadWorld(World):
             "weapon_mode",
             "contract_goal_requirements",
             "dlc_ingredient_goal_requirements",
-            "level_shuffle_seed",
             "freemove_isles",
             "randomize_abilities",
             "boss_grade_checks",
@@ -246,3 +247,20 @@ class CupheadWorld(World):
         #debug.print_locations(self)
         #dbg.debug_visualize_regions(self)
         return super().post_fill()
+
+    # For Universal Tracker
+    def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:
+        if "version" not in slot_data:
+            raise KeyError("\"version\" is missing from slot data!")
+        if "world_version" not in slot_data:
+            raise KeyError("\"world_version\" is missing from slot data!\nIncompatible APWorld!")
+        _version = slot_data["version"]
+        if _version != CupheadWorld.SLOT_DATA_VERSION:
+            raise ValueError(f"Slot data version mismatch. {_version}!={CupheadWorld.SLOT_DATA_VERSION}")
+
+        print(f"SlotData version: {_version}")
+        print(f"Server APWorld Version: {slot_data["world_version"]}")
+        print(f"This APWorld Version: {CupheadWorld.APWORLD_VERSION}")
+
+        if "level_map" in slot_data:
+            self.level_map = slot_data["level_map"]
