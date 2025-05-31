@@ -17,7 +17,7 @@ from .levels.levelids import level_ids
 from .levels.levelbase import LevelData
 from .shop import ShopData
 from . import options, locations, levels, regions, items, shop
-#from . import debug as dbg
+from . import debug as dbg
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -230,8 +230,7 @@ class CupheadWorld(World):
             for level, map in self.level_map.items():
                 if level_ids[level] in self.active_locations.keys() and level != map:
                     for loc in self.active_levels[level_ids[level]].locations:
-                        hint_dict[self.location_name_to_id[loc]] = \
-                            f"{level_ids[self.level_map[level]]} at {level_ids[level]}"
+                        hint_dict[self.location_name_to_id[loc]] = level_ids[level]
         for shopl, locs in self.shop.shop_locations.items():
             if shopl != LocationNames.shop_set4 or self.use_dlc:
                 for loc in locs:
@@ -245,7 +244,8 @@ class CupheadWorld(World):
     @override
     def post_fill(self) -> None:
         #debug.print_locations(self)
-        #dbg.debug_visualize_regions(self)
+        if self.settings.is_debug_bit_on(4):
+            dbg.debug_visualize_regions(self)
         return super().post_fill()
 
     # For Universal Tracker

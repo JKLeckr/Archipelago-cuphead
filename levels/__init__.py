@@ -11,11 +11,11 @@ setup_level_map = levelsetup.setup_level_map
 
 def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
     if world.level_shuffle:
-        level_shuffle_map = world.level_map
+        level_map = world.level_map
         if level in levelids.level_to_id:
             level_map_id = levelids.level_to_id[level]
-            if level_map_id in level_shuffle_map:
-                return levelids.level_ids[level_shuffle_map[level_map_id]]
+            if level_map_id in level_map:
+                return levelids.level_ids[level_map[level_map_id]]
     return level
 
 def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
