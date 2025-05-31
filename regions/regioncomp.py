@@ -12,6 +12,12 @@ from . import regiondefs as rd
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
+def _debug_print_regions(world: CupheadWorld):
+    for rname,r in world.multiworld.regions.region_cache[world.player].items():
+        print(f"{rname}:")
+        for loc in r.locations:
+            print(f" {loc}")
+
 def get_regions(world: CupheadWorld) -> list[RegionData]:
     shop_locations = world.shop.shop_locations
     using_dlc = world.wconfig.use_dlc
@@ -32,12 +38,15 @@ def get_regions(world: CupheadWorld) -> list[RegionData]:
 
     return total_regions
 
+## Currently with shuffling levels, locations are relocated onto static regions.
+## Eventually, it might be better (maybe) to properly map regions
+
 def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) -> list[str]:
     locations: list[str] = []
 
     if regc.region_type == DefType.LEVEL:
         _level_name = get_mapped_level_name(world, regc.name)
-        region.name = _level_name
+        region.name = regc.name
         _level = get_level(world, _level_name, False)
         locations = _level.locations
         if regc.locations:
@@ -72,11 +81,15 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
                     locset.add(loc_name)
                 else:
                     print(f"WARNING: \"{loc_name}\" already was registered!")
+            #print(location.name)
             region.locations.append(location)
         elif world.settings.is_debug_bit_on(1):
             print(f"Skipping location \"{loc_name}\" for \"{regc.name}\" as it does not exist for this configuration.")
 
     multiworld.regions.append(region)
+
+    if world.settings.is_debug_bit_on(2):
+        _debug_print_regions(world)
 
 def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
     if b:
