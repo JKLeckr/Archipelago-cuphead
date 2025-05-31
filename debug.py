@@ -75,10 +75,10 @@ def visualize_regions(root_region: Region, highlight_regions: set[Region] | None
         file_name,
     )
 
-def debug_visualize_regions(world: CupheadWorld):
+def debug_visualize_regions(world: CupheadWorld, highlight_reachable: bool = False):
     state = world.multiworld.get_all_state(False)
     visualize_regions(
         world.multiworld.get_region("Menu", world.player),
-        state.reachable_regions[world.player],
+        state.reachable_regions[world.player] if highlight_reachable else None,
         f"./output/AP_{world.multiworld.seed_name}-regionmap.puml"
     )

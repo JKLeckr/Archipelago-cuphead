@@ -245,7 +245,7 @@ class CupheadWorld(World):
     def post_fill(self) -> None:
         #debug.print_locations(self)
         if self.settings.is_debug_bit_on(4):
-            dbg.debug_visualize_regions(self)
+            dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))
         return super().post_fill()
 
     # For Universal Tracker
