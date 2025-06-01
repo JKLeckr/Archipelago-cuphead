@@ -192,9 +192,12 @@ class CupheadWorld(World):
                     level != lmap
                 ):
                     for loc in self.active_levels[level_ids[lmap]].locations:
-                        hint_dict[self.location_name_to_id[loc]] = level_ids[level]
-                        if self.settings.is_debug_bit_on(16):
-                            print(f"Hint: {loc} -> {level_ids[level]}")
+                        if loc in self.active_locations and loc in self.location_name_to_id:
+                            hint_dict[self.location_name_to_id[loc]] = level_ids[level]
+                            if self.settings.is_debug_bit_on(16):
+                                print(f"Hint: {loc} -> {level_ids[level]}")
+                        #else:
+                        #    print(f"{loc} not valid for shuffle hint.")
         for shopl, locs in self.shop.shop_locations.items():
             if shopl != LocationNames.shop_set4 or self.use_dlc:
                 for loc in locs:
