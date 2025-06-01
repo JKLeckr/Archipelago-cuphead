@@ -218,7 +218,6 @@ class CupheadWorld(World):
     # For Universal Tracker
     def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:
         slotdata.interpret_slot_data(self, slot_data)
-
         #dbg.debug_print_regions(self)
         if self.settings.is_debug_bit_on(256):
             dbg.debug_visualize_regions(self, True, "UT")
