@@ -16,7 +16,7 @@ from .locations.locationbase import LocationData
 from .levels.levelids import level_ids
 from .levels.levelbase import LevelData
 from .shop import ShopData
-from . import options, locations, levels, regions, items, shop
+from . import options, locations, levels, regions, items, shop, slotdata
 from . import debug as dbg
 
 class CupheadWebWorld(WebWorld):
@@ -69,19 +69,6 @@ class CupheadWorld(World):
 
     level_map: dict[int, int] = {}
 
-    def resolve_random_options(self) -> None:
-        _options = self.options
-
-        # Resolve Random
-        if _options.mode.value==-1:
-            _options.mode.value = self.random.randint(0,6 if _options.use_dlc else 2)
-        if _options.start_weapon.value==-1:
-            _options.start_weapon.value = self.random.randint(0,8 if _options.use_dlc else 5)
-        if _options.boss_grade_checks.value==-1:
-            _options.boss_grade_checks.value = self.random.randint(0,4 if _options.use_dlc else 3)
-        if _options.level_shuffle_seed.value=="":
-            _options.level_shuffle_seed.value = str(self.random.getrandbits(16))
-
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. FIXME: Make this more elegant.
         if self.wconfig.randomize_abilities:
@@ -94,7 +81,7 @@ class CupheadWorld(World):
 
         self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
 
-        self.resolve_random_options()
+        options.resolve_random_options(self.options, self.random)
 
         self.option_sanitizer.sanitize_options()
 
@@ -135,36 +122,7 @@ class CupheadWorld(World):
 
     @override
     def fill_slot_data(self) -> dict[str, Any]:
-        slot_data: dict[str, Any] = {
-            "version": CupheadWorld.SLOT_DATA_VERSION,
-            "world_version": self.version,
-            "level_map": self.level_map,
-            "shop_map": self.shop.shop_map,
-            "contract_requirements": self.contract_requirements,
-            "dlc_ingredient_requirements": self.dlc_ingredient_requirements,
-        }
-        slot_data_options: list[str] = [
-            "use_dlc",
-            "mode",
-            "expert_mode",
-            "start_weapon",
-            "weapon_mode",
-            "contract_goal_requirements",
-            "dlc_ingredient_goal_requirements",
-            "freemove_isles",
-            "randomize_abilities",
-            "boss_grade_checks",
-            "rungun_grade_checks",
-            "start_maxhealth",
-            "dlc_chalice",
-            "dlc_curse_mode",
-            "trap_loadout_anyweapon",
-            "music_shuffle",
-            "deathlink",
-        ]
-        for option in slot_data_options:
-            slot_data.update(self.options.as_dict(option))
-        return slot_data
+        return slotdata.fill_slot_data(self)
 
     @override
     def create_regions(self) -> None:
@@ -186,7 +144,7 @@ class CupheadWorld(World):
         if len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
             spoiler_handle.write('\n'.join([x for x in self.option_sanitizer.option_overrides]) + '\n')
-        if self.level_shuffle and len(self.level_map)>0:
+        if len(self.level_map)>0:
             spoiler_handle.write(f"\n{self.player_name} Level Shuffle Map:\n\n")
             spoiler_handle.write(
                 '\n'.join([f"{level_ids[x]} -> {level_ids[y]}" for x, y in self.level_map.items()]) + '\n'
@@ -226,11 +184,17 @@ class CupheadWorld(World):
     @override
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]) -> None:
         hint_dict: dict[int, str] = {}
-        if self.level_shuffle:
-            for level, map in self.level_map.items():
-                if level_ids[level] in self.active_locations.keys() and level != map:
-                    for loc in self.active_levels[level_ids[level]].locations:
+        if len(self.level_map)>0:
+            for level, lmap in self.level_map.items():
+                if (
+                    level_ids[level] in self.active_levels and
+                    level_ids[lmap] in self.active_levels and
+                    level != lmap
+                ):
+                    for loc in self.active_levels[level_ids[lmap]].locations:
                         hint_dict[self.location_name_to_id[loc]] = level_ids[level]
+                        if self.settings.is_debug_bit_on(16):
+                            print(f"Hint: {loc} -> {level_ids[level]}")
         for shopl, locs in self.shop.shop_locations.items():
             if shopl != LocationNames.shop_set4 or self.use_dlc:
                 for loc in locs:
@@ -250,27 +214,8 @@ class CupheadWorld(World):
 
     # For Universal Tracker
     def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:
-        if "version" not in slot_data:
-            raise KeyError("\"version\" is missing from slot data!")
-        if "world_version" not in slot_data:
-            raise KeyError("\"world_version\" is missing from slot data!\nIncompatible APWorld!")
-        _version = slot_data["version"]
-        if _version != CupheadWorld.SLOT_DATA_VERSION:
-            raise ValueError(f"Slot data version mismatch. {_version}!={CupheadWorld.SLOT_DATA_VERSION}")
+        slotdata.interpret_slot_data(self, slot_data)
 
-        _world_version = slot_data["world_version"]
-
-        print(f"SlotData version: {_version}")
-        print(f"Server APWorld Version: {_world_version}")
-        print(f"This APWorld Version: {CupheadWorld.APWORLD_VERSION}")
-
-        if "level_map" in slot_data:
-            self.level_map = slot_data["level_map"]
-
-        self.multiworld.regions.region_cache[self.player] = {}
-        self.multiworld.regions.entrance_cache[self.player] = {}
-        self.multiworld.regions.location_cache[self.player] = {}
-
-        self.generate_early()
-        self.create_regions()
-        self.set_rules()
+        #dbg.debug_print_regions(self)
+        if self.settings.is_debug_bit_on(256):
+            dbg.debug_visualize_regions(self, True, "UT")

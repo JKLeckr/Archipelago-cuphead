@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from random import Random
 from Options import PerGameCommonOptions, OptionGroup
 from . import optiondefs as odefs
 
@@ -114,3 +115,14 @@ cuphead_option_groups = [
         odefs.TrapWeightLoadout,
     ], True),
 ]
+
+def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
+    # Resolve Random
+    if options.mode.value==-1:
+        options.mode.value = rand.randint(0,6 if options.use_dlc else 2)
+    if options.start_weapon.value==-1:
+        options.start_weapon.value = rand.randint(0,8 if options.use_dlc else 5)
+    if options.boss_grade_checks.value==-1:
+        options.boss_grade_checks.value = rand.randint(0,4 if options.use_dlc else 3)
+    if options.level_shuffle_seed.value=="":
+        options.level_shuffle_seed.value = "".join(rand.choices("0123456789", k=16))

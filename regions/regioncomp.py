@@ -2,21 +2,16 @@ from __future__ import annotations
 import typing
 from collections.abc import Collection
 from BaseClasses import MultiWorld, Region
-from ..levels import leveldefs as ldef, get_level, get_mapped_level_name
+from ..levels import leveldefs as ldef
 from ..locations import CupheadLocation
 from ..names import LocationNames
-from .regionbase import DefType
-from .regiondefs import RegionData, RegionRule
 from ..rules import rulebase as rb
+from .. import levels, debug
+from .regionbase import DefType, Target
+from .regiondefs import RegionData, RegionRule
 from . import regiondefs as rd
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
-
-def _debug_print_regions(world: CupheadWorld):
-    for rname,r in world.multiworld.regions.region_cache[world.player].items():
-        print(f"{rname}:")
-        for loc in r.locations:
-            print(f" {loc}")
 
 def get_regions(world: CupheadWorld) -> list[RegionData]:
     shop_locations = world.shop.shop_locations
@@ -38,16 +33,12 @@ def get_regions(world: CupheadWorld) -> list[RegionData]:
 
     return total_regions
 
-## Currently with shuffling levels, locations are relocated onto static regions.
-## Eventually, it might be better (maybe) to properly map regions
-
-def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) -> list[str]:
+def get_region_locations(world: CupheadWorld, regc: RegionData) -> list[str]:
     locations: list[str] = []
 
     if regc.region_type == DefType.LEVEL:
-        _level_name = get_mapped_level_name(world, regc.name)
-        region.name = regc.name
-        _level = get_level(world, _level_name, False)
+        _level_name = levels.get_mapped_level_name(world, regc.name)
+        _level = levels.get_level(world, _level_name, False)
         locations = _level.locations
         if regc.locations:
             locations = locations + regc.locations
@@ -59,13 +50,19 @@ def get_region_locations(world: CupheadWorld, region: Region, regc: RegionData) 
 
     return locations
 
+def _create_new_region(world: CupheadWorld, regc: RegionData) -> Region:
+    if regc.region_type == DefType.LEVEL:
+        _level_name = levels.get_mapped_level_name(world, regc.name)
+        return Region(_level_name, world.player, world.multiworld, None)
+    return Region(regc.name, world.player, world.multiworld, None)
+
 def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
-    region = Region(regc.name, player, multiworld, None)
+    region = _create_new_region(world, regc)
     #print(f"Region: {regc.name}, {regc.region_type}")
-    region_locations = get_region_locations(world, region, regc)
+    region_locations = get_region_locations(world, regc)
     #print(region_locations)
 
     for loc_name in region_locations:
@@ -89,7 +86,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
     multiworld.regions.append(region)
 
     if world.settings.is_debug_bit_on(2):
-        _debug_print_regions(world)
+        debug.debug_print_regions(world)
 
 def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
     if b:
@@ -97,34 +94,42 @@ def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
     else:
         return a
 
+def connect_target(world: CupheadWorld, region_name: str, target: Target, locset: set[str] | None = None):
+    wconfig = world.wconfig
+    multiworld = world.multiworld
+    player = world.player
+    if target.tgt_type == DefType.LEVEL:
+        _ruleb = target.rule
+        _level = levels.get_level(world, target.name)
+        _rulea = _level.rule(wconfig) if _level.rule else rb.region_rule_none()
+        _target_name = levels.get_mapped_level_name(world, target.name)
+        if world.settings.is_debug_bit_on(1):
+            print(f"Mapped target \"{target.name}\" -> \"{_target_name}\"")
+    else:
+        _ruleb = None
+        _rulea = target.rule
+        _target_name = target.name
+    _rule = get_rule_def(_rulea, _ruleb) if _rulea else None
+    src = multiworld.get_region(region_name, player)
+    tgt = multiworld.get_region(_target_name, player)
+    name = f"{region_name} -> {_target_name}"
+    if locset:
+        for loc in tgt.locations:
+            if loc.name not in locset:
+                locset.add(loc.name)
+    src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
+    #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
+
 def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
     if not regc.connect_to:
         raise ValueError(f"For {regc.name}: connect_to cannot be None!")
-    multiworld = world.multiworld
-    player = world.player
-    wsettings = world.wconfig
+    wconfig = world.wconfig
     for target in regc.connect_to:
         if target:
-            if target.depends(wsettings):
-                if target.tgt_type == DefType.LEVEL:
-                    _ruleb = target.rule
-                    _level = get_level(world, target.name)
-                    _rulea = _level.rule(wsettings) if _level.rule else rb.region_rule_none()
-                else:
-                    _ruleb = None
-                    _rulea = target.rule
-                _rule = get_rule_def(_rulea, _ruleb) if _rulea else None
-                src = multiworld.get_region(regc.name, player)
-                tgt = multiworld.get_region(target.name, player)
-                name = regc.name + " -> " + target.name
-                if locset:
-                    for loc in tgt.locations:
-                        if loc.name not in locset:
-                            locset.add(loc.name)
-                src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
-                #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
+            if target.depends(wconfig):
+                connect_target(world, regc.name, target, locset)
             elif world.settings.is_debug_bit_on(1):
-                print("Skipping Target "+target.name)
+                print(f"Skipping Target {target.name}")
         else:
             print(f"WARNING: For \"{regc.name}\": a target is None!")
 

@@ -10,7 +10,7 @@ setup_levels = levelsetup.setup_levels
 setup_level_map = levelsetup.setup_level_map
 
 def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
-    if world.level_shuffle:
+    if world.level_map:
         level_map = world.level_map
         if level in levelids.level_to_id:
             level_map_id = levelids.level_to_id[level]
