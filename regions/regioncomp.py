@@ -13,6 +13,9 @@ from . import regiondefs as rd
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
+## Currently with shuffling levels, locations are relocated onto static regions.
+## Eventually, it might be better (maybe) to properly map regions
+
 def get_regions(world: CupheadWorld) -> list[RegionData]:
     shop_locations = world.shop.shop_locations
     using_dlc = world.wconfig.use_dlc
@@ -51,9 +54,9 @@ def get_region_locations(world: CupheadWorld, regc: RegionData) -> list[str]:
     return locations
 
 def _create_new_region(world: CupheadWorld, regc: RegionData) -> Region:
-    if regc.region_type == DefType.LEVEL:
-        _level_name = levels.get_mapped_level_name(world, regc.name)
-        return Region(_level_name, world.player, world.multiworld, None)
+    #if regc.region_type == DefType.LEVEL:
+    #    _level_name = levels.get_mapped_level_name(world, regc.name)
+    #    return Region(_level_name, world.player, world.multiworld, None)
     return Region(regc.name, world.player, world.multiworld, None)
 
 def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
@@ -102,13 +105,14 @@ def connect_target(world: CupheadWorld, region_name: str, target: Target, locset
         _ruleb = target.rule
         _level = levels.get_level(world, target.name)
         _rulea = _level.rule(wconfig) if _level.rule else rb.region_rule_none()
-        _target_name = levels.get_mapped_level_name(world, target.name)
-        if world.settings.is_debug_bit_on(1):
-            print(f"Mapped target \"{target.name}\" -> \"{_target_name}\"")
+        #_target_name = levels.get_mapped_level_name(world, target.name)
+        #if world.settings.is_debug_bit_on(1):
+        #    print(f"Mapped target \"{target.name}\" -> \"{_target_name}\"")
     else:
         _ruleb = None
         _rulea = target.rule
-        _target_name = target.name
+        #_target_name = target.name
+    _target_name = target.name # Moved
     _rule = get_rule_def(_rulea, _ruleb) if _rulea else None
     src = multiworld.get_region(region_name, player)
     tgt = multiworld.get_region(_target_name, player)
