@@ -27,8 +27,8 @@ class WorldConfig:
     rungun_grade_checks: e.GradeCheckMode
     boss_secret_checks: bool
     kingdice_bosssanity: bool
-    dlc_boss_chalice_checks: bool
-    dlc_rungun_chalice_checks: bool
+    dlc_boss_chalice_checks: e.ChaliceCheckMode
+    dlc_rungun_chalice_checks: e.ChaliceCheckMode
     dlc_kingdice_chalice_checks: bool
     dlc_chess_chalice_checks: bool
     buster_quest: bool
@@ -73,8 +73,8 @@ class WorldConfig:
         self.rungun_grade_checks = e.GradeCheckMode(options.rungun_grade_checks.value)
         self.boss_secret_checks = bool(options.boss_secret_checks.value)
         self.kingdice_bosssanity = bool(options.kingdice_bosssanity.value)
-        self.dlc_boss_chalice_checks = bool(options.dlc_boss_chalice_checks.value)
-        self.dlc_rungun_chalice_checks = bool(options.dlc_rungun_chalice_checks.value)
+        self.dlc_boss_chalice_checks = e.ChaliceCheckMode(options.dlc_boss_chalice_checks.value)
+        self.dlc_rungun_chalice_checks = e.ChaliceCheckMode(options.dlc_rungun_chalice_checks.value)
         self.dlc_kingdice_chalice_checks = bool(options.dlc_kingdice_chalice_checks.value)
         self.dlc_chess_chalice_checks = bool(options.dlc_chess_chalice_checks.value)
         self.buster_quest = True
@@ -123,8 +123,8 @@ class WorldConfig:
         self.rungun_grade_checks = e.GradeCheckMode(CupheadOptions.rungun_grade_checks.default)
         self.boss_secret_checks = bool(CupheadOptions.boss_secret_checks.default)
         self.kingdice_bosssanity = bool(CupheadOptions.kingdice_bosssanity.default)
-        self.dlc_boss_chalice_checks = bool(CupheadOptions.dlc_boss_chalice_checks.default)
-        self.dlc_rungun_chalice_checks = bool(CupheadOptions.dlc_rungun_chalice_checks.default)
+        self.dlc_boss_chalice_checks = e.ChaliceCheckMode(CupheadOptions.dlc_boss_chalice_checks.default)
+        self.dlc_rungun_chalice_checks = e.ChaliceCheckMode(CupheadOptions.dlc_rungun_chalice_checks.default)
         self.dlc_kingdice_chalice_checks = bool(CupheadOptions.dlc_kingdice_chalice_checks.default)
         self.dlc_chess_chalice_checks = bool(CupheadOptions.dlc_chess_chalice_checks.default)
         self.buster_quest = True

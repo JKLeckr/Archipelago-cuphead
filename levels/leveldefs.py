@@ -389,7 +389,6 @@ levels_dlc: dict[str, LevelData] = {
     **level_dlc_boss_final,
     **level_dlc_chesscastle_boss,
 }
-
 levels_all: dict[str, LevelData] = {
     **levels_base,
     **level_dicepalace_boss,
