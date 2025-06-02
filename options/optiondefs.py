@@ -247,23 +247,33 @@ class RunGunGradeChecks(Choice):
     alias_pacifist = 5
     default = 1
 
-class DlcBossChaliceChecks(Toggle):
+class DlcBossChaliceChecks(Choice):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
     Enable checks for defeating each boss as Ms. Chalice.
+    Grade Required has the set grade check requirement for bosses.
     """
     name = "dlc_boss_chalice_checks"
     display_name = "[DLC] Boss Chalice Checks"
+    option_disabled = 0
+    option_enabled = 1
+    option_grade_required = 2
+    default = 0
 
-class DlcRunGunChaliceChecks(Toggle):
+class DlcRunGunChaliceChecks(Choice):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
     Enable checks for completing each Run n' Gun as Ms. Chalice.
+    Grade Required has the set grade check requirement for run n' guns.
     """
     name = "dlc_rungun_chalice_checks"
-    display_name = "[DLC] Boss Chalice Checks"
+    display_name = "[DLC] Run n' Gun Chalice Checks"
+    option_disabled = 0
+    option_enabled = 1
+    option_grade_required = 2
+    default = 0
 
 class DlcDicePalaceChaliceChecks(Toggle):
     """

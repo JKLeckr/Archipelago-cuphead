@@ -27,7 +27,7 @@ def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
         return levels[level]
     return levels[get_mapped_level_name(world, level)]
 
-def level_query(levels: dict[str,LevelData], world_location: str | None) -> dict[str,LevelData]:
+def level_query(levels: dict[str, LevelData], world_location: str | None) -> dict[str,LevelData]:
     return {
         level: data for level,data in levels.items() if (not world_location or data.world_location == world_location)
     }

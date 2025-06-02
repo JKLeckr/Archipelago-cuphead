@@ -80,20 +80,8 @@ class OptionSanitizer:
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
         option.value.clear()
 
-    def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
+    def _sanitize_dlc_chalice_item_options(self, quiet: bool = False) -> None:
         _options = self.options
-        if _options.dlc_chalice.value == 0:
-            CHALICE_REASON = "Chalice Off"
-            if _options.dlc_boss_chalice_checks.value:
-                self.override_num_option(_options.dlc_boss_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_rungun_chalice_checks.value:
-                self.override_num_option(_options.dlc_rungun_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_kingdice_chalice_checks.value:
-                self.override_num_option(_options.dlc_kingdice_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_chess_chalice_checks.value:
-                self.override_num_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
-            if _options.dlc_cactusgirl_quest.value:
-                self.override_num_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
         ABILITIES_VAL = "abilities"
         if len(_options.dlc_chalice_items_separate.value) > 0:
             if ABILITIES_VAL in _options.dlc_chalice_items_separate.value and not _options.randomize_abilities:
@@ -110,6 +98,26 @@ class OptionSanitizer:
                     "Chalice Mode is Chalice Only",
                     True
                 )
+
+    def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
+        _options = self.options
+        if _options.dlc_chalice.value == 0:
+            CHALICE_REASON = "Chalice Off"
+            if _options.dlc_boss_chalice_checks.value:
+                self.override_num_option(_options.dlc_boss_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_rungun_chalice_checks.value:
+                self.override_num_option(_options.dlc_rungun_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_kingdice_chalice_checks.value:
+                self.override_num_option(_options.dlc_kingdice_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_chess_chalice_checks.value:
+                self.override_num_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
+            if _options.dlc_cactusgirl_quest.value:
+                self.override_num_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
+        if _options.dlc_boss_chalice_checks.value > 0 and _options.boss_grade_checks.value == 0:
+            self.override_num_option(_options.dlc_boss_chalice_checks, 0, "Boss Grade Checks Disabled", True)
+        if _options.dlc_rungun_chalice_checks.value > 0 and _options.rungun_grade_checks.value == 0:
+            self.override_num_option(_options.dlc_rungun_chalice_checks, 0, "Run n' Gun Grade Checks Disabled", True)
+        self._sanitize_dlc_chalice_item_options(quiet)
 
     def _sanitize_dlc_options(self) -> None:
         _options = self.options

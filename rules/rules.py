@@ -1,9 +1,10 @@
 from __future__ import annotations
 import typing
+from collections.abc import Iterable
 from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
 from . import rulebase as rb
-from ..levels import levelrules, levellocrules
+from ..levels import levelrules, levellocruledefs as llrdef
 from ..items import weapons, itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
@@ -61,6 +62,11 @@ def set_rules(world: CupheadWorld):
 
     set_goal(w)
 
+def add_chalice_rules(world: CupheadWorld, locs: Iterable[str]):
+    # FIXME: Add rules for parry levels (needs dash for chalice)
+    for _loc in locs:
+        set_item_rule(world, _loc, ItemNames.item_charm_dlc_cookie)
+
 def set_dlc_rules(world: CupheadWorld):
     w = world
     wconfig = w.wconfig
@@ -72,11 +78,9 @@ def set_dlc_rules(world: CupheadWorld):
         rb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs)
     )
     if wconfig.dlc_boss_chalice_checks:
-        for _loc in ld.locations_dlc_boss_chaliced.keys():
-            set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
+        add_chalice_rules(w, ld.locations_dlc_boss_chaliced.keys())
     if wconfig.dlc_cactusgirl_quest:
-        for _loc in ld.locations_dlc_event_boss_chaliced.keys():
-            set_item_rule(w, _loc, ItemNames.item_charm_dlc_cookie)
+        add_chalice_rules(w, ld.locations_dlc_event_boss_chaliced.keys())
         num_chaliced_events = len(ld.locations_dlc_event_boss_chaliced.keys())
         set_loc_rule(
             w,
@@ -149,7 +153,7 @@ def add_level_grade_rule(world: CupheadWorld, loc: str):
 
 def set_level_loc_rules(world: CupheadWorld):
     w = world
-    loc_rules = levellocrules.level_loc_rules
+    loc_rules = llrdef.level_loc_rules
     for _loc_rule in loc_rules:
         for loc, rule in _loc_rule.loc_rules.items():
             if loc in w.active_locations:
@@ -164,19 +168,19 @@ def set_level_boss_grade_rules(world: CupheadWorld):
         for _loc in ld.location_level_boss_topgrade:
             if (
                 _loc != LocationNames.loc_level_boss_kingdice_topgrade and
-                _loc not in levellocrules.level_loc_rule_locs
+                _loc not in llrdef.level_loc_rule_locs
                 ):
                 add_level_grade_rule(w, _loc)
         if w.wconfig.silverworth_quest:
             for _loc in ld.location_level_boss_event_agrade:
                 if (
                     _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
-                    _loc not in levellocrules.level_loc_rule_locs
+                    _loc not in llrdef.level_loc_rule_locs
                     ):
                     add_level_grade_rule(w, _loc)
         if w.wconfig.use_dlc:
             for _loc in ld.location_level_dlc_boss_topgrade:
-                if _loc not in levellocrules.level_loc_rule_locs:
+                if _loc not in llrdef.level_loc_rule_locs:
                     add_level_grade_rule(w, _loc)
 
 def set_level_rules(world: CupheadWorld):
