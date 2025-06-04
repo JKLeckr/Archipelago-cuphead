@@ -3,7 +3,7 @@ from random import Random
 from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
-from ..enums import ChaliceMode, LevelShuffleMode
+from ..enums import ChaliceMode, ChaliceCheckMode, LevelShuffleMode
 from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 
@@ -99,6 +99,17 @@ class OptionSanitizer:
                     True
                 )
 
+    def _sanitize_dlc_chalice_checks(self, quiet: bool = False) -> None:
+        _options = self.options
+        _boss_cchecks = _options.dlc_boss_chalice_checks.value
+        _rungun_cchecks = _options.dlc_rungun_chalice_checks.value
+        if (_boss_cchecks & ChaliceCheckMode.GRADE_REQUIRED) > 0 and _options.boss_grade_checks.value == 0:
+            _boss_cchecks &= ~ChaliceCheckMode.GRADE_REQUIRED
+            self.override_num_option(_options.dlc_boss_chalice_checks, 0, "Boss Grade Checks Disabled", True)
+        if (_rungun_cchecks & ChaliceCheckMode.GRADE_REQUIRED) > 0 and _options.rungun_grade_checks.value == 0:
+            _rungun_cchecks &= ~ChaliceCheckMode.GRADE_REQUIRED
+            self.override_num_option(_options.dlc_rungun_chalice_checks, 0, "Run n' Gun Grade Checks Disabled", True)
+
     def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
         _options = self.options
         if _options.dlc_chalice.value == 0:
@@ -113,11 +124,8 @@ class OptionSanitizer:
                 self.override_num_option(_options.dlc_chess_chalice_checks, False, CHALICE_REASON, True)
             if _options.dlc_cactusgirl_quest.value:
                 self.override_num_option(_options.dlc_cactusgirl_quest, False, CHALICE_REASON, quiet)
-        if _options.dlc_boss_chalice_checks.value > 0 and _options.boss_grade_checks.value == 0:
-            self.override_num_option(_options.dlc_boss_chalice_checks, 0, "Boss Grade Checks Disabled", True)
-        if _options.dlc_rungun_chalice_checks.value > 0 and _options.rungun_grade_checks.value == 0:
-            self.override_num_option(_options.dlc_rungun_chalice_checks, 0, "Run n' Gun Grade Checks Disabled", True)
         self._sanitize_dlc_chalice_item_options(quiet)
+        self._sanitize_dlc_chalice_checks(quiet)
 
     def _sanitize_dlc_options(self) -> None:
         _options = self.options

@@ -258,7 +258,9 @@ class DlcBossChaliceChecks(Choice):
     display_name = "[DLC] Boss Chalice Checks"
     option_disabled = 0
     option_enabled = 1
-    option_grade_required = 2
+    option_seperate = 2
+    option_grade_required = 4
+    option_seperate_grade_required = 6
     default = 0
 
 class DlcRunGunChaliceChecks(Choice):
@@ -272,7 +274,9 @@ class DlcRunGunChaliceChecks(Choice):
     display_name = "[DLC] Run n' Gun Chalice Checks"
     option_disabled = 0
     option_enabled = 1
-    option_grade_required = 2
+    option_seperate = 2
+    option_grade_required = 4
+    option_seperate_grade_required = 6
     default = 0
 
 class DlcDicePalaceChaliceChecks(Toggle):
@@ -350,7 +354,7 @@ class DlcChaliceEnabled(Choice):
     option_start = 1
     option_vanilla = 2
     option_randomized = 3
-    # - Chalice Only: Play as only Ms. Chalice. Cookie is not considered an item.
+    #- Chalice Only: Play as only Ms. Chalice. Cookie is not considered an item.
     #option_chalice_only = 4
     default = 3
 

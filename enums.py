@@ -36,7 +36,9 @@ class ChaliceMode(IntEnum):
 class ChaliceCheckMode(IntEnum):
     DISABLED = 0
     ENABLED = 1
-    GRADE_REQUIRED = 2
+    SEPERATE = 2
+    GRADE_REQUIRED = 4
+    SEPERATE_GRADE_REQUIRED = 6
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1
