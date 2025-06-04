@@ -3,7 +3,7 @@ from collections.abc import Callable
 from ..names import ItemNames
 from ..wconf import WorldConfig
 from ..enums import ChaliceMode
-from ..rules.rulebase import RegionRule, region_rule_none, region_rule_has
+from ..rules.rulebase import RegionRule, region_rule_none, region_rule_has, region_rule_and
 
 LevelRule = Callable[[WorldConfig], RegionRule]
 
@@ -44,6 +44,11 @@ def level_rule_duck_and_dash(wconf: WorldConfig) -> RegionRule:
 def level_rule_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return region_rule_and(
+            region_rule_has(ItemNames.item_ability_parry),
+            region_rule_has(ItemNames.item_ability_dash)
+        )
     return region_rule_has(ItemNames.item_ability_parry)
 def level_rule_psugar(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
@@ -64,6 +69,8 @@ def level_rule_dash_parry_or_psugar(wconf: WorldConfig) -> RegionRule:
 def level_rule_dash_and_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return level_rule_parry(wconf)
     return level_rule_and(level_rule_dash, level_rule_parry)(wconf)
 def level_rule_duck_and_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
@@ -77,6 +84,10 @@ def level_rule_plane_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
     return region_rule_has(ItemNames.item_ability_plane_parry)
+def level_rule_plane_shrink(wconf: WorldConfig) -> RegionRule:
+    if not wconf.randomize_abilities:
+        return level_rule_none(wconf)
+    return region_rule_has(ItemNames.item_ability_plane_shrink)
 def level_rule_bird(wconf: WorldConfig):
     if wconf.hard_logic:
         return level_rule_plane_gun(wconf)
@@ -85,15 +96,23 @@ def level_rule_bird(wconf: WorldConfig):
 def level_rule_funhouse(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return level_rule_parry(wconf)
     return level_rule_or(level_rule_parry, level_rule_and(level_rule_psugar, level_rule_dash))(wconf)
 def level_rule_pirate(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return level_rule_duck(wconf)
     return level_rule_or(level_rule_duck, level_rule_and(level_rule_parry, level_rule_dash))(wconf)
 def level_rule_robot(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_plane(wconf)
     return level_rule_and(level_rule_plane, level_rule_plane_parry)(wconf)
+def level_rule_sallystageplay_secret(wconf: WorldConfig) -> RegionRule:
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return level_rule_and(level_rule_parry, level_rule_dlc_doublejump)(wconf)
+    return level_rule_parry(wconf)
 def level_rule_harbour(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
@@ -105,6 +124,8 @@ def level_rule_kingdice(wconf: WorldConfig) -> RegionRule:
 def level_rule_final(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return level_rule_parry(wconf)
     return level_rule_and(level_rule_parry, level_rule_dash)(wconf)
 def level_rule_dlc_cookie(wconf: WorldConfig) -> RegionRule:
     if wconf.dlc_chalice <= ChaliceMode.START or wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:

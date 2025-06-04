@@ -34,7 +34,7 @@ class CupheadOptions(PerGameCommonOptions):
     dlc_chess_chalice_checks: odefs.DlcChessChaliceChecks
     silverworth_quest: odefs.SilverworthQuest
     pacifist_quest: odefs.PacifistQuest
-    dlc_chalice: odefs.DlcChaliceEnabled
+    dlc_chalice: odefs.DlcChaliceMode
     dlc_chalice_items_separate: odefs.DlcChaliceItemsSeparate
     dlc_kingsleap: odefs.DlcChessCastle
     dlc_cactusgirl_quest: odefs.DlcCactusGirlQuest
@@ -75,7 +75,7 @@ cuphead_option_groups = [
     OptionGroup("DLC Main", [
         odefs.DlcIngredientRequirements,
         odefs.DlcIngredientGoalRequirements,
-        odefs.DlcChaliceEnabled,
+        odefs.DlcChaliceMode,
         odefs.DlcCurseMode,
     ]),
     OptionGroup("Checks", [

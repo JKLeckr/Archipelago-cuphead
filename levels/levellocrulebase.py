@@ -15,7 +15,7 @@ class LRule(NamedTuple):
     rule: LevelRule
     mode: LevelRuleModes | int = LevelRuleModes.NONE
 
-class LevelRuleData:
+class LevelLocRuleData:
     base_region: str
     base_rule: LevelRule | None
     loc_rules: dict[str, LevelRule]
