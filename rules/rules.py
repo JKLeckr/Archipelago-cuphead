@@ -4,12 +4,12 @@ from collections.abc import Iterable
 from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
 from . import rulebase as rb
+from .rulebase import Rule
 from ..levels import levelrules, levellocruledefs as llrdef
 from ..items import weapons, itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
-from .rulebase import Rule
-from ..enums import GameMode, WeaponMode, ItemGroups
+from ..enums import GameMode, WeaponMode, ItemGroups, ChaliceMode, ChaliceCheckMode
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -149,7 +149,15 @@ def add_level_grade_rule(world: CupheadWorld, loc: str):
         add_item_rule(w, loc, ItemNames.item_ability_parry)
         if w.wconfig.weapon_mode == WeaponMode.PROGRESSIVE:
             add_loc_rule(w, loc, rb.rule_or(rb.rule_has(w, "Super"), get_weapon_ex_rules(w)), False)
-        # Chalice weapons once that's in goes here.
+        if w.wconfig.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+            add_item_rule(w, loc, ItemNames.item_ability_dash)
+
+def add_level_grade_rules(world: CupheadWorld, locs: Iterable[str], exclude: set[str] | None = None):
+    if not exclude:
+        exclude = set()
+    for loc in locs:
+        if (loc not in exclude and loc not in llrdef.level_loc_rule_locs):
+            add_level_grade_rule(world, loc)
 
 def set_level_loc_rules(world: CupheadWorld):
     w = world
@@ -162,38 +170,43 @@ def set_level_loc_rules(world: CupheadWorld):
                 print(f"[set_level_loc_rules] Skipping {loc}")
 
 def set_level_boss_grade_rules(world: CupheadWorld):
-    w = world
-    boss_grade_checks = w.wconfig.boss_grade_checks
+    wconfig = world.wconfig
+    boss_grade_checks = wconfig.boss_grade_checks
     if boss_grade_checks > 0:
-        for _loc in ld.location_level_boss_topgrade:
-            if (
-                _loc != LocationNames.loc_level_boss_kingdice_topgrade and
-                _loc not in llrdef.level_loc_rule_locs
-                ):
-                add_level_grade_rule(w, _loc)
-        if w.wconfig.silverworth_quest:
-            for _loc in ld.location_level_boss_event_agrade:
-                if (
-                    _loc != LocationNames.loc_level_boss_kingdice_event_agrade and
-                    _loc not in llrdef.level_loc_rule_locs
-                    ):
-                    add_level_grade_rule(w, _loc)
-        if w.wconfig.use_dlc:
-            for _loc in ld.location_level_dlc_boss_topgrade:
-                if _loc not in llrdef.level_loc_rule_locs:
-                    add_level_grade_rule(w, _loc)
+        add_level_grade_rules(
+            world,
+            ld.location_level_boss_topgrade,
+            {LocationNames.loc_level_boss_kingdice_topgrade}
+        )
+        if wconfig.silverworth_quest:
+            add_level_grade_rules(
+                world,
+                ld.location_level_boss_event_agrade,
+                {LocationNames.loc_level_boss_kingdice_event_agrade}
+            )
+        if wconfig.use_dlc:
+            add_level_grade_rules(
+                world,
+                ld.location_level_dlc_boss_topgrade,
+                set()
+            )
+        if (wconfig.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0:
+            add_level_grade_rules(
+                world,
+                ld.location_level_boss_dlc_chaliced,
+                set()
+            )
+            add_level_grade_rules(
+                world,
+                ld.location_level_dlc_boss_dlc_chaliced,
+                set()
+            )
 
 def set_level_rules(world: CupheadWorld):
     w = world
-    #rungun_grade_checks = w.wconfig.rungun_grade_checks
-    boss_secret_checks = w.wconfig.boss_secret_checks
     set_level_loc_rules(w)
-    # TODO: Eventually phase this over to the level_loc_rules
     if w.wconfig.randomize_abilities:
         set_level_boss_grade_rules(w)
-        if boss_secret_checks:
-            add_item_rule(w, LocationNames.loc_level_boss_plane_genie_secret, ItemNames.item_ability_plane_shrink)
-            add_item_rule(w, LocationNames.loc_level_boss_sallystageplay_secret, ItemNames.item_ability_parry)
 
 def set_shop_rules(world: CupheadWorld):
     w = world

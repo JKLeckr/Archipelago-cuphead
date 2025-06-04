@@ -100,14 +100,18 @@ Cuphead:
   # -DLC ONLY-
   # -REQUIRES CHALICE-
   # Enable checks for defeating each boss as Ms. Chalice.
-  # Other values: 'true'
-  dlc_boss_chalice_checks: 'false'
+  # Separate makes Chalice checks separate from level completion checks.
+  # Grade Required has the set grade check requirement for bosses.
+  # Other values: disabled, enabled, separate, grade_required, separate_grade_required
+  dlc_boss_chalice_checks: disabled
 
   # -DLC ONLY-
   # -REQUIRES CHALICE-
-  # Enable checks for completing each Run n' Gun as Ms. Chalice.
-  # Other values: 'true'
-  dlc_rungun_chalice_checks: 'false'
+  # Enable checks for completing each run n' gun as Ms. Chalice.
+  # Separate makes Chalice checks separate from level completion checks.
+  # Grade Required has the set grade check requirement for run n' guns.
+  # Other values: Other values: disabled, enabled, separate, grade_required, separate_grade_required
+  dlc_rungun_chalice_checks: disabled
 
   # -DLC ONLY-
   # -REQUIRES CHALICE-

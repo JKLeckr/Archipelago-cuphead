@@ -252,31 +252,33 @@ class DlcBossChaliceChecks(Choice):
     -DLC ONLY-
     -REQUIRES CHALICE-
     Enable checks for defeating each boss as Ms. Chalice.
+    Separate makes Chalice checks separate from level completion checks.
     Grade Required has the set grade check requirement for bosses.
     """
     name = "dlc_boss_chalice_checks"
     display_name = "[DLC] Boss Chalice Checks"
     option_disabled = 0
     option_enabled = 1
-    option_seperate = 2
+    option_separate = 2
     option_grade_required = 4
-    option_seperate_grade_required = 6
+    option_separate_grade_required = 6
     default = 0
 
 class DlcRunGunChaliceChecks(Choice):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
-    Enable checks for completing each Run n' Gun as Ms. Chalice.
+    Enable checks for completing each run n' gun as Ms. Chalice.
+    Separate makes Chalice checks separate from level completion checks.
     Grade Required has the set grade check requirement for run n' guns.
     """
     name = "dlc_rungun_chalice_checks"
     display_name = "[DLC] Run n' Gun Chalice Checks"
     option_disabled = 0
     option_enabled = 1
-    option_seperate = 2
+    option_separate = 2
     option_grade_required = 4
-    option_seperate_grade_required = 6
+    option_separate_grade_required = 6
     default = 0
 
 class DlcDicePalaceChaliceChecks(Toggle):
@@ -338,7 +340,7 @@ class TrapLoadoutAnyWeapon(Toggle):
     display_name = "Loadout Mixup Any Item"
     visibility = Visibility.spoiler
 
-class DlcChaliceEnabled(Choice):
+class DlcChaliceMode(Choice):
     """
     -DLC ONLY-
     Enable Ms. Chalice and the Astral Cookie.
