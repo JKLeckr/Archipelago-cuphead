@@ -63,9 +63,13 @@ def set_rules(world: CupheadWorld):
     set_goal(w)
 
 def add_chalice_rules(world: CupheadWorld, locs: Iterable[str]):
-    # FIXME: Add rules for parry levels (needs dash for chalice)
     for _loc in locs:
         set_item_rule(world, _loc, ItemNames.item_charm_dlc_cookie)
+        add_loc_rule(
+            world,
+            _loc,
+            rb.region_rule_to_rule(levelrules.level_rule_parry(world.wconfig), world.player)
+        )
 
 def set_dlc_rules(world: CupheadWorld):
     w = world
@@ -236,7 +240,6 @@ def set_shop_rules(world: CupheadWorld):
 
     if total_cost > total_coins:
         raise Exception(f"Error: Total cost is {total_cost}, but there are {total_coins} coins!")
-        # FIXME: Add a resolution if this occurs
 
     for i in range(4 if use_dlc else 3):
         set_shop_cost_rule(w, i, shop_costs)
