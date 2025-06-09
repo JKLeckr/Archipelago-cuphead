@@ -29,16 +29,17 @@ class GameMode(ChoiceEx):
     """
     name = "mode"
     display_name = "Mode"
-    option_beat_devil = 0
-    option_collect_contracts = 1
-    option_buy_out_shop = 2
-    option_dlc_beat_saltbaker = 3
-    option_dlc_beat_both = 4
-    option_dlc_collect_ingredients = 5
-    option_dlc_collect_both = 6
-    #option_dlc_beat_devil_no_isle4 = 7 # TODO: Modularize Goal
-    #option_dlc_beat_saltbaker_isle4_only = 8
-    default = 0
+    _isle_4_bit = 32
+    option_beat_devil = 1
+    option_collect_contracts = 2
+    option_buy_out_shop = 4
+    option_dlc_beat_saltbaker = 8
+    option_dlc_beat_both = 9
+    option_dlc_collect_ingredients = 16
+    option_dlc_collect_both = 18
+    #option_dlc_beat_devil_no_isle4 = 33 # TODO: Modularize Goal
+    #option_dlc_beat_saltbaker_isle4_only = 40
+    default = 1
 
 class HardLogic(Toggle):
     """
