@@ -39,7 +39,7 @@ jobs:
       - name: Generate archipelago.json
         working-directory: ../
         run: |
-          python ./genapjson.py ./Archipelago-cuphead/__init__.py
+          python ./genapjson.py ./Archipelago-cuphead/__init__.py -m ${{ env.RELEASE_VERSION }}
 
       - name: Build ZIP package
         working-directory: ../
