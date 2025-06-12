@@ -19,22 +19,33 @@ jobs:
         #with:
         #  fetch-depth: 0  # Fetch all history for possible versioning
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: Clean project directory
         run: |
-          # Move examples dir out as it is not needed in the apworld
+          # Move examples dir and genapjson out as they are not needed in the apworld
           mv examples ..
+          mv scripts/genapjson.py ..
           # Remove unnecessary files and directories
           find . -type d -name "__pycache__" -exec rm -rf {} \; 2>/dev/null
           find . -type d -name ".ruff_cache" -exec rm -rf {} \; 2>/dev/null
           rm -rf .git .github .gitignore
           rm -rf extras
+          rm -rf scripts
           rm -f ruff.toml
+      
+      - name: Generate archipelago.json
+        working-directory: ../
+        run: |
+          python ./genapjson.py ./Archipelago-cuphead/__init__.py
 
       - name: Build ZIP package
         working-directory: ../
         run: |
           mv Archipelago-cuphead cuphead
-          zip -r cuphead.zip cuphead -x "*.git*" "*.github*" "*_pycache_*" "examples/" "*.ruff_cache*"
+          zip -r cuphead.zip archipelago.json cuphead -x "*.git*" "*.github*" "*_pycache_*" "examples/" "*.ruff_cache*" "genapjson.py"
           mv cuphead Archipelago-cuphead
           mv cuphead.zip cuphead.apworld
 
