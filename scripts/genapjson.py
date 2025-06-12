@@ -2,8 +2,6 @@ import ast
 import json
 import argparse
 from collections import OrderedDict
-#import os
-#from pathlib import Path
 
 APWORLD_ROOT_FILE: str = "__init__.py"
 APWORLD_CLASS: str = "CupheadWorld"
