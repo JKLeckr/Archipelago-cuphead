@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+genapjson.py - generate the archipelago.json file.
+"""
+
 import ast
 import json
 import argparse
