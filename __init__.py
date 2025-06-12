@@ -47,10 +47,10 @@ class CupheadWorld(World):
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
     options: CupheadOptions # type: ignore
-    version = APWORLD_VERSION
+    version: str = APWORLD_VERSION
 
-    required_client_version = (0, 6, 0)
-    required_server_version = (0, 6, 0)
+    required_client_version: tuple[int, int, int] = (0, 6, 0)
+    required_server_version: tuple[int, int, int] = (0, 6, 0)
 
     item_name_to_id = idef.name_to_id
     location_name_to_id = ld.name_to_id
