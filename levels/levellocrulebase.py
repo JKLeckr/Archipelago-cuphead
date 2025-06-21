@@ -20,7 +20,7 @@ class LevelLocRuleData:
     base_rule: LevelRule | None
     loc_rules: dict[str, LevelRule]
 
-    def _get_loc_rules(self, loc_rules: dict[str, LRule | None]) -> dict[str, LevelRule]: # noqa: C901
+    def _get_loc_rules(self, loc_rules: dict[str, LRule | None], debug: bool = False) -> dict[str, LevelRule]: # noqa: C901
         _loc_rules = loc_rules.copy()
         _event_locs: set[str] = set()
         nloc_rules: dict[str, LevelRule] = {}
@@ -44,7 +44,7 @@ class LevelLocRuleData:
                         _nrule = lr.level_rule_or(_nrule, self.base_rule)
                         #print(f"Inheriting OR rule for {_loc}...")
                 nloc_rules[_loc] = _nrule
-            else:
+            elif debug:
                 print(f"No rule for {_loc}. Skipping.")
         for _eloc in _event_locs:
             _loc = _eloc.removeprefix(LocationNames.loc_event_pfx)
@@ -53,7 +53,13 @@ class LevelLocRuleData:
                 #print(f"Adding event rule {_eloc}...")
         return nloc_rules
 
-    def __init__(self, base_region: str, base_rule: LevelRule | None, loc_rules: dict[str, LRule | None]):
+    def __init__(
+            self,
+            base_region: str,
+            base_rule: LevelRule | None,
+            loc_rules: dict[str, LRule | None],
+            debug: bool = False
+        ):
         self.base_region = base_region
         self.base_rule = base_rule
-        self.loc_rules = self._get_loc_rules(loc_rules)
+        self.loc_rules = self._get_loc_rules(loc_rules, debug)
