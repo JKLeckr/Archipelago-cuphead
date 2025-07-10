@@ -33,6 +33,7 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
         "dlc_curse_mode",
         "trap_loadout_anyweapon",
         "music_shuffle",
+        "ducklock_platdrop",
         "deathlink",
     ]
     for option in slot_data_options:

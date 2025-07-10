@@ -52,6 +52,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_superdrain: odefs.TrapWeightSuperDrain
     trap_weight_loadout: odefs.TrapWeightLoadout
     music_shuffle: odefs.MusicShuffle
+    ducklock_platdrop: odefs.DuckLockPlatDrop
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -101,10 +102,11 @@ cuphead_option_groups = [
         odefs.Traps,
         odefs.DlcChaliceItemsSeparate,
     ]),
-    #OptionGroup("Misc", [
-    #    odefs.TrapLoadoutAnyWeapon,
-    #    odefs.MusicShuffle,
-    #]),
+    OptionGroup("Misc", [
+        odefs.DuckLockPlatDrop,
+        #odefs.TrapLoadoutAnyWeapon,
+        #odefs.MusicShuffle,
+    ]),
     OptionGroup("Item Weights", [
         odefs.FillerWeightExtraHealth,
         odefs.FillerWeightSuperRecharge,

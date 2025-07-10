@@ -570,6 +570,16 @@ class MusicShuffle(Choice):
     #option_all_music = 255
     default = 0
 
+class DuckLockPlatDrop(Toggle):
+    """
+    Allows the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
+    This re-enables this bug that the mod had before alpha02.
+    This "feature" is purely client-side and does not affect logic.
+    """
+    name = "ducklock_platdrop"
+    display_name = "DuckLock PlatDrop"
+    visibility = Visibility.spoiler | Visibility.complex_ui | Visibility.template
+
 class DeathLink(Toggle):
     """
     Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
