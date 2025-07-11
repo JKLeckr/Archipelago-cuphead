@@ -573,7 +573,7 @@ class MusicShuffle(Choice):
 class DuckLockPlatDrop(Toggle):
     """
     Allows the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
-    This re-enables this bug that the mod had before alpha02.
+    This option re-enables this bug that the mod had before alpha02.
     This "feature" is purely client-side and does not affect logic.
     """
     name = "ducklock_platdrop"
