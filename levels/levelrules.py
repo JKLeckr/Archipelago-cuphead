@@ -68,7 +68,7 @@ def level_rule_dash_and_parry(wconf: WorldConfig) -> RegionRule:
 def level_rule_duck_and_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
-    return level_rule_and(level_rule_dash, level_rule_parry)(wconf)
+    return level_rule_and(level_rule_duck, level_rule_parry)(wconf)
 def level_rule_duck_dash_and_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)

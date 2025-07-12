@@ -185,7 +185,7 @@ level_boss_plane: dict[str, LevelData] = {
         LocationNames.loc_level_boss_plane_robot_event_agrade,
         LocationNames.loc_level_boss_plane_robot_dlc_chaliced,
         LocationNames.loc_level_boss_plane_robot_event_dlc_chaliced,
-    ], lr.level_rule_plane),
+    ], lr.level_rule_robot),
 }
 level_boss: dict[str, LevelData] = {
     **level_boss_regular,
