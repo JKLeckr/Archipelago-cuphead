@@ -54,6 +54,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_loadout: odefs.TrapWeightLoadout
     music_shuffle: odefs.MusicShuffle
     ducklock_platdrop: odefs.DuckLockPlatDrop
+    lax_shop: odefs.LaxShop
 
 cuphead_option_groups = [
     OptionGroup("Main", [
@@ -106,6 +107,7 @@ cuphead_option_groups = [
     ]),
     OptionGroup("Misc", [
         odefs.DuckLockPlatDrop,
+        odefs.LaxShop,
         #odefs.TrapLoadoutAnyWeapon,
         #odefs.MusicShuffle,
     ]),
