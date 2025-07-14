@@ -214,8 +214,6 @@ class CupheadWorld(World):
     @override
     def __getattr__(self, item: str) -> Any:
         if item == "wconfig":
-            if self.wconfig:
-                return self.wconfig
             return self.__class__.WCONFIG_DEFAULT
         return super().__getattr__(item)
 
