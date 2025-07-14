@@ -591,16 +591,6 @@ class DuckLockPlatDrop(Toggle):
     display_name = "DuckLock PlatDrop"
     visibility = Visibility.spoiler | Visibility.complex_ui | Visibility.template
 
-class LaxShop(Toggle):
-    """
-    Laxes the shop which was the behavior before alpha02.
-    Note: Depending on your spending habits, you could soft lock yourself!
-    This "feature" is purely client-side and does not affect logic.
-    """
-    name = "lax_shop"
-    display_name = "Lax Shop"
-    visibility = Visibility.spoiler | Visibility.complex_ui | Visibility.template
-
 class DeathLink(Toggle):
     """
     Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
