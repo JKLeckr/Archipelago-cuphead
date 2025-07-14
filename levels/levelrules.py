@@ -99,6 +99,12 @@ def level_rule_funhouse(wconf: WorldConfig) -> RegionRule:
     if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
         return level_rule_parry(wconf)
     return level_rule_or(level_rule_parry, level_rule_and(level_rule_psugar, level_rule_dash))(wconf)
+def level_rule_mouse(wconf: WorldConfig) -> RegionRule:
+    if not wconf.randomize_abilities:
+        return level_rule_none(wconf)
+    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
+        return level_rule_and(level_rule_parry, level_rule_duck)(wconf)
+    return level_rule_and(level_rule_parry_or_psugar, level_rule_duck)(wconf)
 def level_rule_pirate(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)

@@ -27,6 +27,7 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
         "boss_grade_checks",
         "rungun_grade_checks",
         "start_maxhealth",
+        "start_maxhealth_p2",
         "dlc_chalice",
         "dlc_boss_chalice_checks",
         "dlc_rungun_chalice_checks",

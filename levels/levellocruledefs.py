@@ -64,7 +64,9 @@ level_loc_rules_rungun: list[LevelLocRuleData] = [
         LocationNames.loc_level_rungun_circus_coin5: LRule(lr.level_rule_parry_or_psugar),
         LocationNames.loc_level_rungun_circus_agrade: LRule(lr.level_rule_parry, LevelRuleModes.INHERIT),
         #LocationNames.loc_level_rungun_circus_pacifist: LRule(lr.level_rule_none, LevelRuleModes.INHERIT),
-        LocationNames.loc_level_rungun_circus_dlc_chaliced: LRule(lr.level_rule_dlc_cookie, LevelRuleModes.INHERIT),
+        LocationNames.loc_level_rungun_circus_dlc_chaliced: LRule(
+            lr.level_rule_and(lr.level_rule_dlc_cookie, lr.level_rule_parry)
+        ),
     }),
     LevelLocRuleData(LocationNames.level_rungun_funhouse, lr.level_rule_funhouse, {
         LocationNames.loc_level_rungun_funhouse_coin1: LRule(lr.level_rule_parry_or_psugar),
@@ -74,7 +76,9 @@ level_loc_rules_rungun: list[LevelLocRuleData] = [
         LocationNames.loc_level_rungun_funhouse_coin5: LRule(lr.level_rule_funhouse),
         LocationNames.loc_level_rungun_funhouse_agrade: LRule(lr.level_rule_parry, LevelRuleModes.INHERIT),
         #LocationNames.loc_level_rungun_funhouse_pacifist: LRule(lr.level_rule_none, LevelRuleModes.INHERIT),
-        LocationNames.loc_level_rungun_funhouse_dlc_chaliced: LRule(lr.level_rule_dlc_cookie, LevelRuleModes.INHERIT),
+        LocationNames.loc_level_rungun_funhouse_dlc_chaliced: LRule(
+            lr.level_rule_and(lr.level_rule_dlc_cookie, lr.level_rule_parry)
+        ),
     }),
     LevelLocRuleData(LocationNames.level_rungun_harbour, lr.level_rule_harbour, {
         LocationNames.loc_level_rungun_harbour_coin1: LRule(lr.level_rule_dash_parry_or_psugar),

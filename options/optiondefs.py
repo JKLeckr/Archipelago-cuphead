@@ -449,6 +449,17 @@ class StartMaxHealth(Range):
     range_end = 4
     default = 3
 
+class StartMaxHealthP2(Range):
+    """
+    Set starting max health for Player 2. Set to 0 to use Player 1's max health.
+    NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+    """
+    name = "start_maxhealth_p2"
+    display_name = "Starting Max Health"
+    range_start = 0
+    range_end = 4
+    default = 0
+
 class MaxHealthUpgrades(Range):
     """
     Set number of max health upgrades in the pool.

@@ -43,6 +43,8 @@ class CupheadWorld(World):
 
     SLOT_DATA_VERSION: int = 4
 
+    WCONFIG_DEFAULT: WorldConfig = WorldConfig()
+
     game: str = GAME_NAME # type: ignore
     web = CupheadWebWorld()
     options_dataclass = CupheadOptions
@@ -81,6 +83,7 @@ class CupheadWorld(World):
 
         self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
 
+        options.resolve_dependent_options(self.options)
         options.resolve_random_options(self.options, self.random)
 
         self.option_sanitizer.sanitize_options()
@@ -108,13 +111,6 @@ class CupheadWorld(World):
 
         self.contract_requirements: tuple[int,int,int] = self.wconfig.contract_requirements
         self.dlc_ingredient_requirements: int = self.wconfig.dlc_ingredient_requirements
-
-        # Filler items and weights
-        filler_items = list(idef.item_filler.keys())
-        filler_item_weights = self.wconfig.filler_item_weights
-        self.filler_item_weights = [
-            (trap, weight) for trap, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0
-        ]
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
@@ -214,6 +210,14 @@ class CupheadWorld(World):
         if self.settings.is_debug_bit_on(4):
             dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))
         return super().post_fill()
+
+    @override
+    def __getattr__(self, item: str) -> Any:
+        if item == "wconfig":
+            if self.wconfig:
+                return self.wconfig
+            return self.__class__.WCONFIG_DEFAULT
+        return super().__getattr__(item)
 
     # For Universal Tracker
     def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:

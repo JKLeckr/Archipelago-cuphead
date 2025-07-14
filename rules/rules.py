@@ -68,6 +68,7 @@ def add_chalice_rules(world: CupheadWorld, locs: Iterable[str]):
         add_loc_rule(
             world,
             _loc,
+            # TODO: Make the chaliced rules more lax per level instead of blanket requirement
             rb.region_rule_to_rule(levelrules.level_rule_parry(world.wconfig), world.player)
         )
 

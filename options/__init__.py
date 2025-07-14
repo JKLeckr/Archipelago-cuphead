@@ -12,6 +12,7 @@ class CupheadOptions(PerGameCommonOptions):
     start_weapon: odefs.StartWeapon
     weapon_mode: odefs.WeaponMode
     start_maxhealth: odefs.StartMaxHealth
+    start_maxhealth_p2: odefs.StartMaxHealthP2
     contract_requirements: odefs.ContractRequirements
     dlc_ingredient_requirements: odefs.DlcIngredientRequirements
     contract_goal_requirements: odefs.ContractGoalRequirements
@@ -64,6 +65,7 @@ cuphead_option_groups = [
         odefs.ContractRequirements,
         odefs.ContractGoalRequirements,
         odefs.StartMaxHealth,
+        odefs.StartMaxHealthP2,
         odefs.LevelShuffle,
         odefs.LevelShuffleSeed,
         odefs.LevelPlacements,
@@ -118,13 +120,17 @@ cuphead_option_groups = [
     ], True),
 ]
 
+def resolve_dependent_options(options: CupheadOptions) -> None:
+    if options.start_maxhealth_p2.value == 0:
+            options.start_maxhealth_p2.value = options.start_maxhealth.value
+
 def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
     # Resolve Random
-    if options.mode.value==-1:
+    if options.mode.value == -1:
         options.mode.value = rand.randint(0,6 if options.use_dlc else 2)
-    if options.start_weapon.value==-1:
+    if options.start_weapon.value == -1:
         options.start_weapon.value = rand.randint(0,8 if options.use_dlc else 5)
-    if options.boss_grade_checks.value==-1:
+    if options.boss_grade_checks.value == -1:
         options.boss_grade_checks.value = rand.randint(0,4 if options.use_dlc else 3)
-    if options.level_shuffle_seed.value=="":
+    if options.level_shuffle_seed.value == "":
         options.level_shuffle_seed.value = "".join(rand.choices("0123456789", k=16))

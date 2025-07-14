@@ -42,4 +42,4 @@ def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> s
     raise ValueError("Failed to choose an item from weighted_item_choice!")
 
 def get_filler_item_name(world: CupheadWorld) -> str:
-    return weighted_item_choice(world.filler_item_weights, world.random)
+    return weighted_item_choice(world.wconfig.filler_item_weights, world.random)

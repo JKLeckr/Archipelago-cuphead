@@ -75,7 +75,7 @@ level_boss_regular: dict[str, LevelData] = {
         LocationNames.loc_level_boss_mouse_event_agrade,
         LocationNames.loc_level_boss_mouse_dlc_chaliced,
         LocationNames.loc_level_boss_mouse_event_dlc_chaliced,
-    ], lr.level_rule_parry),
+    ], lr.level_rule_mouse),
     LocationNames.level_boss_sallystageplay: LevelData(LocationNames.world_inkwell_3, [
         LocationNames.loc_level_boss_sallystageplay,
         LocationNames.loc_level_boss_sallystageplay_topgrade,

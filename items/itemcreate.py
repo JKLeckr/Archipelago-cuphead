@@ -59,12 +59,7 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     return _itempool
 
 def create_traps(world: CupheadWorld, trap_count: int, wconf: WorldConfig, rand: Random) -> list[Item]:
-    trap_items = list(idef.item_trap.keys())
-    trap_item_weights = wconf.trap_weights
-
-    active_trap_weights = [
-        (trap, weight) for trap, weight in zip(trap_items, trap_item_weights, strict=True) if weight > 0
-    ]
+    active_trap_weights = wconf.trap_item_weights
 
     if not active_trap_weights:
         return []
