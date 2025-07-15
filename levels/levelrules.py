@@ -69,8 +69,6 @@ def level_rule_dash_parry_or_psugar(wconf: WorldConfig) -> RegionRule:
 def level_rule_dash_and_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
-    if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
-        return level_rule_parry(wconf)
     return level_rule_and(level_rule_dash, level_rule_parry)(wconf)
 def level_rule_duck_and_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
