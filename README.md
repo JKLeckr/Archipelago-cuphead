@@ -10,4 +10,8 @@ APWorld: [Archipelago-cuphead](https://github.com/JKLeckr/Archipelago-cuphead) (
 
 This is the Archipelago world for Cuphead.
 
-This apworld is currently in the development phase. While this is playable to some degree (with a working client), it is not feature complete and probably has bugs, so using it might pose mental injuries from grotesque code if you use it. Beware!
+This apworld is currently in alpha. While it is better than it ever was since early development, there are still some freaky issues hiding in there. If you are wanting code so clean that you can see your reflection, you will think you are a vampire! Use at your own risk!
+
+## How to use
+Download the copy of the APWorld from the [releases](https://github.com/JKLeckr/Archipelago-cuphead/releases) page.
+Copy it to the `custom_worlds` folder in the Archipelago installation folder.
