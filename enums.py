@@ -16,6 +16,10 @@ class WeaponMode(IntEnum):
     PROGRESSIVE_EXCEPT_START = 5
     EX_SEPARATE = 2
     EX_SEPARATE_EXCEPT_START = 6
+class ShopMode(IntEnum):
+    TIERS = 0
+    STRICT_TIERS = 1
+    INDEPENDENT = 2
 class LevelShuffleMode(IntEnum):
     DISABLED = 0
     ENABLED = 1

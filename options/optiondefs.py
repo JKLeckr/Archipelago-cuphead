@@ -184,6 +184,18 @@ class FreeMoveIsles(Toggle):
     name = "freemove_isles"
     display_name = "Free Move Isles"
 
+class ShopMode(Choice):
+    """
+    Set shop mode.
+    You get access to higher tiers the more shops you have access to.
+    """
+    name = "shop_mode"
+    display_name = "Shop Mode"
+    option_tiers = 0
+    #option_strict_tiers = 1
+    option_independent = 2
+    default = 0
+
 class WeaponGate(Toggle):
     """
     --NOT YET IMPLEMENTED--

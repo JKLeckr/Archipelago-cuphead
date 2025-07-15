@@ -21,6 +21,7 @@ class CupheadOptions(PerGameCommonOptions):
     level_shuffle_seed: odefs.LevelShuffleSeed
     level_placements: odefs.LevelPlacements
     freemove_isles: odefs.FreeMoveIsles
+    #shop_mode: odefs.ShopMode
     deathlink: odefs.DeathLink
     #weapon_gate: odefs.WeaponGate
     randomize_abilities: odefs.RandomizeAbilities
@@ -70,6 +71,7 @@ cuphead_option_groups = [
         odefs.LevelShuffleSeed,
         odefs.LevelPlacements,
         odefs.FreeMoveIsles,
+        #odefs.ShopMode,
         #odefs.WeaponGate,
         odefs.RandomizeAbilities,
         #odefs.RandomizeAimAbilities,

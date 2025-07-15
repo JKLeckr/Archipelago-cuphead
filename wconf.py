@@ -15,6 +15,7 @@ class WorldConfig:
     level_shuffle_seed: str
     level_placements: dict[str, str]
     freemove_isles: bool
+    shop_mode: e.ShopMode
     weapon_gate: bool
     randomize_abilities: bool
     randomize_abilities_aim: bool
@@ -64,6 +65,7 @@ class WorldConfig:
         self.level_shuffle_seed = options.level_shuffle_seed.value
         self.level_placements = options.level_placements.value
         self.freemove_isles = bool(options.freemove_isles.value)
+        self.shop_mode = e.ShopMode.TIERS #e.ShopMode(options.shop_mode.value)
         self.weapon_gate = False #bool(options.weapon_gate.value)
         self.randomize_abilities = bool(options.randomize_abilities.value)
         self.randomize_abilities_aim = False #bool(options.randomize_abilities_aim.value)
@@ -113,6 +115,7 @@ class WorldConfig:
         self.level_shuffle_seed = "0"
         self.level_placements = odefs.LevelPlacements.default
         self.freemove_isles = bool(odefs.FreeMoveIsles.default)
+        self.shop_mode = e.ShopMode.TIERS #e.ShopMode(options.shop_mode.value)
         self.weapon_gate = False #bool(odefs.WeaponGate.default)
         self.randomize_abilities = bool(odefs.RandomizeAbilities.default)
         self.randomize_abilities_aim = False #bool(odefs.RandomizeAimAbilities.default)
