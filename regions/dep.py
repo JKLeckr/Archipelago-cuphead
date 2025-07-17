@@ -5,14 +5,15 @@ from ..wconf import WorldConfig
 Dep = Callable[[WorldConfig], bool]
 
 # Deps define a dependency with specific configurations.
-def dep_and(a: Dep, b: Dep) -> Dep:
-    return lambda c: a(c) and b(c)
-def dep_not(a: Dep) -> Dep:
-    return lambda c: not a(c)
-def dep_or(a: Dep, b: Dep) -> Dep:
-    return lambda c: a(c) or b(c)
+def dep_and(*deps: Dep) -> Dep:
+    return lambda c: all(dep(c) for dep in deps)
+def dep_or(*deps: Dep) -> Dep:
+    return lambda c: any(dep(c) for dep in deps)
+def dep_not(dep: Dep) -> Dep:
+    return lambda c: not dep(c)
 def dep_none(c: WorldConfig) -> bool:
     return True
+
 def dep_dlc(c: WorldConfig) -> bool:
     return c.use_dlc
 def dep_freemove(c: WorldConfig) -> bool:

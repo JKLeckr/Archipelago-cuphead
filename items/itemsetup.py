@@ -57,8 +57,6 @@ def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
             items_ref.update(idef.item_dlc_weapon_ex)
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
-    # Grade checks
-    # Silverworth Progression Items
 
 def setup_items(wconf: WorldConfig) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}

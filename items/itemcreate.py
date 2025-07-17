@@ -189,15 +189,13 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
     _weapons: list[str] = []
     _weapon_dict = weapons.get_weapon_dict(world.wconfig)
 
-    # Starter weapon
-    if (world.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
-        _weapons = [x for x in set(idef.item_p_weapons.keys()) if x not in precollected_item_names]
+    _weapons = [x for x in set(_weapon_dict.values()) if x not in precollected_item_names]
+
+    if (world.wconfig.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+        _weapons.extend([x for x in set(idef.item_weapon_ex.keys()) if x not in precollected_item_names])
         if world.use_dlc:
-            _weapons.extend([x for x in set(idef.item_dlc_p_weapons.keys()) if x not in precollected_item_names])
-    else:
-        _weapons = [x for x in set(idef.item_weapons.keys()) if x not in precollected_item_names]
-        if world.use_dlc:
-            _weapons.extend([x for x in set(idef.item_dlc_weapons.keys()) if x not in precollected_item_names])
+            _weapons.extend([x for x in set(idef.item_dlc_weapon_ex.keys()) if x not in precollected_item_names])
+
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
     if start_weapon in _weapons and world.wconfig.weapon_mode != WeaponMode.PROGRESSIVE:

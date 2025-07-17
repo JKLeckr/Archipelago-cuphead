@@ -1,6 +1,6 @@
 from __future__ import annotations
 import typing
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
 from BaseClasses import CollectionState
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
@@ -8,12 +8,12 @@ if typing.TYPE_CHECKING:
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
 
-def rule_and(a: Rule, b: Rule) -> Rule:
-    return lambda state: a(state) and b(state)
-def rule_not(a: Rule) -> Rule:
-    return lambda state: not a(state)
-def rule_or(a: Rule, b: Rule) -> Rule:
-    return lambda state: a(state) or b(state)
+def rule_and(*rules: Rule) -> Rule:
+    return lambda state: all(rule(state) for rule in rules)
+def rule_or(*rules: Rule) -> Rule:
+    return lambda state: any(rule(state) for rule in rules)
+def rule_not(rule: Rule) -> Rule:
+    return lambda state: not rule(state)
 def rule_none() -> Rule:
     return lambda state: True
 def rule_has(world: "CupheadWorld", item: str, count: int = 1) -> Rule:
@@ -22,6 +22,8 @@ def rule_has_all(world: "CupheadWorld", items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_all(items, player)
 def rule_has_any(world: "CupheadWorld", items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_any(items, player)
+def rule_has_any_count(world: "CupheadWorld", item_counts: Mapping[str, int]) -> Rule:
+    return lambda state, player=world.player: state.has_any_count(item_counts, player)
 
 def _can_reach_all_regions(state: CollectionState, player: int, regions: Iterable[str]) -> bool:
     for region in regions:
@@ -46,10 +48,12 @@ def rule_can_reach_any_region(world: "CupheadWorld", regions: Iterable[str]) -> 
 def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, p=player: rrule(state, p)
 
-def region_rule_or(a: RegionRule, b: RegionRule) -> RegionRule:
-    return lambda state, player: a(state, player) or b(state, player)
-def region_rule_and(a: RegionRule, b: RegionRule) -> RegionRule:
-    return lambda state, player: a(state, player) and b(state, player)
+def region_rule_and(*rules: RegionRule) -> RegionRule:
+    return lambda state, player: all(rule(state, player) for rule in rules)
+def region_rule_or(*rules: RegionRule) -> RegionRule:
+    return lambda state, player: any(rule(state, player) for rule in rules)
+def region_rule_not(rule: RegionRule) -> RegionRule:
+    return lambda state, player: not rule(state, player)
 def region_rule_none() -> RegionRule:
     return lambda state, player: True
 def region_rule_has(item: str, count: int = 1) -> RegionRule:
@@ -58,3 +62,5 @@ def region_rule_has_all(items: Iterable[str]) -> RegionRule:
     return lambda state, player: state.has_all(items, player)
 def region_rule_has_any(items: Iterable[str]) -> RegionRule:
     return lambda state, player: state.has_any(items, player)
+def region_rule_has_any_count(item_counts: Mapping[str, int]) -> RegionRule:
+    return lambda state, player: state.has_any_count(item_counts, player)

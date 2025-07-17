@@ -12,6 +12,7 @@ class GameMode(IntEnum):
     DLC_BEAT_SALTBAKER_ISLE4_ONLY = 40
 class WeaponMode(IntEnum):
     NORMAL = 0
+    EXCEPT_START = 4 # Not functional on its own.
     PROGRESSIVE = 1
     PROGRESSIVE_EXCEPT_START = 5
     EX_SEPARATE = 2

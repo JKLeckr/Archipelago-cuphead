@@ -57,17 +57,17 @@ item_dlc_weapons: dict[str, ItemData] = {
 item_all_weapons: dict[str, ItemData] = {**item_weapons, **item_dlc_weapons}
 
 item_weapon_ex: dict[str, ItemData] = {
-    ItemNames.item_weapon_peashooter_ex: ItemData(iid(14), ItemClassification.useful, 2),
-    ItemNames.item_weapon_spread_ex: ItemData(iid(17), ItemClassification.useful, 2),
-    ItemNames.item_weapon_chaser_ex: ItemData(iid(20), ItemClassification.useful, 2),
-    ItemNames.item_weapon_lobber_ex: ItemData(iid(23), ItemClassification.useful, 2),
-    ItemNames.item_weapon_charge_ex: ItemData(iid(26), ItemClassification.useful, 2),
-    ItemNames.item_weapon_roundabout_ex: ItemData(iid(29), ItemClassification.useful, 2),
+    ItemNames.item_weapon_peashooter_ex: ItemData(iid(14), ItemClassification.useful),
+    ItemNames.item_weapon_spread_ex: ItemData(iid(17), ItemClassification.useful),
+    ItemNames.item_weapon_chaser_ex: ItemData(iid(20), ItemClassification.useful),
+    ItemNames.item_weapon_lobber_ex: ItemData(iid(23), ItemClassification.useful),
+    ItemNames.item_weapon_charge_ex: ItemData(iid(26), ItemClassification.useful),
+    ItemNames.item_weapon_roundabout_ex: ItemData(iid(29), ItemClassification.useful),
 }
 item_dlc_weapon_ex: dict[str, ItemData] = {
-    ItemNames.item_weapon_dlc_crackshot_ex: ItemData(dlc_iid(6), ItemClassification.useful, 2),
-    ItemNames.item_weapon_dlc_converge_ex: ItemData(dlc_iid(9), ItemClassification.useful, 2),
-    ItemNames.item_weapon_dlc_twistup_ex: ItemData(dlc_iid(12), ItemClassification.useful, 2),
+    ItemNames.item_weapon_dlc_crackshot_ex: ItemData(dlc_iid(6), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_converge_ex: ItemData(dlc_iid(9), ItemClassification.useful),
+    ItemNames.item_weapon_dlc_twistup_ex: ItemData(dlc_iid(12), ItemClassification.useful),
 }
 item_all_weapon_ex: dict[str, ItemData] = {**item_weapon_ex, **item_dlc_weapon_ex}
 

@@ -6,10 +6,10 @@ from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_f
 from . import rulebase as rb
 from .rulebase import Rule
 from ..levels import levelrules, levellocruledefs as llrdef
-from ..items import weapons, itemdefs as idef
+from ..items import itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
-from ..enums import GameMode, WeaponMode, ItemGroups, ChaliceMode, ChaliceCheckMode
+from ..enums import GameMode, ItemGroups, ChaliceCheckMode
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -124,38 +124,20 @@ def set_quest_rules(world: CupheadWorld):
     if wconfig.music_quest:
         set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
 
-def get_weapon_ex_rules(world: CupheadWorld) -> Rule:
-    w = world
-    res: Rule = rb.rule_none()
-    for i in range(len(weapons.weapon_dict)):
-        rule = rb.rule_has(
-            w,
-            weapons.weapon_p_dict[i],
-            2
-        )
-        if i == 0:
-            res = rule
-        else:
-            res = rb.rule_or(res, rule)
-    return res
-
 def add_level_grade_rule(world: CupheadWorld, loc: str):
     w = world
     if loc in ld.s_plane_locations:
-        add_item_rule(w, loc, ItemNames.item_ability_plane_parry)
-        if w.wconfig.weapon_mode == WeaponMode.PROGRESSIVE:
-            add_loc_rule(w, loc, rb.rule_has_any(w, {
-                ItemNames.item_plane_ex,
-                ItemNames.item_plane_super,
-                ItemNames.item_dlc_cplane_ex,
-                ItemNames.item_dlc_cplane_super,
-            }), False)
+        add_loc_rule(
+            w,
+            loc,
+            rb.region_rule_to_rule(levelrules.level_rule_plane_topgrade(w.wconfig), w.player)
+        )
     else:
-        add_item_rule(w, loc, ItemNames.item_ability_parry)
-        if w.wconfig.weapon_mode == WeaponMode.PROGRESSIVE:
-            add_loc_rule(w, loc, rb.rule_or(rb.rule_has(w, "Super"), get_weapon_ex_rules(w)), False)
-        if w.wconfig.dlc_chalice == ChaliceMode.CHALICE_ONLY:
-            add_item_rule(w, loc, ItemNames.item_ability_dash)
+        add_loc_rule(
+            w,
+            loc,
+            rb.region_rule_to_rule(levelrules.level_rule_topgrade(w.wconfig), w.player)
+        )
 
 def add_level_grade_rules(world: CupheadWorld, locs: Iterable[str], exclude: set[str] | None = None):
     if not exclude:
@@ -181,14 +163,29 @@ def set_level_boss_grade_rules(world: CupheadWorld):
         add_level_grade_rules(
             world,
             ld.location_level_boss_topgrade,
-            {LocationNames.loc_level_boss_kingdice_topgrade}
+            #{LocationNames.loc_level_boss_kingdice_topgrade}
         )
+        if wconfig.mode != GameMode.BEAT_DEVIL:
+            add_level_grade_rules(
+                world,
+                ld.location_level_boss_final_topgrade
+            )
+        if wconfig.mode != GameMode.DLC_BEAT_SALTBAKER:
+            add_level_grade_rules(
+                world,
+                ld.location_level_dlc_boss_final_topgrade
+            )
         if wconfig.silverworth_quest:
             add_level_grade_rules(
                 world,
                 ld.location_level_boss_event_agrade,
-                {LocationNames.loc_level_boss_kingdice_event_agrade}
+                #{LocationNames.loc_level_boss_kingdice_event_agrade}
             )
+            if wconfig.mode != GameMode.BEAT_DEVIL:
+                add_level_grade_rules(
+                    world,
+                    ld.location_level_boss_final_event_agrade
+                )
         if wconfig.use_dlc:
             add_level_grade_rules(
                 world,
