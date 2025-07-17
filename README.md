@@ -8,7 +8,7 @@ Client Mod: [CupheadArchipelago](https://github.com/JKLeckr/CupheadArchipelagoMo
 
 APWorld: [Archipelago-cuphead](https://github.com/JKLeckr/Archipelago-cuphead) (This project)
 
-This is the Archipelago world for Cuphead.
+This is the Archipelago APWorld for Cuphead.
 
 This apworld is currently in alpha. While it is better than it ever was since early development, there are still some freaky issues hiding in there. If you are wanting code so clean that you can see your reflection, you will think you are a vampire! Use at your own risk!
 
