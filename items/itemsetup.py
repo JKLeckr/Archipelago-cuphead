@@ -25,8 +25,11 @@ def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
         items_ref.update(idef.item_dlc_chalice_essential)
     if wconf.is_dlc_chalice_items_separate(ItemGroups.SUPER):
         items_ref.update(idef.item_dlc_chalice_super)
-    if wconf.weapon_mode:
-        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+    if (
+        (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0 and
+        wconf.is_dlc_chalice_items_separate(ItemGroups.WEAPON_EX)
+    ):
+        change_item_quantity(items_ref, ItemNames.item_dlc_cplane_ex, 1)
 
 def setup_abilities(items_ref: dict[str, ItemData], wconf: WorldConfig):
     items_ref.update(idef.item_abilities)
@@ -57,6 +60,7 @@ def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
             items_ref.update(idef.item_dlc_weapon_ex)
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+        [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
 
 def setup_items(wconf: WorldConfig) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}

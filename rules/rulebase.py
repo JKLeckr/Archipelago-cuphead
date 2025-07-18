@@ -2,6 +2,7 @@ from __future__ import annotations
 import typing
 from collections.abc import Callable, Iterable, Mapping
 from BaseClasses import CollectionState
+from ..debug import p
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -14,8 +15,10 @@ def rule_or(*rules: Rule) -> Rule:
     return lambda state: any(rule(state) for rule in rules)
 def rule_not(rule: Rule) -> Rule:
     return lambda state: not rule(state)
+
 def rule_none() -> Rule:
     return lambda state: True
+
 def rule_has(world: "CupheadWorld", item: str, count: int = 1) -> Rule:
     return lambda state, player=world.player: state.has(item, player, count)
 def rule_has_all(world: "CupheadWorld", items: Iterable[str]) -> Rule:
@@ -46,16 +49,18 @@ def rule_can_reach_any_region(world: "CupheadWorld", regions: Iterable[str]) -> 
     return lambda state, player=world.player: _can_reach_any_region(state, player, regions)
 
 def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
-    return lambda state, p=player: rrule(state, p)
+    return lambda state, plr=player: rrule(state, plr)
 
 def region_rule_and(*rules: RegionRule) -> RegionRule:
-    return lambda state, player: all(rule(state, player) for rule in rules)
+    return lambda state, player: all(p(p(rule)(state, player)) for rule in rules)
 def region_rule_or(*rules: RegionRule) -> RegionRule:
-    return lambda state, player: any(rule(state, player) for rule in rules)
+    return lambda state, player: any(p(p(rule)(state, player)) for rule in rules)
 def region_rule_not(rule: RegionRule) -> RegionRule:
     return lambda state, player: not rule(state, player)
+
 def region_rule_none() -> RegionRule:
     return lambda state, player: True
+
 def region_rule_has(item: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has(item, player, count)
 def region_rule_has_all(items: Iterable[str]) -> RegionRule:

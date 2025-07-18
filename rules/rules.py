@@ -5,11 +5,11 @@ from BaseClasses import Location, Region, Entrance
 from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
 from . import rulebase as rb
 from .rulebase import Rule
-from ..levels import levelrules, levellocruledefs as llrdef
+from ..levels import levelrules as lr, levellocruledefs as llrdef
 from ..items import itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import ItemNames, LocationNames
-from ..enums import GameMode, ItemGroups, ChaliceCheckMode
+from ..enums import GameMode, ItemGroups
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -47,7 +47,7 @@ def set_rules(world: CupheadWorld):
     set_region_rules(w, LocationNames.level_boss_kingdice,
                      rb.rule_and(
                          rb.rule_has(w, ItemNames.item_contract, contract_reqs[2]),
-                         rb.region_rule_to_rule(levelrules.level_rule_kingdice(wconfig), w.player)
+                         rb.region_rule_to_rule(lr.level_rule_kingdice(wconfig), w.player)
                      ))
     set_shop_rules(w)
 
@@ -62,15 +62,27 @@ def set_rules(world: CupheadWorld):
 
     set_goal(w)
 
-def add_chalice_rules(world: CupheadWorld, locs: Iterable[str]):
-    for _loc in locs:
-        set_item_rule(world, _loc, ItemNames.item_charm_dlc_cookie)
+def add_level_chalice_rule(world: CupheadWorld, loc: str):
+    w = world
+    if loc in ld.s_plane_locations:
         add_loc_rule(
-            world,
-            _loc,
-            # TODO: Make the chaliced rules more lax per level instead of blanket requirement
-            rb.region_rule_to_rule(levelrules.level_rule_parry(world.wconfig), world.player)
+            w,
+            loc,
+            rb.region_rule_to_rule(lr.level_rule_dlc_boss_plane_chaliced(w.wconfig), w.player)
         )
+    else:
+        add_loc_rule(
+            w,
+            loc,
+            rb.region_rule_to_rule(lr.level_rule_dlc_boss_chaliced(w.wconfig), w.player)
+        )
+
+def add_level_chalice_rules(world: CupheadWorld, locs: Iterable[str], exclude: set[str] | None = None):
+    if not exclude:
+        exclude = set()
+    for loc in locs:
+        if (loc not in exclude and loc not in llrdef.level_loc_rule_locs):
+            add_level_chalice_rule(world, loc)
 
 def set_dlc_rules(world: CupheadWorld):
     w = world
@@ -83,9 +95,9 @@ def set_dlc_rules(world: CupheadWorld):
         rb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs)
     )
     if wconfig.dlc_boss_chalice_checks:
-        add_chalice_rules(w, ld.locations_dlc_boss_chaliced.keys())
+        add_level_chalice_rules(w, ld.locations_dlc_boss_chaliced.keys())
     if wconfig.dlc_cactusgirl_quest:
-        add_chalice_rules(w, ld.locations_dlc_event_boss_chaliced.keys())
+        add_level_chalice_rules(w, ld.locations_dlc_event_boss_chaliced.keys())
         num_chaliced_events = len(ld.locations_dlc_event_boss_chaliced.keys())
         set_loc_rule(
             w,
@@ -130,13 +142,13 @@ def add_level_grade_rule(world: CupheadWorld, loc: str):
         add_loc_rule(
             w,
             loc,
-            rb.region_rule_to_rule(levelrules.level_rule_plane_topgrade(w.wconfig), w.player)
+            rb.region_rule_to_rule(lr.level_rule_plane_topgrade(w.wconfig), w.player)
         )
     else:
         add_loc_rule(
             w,
             loc,
-            rb.region_rule_to_rule(levelrules.level_rule_topgrade(w.wconfig), w.player)
+            rb.region_rule_to_rule(lr.level_rule_topgrade(w.wconfig), w.player)
         )
 
 def add_level_grade_rules(world: CupheadWorld, locs: Iterable[str], exclude: set[str] | None = None):
@@ -162,24 +174,17 @@ def set_level_boss_grade_rules(world: CupheadWorld):
     if boss_grade_checks > 0:
         add_level_grade_rules(
             world,
-            ld.location_level_boss_topgrade,
-            #{LocationNames.loc_level_boss_kingdice_topgrade}
+            ld.location_level_boss_topgrade
         )
         if wconfig.mode != GameMode.BEAT_DEVIL:
             add_level_grade_rules(
                 world,
                 ld.location_level_boss_final_topgrade
             )
-        if wconfig.mode != GameMode.DLC_BEAT_SALTBAKER:
-            add_level_grade_rules(
-                world,
-                ld.location_level_dlc_boss_final_topgrade
-            )
         if wconfig.silverworth_quest:
             add_level_grade_rules(
                 world,
-                ld.location_level_boss_event_agrade,
-                #{LocationNames.loc_level_boss_kingdice_event_agrade}
+                ld.location_level_boss_event_agrade
             )
             if wconfig.mode != GameMode.BEAT_DEVIL:
                 add_level_grade_rules(
@@ -189,20 +194,13 @@ def set_level_boss_grade_rules(world: CupheadWorld):
         if wconfig.use_dlc:
             add_level_grade_rules(
                 world,
-                ld.location_level_dlc_boss_topgrade,
-                set()
+                ld.location_level_dlc_boss_topgrade
             )
-        if (wconfig.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0:
-            add_level_grade_rules(
-                world,
-                ld.location_level_boss_dlc_chaliced,
-                set()
-            )
-            add_level_grade_rules(
-                world,
-                ld.location_level_dlc_boss_dlc_chaliced,
-                set()
-            )
+            if wconfig.mode != GameMode.DLC_BEAT_SALTBAKER:
+                add_level_grade_rules(
+                    world,
+                    ld.location_level_dlc_boss_final_topgrade
+                )
 
 def set_level_rules(world: CupheadWorld):
     w = world

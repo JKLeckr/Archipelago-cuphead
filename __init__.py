@@ -7,9 +7,10 @@ from .rules import rules
 from .names import ItemNames, LocationNames
 from .options import CupheadOptions, presets
 from .options.optionsanitizer import OptionSanitizer
+from .enums import WeaponMode
 from .wconf import WorldConfig
 from .settings import CupheadSettings
-from .items import itemgroups, itemdefs as idef
+from .items import itemgroups, weapons, itemdefs as idef
 from .items.itembase import ItemData
 from .locations import locationdefs as ld
 from .locations.locationbase import LocationData
@@ -72,10 +73,16 @@ class CupheadWorld(World):
     level_map: dict[int, int] = {}
 
     def solo_setup(self) -> None:
-        # Put items in early to prevent fill errors. FIXME: Make this more elegant.
+        # Put items in early to prevent fill errors. TODO: Make this more elegant.
         if self.wconfig.randomize_abilities:
             self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
             self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
+        if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+            _start_weapon = weapons.weapon_p_dict[self.start_weapon]
+            self.multiworld.early_items[self.player][_start_weapon] = 1
+        if (self.wconfig.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+            _weapon = self.random.choice(weapons.get_weapon_dict(self.wconfig, self.wconfig.use_dlc))
+            self.multiworld.early_items[self.player][_weapon] = 1
 
     @override
     def generate_early(self) -> None:

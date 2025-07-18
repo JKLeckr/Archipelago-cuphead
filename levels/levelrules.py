@@ -5,17 +5,19 @@ from ..wconf import WorldConfig
 from ..enums import WeaponMode, ChaliceMode, ChaliceCheckMode
 from ..items import weapons
 from ..rules import rulebase as rb
+from ..debug import p
 from ..rules.rulebase import RegionRule
 
 LevelRule = Callable[[WorldConfig], RegionRule]
 
 # Level Rules
 def level_rule_and(*rules: LevelRule) -> LevelRule:
-    return lambda s: lambda state, player: all(rule(s)(state, player) for rule in rules)
+    return lambda s: lambda state, player: all(p(p(rule)(s)(state, player)) for rule in rules)
 def level_rule_or(*rules: LevelRule) -> LevelRule:
-    return lambda s: lambda state, player: any(rule(s)(state, player) for rule in rules)
+    return lambda s: lambda state, player: any(p(p(rule)(s)(state, player)) for rule in rules)
 def level_rule_not(rule: LevelRule) -> LevelRule:
     return lambda s: lambda state, player: not rule(s)(state, player)
+
 def level_rule_none(wconf: WorldConfig) -> RegionRule:
     return rb.region_rule_none()
 
@@ -166,7 +168,7 @@ def level_rule_plane_topgrade(wconf: WorldConfig) -> RegionRule:
     _rule = rb.region_rule_none()
     if wconf.randomize_abilities:
         _rule = rb.region_rule_has(ItemNames.item_ability_plane_parry)
-    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0:
         _rule = rb.region_rule_and(_rule, rb.region_rule_has_any({
                 ItemNames.item_plane_ex,
                 ItemNames.item_plane_super,

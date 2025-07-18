@@ -9,6 +9,10 @@ item_groups: dict[str, set[str]] = {
         *idefs.item_dlc_weapons.keys(),
         *idefs.item_dlc_p_weapons.keys()
     },
+    "Weapon EX": {
+        *idefs.item_weapon_ex.keys(),
+        *idefs.item_dlc_weapon_ex.keys()
+    },
     "Charm": {
         *idefs.item_charms.keys(),
         *idefs.item_dlc_charms.keys(),
