@@ -11,7 +11,7 @@ def rule_has_all(items: Iterable[str]) -> RegionRule:
     return region_rule_has_all(items)
 
 region_begin: RegionData = RegionData(
-    "Menu", None, [Target(LocationNames.level_house)], flags=DefFlags.TGT_IGNORE_FREEMOVE
+    "Start", None, [Target(LocationNames.level_house)], flags=DefFlags.TGT_IGNORE_FREEMOVE
 )
 region_house: RegionData = RegionData(LocationNames.level_house, None, [
         LevelTarget(LocationNames.level_tutorial),

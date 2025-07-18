@@ -90,7 +90,7 @@ def debug_visualize_regions(world: CupheadWorld, highlight_reachable: bool = Fal
     state = world.multiworld.get_all_state(False)
     output_name = f"_{output_name}" if output_name else ""
     visualize_regions(
-        world.multiworld.get_region("Menu", world.player),
+        world.multiworld.get_region("Start", world.player),
         state.reachable_regions[world.player] if highlight_reachable else None,
         f"./output/AP_{world.multiworld.seed_name}{output_name}-regionmap.puml"
     )

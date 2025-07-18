@@ -51,6 +51,7 @@ class CupheadWorld(World):
     options_dataclass = CupheadOptions
     options: CupheadOptions # type: ignore
     version: str = APWORLD_VERSION
+    origin_region_name: str = "Start"
 
     required_client_version: tuple[int, int, int] = (0, 6, 0)
     required_server_version: tuple[int, int, int] = (0, 6, 0)
