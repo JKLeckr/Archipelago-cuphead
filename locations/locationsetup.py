@@ -24,8 +24,6 @@ def setup_grade_check_locations(locations_ref: dict[str,LocationData], wconf: Wo
             locations_ref.update(ld.location_level_rungun_agrade)
         elif rungun_grade_checks==GradeCheckMode.PACIFIST:
             locations_ref.update(ld.location_level_rungun_pacifist)
-    if wconf.boss_secret_checks:
-        locations_ref.update(ld.location_level_boss_secret)
 
 def setup_quest_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
     def _add_location(name: str):
@@ -46,8 +44,7 @@ def setup_quest_locations(locations_ref: dict[str,LocationData], wconf: WorldCon
         _add_location(LocationNames.loc_event_quest_wolfgang)
     if wconf.silverworth_quest:
         locations_ref.update(ld.locations_event_agrade)
-        if wconf.mode == GameMode.BEAT_DEVIL:
-            locations_ref.update(ld.location_level_boss_final_event_agrade)
+        locations_ref.update(ld.location_level_boss_final_event_agrade)
         _add_location(LocationNames.loc_quest_silverworth)
     if wconf.pacifist_quest:
         locations_ref.update(ld.location_level_rungun_event_pacifist)
@@ -72,7 +69,7 @@ def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], wconf: Wo
         add_location(locations_ref, LocationNames.loc_event_dlc_cookie)
     if wconf.dlc_boss_chalice_checks:
         locations_ref.update(ld.locations_dlc_boss_chaliced)
-        if wconf.mode != GameMode.DLC_BEAT_SALTBAKER:
+        if wconf.mode != GameMode.BEAT_DEVIL:
             locations_ref.update(ld.location_level_boss_final_dlc_chaliced)
         if wconf.mode != GameMode.DLC_BEAT_SALTBAKER:
             locations_ref.update(ld.location_level_dlc_boss_final_dlc_chaliced)
@@ -120,6 +117,9 @@ def setup_locations(wconf: WorldConfig) -> dict[str,LocationData]:
     locations: dict[str,LocationData] = {**ld.locations_base}
 
     setup_grade_check_locations(locations, wconf)
+
+    if wconf.boss_secret_checks:
+        locations.update(ld.location_level_boss_secret)
 
     setup_quest_locations(locations, wconf)
 

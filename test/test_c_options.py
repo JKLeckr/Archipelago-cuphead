@@ -1,3 +1,4 @@
+import unittest
 from typing import Any
 from collections import Counter
 from dataclasses import fields
@@ -5,7 +6,7 @@ from Options import PerGameCommonOptions
 from .. import options
 from . import CupheadTestBase
 
-class TestOptionNames(CupheadTestBase):
+class TestOptionNames(unittest.TestCase):
     def test_option_names(self):
         common_fieldnames = {f for f in fields(PerGameCommonOptions)}
         option_fields = [f for f in fields(options.CupheadOptions) if f not in common_fieldnames]
@@ -104,30 +105,6 @@ class TestOptions(CupheadTestBase):
         },
     }
 
-    def test_default_options(self):
-        option_set_name = "Default Options"
-        test_world = TestOptions()
-        test_world.world_setup()
-        test_world._check_all_items_are_active(option_set_name)
-        test_world._check_all_locations_are_active(option_set_name)
-        print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
-        test_world.test_fill()
-
-    def test_options(self):
-        for option_set, opts in self.option_dict.items():
-            with self.subTest(option_set):
-                test_world = TestOptions()
-                test_world.options = opts
-                test_world.world_setup()
-                test_world._check_all_items_are_active(option_set)
-                test_world._check_all_locations_are_active(option_set)
-                print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
-                test_world.test_fill()
-                test_world.world_setup()
-                test_world.test_empty_state_can_reach_something()
-                test_world.world_setup()
-                test_world.test_all_state_can_reach_everything()
-
     def _check_all_items_are_active(self, option_set_name: str):
         game_players = set(self.multiworld.get_game_players(self.game))
         player_items = {p: [x.name for x in self.multiworld.get_items() if x.player == p] for p in game_players}
@@ -152,3 +129,28 @@ class TestOptions(CupheadTestBase):
                     remaining_locs.remove(loc.name)
             assert len(remaining_locs) == 0, \
                 f"{option_set_name}: The following locations are active but have not been created: {remaining_locs}"
+
+    def test_default_options(self):
+        option_set_name = "Default Options"
+        test_world = TestOptions()
+        test_world.world_setup()
+        test_world._check_all_items_are_active(option_set_name)
+        test_world._check_all_locations_are_active(option_set_name)
+        print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
+        test_world.test_fill()
+
+    def test_options(self):
+        for option_set, opts in self.option_dict.items():
+            with self.subTest(option_set):
+                test_world = TestOptions()
+                test_world.options = opts
+                test_world.world_setup()
+                test_world._check_all_items_are_active(option_set)
+                test_world._check_all_locations_are_active(option_set)
+                print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
+                test_world.test_fill()
+                test_world.world_setup()
+                test_world.test_empty_state_can_reach_something()
+                test_world.world_setup()
+                test_world.test_all_state_can_reach_everything()
+
