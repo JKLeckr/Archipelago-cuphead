@@ -167,7 +167,6 @@ class CupheadWorld(World):
     def collect(self, state: CollectionState, item: Item) -> bool:
         if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
             amount = 3 if item.name == ItemNames.item_coin3 else 2
-            #state.add_item(ItemNames.item_coin, self.player, amount)
             _name = self.collect_item(
                 state,
                 itemcreate.create_item(ItemNames.item_coin, self.player)
@@ -177,8 +176,6 @@ class CupheadWorld(World):
                 return True
             return False
         elif (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
-            #weapon = weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]
-            #state.add_item(weapon, self.player, 2)
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
@@ -194,7 +191,6 @@ class CupheadWorld(World):
     def remove(self, state: CollectionState, item: Item) -> bool:
         if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
             amount = 3 if item.name == ItemNames.item_coin3 else 2
-            #state.remove_item(ItemNames.item_coin, self.player, amount)
             _name = self.collect_item(
                 state,
                 itemcreate.create_item(ItemNames.item_coin, self.player),
@@ -205,8 +201,6 @@ class CupheadWorld(World):
                 return True
             return False
         elif (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
-            #weapon = weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]
-            #state.remove_item(weapon, self.player, 2)
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
