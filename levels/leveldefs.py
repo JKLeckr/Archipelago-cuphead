@@ -204,7 +204,7 @@ level_dlc_boss_final: dict[str, LevelData] = {
         LocationNames.loc_event_dlc_goal_saltbaker,
     ], lr.level_rule_final),
 }
-level_dicepalace_boss = {
+level_dicepalace_boss: dict[str, LevelData] = {
     LocationNames.level_dicepalace_boss_booze: LevelData(LocationNames.level_boss_kingdice, [
         LocationNames.loc_level_dicepalace_boss_booze,
         LocationNames.loc_level_dicepalace_boss_booze_dlc_chaliced,

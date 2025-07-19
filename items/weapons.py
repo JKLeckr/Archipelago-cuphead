@@ -35,10 +35,12 @@ weapon_p_dict: dict[int,str] = {
     7: ItemNames.item_p_weapon_dlc_converge,
     8: ItemNames.item_p_weapon_dlc_twistup,
 }
-def get_weapon_dict(wconf: WorldConfig, dlc_weapons: bool = True) -> dict[int,str]:
+weapon_to_index: dict[str, int] = {y:x for x,y in weapon_dict.items()}
+
+def get_weapon_dict(wconf: WorldConfig, dlc_weapons: bool = True, no_except_start: bool = False) -> dict[int,str]:
     orig_weapon_dict: dict[int,str] = weapon_p_dict if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0 else weapon_dict
     nweapon_dict: dict[int,str] = {k:v for k,v in orig_weapon_dict.items() if k<6 or dlc_weapons}
-    if (wconf.weapon_mode & WeaponMode.EXCEPT_START) > 0:
+    '''if wconf.weapon_mode == WeaponMode.PROGRESSIVE_EXCEPT_START and not no_except_start:
         start_weapon = wconf.start_weapon
-        nweapon_dict[start_weapon] = weapon_dict[start_weapon]
+        nweapon_dict[start_weapon] = weapon_dict[start_weapon]'''
     return nweapon_dict

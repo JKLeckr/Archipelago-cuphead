@@ -15,7 +15,7 @@ if typing.TYPE_CHECKING:
 T = TypeVar("T")
 
 def p(v: Any) -> Any:
-    print(v)
+    #print(v)
     return v
 
 def test_duplicates(ls: Iterable[T]) -> int:

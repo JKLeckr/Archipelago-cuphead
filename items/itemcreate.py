@@ -119,8 +119,25 @@ def create_dlc_locked_items(world: CupheadWorld):
         ldef.locations_dlc_event_boss_final_chaliced
     )
 
+def create_start_weapon(world: CupheadWorld):
+    wconf = world.wconfig
+    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+        weapon = weapons.weapon_p_dict[wconf.start_weapon]
+    else:
+        weapon = weapons.weapon_dict[wconf.start_weapon]
+    create_locked_item(world, weapon, LocationNames.loc_event_start_weapon)
+    if LocationNames.loc_event_start_weapon_ex in world.active_locations:
+        if wconf.weapon_mode == WeaponMode.PROGRESSIVE_EXCEPT_START:
+            weapon_ex = weapons.weapon_p_dict[wconf.start_weapon]
+        elif wconf.weapon_mode == WeaponMode.EX_SEPARATE_EXCEPT_START:
+            weapon_ex = weapons.weapon_ex_dict[wconf.start_weapon]
+        else:
+            weapon_ex = ""
+        create_locked_item(world, weapon_ex, LocationNames.loc_event_start_weapon_ex)
+
 def create_locked_items(world: CupheadWorld):
     # Locked Items
+    create_start_weapon(world)
     for i in range(1,6):
         _loc = LocationNames.loc_event_isle1_secret_prereq+" "+str(i)
         create_locked_item(world, ItemNames.item_event_isle1_secret_prereq, _loc)
@@ -198,7 +215,13 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
 
     start_weapon_index = world.start_weapon
     start_weapon = _weapon_dict[start_weapon_index]
-    if start_weapon in _weapons and world.wconfig.weapon_mode != WeaponMode.PROGRESSIVE:
+    if (
+        start_weapon in _weapons and
+        (
+            world.wconfig.weapon_mode != WeaponMode.PROGRESSIVE or
+            (world.wconfig.weapon_mode & WeaponMode.EXCEPT_START) > 0
+        )
+    ):
         #world.multiworld.push_precollected(create_active_item(start_weapon, world.player))
         _weapons.remove(start_weapon)
 

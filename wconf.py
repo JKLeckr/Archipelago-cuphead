@@ -29,8 +29,8 @@ class WorldConfig:
     kingdice_bosssanity: bool
     dlc_boss_chalice_checks: e.ChaliceCheckMode
     dlc_rungun_chalice_checks: e.ChaliceCheckMode
-    dlc_kingdice_chalice_checks: bool
-    dlc_chess_chalice_checks: bool
+    dlc_kingdice_chalice_checks: e.ChaliceCheckMode
+    dlc_chess_chalice_checks: e.ChaliceCheckMode
     buster_quest: bool
     ginger_quest: bool
     fourmel_quest: bool
@@ -75,8 +75,8 @@ class WorldConfig:
         self.kingdice_bosssanity = bool(options.kingdice_bosssanity.value)
         self.dlc_boss_chalice_checks = e.ChaliceCheckMode(options.dlc_boss_chalice_checks.value)
         self.dlc_rungun_chalice_checks = e.ChaliceCheckMode(options.dlc_rungun_chalice_checks.value)
-        self.dlc_kingdice_chalice_checks = bool(options.dlc_kingdice_chalice_checks.value)
-        self.dlc_chess_chalice_checks = bool(options.dlc_chess_chalice_checks.value)
+        self.dlc_kingdice_chalice_checks = e.ChaliceCheckMode(options.dlc_kingdice_chalice_checks.value)
+        self.dlc_chess_chalice_checks = e.ChaliceCheckMode(options.dlc_chess_chalice_checks.value)
         self.buster_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True
@@ -125,8 +125,8 @@ class WorldConfig:
         self.kingdice_bosssanity = bool(odefs.DicePalaceBossSanity.default)
         self.dlc_boss_chalice_checks = e.ChaliceCheckMode(odefs.DlcBossChaliceChecks.default)
         self.dlc_rungun_chalice_checks = e.ChaliceCheckMode(odefs.DlcRunGunChaliceChecks.default)
-        self.dlc_kingdice_chalice_checks = bool(odefs.DlcDicePalaceChaliceChecks.default)
-        self.dlc_chess_chalice_checks = bool(odefs.DlcChessChaliceChecks.default)
+        self.dlc_kingdice_chalice_checks = e.ChaliceCheckMode(odefs.DlcDicePalaceChaliceChecks.default)
+        self.dlc_chess_chalice_checks = e.ChaliceCheckMode(odefs.DlcChessChaliceChecks.default)
         self.buster_quest = True
         self.ginger_quest = True
         self.fourmel_quest = True

@@ -3,7 +3,7 @@ from random import Random
 from collections.abc import Iterable
 from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
-from ..enums import ChaliceMode, ChaliceCheckMode, LevelShuffleMode
+from ..enums import ChaliceMode, ChaliceCheckMode, LevelShuffleMode, WeaponMode
 from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 
@@ -105,10 +105,14 @@ class OptionSanitizer:
         _rungun_cchecks = _options.dlc_rungun_chalice_checks.value
         if (_boss_cchecks & ChaliceCheckMode.GRADE_REQUIRED) > 0 and _options.boss_grade_checks.value == 0:
             _boss_cchecks &= ~ChaliceCheckMode.GRADE_REQUIRED
-            self.override_num_option(_options.dlc_boss_chalice_checks, 0, "Boss Grade Checks Disabled", True)
+            self.override_num_option(
+                _options.dlc_boss_chalice_checks, _boss_cchecks, "Boss Grade Checks Disabled", True
+            )
         if (_rungun_cchecks & ChaliceCheckMode.GRADE_REQUIRED) > 0 and _options.rungun_grade_checks.value == 0:
             _rungun_cchecks &= ~ChaliceCheckMode.GRADE_REQUIRED
-            self.override_num_option(_options.dlc_rungun_chalice_checks, 0, "Run n' Gun Grade Checks Disabled", True)
+            self.override_num_option(
+                _options.dlc_rungun_chalice_checks, _rungun_cchecks, "Run n' Gun Grade Checks Disabled", True,
+            )
 
     def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
         _options = self.options
@@ -203,6 +207,9 @@ class OptionSanitizer:
 
         if self.strict_goal_options:
             self._sanitize_goal_requirements()
+
+        if _options.weapon_mode.value == WeaponMode.EXCEPT_START:
+            self.override_num_option(_options.weapon_mode, 0, "Unsupported option")
 
         self._sanitize_dlc_options()
 

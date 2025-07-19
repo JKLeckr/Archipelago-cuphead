@@ -482,6 +482,8 @@ class LocationNames:
 
     loc_dlc_curse_complete = "Divine Relic"
 
+    loc_event_start_weapon = _loc_event_ + "Start Weapon"
+    loc_event_start_weapon_ex = _loc_event_ + "Start Weapon EX"
     loc_event_isle1_secret_prereq = _loc_event_ + loc_coin_isle1_secret + " Prerequisite"
     loc_event_isle1_secret_prereq1 = loc_event_isle1_secret_prereq + " 1"
     loc_event_isle1_secret_prereq2 = loc_event_isle1_secret_prereq + " 2"
@@ -640,6 +642,7 @@ class ItemNames:
     item_level_trap_screen = "Screen Trap"
 
     # Events
+    item_event_null = "null"
     item_event_boss_defeated = _item_event_ + "Boss Defeated"
     item_event_mausoleum = _item_event_ + "Mausoleum"
     item_event_isle1_secret_prereq = _item_event_ + LocationNames.world_inkwell_1 + " Secret Coin Prerequisite"

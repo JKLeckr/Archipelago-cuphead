@@ -390,6 +390,8 @@ location_dlc_world_quest: dict[str, LocationData] = {
 
 # Special Locations
 location_special: dict[str, LocationData] = {
+    LocationNames.loc_event_start_weapon: LocationData(None),
+    LocationNames.loc_event_start_weapon_ex: LocationData(None),
     LocationNames.loc_event_isle2_shortcut: LocationData(None),
     LocationNames.loc_event_quest_4mel_4th: LocationData(None),
     LocationNames.loc_event_quest_ludwig: LocationData(None),

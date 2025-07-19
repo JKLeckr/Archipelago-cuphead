@@ -1,7 +1,7 @@
 from __future__ import annotations
 from BaseClasses import ItemClassification
 from ..names import ItemNames
-from ..enums import ItemGroups, WeaponMode
+from ..enums import ItemGroups, WeaponMode, GradeCheckMode, ChaliceCheckMode
 from ..wconf import WorldConfig
 from .itembase import ItemData
 from . import weapons, itemdefs as idef
@@ -52,15 +52,31 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], wconf: WorldConfig):
             change_item_type(items_ref, w, ItemClassification.progression)
 
 def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
-    for weapon in weapons.get_weapon_dict(wconf, wconf.use_dlc).values():
+    _weapon_dict = weapons.get_weapon_dict(wconf, wconf.use_dlc)
+    _grade_checks_required = (
+        wconf.boss_grade_checks != GradeCheckMode.DISABLED or
+        wconf.rungun_grade_checks != GradeCheckMode.DISABLED or
+        (wconf.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+    )
+    for weapon in _weapon_dict.values():
         items_ref[weapon] = idef.items_all[weapon]
+    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+        if _grade_checks_required:
+            [
+                change_item_type(items_ref, x, ItemClassification.progression)
+                for i,x in _weapon_dict.items() if i in weapons.weapon_p_dict.keys()
+            ]
     if (wconf.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
-        items_ref.update(idef.item_weapon_ex)
-        if wconf.use_dlc:
-            items_ref.update(idef.item_dlc_weapon_ex)
+        items_ref.update({x: idef.items_all[x] for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()})
+        if _grade_checks_required:
+            [
+                change_item_type(items_ref, x, ItemClassification.progression)
+                for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()
+            ]
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
-        [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
+        if _grade_checks_required:
+            [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
 
 def setup_items(wconf: WorldConfig) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}

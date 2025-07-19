@@ -161,19 +161,19 @@ def level_rule_topgrade(wconf: WorldConfig) -> RegionRule:
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         _rule = rb.region_rule_and(
             _rule,
-            rb.region_rule_or(rb.region_rule_has("Super"), level_rule_weapon_ex(wconf))
+            rb.region_rule_or(rb.region_rule_has_group("Super"), level_rule_weapon_ex(wconf))
         )
     return _rule
 def level_rule_plane_topgrade(wconf: WorldConfig) -> RegionRule:
     _rule = rb.region_rule_none()
     if wconf.randomize_abilities:
         _rule = rb.region_rule_has(ItemNames.item_ability_plane_parry)
-    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0:
+    if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         _rule = rb.region_rule_and(_rule, rb.region_rule_has_any({
-                ItemNames.item_plane_ex,
-                ItemNames.item_plane_super,
-                ItemNames.item_dlc_cplane_ex,
-                ItemNames.item_dlc_cplane_super,
+            ItemNames.item_plane_ex,
+            ItemNames.item_plane_super,
+            ItemNames.item_dlc_cplane_ex,
+            ItemNames.item_dlc_cplane_super,
         }))
     return _rule
 def level_rule_rungun_topgrade(wconf: WorldConfig) -> RegionRule:

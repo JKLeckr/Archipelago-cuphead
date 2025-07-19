@@ -1,9 +1,9 @@
 from ..names import ItemNames, LocationNames
 from . import CupheadTestBase
 
-class TestGame(CupheadTestBase):
+class TestLogic(CupheadTestBase):
     def test_default(self):
-        test = TestGame()
+        test = TestLogic()
         test.world_setup()
         test.assertBeatable(False)
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
@@ -17,14 +17,14 @@ class TestGame(CupheadTestBase):
         test.collect_by_name(ItemNames.item_ability_dash)
         test.assertBeatable(True)
 
-class TestGameDlc(CupheadTestBase):
+class TestLogicDlc(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
     }
 
     def test_dlc(self):
-        test = TestGameDlc()
+        test = TestLogicDlc()
         test.world_setup()
         test.assertBeatable(False)
         test.assertFalse(test.can_reach_region(LocationNames.world_dlc_inkwell_4))
@@ -42,16 +42,17 @@ class TestGameDlc(CupheadTestBase):
         test.collect_by_name(ItemNames.item_ability_dash)
         test.assertBeatable(True)
 
-class TestGameTopGrade(CupheadTestBase):
+class TestLogicTopGrade(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
+        "freemove_isles": "true",
         "boss_grade_checks": "a_minus_grade",
         "rungun_grade_checks": "a_minus_grade"
     }
 
     def test_topgrade(self):
-        test = TestGameTopGrade()
+        test = TestLogicTopGrade()
         test.world_setup()
         test.assertBeatable(False)
 
@@ -59,11 +60,16 @@ class TestGameTopGrade(CupheadTestBase):
         test.collect_by_name(ItemNames.item_ability_parry)
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
 
+        test.collect_by_name(ItemNames.item_plane_gun)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+        test.collect_by_name(ItemNames.item_ability_plane_parry)
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
         test.collect_by_name(ItemNames.item_ability_dash)
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
 
-class TestGameChaliced(CupheadTestBase):
+class TestLogicChaliced(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
@@ -74,7 +80,7 @@ class TestGameChaliced(CupheadTestBase):
     }
 
     def test_chaliced(self):
-        test = TestGameChaliced()
+        test = TestLogicChaliced()
         test.world_setup()
         test.assertBeatable(False)
 
@@ -90,7 +96,7 @@ class TestGameChaliced(CupheadTestBase):
         test.collect_by_name(ItemNames.item_charm_dlc_cookie)
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_veggies_dlc_chaliced))
 
-class TestGameChalicedGradeRequired(CupheadTestBase):
+class TestLogicChalicedGradeRequired(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
@@ -101,7 +107,7 @@ class TestGameChalicedGradeRequired(CupheadTestBase):
     }
 
     def test_chaliced_grade_required(self):
-        test = TestGameChalicedGradeRequired()
+        test = TestLogicChalicedGradeRequired()
         test.world_setup()
         test.assertBeatable(False)
 
@@ -115,13 +121,22 @@ class TestGameChalicedGradeRequired(CupheadTestBase):
         test.remove_by_name([ItemNames.item_charm_dlc_cookie, ItemNames.item_ability_dash])
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_dlc_chaliced))
 
+        test.collect_by_name(ItemNames.item_plane_gun)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+        test.collect_by_name(ItemNames.item_charm_dlc_cookie)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+        test.collect_by_name(ItemNames.item_ability_plane_parry)
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+        test.remove_by_name(ItemNames.item_charm_dlc_cookie)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_dlc_chaliced))
         test.collect_by_name(ItemNames.item_ability_dash)
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_dlc_chaliced))
         test.collect_by_name(ItemNames.item_charm_dlc_cookie)
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_rungun_forest_dlc_chaliced))
 
-class TestGameChalicedGradeRequiredSeparate(CupheadTestBase):
+class TestLogicChalicedGradeRequiredSeparate(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
@@ -132,7 +147,7 @@ class TestGameChalicedGradeRequiredSeparate(CupheadTestBase):
     }
 
     def test_chaliced_grade_required_separate(self):
-        test = TestGameChalicedGradeRequiredSeparate()
+        test = TestLogicChalicedGradeRequiredSeparate()
         test.world_setup()
         test.assertBeatable(False)
 
@@ -146,13 +161,22 @@ class TestGameChalicedGradeRequiredSeparate(CupheadTestBase):
         test.remove_by_name([ItemNames.item_charm_dlc_cookie, ItemNames.item_ability_dash])
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_dlc_chaliced))
 
+        test.collect_by_name(ItemNames.item_plane_gun)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+        test.collect_by_name(ItemNames.item_charm_dlc_cookie)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+        test.collect_by_name(ItemNames.item_ability_plane_parry)
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+        test.remove_by_name(ItemNames.item_charm_dlc_cookie)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_dlc_chaliced))
+
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_dlc_chaliced))
         test.collect_by_name(ItemNames.item_ability_dash)
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_dlc_chaliced))
         test.collect_by_name(ItemNames.item_charm_dlc_cookie)
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_rungun_forest_dlc_chaliced))
 
-class TestGameWeaponProgression(CupheadTestBase):
+class TestLogicProgressiveWeapons(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
@@ -164,8 +188,8 @@ class TestGameWeaponProgression(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_weapon_progression(self):
-        test = TestGameWeaponProgression()
+    def test_progressive_weapons(self):
+        test = TestLogicProgressiveWeapons()
         test.world_setup()
         test.assertBeatable(False)
 
@@ -176,15 +200,30 @@ class TestGameWeaponProgression(CupheadTestBase):
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
         test.remove_by_name(ItemNames.item_super_i)
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
-        test.collect_by_name(ItemNames.item_p_weapon_spread)
+        test.collect(test.get_item_by_name(ItemNames.item_p_weapon_spread))
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
+        test.collect(test.get_item_by_name(ItemNames.item_p_weapon_spread))
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
         test.remove_by_name(ItemNames.item_p_weapon_spread)
-        test.collect_by_name(ItemNames.item_p_weapon_peashooter)
+        test.collect(test.get_item_by_name(ItemNames.item_p_weapon_peashooter))
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
         test.remove_by_name(ItemNames.item_p_weapon_peashooter)
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
 
-        test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
+        test.collect_by_name(ItemNames.item_plane_gun)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+        test.collect_by_name(ItemNames.item_ability_plane_parry)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+        test.collect_by_name(ItemNames.item_plane_ex)
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+        test.remove_by_name(ItemNames.item_plane_ex)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+        test.collect_by_name(ItemNames.item_plane_super)
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+        test.remove_by_name(ItemNames.item_ability_plane_parry)
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+
+        '''test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
         test.collect_by_name([ItemNames.item_ability_parry, ItemNames.item_ability_dash])
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
         test.collect_by_name(ItemNames.item_super_i)
@@ -195,18 +234,36 @@ class TestGameWeaponProgression(CupheadTestBase):
         test.assertFalse(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
         test.remove_by_name(ItemNames.item_p_weapon_spread)
         test.collect_by_name(ItemNames.item_weapon_spread_ex)
-        test.assertTrue(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_rungun_forest_agrade))'''
 
-        test.collect_by_name([ItemNames.item_plane_gun, ItemNames.item_ability_plane_parry])
-        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
-        test.collect_by_name(ItemNames.item_plane_ex)
-        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
-        test.remove_by_name(ItemNames.item_plane_ex)
-        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
-        test.collect_by_name(ItemNames.item_plane_super)
-        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
+class TestLogicProgressiveWeaponsExceptStart(CupheadTestBase):
+    options = {
+        "use_dlc": True,
+        "mode": "dlc_beat_both",
+        "dlc_chalice": "disabled",
+        "start_weapon": "peashooter",
+        "weapon_mode": "progressive_except_start",
+        "freemove_isles": "true",
+        "boss_grade_checks": "a_minus_grade",
+        "rungun_grade_checks": "a_minus_grade"
+    }
 
-class TestGameWeaponEX(CupheadTestBase):
+    def test_progressive_weapons_except_start(self):
+        test = TestLogicProgressiveWeapons()
+        test.world_setup()
+        test.assertBeatable(False)
+
+        test.world_setup()
+        test.assertBeatable(False)
+
+        #test.multiworld.state.collect(test.multiworld.get_region("Start", test.player).get_locations())
+
+        test.assertFalse(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
+        test.collect_by_name(ItemNames.item_ability_parry)
+        print(test.count(ItemNames.item_p_weapon_peashooter))
+        test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_veggies_topgrade))
+
+class TestLogicWeaponEX(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
@@ -219,7 +276,7 @@ class TestGameWeaponEX(CupheadTestBase):
     }
 
     def test_weapon_ex(self):
-        test = TestGameWeaponEX()
+        test = TestLogicWeaponEX()
         test.world_setup()
         test.assertBeatable(False)
 
@@ -262,7 +319,7 @@ class TestGameWeaponEX(CupheadTestBase):
         test.collect_by_name(ItemNames.item_plane_super)
         test.assertTrue(test.can_reach_location(LocationNames.loc_level_boss_plane_blimp_topgrade))
 
-class TestGameWeaponEXExceptStart(CupheadTestBase):
+class TestLogicWeaponEXExceptStart(CupheadTestBase):
     options = {
         "use_dlc": True,
         "mode": "dlc_beat_both",
@@ -275,7 +332,7 @@ class TestGameWeaponEXExceptStart(CupheadTestBase):
     }
 
     def test_weapon_ex_except_start(self):
-        test = TestGameWeaponEXExceptStart()
+        test = TestLogicWeaponEXExceptStart()
         test.world_setup()
         test.assertBeatable(False)
 

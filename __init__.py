@@ -10,7 +10,7 @@ from .options.optionsanitizer import OptionSanitizer
 from .enums import WeaponMode
 from .wconf import WorldConfig
 from .settings import CupheadSettings
-from .items import itemgroups, weapons, itemdefs as idef
+from .items import itemgroups, weapons, itemcreate, itemdefs as idef
 from .items.itembase import ItemData
 from .locations import locationdefs as ld
 from .locations.locationbase import LocationData
@@ -82,7 +82,7 @@ class CupheadWorld(World):
             _start_weapon = weapons.weapon_p_dict[self.start_weapon]
             self.multiworld.early_items[self.player][_start_weapon] = 1
         if (self.wconfig.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
-            _weapon = self.random.choice(weapons.get_weapon_dict(self.wconfig, self.wconfig.use_dlc))
+            _weapon = self.random.choice(weapons.weapon_ex_dict)
             self.multiworld.early_items[self.player][_weapon] = 1
 
     @override
@@ -165,19 +165,57 @@ class CupheadWorld(World):
 
     @override
     def collect(self, state: CollectionState, item: Item) -> bool:
-        if item.name in {ItemNames.item_coin2, ItemNames.item_coin3}:
+        if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
             amount = 3 if item.name == ItemNames.item_coin3 else 2
-            state.prog_items[self.player][ItemNames.item_coin] += amount
-            return True
+            #state.add_item(ItemNames.item_coin, self.player, amount)
+            _name = self.collect_item(
+                state,
+                itemcreate.create_item(ItemNames.item_coin, self.player)
+            )
+            if _name:
+                state.add_item(_name, self.player, amount)
+                return True
+            return False
+        elif (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+            #weapon = weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]
+            #state.add_item(weapon, self.player, 2)
+            _name = self.collect_item(
+                state,
+                itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
+            )
+            if _name:
+                state.add_item(_name, self.player, 2)
+                return True
+            return False
         else:
             return super().collect(state, item)
 
     @override
     def remove(self, state: CollectionState, item: Item) -> bool:
-        if item.name in {ItemNames.item_coin2, ItemNames.item_coin3}:
+        if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
             amount = 3 if item.name == ItemNames.item_coin3 else 2
-            state.prog_items[self.player][ItemNames.item_coin] -= amount
-            return True
+            #state.remove_item(ItemNames.item_coin, self.player, amount)
+            _name = self.collect_item(
+                state,
+                itemcreate.create_item(ItemNames.item_coin, self.player),
+                True
+            )
+            if _name:
+                state.remove_item(_name, self.player, amount)
+                return True
+            return False
+        elif (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+            #weapon = weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]
+            #state.remove_item(weapon, self.player, 2)
+            _name = self.collect_item(
+                state,
+                itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
+                True
+            )
+            if _name:
+                state.remove_item(_name, self.player, 2)
+                return True
+            return False
         else:
             return super().remove(state, item)
 

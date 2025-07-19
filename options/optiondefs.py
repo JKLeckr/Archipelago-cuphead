@@ -260,6 +260,23 @@ class RunGunGradeChecks(Choice):
     alias_pacifist = 5
     default = 1
 
+class DlcChaliceCheckGrade(Choice):
+    """
+    -DLC ONLY-
+    -REQUIRES CHALICE-
+    Enable checks for defeating each boss as Ms. Chalice.
+    Separate makes Chalice checks separate from level completion checks.
+    Grade Required has the set grade check requirement for bosses.
+    """
+    name = "dlc_chalice_check_grade"
+    display_name = "[DLC] Chalice Check Grade Requirement"
+    option_disabled = 0
+    option_a_minus_grade = 1
+    option_a_grade = 2
+    option_a_plus_grade = 3
+    option_use_grade_check = 64
+    default = 0
+
 class DlcBossChaliceChecks(Choice):
     """
     -DLC ONLY-
@@ -294,7 +311,7 @@ class DlcRunGunChaliceChecks(Choice):
     option_separate_grade_required = 6
     default = 0
 
-class DlcDicePalaceChaliceChecks(Toggle):
+class DlcDicePalaceChaliceChecks(Choice):
     """
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
@@ -305,8 +322,12 @@ class DlcDicePalaceChaliceChecks(Toggle):
     name = "dlc_kingdice_chalice_checks"
     display_name = "[DLC] Kingdice Chalice Checks"
     visibility = Visibility.template | Visibility.spoiler
+    option_disabled = 0
+    option_enabled = 1
+    option_separate = 2
+    default = 0
 
-class DlcChessChaliceChecks(Toggle):
+class DlcChessChaliceChecks(Choice):
     """
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
@@ -317,6 +338,10 @@ class DlcChessChaliceChecks(Toggle):
     name = "dlc_chess_chalice_checks"
     display_name = "[DLC] Chess Chalice Checks"
     visibility = Visibility.template | Visibility.spoiler
+    option_disabled = 0
+    option_enabled = 1
+    option_separate = 2
+    default = 0
 
 class SilverworthQuest(DefaultOnToggle):
     """

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from BaseClasses import LocationProgressType
 from .locationbase import LocationData
-from ..enums import GameMode, GradeCheckMode, ChessCastleMode, ChaliceMode
+from ..enums import GameMode, GradeCheckMode, WeaponMode, ChessCastleMode, ChaliceMode
 from ..names import LocationNames
 from ..wconf import WorldConfig
 from . import locationdefs as ld
@@ -115,6 +115,10 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], wconf: WorldConfi
 def setup_locations(wconf: WorldConfig) -> dict[str,LocationData]:
     use_dlc = wconf.use_dlc
     locations: dict[str,LocationData] = {**ld.locations_base}
+
+    add_location(locations, LocationNames.loc_event_start_weapon)
+    if (wconf.weapon_mode & WeaponMode.EXCEPT_START) > 0:
+        add_location(locations, LocationNames.loc_event_start_weapon_ex)
 
     setup_grade_check_locations(locations, wconf)
 
