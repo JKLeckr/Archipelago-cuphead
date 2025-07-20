@@ -620,7 +620,7 @@ class MusicShuffle(Choice):
 
 class DuckLockPlatDrop(Toggle):
     """
-    Allows the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
+    Allow the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
     This option re-enables that bug that the mod had before alpha02.
     This "feature" is purely client-side and does not affect logic.
     """
@@ -635,3 +635,30 @@ class DeathLink(Toggle):
     """
     name = "deathlink"
     display_name = "Death Link"
+
+class DeathLinkMode(Toggle):
+    """
+    -REQUIRES DEATHLINK-
+    Set DeathLink Mode.
+
+    Modes:
+    - Lose: Both players dying triggers DeathLink. Same in reverse.
+    - Per Player: Each player's death will trigger DeathLink. Receiving a DeathLink will kill a random player.
+
+    NOTE: Per Player will behave like Lose if playing singleplayer.
+    """
+    name = "deathlink_mode"
+    display_name = "Death Link Mode"
+    option_lose = 0
+    option_per_player = 1
+
+class DeathLinkGraceCount(Range):
+    """
+    -REQUIRES DEATHLINK-
+    Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
+    """
+    name = "deathlink_grace_count"
+    display_name = "Death Link Grace Count"
+    range_start = 0
+    range_end = 9
+    default = 0

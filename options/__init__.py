@@ -23,6 +23,7 @@ class CupheadOptions(PerGameCommonOptions):
     freemove_isles: odefs.FreeMoveIsles
     #shop_mode: odefs.ShopMode
     deathlink: odefs.DeathLink
+    deathlink_grace_count: odefs.DeathLinkGraceCount
     #weapon_gate: odefs.WeaponGate
     randomize_abilities: odefs.RandomizeAbilities
     #randomize_abilities_aim: odefs.RandomizeAimAbilities
@@ -76,6 +77,7 @@ cuphead_option_groups = [
         odefs.RandomizeAbilities,
         #odefs.RandomizeAimAbilities,
         odefs.DeathLink,
+        odefs.DeathLinkGraceCount,
     ]),
     OptionGroup("DLC Main", [
         odefs.DlcIngredientRequirements,

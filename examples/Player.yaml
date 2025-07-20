@@ -67,6 +67,10 @@ Cuphead:
   # Other values: 'true'
   deathlink: 'false'
 
+  # -REQUIRES DEATHLINK-
+  # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
+  deathlink_grace_count: '0'
+
   # Randomize essential abilities like Duck, Parry, Dash, etc.
   # Other values: 'false'
   randomize_abilities: 'true'
