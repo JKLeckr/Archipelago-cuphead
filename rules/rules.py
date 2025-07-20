@@ -7,7 +7,7 @@ from . import rulebase as rb
 from .rulebase import Rule
 from ..levels import levelrules as lr, levellocruledefs as llrdef
 from ..items import itemdefs as idef
-from ..locations import locationdefs as ld
+from ..locations import locationsets, locationdefs as ld
 from ..names import ItemNames, LocationNames
 from ..enums import GameMode, ItemGroups
 if typing.TYPE_CHECKING:
@@ -64,7 +64,7 @@ def set_rules(world: CupheadWorld):
 
 def add_level_chalice_rule(world: CupheadWorld, loc: str):
     w = world
-    if loc in ld.s_plane_locations:
+    if loc in locationsets.s_plane_locations:
         add_loc_rule(
             w,
             loc,
@@ -138,7 +138,7 @@ def set_quest_rules(world: CupheadWorld):
 
 def add_level_grade_rule(world: CupheadWorld, loc: str):
     w = world
-    if loc in ld.s_plane_locations:
+    if loc in locationsets.s_plane_locations:
         add_loc_rule(
             w,
             loc,

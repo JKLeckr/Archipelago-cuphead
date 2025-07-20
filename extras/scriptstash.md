@@ -96,3 +96,111 @@ class MysteryLevelItems(Toggle):
     display_name = "Mystery Filler Items"
 
 ```
+
+```python
+class TestLogicBase(CupheadTestBase):
+    def setup_initial_items(self):
+        _world: CupheadWorld = cast(CupheadWorld, self.world)
+        wconfig = _world.wconfig
+
+        self.assertTrue(self.can_reach_location(LocationNames.loc_event_start_weapon))
+
+        weapon_progressive = (wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0
+
+        _start_weapon = self.get_item_by_name(
+            weapons.weapon_p_dict[wconfig.start_weapon] if weapon_progressive else
+            weapons.weapon_dict[wconfig.start_weapon]
+        )
+
+        _start_locations = tuple(self.multiworld.get_region("Start", self.player).locations)
+
+        start_weapon_loc = self.multiworld.get_location(LocationNames.loc_event_start_weapon, self.player)
+        self.assertIn(start_weapon_loc, _start_locations)
+        self.multiworld.state.collect(_start_weapon, location=start_weapon_loc)
+
+        if (wconfig.weapon_mode & WeaponMode.EXCEPT_START) > 0:
+            self.assertTrue(self.can_reach_location(LocationNames.loc_event_start_weapon_ex))
+            _start_weapon_ex = self.get_item_by_name(
+                weapons.weapon_p_dict[wconfig.start_weapon] if weapon_progressive else
+                weapons.weapon_ex_dict[wconfig.start_weapon]
+            )
+            start_weapon_ex_loc = self.multiworld.get_location(LocationNames.loc_event_start_weapon_ex, self.player)
+            self.assertIn(start_weapon_ex_loc, _start_locations)
+            self.multiworld.state.collect(_start_weapon_ex, location=start_weapon_ex_loc)
+
+class TestLogicInit(TestLogicBase):
+    def test_start_weapon(self):
+        _options: dict[str, Any] = {
+            "use_dlc": True,
+            "start_weapon": "peashooter",
+        }
+        test = TestLogicBase()
+        test.options = _options
+        test.world_setup()
+        test.assertBeatable(False)
+
+        #test.setup_initial_items()
+
+        test.assertEqual(test.count(ItemNames.item_weapon_peashooter), 1)
+
+    def test_start_p_weapon(self):
+        _options: dict[str, Any] = {
+            "use_dlc": True,
+            "start_weapon": "spread",
+            "weapon_mode": "progressive",
+        }
+        test = TestLogicBase()
+        test.options = _options
+        test.world_setup()
+        test.assertBeatable(False)
+
+        #test.setup_initial_items()
+
+        test.assertEqual(test.count(ItemNames.item_p_weapon_spread), 1)
+
+    def test_start_p_weapon_except_start(self):
+        _options: dict[str, Any] = {
+            "use_dlc": True,
+            "start_weapon": "dlc_crackshot",
+            "weapon_mode": "progressive_except_start",
+        }
+        test = TestLogicBase()
+        test.options = _options
+        test.world_setup()
+        test.assertBeatable(False)
+
+        #test.setup_initial_items()
+
+        test.assertEqual(test.count(ItemNames.item_p_weapon_dlc_crackshot), 2)
+
+    def test_start_weapon_ex(self):
+        _options: dict[str, Any] = {
+            "use_dlc": True,
+            "start_weapon": "dlc_twistup",
+            "weapon_mode": "ex_separate",
+        }
+        test = TestLogicBase()
+        test.options = _options
+        test.world_setup()
+        test.assertBeatable(False)
+
+        #test.setup_initial_items()
+
+        test.assertEqual(test.count(ItemNames.item_weapon_dlc_twistup), 1)
+
+    def test_start_weapon_ex_except_start(self):
+        _options: dict[str, Any] = {
+            "use_dlc": True,
+            "start_weapon": "lobber",
+            "weapon_mode": "ex_separate_except_start",
+        }
+        test = TestLogicBase()
+        test.options = _options
+        test.world_setup()
+        test.assertBeatable(False)
+
+        test.setup_initial_items()
+
+        test.assertEqual(test.count(ItemNames.item_weapon_lobber), 1)
+        test.assertEqual(test.count(ItemNames.item_weapon_lobber_ex), 1)
+```

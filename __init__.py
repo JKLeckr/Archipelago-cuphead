@@ -165,6 +165,7 @@ class CupheadWorld(World):
 
     @override
     def collect(self, state: CollectionState, item: Item) -> bool:
+        #print(item.name)
         if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
             amount = 3 if item.name == ItemNames.item_coin3 else 2
             _name = self.collect_item(
@@ -250,6 +251,10 @@ class CupheadWorld(World):
         if self.settings.is_debug_bit_on(4):
             dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))
         return super().post_fill()
+
+    def get_start_locations(self) -> list[str]:
+        _region = self.multiworld.get_region("Start", self.player)
+        return [s.name for s in _region.locations]
 
     @override
     def __getattr__(self, item: str) -> Any:

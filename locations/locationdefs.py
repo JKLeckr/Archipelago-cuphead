@@ -413,15 +413,6 @@ location_dlc_goal: dict[str, LocationData] = {
     LocationNames.loc_event_dlc_goal_saltbaker: LocationData(None),
 }
 
-s_plane_locations: set[str] = {
-    LocationNames.loc_level_boss_plane_blimp_topgrade,
-    LocationNames.loc_level_boss_plane_genie_topgrade,
-    LocationNames.loc_level_boss_plane_bird_topgrade,
-    LocationNames.loc_level_boss_plane_mermaid_topgrade,
-    LocationNames.loc_level_boss_plane_robot_topgrade,
-    LocationNames.loc_level_dlc_boss_plane_cowboy_topgrade
-}
-
 locations_base: dict[str, LocationData] = {
     **location_level_tutorial,
     **location_level_boss,
