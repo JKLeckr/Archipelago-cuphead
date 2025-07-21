@@ -192,6 +192,13 @@ def level_rule_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return level_rule_none(wconf)
     return rb.region_rule_has(ItemNames.item_ability_dlc_cdoublejump)
+def level_rule_dash_or_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
+    if not wconf.randomize_abilities:
+        return level_rule_none(wconf)
+    _rule = level_rule_dash
+    if wconf.use_dlc and wconf.dlc_chalice > 0:
+        _rule = level_rule_or(_rule, level_rule_dlc_doublejump)
+    return _rule(wconf)
 def level_rule_dlc_tutorial_coin(wconf: WorldConfig) -> RegionRule:
     return level_rule_and(level_rule_dash_and_parry, level_rule_dlc_doublejump)(wconf)
 def level_rule_dlc_oldman(wconf: WorldConfig) -> RegionRule:

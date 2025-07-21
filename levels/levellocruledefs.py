@@ -16,11 +16,17 @@ def register_level_loc_rules(
     return res
 
 level_loc_rules_boss: list[LevelLocRuleData] = [
+    LevelLocRuleData(LocationNames.level_boss_frogs, lr.level_rule_parry_or_psugar, {
+        LocationNames.loc_level_boss_frogs_dlc_chaliced: LRule(lr.level_rule_dlc_boss_chaliced_parry),
+        LocationNames.loc_level_boss_frogs_event_dlc_chaliced: LRule(lr.level_rule_dlc_boss_chaliced_parry),
+    }),
     LevelLocRuleData(LocationNames.level_boss_plane_genie, None, {
         LocationNames.loc_level_boss_plane_genie_secret: LRule(lr.level_rule_plane_shrink),
     }),
     LevelLocRuleData(LocationNames.level_boss_sallystageplay, None, {
         LocationNames.loc_level_boss_sallystageplay_secret: LRule(lr.level_rule_sallystageplay_secret),
+        LocationNames.loc_level_boss_sallystageplay_dlc_chaliced: LRule(lr.level_rule_dlc_boss_chaliced_parry),
+        LocationNames.loc_level_boss_sallystageplay_event_dlc_chaliced: LRule(lr.level_rule_dlc_boss_chaliced_parry),
     }),
 ]
 
@@ -74,9 +80,7 @@ level_loc_rules_rungun: list[LevelLocRuleData] = [
             lr.level_rule_rungun_topgrade, LevelRuleModes.INHERIT
         ),
         #LocationNames.loc_level_rungun_circus_pacifist: LRule(lr.level_rule_none, LevelRuleModes.INHERIT),
-        LocationNames.loc_level_rungun_circus_dlc_chaliced: LRule(
-            lr.level_rule_dlc_rungun_chaliced, LevelRuleModes.INHERIT
-        ),
+        LocationNames.loc_level_rungun_circus_dlc_chaliced: LRule(lr.level_rule_dlc_rungun_chaliced),
     }),
     LevelLocRuleData(LocationNames.level_rungun_funhouse, lr.level_rule_funhouse, {
         LocationNames.loc_level_rungun_funhouse_coin1: LRule(lr.level_rule_parry_or_psugar),
@@ -108,12 +112,12 @@ level_loc_rules_rungun: list[LevelLocRuleData] = [
             lr.level_rule_dlc_rungun_chaliced, LevelRuleModes.INHERIT
         ),
     }),
-    LevelLocRuleData(LocationNames.level_rungun_mountain, lr.level_rule_dash, {
+    LevelLocRuleData(LocationNames.level_rungun_mountain, lr.level_rule_dash_or_dlc_doublejump, {
         LocationNames.loc_level_rungun_mountain_coin1: LRule(lr.level_rule_none),
-        LocationNames.loc_level_rungun_mountain_coin2: LRule(lr.level_rule_dash),
+        LocationNames.loc_level_rungun_mountain_coin2: LRule(lr.level_rule_dash_or_dlc_doublejump),
         LocationNames.loc_level_rungun_mountain_coin3: LRule(lr.level_rule_none),
         LocationNames.loc_level_rungun_mountain_coin4: LRule(lr.level_rule_none),
-        LocationNames.loc_level_rungun_mountain_coin5: LRule(lr.level_rule_dash),
+        LocationNames.loc_level_rungun_mountain_coin5: LRule(lr.level_rule_dash_or_dlc_doublejump),
         LocationNames.loc_level_rungun_mountain_agrade: LRule(
             lr.level_rule_rungun_topgrade, LevelRuleModes.INHERIT
         ),
