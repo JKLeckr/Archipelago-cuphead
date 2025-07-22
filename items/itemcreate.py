@@ -3,7 +3,7 @@ import math
 import typing
 from collections.abc import Iterable
 from random import Random
-from BaseClasses import Item, ItemClassification
+from BaseClasses import Item, ItemClassification, LocationProgressType
 from ..auxiliary import count_in_list
 from ..names import ItemNames, LocationNames
 from ..enums import WeaponMode, ItemGroups, ChaliceMode, CurseMode
@@ -285,7 +285,8 @@ def create_items(world: CupheadWorld) -> None:
     weapons = setup_weapon_pool(world, precollected_item_names)
 
     #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
-    unfilled_locations = len([x.name for x in world.multiworld.get_unfilled_locations(world.player)])
+    unfilled_locations = [x for x in world.multiworld.get_unfilled_locations(world.player)]
+    unfilled_location_count = len(unfilled_locations)
     #print(total_locations)
     #print(unfilled_locations)
     # This can fail if someone uses plando
@@ -320,12 +321,17 @@ def create_items(world: CupheadWorld) -> None:
     # Add special Items
     itempool += create_special_items(world, precollected_item_names)
 
+    excluded_location_count = len(
+        [x for x in unfilled_locations if x.progress_type == LocationProgressType.EXCLUDED]
+    )
+    minimum_filler = max(world.wconfig.minimum_filler, excluded_location_count)
+
     # Add Coins
-    leftover_locations = unfilled_locations - len(itempool) - world.wconfig.minimum_filler
+    leftover_locations = unfilled_location_count - len(itempool) - minimum_filler
 
     itempool += create_coins(world, leftover_locations, precollected_item_names, coin_items)
 
-    leftover_locations = unfilled_locations - len(itempool)
+    leftover_locations = unfilled_location_count - len(itempool)
     if (leftover_locations<0):
         print("Error: There are more items than locations!")
 
