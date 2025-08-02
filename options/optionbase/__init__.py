@@ -30,7 +30,6 @@ class Weight(Range):
 class LevelDict(OptionDict):
     valid_keys: Iterable[str] = frozenset(_levelset.levels)
     valid_values: Iterable[str] = valid_keys
-    supports_weighting = True
 
     def __init__(self, value: dict[str, Any]):
         res: dict[str, str] = {}

@@ -165,18 +165,18 @@ class OptionSanitizer:
             )
 
     def _sanitize_level_placement(self) -> None:
-        _options = self.options
-        _value = _options.level_placements.value
+        options = self.options
+        lpvalue = options.level_placements.value
 
-        if len(_value) < 1:
+        if len(lpvalue) < 1:
             return
 
         valid_levels = {
             x
             for y in
                 levelshuffle.get_level_shuffle_lists(
-                        bool(_options.use_dlc),
-                        LevelShuffleMode(_options.mode)
+                        bool(options.use_dlc),
+                        LevelShuffleMode(options.mode)
                 )
             for x in y[0] if x not in y[1]
         }
@@ -184,10 +184,11 @@ class OptionSanitizer:
         INVALID_LEVEL_REASON = "Invalid level"
         INVALID_LEVEL_COMBO_REASON = "Invalid level combination"
 
-        for k,v in _value.items():
+        nlpvalue: dict[str, str] = {}
+        for k,v in lpvalue.items():
             drop = False
             drop_reason = ""
-            if k in valid_levels and v in valid_levels:
+            if k not in valid_levels or v not in valid_levels:
                 drop = True
                 drop_reason = INVALID_LEVEL_REASON
             elif leveltype.get_level_type(k) != leveltype.get_level_type(v):
@@ -200,7 +201,9 @@ class OptionSanitizer:
                     msg = f"Option \"level_placements\" was overridden with \"{k}: {v}\" removed from dict."
                     msg_reason = f"Reason: {drop_reason}."
                     print(f"Warning: For player {self.player}: {msg} {msg_reason}")
-                _value.pop(k)
+            else:
+                nlpvalue[k] = v
+        options.level_placements.value = nlpvalue
 
     def sanitize_options(self) -> None:
         _options = self.options

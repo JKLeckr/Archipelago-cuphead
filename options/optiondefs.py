@@ -163,7 +163,7 @@ class LevelShuffleSeed(FreeText):
     """
     name = "level_shuffle_seed"
     display_name = "Level Shuffle Seed"
-    visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
+    visibility = Visibility.spoiler
     default = ""
 
 class LevelPlacements(LevelDict):
@@ -174,7 +174,7 @@ class LevelPlacements(LevelDict):
     """
     name = "level_placements"
     display_name = "Level Placements"
-    visibility = Visibility.complex_ui | Visibility.spoiler | Visibility.template
+    visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
     default: dict[str, str] = {}
 
 class FreeMoveIsles(Toggle):
