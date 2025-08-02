@@ -367,7 +367,7 @@ class DicePalaceBossSanity(Toggle):
     """
     name = "kingdice_bosssanity"
     display_name = "Kingdice BossSanity"
-    visibility = Visibility.template | Visibility.spoiler
+    visibility = Visibility.spoiler | Visibility.template
 
 class TrapLoadoutAnyWeapon(Toggle):
     """
@@ -626,7 +626,7 @@ class DuckLockPlatDrop(Toggle):
     """
     name = "ducklock_platdrop"
     display_name = "DuckLock PlatDrop"
-    visibility = Visibility.spoiler | Visibility.complex_ui | Visibility.template
+    visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
 
 class DeathLink(Toggle):
     """
