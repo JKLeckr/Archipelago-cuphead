@@ -45,4 +45,4 @@ jobs:
 
       - name: "Run pyright"
         working-directory: Archipelago/worlds/cuphead
-        run: pyright -p .github/pyright-config.json
+        run: pyright -p pyrightconfig.json

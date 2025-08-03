@@ -1,11 +1,7 @@
 {
-  "include": [
-    "../**/*.py"
-  ],
+  "include": ["**/*.py"],
 
-  "exclude": [
-    "**/__pycache__"
-  ],
+  "exclude": ["**/__pycache__"],
 
   "typeCheckingMode": "strict",
   "reportImplicitOverride": "error",
@@ -19,7 +15,7 @@
 
   "executionEnvironments": [
     {
-      "root": "../../.."
+      "root": "../.."
     }
   ]
 }

@@ -3,8 +3,8 @@ name: TagRelease
 on:
   push:
     tags:
-      - '*'
-      - '!*norel*'
+      - "*"
+      - "!*norel*"
 
 jobs:
   create-build-release:
@@ -35,7 +35,8 @@ jobs:
           rm -rf extras
           rm -rf scripts
           rm -f ruff.toml
-      
+          rm -f pyrightconfig.json
+
       - name: Generate archipelago.json
         working-directory: ../
         run: |
