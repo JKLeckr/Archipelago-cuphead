@@ -4,14 +4,12 @@ on:
   pull_request:
     paths:
       - "**.py"
-      - ".github/pyright-config.json"
-      - ".github/pyright_check.py"
+      - "pyrightconfig.json"
       - ".github/workflows/type-check.yml"
   push:
     paths:
       - "**.py"
-      - ".github/pyright-config.json"
-      - ".github/pyright_check.py"
+      - "pyrightconfig.json"
       - ".github/workflows/type-check.yml"
 
 jobs:

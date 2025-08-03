@@ -9,12 +9,14 @@ on:
       - "**.py"
       - '!examples/**'
       - '!extras/**'
+      - '!scripts/**'
       - '.github/workflows/unittests.yml'
   pull_request:
     paths:
       - "**.py"
       - '!examples/**'
       - '!extras/**'
+      - '!scripts/**'
       - '.github/workflows/unittests.yml'
 
 jobs:
@@ -48,7 +50,7 @@ jobs:
         repository: JKLeckr/Archipelago
         path: Archipelago
         ref: base
-    
+
     - name: Clean up
       shell: python
       run: |
@@ -56,7 +58,7 @@ jobs:
 
         worlds_dir = "worlds"
         worlds = ["stardew_valley"]
-        
+
         for world in worlds:
           directory = os.path.join(worlds_dir, world)
           if os.path.isdir(directory):

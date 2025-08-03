@@ -4,14 +4,12 @@ on:
   pull_request:
     paths:
       - "**.py"
-      - ".github/ruff.toml"
-      - ".github/ruff_check.py"
+      - "ruff.toml"
       - ".github/workflows/lint-check.yml"
   push:
     paths:
       - "**.py"
-      - ".github/ruff.toml"
-      - ".github/ruff_check.py"
+      - "ruff.toml"
       - ".github/workflows/lint-check.yml"
 
 jobs:
