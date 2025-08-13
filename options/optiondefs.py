@@ -1,9 +1,5 @@
-from typing import ClassVar, Protocol
 from Options import Toggle, DefaultOnToggle, Range, Choice, OptionSet, FreeText, Visibility
 from .optionbase import ChoiceEx, Weight, LevelDict
-
-class CupheadOption(Protocol):
-    name: ClassVar[str]
 
 class Version(FreeText):
     """

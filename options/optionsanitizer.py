@@ -1,10 +1,10 @@
 from __future__ import annotations
 from random import Random
 from collections.abc import Iterable
-from Options import NumericOption, OptionSet
 from ..auxiliary import format_list
 from ..enums import ChaliceMode, ChaliceCheckMode, LevelShuffleMode, WeaponMode
 from ..levels import levelshuffle, leveltype
+from .protocols import CupheadNumericOption, CupheadOptionSet
 from . import CupheadOptions
 
 class OptionSanitizer:
@@ -26,24 +26,25 @@ class OptionSanitizer:
 
     def override_num_option(
             self,
-            option: NumericOption,
+            option: CupheadNumericOption,
             value: int,
             reason: str | None = None,
             quiet: bool = False
         ):
-        string = f"{option.current_option_name}: \"{option.value}\" -> \"{value}\"."
+        _old_value_key = option.current_key
+        option.value = value
+        string = f"{option.name}: \"{_old_value_key}\" -> \"{option.current_key}\"."
         if reason:
-            string += " Reason: {reason}"
+            string += f" Reason: {reason}"
         self.option_overrides.append(string)
         if self.log_overrides and not quiet:
-            msg = f"Option \"{option.current_option_name}\" was overridden from \"{option.value}\" to \"{value}\"."
+            msg = f"Option \"{option.name}\" was overridden from \"{_old_value_key}\" to \"{option.current_key}\"."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
-        option.value = value
 
     def override_option_set(
             self,
-            option: OptionSet,
+            option: CupheadOptionSet,
             values: Iterable[str],
             add_mode: bool = False,
             reason: str | None = None,
@@ -51,12 +52,12 @@ class OptionSanitizer:
         ):
         values_str = format_list(values, enc_start="\"", enc_end="\"")
         mode_str = "added to" if add_mode else "removed from"
-        string = f"{option.current_option_name}: \"{values_str}\" {mode_str} set."
+        string = f"{option.name}: \"{values_str}\" {mode_str} set."
         if reason:
-            string += " Reason: {reason}"
+            string += f" Reason: {reason}"
         self.option_overrides.append(string)
         if self.log_overrides and not quiet:
-            msg = f"Option \"{option.current_option_name}\" was overridden with \"{values_str}\" {mode_str} set."
+            msg = f"Option \"{option.name}\" was overridden with \"{values_str}\" {mode_str} set."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
         if add_mode:
@@ -66,16 +67,16 @@ class OptionSanitizer:
 
     def override_option_set_clear(
             self,
-            option: OptionSet,
+            option: CupheadOptionSet,
             reason: str | None = None,
             quiet: bool = False
         ):
-        string = f"{option.current_option_name}: Set cleared."
+        string = f"{option.name}: Set cleared."
         if reason:
-            string += " Reason: {reason}"
+            string += f" Reason: {reason}"
         self.option_overrides.append(string)
         if self.log_overrides and not quiet:
-            msg = f"Option \"{option.current_option_name}\" was overridden with set cleared."
+            msg = f"Option \"{option.name}\" was overridden with set cleared."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
         option.value.clear()
@@ -92,7 +93,7 @@ class OptionSanitizer:
                     "Randomize Abilities Off",
                     quiet
                 )
-            if not _options.dlc_chalice.value == int(ChaliceMode.CHALICE_ONLY):
+            if _options.dlc_chalice.value == int(ChaliceMode.CHALICE_ONLY):
                 self.override_option_set_clear(
                     _options.dlc_chalice_items_separate,
                     "Chalice Mode is Chalice Only",
@@ -116,18 +117,21 @@ class OptionSanitizer:
 
     def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
         _options = self.options
-        if _options.dlc_chalice.value == 0 or _options.dlc_chalice.value == 1:
-            chalice_reason = "Chalice Only" if _options.dlc_chalice.value == 1 else "Chalice Off"
+        _cm_disabled = int(ChaliceMode.DISABLED)
+        _cm_chalice_only = int(ChaliceMode.CHALICE_ONLY)
+        if _options.dlc_chalice.value == _cm_disabled or _options.dlc_chalice.value == _cm_chalice_only:
+            chalice_reason = "Chalice Only" if _options.dlc_chalice.value == _cm_chalice_only else "Chalice Off"
+            _ccm_disable = int(ChaliceCheckMode.DISABLED)
             if _options.dlc_boss_chalice_checks.value:
-                self.override_num_option(_options.dlc_boss_chalice_checks, False, chalice_reason, True)
+                self.override_num_option(_options.dlc_boss_chalice_checks, _ccm_disable, chalice_reason, True)
             if _options.dlc_rungun_chalice_checks.value:
-                self.override_num_option(_options.dlc_rungun_chalice_checks, False, chalice_reason, True)
+                self.override_num_option(_options.dlc_rungun_chalice_checks, _ccm_disable, chalice_reason, True)
             if _options.dlc_kingdice_chalice_checks.value:
-                self.override_num_option(_options.dlc_kingdice_chalice_checks, False, chalice_reason, True)
+                self.override_num_option(_options.dlc_kingdice_chalice_checks, _ccm_disable, chalice_reason, True)
             if _options.dlc_chess_chalice_checks.value:
-                self.override_num_option(_options.dlc_chess_chalice_checks, False, chalice_reason, True)
+                self.override_num_option(_options.dlc_chess_chalice_checks, _ccm_disable, chalice_reason, True)
             if _options.dlc_cactusgirl_quest.value:
-                self.override_num_option(_options.dlc_cactusgirl_quest, False, chalice_reason, quiet)
+                self.override_num_option(_options.dlc_cactusgirl_quest, _ccm_disable, chalice_reason, quiet)
         self._sanitize_dlc_chalice_item_options(quiet)
         self._sanitize_dlc_chalice_checks(quiet)
 
@@ -137,10 +141,10 @@ class OptionSanitizer:
         if not use_dlc:
             DLC_REASON = "DLC Off"
             # Sanitize mode
-            if _options.mode.value>2:
+            if _options.mode.value > 2:
                 self.override_num_option(_options.mode, self.random.randint(0,2), DLC_REASON)
             # Sanitize start_weapon
-            if _options.start_weapon.value>5:
+            if _options.start_weapon.value > 5:
                 self.override_num_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
         self._sanitize_dlc_chalice_options(not use_dlc)
 
