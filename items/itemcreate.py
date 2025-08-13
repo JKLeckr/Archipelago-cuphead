@@ -6,7 +6,7 @@ from random import Random
 from BaseClasses import Item, ItemClassification, LocationProgressType
 from ..auxiliary import count_in_list
 from ..names import ItemNames, LocationNames
-from ..enums import WeaponMode, ItemGroups, ChaliceMode, CurseMode
+from ..enums import WeaponMode, ItemGroups, ChaliceMode, CurseMode, ChessCastleMode
 from ..wconf import WorldConfig
 from ..locations import locationdefs as ldef
 from .itembase import CupheadItem, ItemData, get_filler_item_name, weighted_item_choice
@@ -39,6 +39,9 @@ def create_item_ext(
 
     return new_item
 
+def create_filler_item(world: CupheadWorld) -> Item:
+    return create_active_item(get_filler_item_name(world), world)
+
 def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Filler count: {filler_count}")
     rand = world.random
@@ -53,7 +56,7 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
         #print(f"Total count so far: {len(_itempool)}")
         #print(f"Filler count: {filler_count}")
         #print(len(world.multiworld.precollected_items[world.player]))
-        _itempool += [create_active_item(get_filler_item_name(world), world) for _ in range(filler_count)]
+        _itempool += [create_filler_item(world) for _ in range(filler_count)]
 
     #print(f"Total count: {len(_itempool)}")
     return _itempool
@@ -144,6 +147,24 @@ def create_locked_items(world: CupheadWorld):
 
     if world.use_dlc:
         create_dlc_locked_items(world)
+
+# FIXME: This function is a tape workaround to progression items being placed in the excluded locations.
+def create_dlc_kingsleap_items(world: CupheadWorld):
+    _run_loc_names = {
+        LocationNames.loc_level_dlc_chesscastle_run, LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced
+    }
+    _loc_names = {x for x in [
+        *ldef.location_level_dlc_chesscastle, *ldef.location_level_dlc_chesscastle_dlc_chaliced
+    ] if x in world.active_locations and x not in _run_loc_names}
+    if world.wconfig.dlc_kingsleap == ChessCastleMode.EXCLUDE:
+        for loc in [*_loc_names, *_run_loc_names]:
+            create_locked_item(world, get_filler_item_name(world), loc)
+    if world.wconfig.dlc_kingsleap == ChessCastleMode.EXCLUDE_GAUNTLET:
+        for loc in _run_loc_names:
+            create_locked_item(world, get_filler_item_name(world), loc)
+    if world.wconfig.dlc_kingsleap == ChessCastleMode.GAUNTLET_ONLY:
+        for loc in _loc_names:
+            create_locked_item(world, get_filler_item_name(world), loc)
 
 def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[Item]:
     wconf = world.wconfig
@@ -280,6 +301,9 @@ def create_items(world: CupheadWorld) -> None:
     precollected_item_names = [x.name for x in world.multiworld.precollected_items[world.player]]
 
     create_locked_items(world)
+    # FIXME: For kingsleap workaround. Find the actual source of the problem.
+    #if world.wconfig.use_dlc:
+    #    create_dlc_kingsleap_items(world)
 
     # Setup Weapons including start weapons
     weapons = setup_weapon_pool(world, precollected_item_names)
@@ -307,7 +331,7 @@ def create_items(world: CupheadWorld) -> None:
 
     if world.use_dlc and world.wconfig.dlc_chalice_items_separate:
         essential_items += list(idef.item_dlc_chalice_essential.keys())
-        #supers += list(items.item_dlc_chalice_super) # TODO: Investigate addding this later
+        #supers += list(items.item_dlc_chalice_super) # TODO: Investigate adding this later
 
     # Add the grouped fill items
     itempool += create_pool_items(world, essential_items, precollected_item_names)

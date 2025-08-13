@@ -44,6 +44,7 @@ class ChaliceCheckMode(IntEnum):
     SEPARATE = 2
     GRADE_REQUIRED = 4
     SEPARATE_GRADE_REQUIRED = 6
+# TODO: Switch to Flag format
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1

@@ -10,6 +10,7 @@ def add_location(locations_ref: dict[str,LocationData], loc_name: str):
     locations_ref[loc_name] = ld.locations_all[loc_name]
 
 def exclude_location(locations_ref: dict[str,LocationData], loc_name: str):
+    print(f"Exclude {loc_name}")
     locations_ref[loc_name] = locations_ref[loc_name].with_progress_type(LocationProgressType.EXCLUDED)
 
 def setup_grade_check_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
@@ -100,14 +101,23 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], wconf: WorldConfi
     if wconf.dlc_chalice > 0:
         setup_dlc_chalice_locations(locations_ref, wconf)
     if wconf.dlc_kingsleap != ChessCastleMode.INCLUDE_ALL:
+        _kingsleap_locs = [x for x in [
+            *ld.location_level_dlc_chesscastle.keys(), *ld.location_level_dlc_chesscastle_dlc_chaliced.keys()
+        ] if x in locations_ref]
         for loc in ld.location_level_dlc_chesscastle.keys():
             if (
                 (
                     wconf.dlc_kingsleap == ChessCastleMode.EXCLUDE_GAUNTLET and
-                    loc == LocationNames.level_dlc_chesscastle_run
+                    (
+                        loc == LocationNames.loc_level_dlc_chesscastle_run or
+                        loc == LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced
+                    )
                 ) or (
                     wconf.dlc_kingsleap == ChessCastleMode.GAUNTLET_ONLY and
-                    loc != LocationNames.level_dlc_chesscastle_run
+                    (
+                        loc != LocationNames.loc_level_dlc_chesscastle_run and
+                        loc != LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced
+                    )
                 ) or wconf.dlc_kingsleap == ChessCastleMode.EXCLUDE
             ):
                 exclude_location(locations_ref, loc)
@@ -143,4 +153,3 @@ def setup_locations(wconf: WorldConfig) -> dict[str,LocationData]:
     )
 
     return locations
-
