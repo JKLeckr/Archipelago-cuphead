@@ -10,7 +10,7 @@ def add_location(locations_ref: dict[str,LocationData], loc_name: str):
     locations_ref[loc_name] = ld.locations_all[loc_name]
 
 def exclude_location(locations_ref: dict[str,LocationData], loc_name: str):
-    print(f"Exclude {loc_name}")
+    #print(f"Exclude {loc_name}")
     locations_ref[loc_name] = locations_ref[loc_name].with_progress_type(LocationProgressType.EXCLUDED)
 
 def setup_grade_check_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
