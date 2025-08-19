@@ -101,7 +101,7 @@ def connect_target(world: CupheadWorld, region_name: str, target: Target, locset
     if target.tgt_type == DefType.LEVEL:
         _ruleb = target.rule
         _level = levels.get_level(world, target.name)
-        _rulea = _level.rule(wconfig) if _level.rule else rb.region_rule_none()
+        _rulea = _level.rule(wconfig) if _level.rule else rb.rrule_none()
     else:
         _ruleb = None
         _rulea = target.rule

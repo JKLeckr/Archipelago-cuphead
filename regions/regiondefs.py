@@ -1,14 +1,14 @@
 from __future__ import annotations
 from collections.abc import Iterable
 from ..names import LocationNames, ItemNames
-from ..rules.rulebase import RegionRule, region_rule_has, region_rule_has_all
+from ..rules.rulebase import RegionRule, rrule_has, rrule_has_all
 from .regionbase import DefFlags, Target, LevelTarget, RegionData, LevelRegionData, WorldRegionData
 from . import dep
 
 def rule_has(item: str, count: int = 1) -> RegionRule:
-    return region_rule_has(item, count)
+    return rrule_has(item, count)
 def rule_has_all(items: Iterable[str]) -> RegionRule:
-    return region_rule_has_all(items)
+    return rrule_has_all(items)
 
 region_begin: RegionData = RegionData(
     "Start",

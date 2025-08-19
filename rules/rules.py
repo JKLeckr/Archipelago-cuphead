@@ -47,7 +47,7 @@ def set_rules(world: CupheadWorld):
     set_region_rules(w, LocationNames.level_boss_kingdice,
                      rb.rule_and(
                          rb.rule_has(w, ItemNames.item_contract, contract_reqs[2]),
-                         rb.region_rule_to_rule(lr.level_rule_kingdice(wconfig), w.player)
+                         rb.rrule_to_rule(lr.lrule_kingdice(wconfig), w.player)
                      ))
     set_shop_rules(w)
 
@@ -68,13 +68,13 @@ def add_level_chalice_rule(world: CupheadWorld, loc: str):
         add_loc_rule(
             w,
             loc,
-            rb.region_rule_to_rule(lr.level_rule_dlc_boss_plane_chaliced(w.wconfig), w.player)
+            rb.rrule_to_rule(lr.lrule_dlc_boss_plane_chaliced(w.wconfig), w.player)
         )
     else:
         add_loc_rule(
             w,
             loc,
-            rb.region_rule_to_rule(lr.level_rule_dlc_boss_chaliced(w.wconfig), w.player)
+            rb.rrule_to_rule(lr.lrule_dlc_boss_chaliced(w.wconfig), w.player)
         )
 
 def add_level_chalice_rules(world: CupheadWorld, locs: Iterable[str], exclude: set[str] | None = None):
@@ -142,13 +142,13 @@ def add_level_grade_rule(world: CupheadWorld, loc: str):
         add_loc_rule(
             w,
             loc,
-            rb.region_rule_to_rule(lr.level_rule_plane_topgrade(w.wconfig), w.player)
+            rb.rrule_to_rule(lr.lrule_plane_topgrade(w.wconfig), w.player)
         )
     else:
         add_loc_rule(
             w,
             loc,
-            rb.region_rule_to_rule(lr.level_rule_topgrade(w.wconfig), w.player)
+            rb.rrule_to_rule(lr.lrule_topgrade(w.wconfig), w.player)
         )
 
 def add_level_grade_rules(world: CupheadWorld, locs: Iterable[str], exclude: set[str] | None = None):
@@ -164,7 +164,7 @@ def set_level_loc_rules(world: CupheadWorld):
     for _loc_rule in loc_rules:
         for loc, rule in _loc_rule.loc_rules.items():
             if loc in w.active_locations:
-                set_loc_rule(w, loc, rb.region_rule_to_rule(rule(w.wconfig), w.player))
+                set_loc_rule(w, loc, rb.rrule_to_rule(rule(w.wconfig), w.player))
             elif world.settings.is_debug_bit_on(1):
                 print(f"[set_level_loc_rules] Skipping {loc}")
 

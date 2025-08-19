@@ -18,6 +18,8 @@ def rule_not(rule: Rule) -> Rule:
 
 def rule_none() -> Rule:
     return lambda state: True
+def rule_false() -> Rule:
+    return lambda state: False
 
 def rule_has(world: "CupheadWorld", item: str, count: int = 1) -> Rule:
     return lambda state, player=world.player: state.has(item, player, count)
@@ -54,30 +56,32 @@ def rule_can_reach_all_regions(world: "CupheadWorld", regions: Iterable[str]) ->
 def rule_can_reach_any_region(world: "CupheadWorld", regions: Iterable[str]) -> Rule:
     return lambda state, player=world.player: _can_reach_any_region(state, player, regions)
 
-def region_rule_to_rule(rrule: RegionRule, player: int) -> Rule:
+def rrule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, plr=player: rrule(state, plr)
 
-def region_rule_and(*rules: RegionRule) -> RegionRule:
+def rrule_and(*rules: RegionRule) -> RegionRule:
     return lambda state, player: all(p(p(rule)(state, player)) for rule in rules)
-def region_rule_or(*rules: RegionRule) -> RegionRule:
+def rrule_or(*rules: RegionRule) -> RegionRule:
     return lambda state, player: any(p(p(rule)(state, player)) for rule in rules)
-def region_rule_not(rule: RegionRule) -> RegionRule:
+def rrule_not(rule: RegionRule) -> RegionRule:
     return lambda state, player: not rule(state, player)
 
-def region_rule_none() -> RegionRule:
+def rrule_none() -> RegionRule:
     return lambda state, player: True
+def rrule_false() -> RegionRule:
+    return lambda state, player: False
 
-def region_rule_has(item: str, count: int = 1) -> RegionRule:
+def rrule_has(item: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has(item, player, count)
-def region_rule_has_all(items: Iterable[str]) -> RegionRule:
+def rrule_has_all(items: Iterable[str]) -> RegionRule:
     return lambda state, player: state.has_all(items, player)
-def region_rule_has_all_counts(item_counts: Mapping[str, int]) -> RegionRule:
+def rrule_has_all_counts(item_counts: Mapping[str, int]) -> RegionRule:
     return lambda state, player: state.has_all_counts(item_counts, player)
-def region_rule_has_any(items: Iterable[str]) -> RegionRule:
+def rrule_has_any(items: Iterable[str]) -> RegionRule:
     return lambda state, player: state.has_any(items, player)
-def region_rule_has_any_count(item_counts: Mapping[str, int]) -> RegionRule:
+def rrule_has_any_count(item_counts: Mapping[str, int]) -> RegionRule:
     return lambda state, player: state.has_any_count(item_counts, player)
-def region_rule_has_group(item_group: str, count: int = 1) -> RegionRule:
+def rrule_has_group(item_group: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has_group(item_group, player, count)
-def region_rule_has_group_unique(item_group: str, count: int = 1) -> RegionRule:
+def rrule_has_group_unique(item_group: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has_group_unique(item_group, player, count)

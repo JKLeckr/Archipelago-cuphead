@@ -38,10 +38,10 @@ class LevelLocRuleData:
                 _nrule = lrule.rule
                 if self.base_rule:
                     if lrule.mode == LevelRuleModes.INHERIT:
-                        _nrule = lr.level_rule_and(_nrule, self.base_rule)
+                        _nrule = lr.lrule_and(_nrule, self.base_rule)
                         #print(f"Inheriting rule for {_loc}...")
                     elif lrule.mode == LevelRuleModes.INHERIT_OR:
-                        _nrule = lr.level_rule_or(_nrule, self.base_rule)
+                        _nrule = lr.lrule_or(_nrule, self.base_rule)
                         #print(f"Inheriting OR rule for {_loc}...")
                 nloc_rules[_loc] = _nrule
             elif debug:
