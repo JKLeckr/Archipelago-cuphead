@@ -30,6 +30,13 @@ level_loc_rules_boss: list[LevelLocRuleData] = [
     }),
 ]
 
+level_loc_rules_boss_final: list[LevelLocRuleData] = [
+    LevelLocRuleData(LocationNames.level_boss_devil, lr.lrule_parry_or_psugar, {
+        LocationNames.loc_level_boss_devil_dlc_chaliced: LRule(lr.lrule_dlc_boss_chaliced_parry),
+        LocationNames.loc_level_boss_devil_event_dlc_chaliced: LRule(lr.lrule_dlc_boss_chaliced_parry),
+    }),
+]
+
 level_loc_rules_dlc_boss: list[LevelLocRuleData] = [
     LevelLocRuleData(LocationNames.level_dlc_boss_oldman, None, {
         LocationNames.loc_level_dlc_boss_oldman_dlc_chaliced: LRule(lr.lrule_dlc_boss_chaliced_parry),
@@ -38,6 +45,17 @@ level_loc_rules_dlc_boss: list[LevelLocRuleData] = [
     LevelLocRuleData(LocationNames.level_dlc_boss_rumrunners, None, {
         LocationNames.loc_level_dlc_boss_rumrunners_dlc_chaliced: LRule(lr.lrule_dlc_boss_chaliced_parry),
         LocationNames.loc_level_dlc_boss_rumrunners_event_dlc_chaliced: LRule(lr.lrule_dlc_boss_chaliced_parry)
+    }),
+]
+
+level_loc_rules_dlc_boss_final: list[LevelLocRuleData] = [
+    LevelLocRuleData(LocationNames.level_dlc_boss_saltbaker, None, {
+        LocationNames.loc_level_dlc_boss_saltbaker_dlc_chaliced: LRule(
+            lr.lrule_and(lr.lrule_dlc_boss_chaliced_parry, lr.lrule_dlc_doublejump)
+        ),
+        LocationNames.loc_level_dlc_boss_saltbaker_event_dlc_chaliced: LRule(
+            lr.lrule_and(lr.lrule_dlc_boss_chaliced_parry, lr.lrule_dlc_doublejump)
+        )
     }),
 ]
 
@@ -158,7 +176,9 @@ level_loc_rules_dlc_chesscastle: list[LevelLocRuleData] = [
 
 level_loc_rules: list[LevelLocRuleData] = [
     *level_loc_rules_boss,
+    *level_loc_rules_boss_final,
     *level_loc_rules_dlc_boss,
+    *level_loc_rules_dlc_boss_final,
     *level_loc_rules_rungun,
     *level_loc_rules_dlc_tutorial,
     *level_loc_rules_dlc_chesscastle,
