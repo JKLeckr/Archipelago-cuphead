@@ -136,7 +136,8 @@ class TestOptions(CupheadTestBase):
         test_world.world_setup()
         test_world._check_all_items_are_active(option_set_name)
         test_world._check_all_locations_are_active(option_set_name)
-        print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
+        if self.world.settings.is_debug_bit_on(1024): # type: ignore
+            print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
         test_world.test_fill()
 
     def test_options(self):
@@ -147,10 +148,10 @@ class TestOptions(CupheadTestBase):
                 test_world.world_setup()
                 test_world._check_all_items_are_active(option_set)
                 test_world._check_all_locations_are_active(option_set)
-                print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
+                if self.world.settings.is_debug_bit_on(1024): # type: ignore
+                    print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
                 test_world.test_fill()
                 test_world.world_setup()
                 test_world.test_empty_state_can_reach_something()
                 test_world.world_setup()
                 test_world.test_all_state_can_reach_everything()
-
