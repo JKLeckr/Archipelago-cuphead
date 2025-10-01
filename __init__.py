@@ -40,7 +40,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "alpha02e"
+    APWORLD_VERSION: str = "alpha03a"
 
     SLOT_DATA_VERSION: int = 4
 
