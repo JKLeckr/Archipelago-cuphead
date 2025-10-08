@@ -142,7 +142,9 @@ class OptionSanitizer:
             DLC_REASON = "DLC Off"
             # Sanitize mode
             if _options.mode.value > 2:
-                self.override_num_option(_options.mode, self.random.randint(0,2), DLC_REASON)
+                # TODO: Once modes can be combined, remove this and use randint
+                _MODE_CHOICES = [1, 2, 4]
+                self.override_num_option(_options.mode, self.random.choice(_MODE_CHOICES), DLC_REASON)
             # Sanitize start_weapon
             if _options.start_weapon.value > 5:
                 self.override_num_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)

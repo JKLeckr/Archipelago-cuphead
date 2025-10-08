@@ -131,7 +131,9 @@ def resolve_dependent_options(options: CupheadOptions) -> None:
 def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
     # Resolve Random
     if options.mode.value == -1:
-        options.mode.value = rand.randint(0,6 if options.use_dlc else 2)
+        # TODO: Once modes can be combined, remove this and use randint
+        _MODE_CHOICES = [1, 2, 4] + [8, 9, 16, 18] if options.use_dlc else []
+        options.mode.value = rand.choice(_MODE_CHOICES)
     if options.start_weapon.value == -1:
         options.start_weapon.value = rand.randint(0,8 if options.use_dlc else 5)
     if options.boss_grade_checks.value == -1:
