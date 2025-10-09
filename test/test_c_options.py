@@ -45,16 +45,33 @@ class TestOptions(CupheadTestBase):
             "mode": "dlc_beat_both",
             "freemove_isles": True,
         },
-        "MacGuffin": {
+        "Collect Contracts": {
             "mode": "collect_contracts",
         },
-        "DLC MacGuffin": {
+        "DLC Collect Ingredients Goal": {
             "use_dlc": True,
             "mode": "dlc_collect_ingredients",
         },
-        "DLC Collect Both": {
+        "DLC Collect Both Goal": {
             "use_dlc": True,
             "mode": "dlc_collect_both",
+        },
+        "DLC Devil Goal": {
+            "use_dlc": True,
+            "mode": "beat_devil"
+        },
+        "Buy Out Shop Goal": {
+            "use_dlc": False,
+            "mode": "buy_out_shop"
+        },
+        "DLC Buy Out Shop Goal": {
+            "use_dlc": True,
+            "mode": "buy_out_shop"
+        },
+        "DLC Devil Goal No Abilities": {
+            "use_dlc": True,
+            "mode": "beat_devil",
+            "randomize_abilities": False,
         },
         "No Grade Checks": {
             "boss_grade_checks": "disabled",
@@ -64,15 +81,6 @@ class TestOptions(CupheadTestBase):
             "use_dlc": True,
             "boss_grade_checks": "disabled",
             "rungun_grade_checks": "disabled",
-        },
-        "DLC Devil Goal": {
-            "use_dlc": True,
-            "mode": "beat_devil"
-        },
-        "DLC Devil Goal No Abilities": {
-            "use_dlc": True,
-            "mode": "beat_devil",
-            "randomize_abilities": False,
         },
         "DLC No Chalice": {
             "use_dlc": True,
