@@ -55,12 +55,16 @@ Cuphead:
   # Other values: 'true'
   freemove_isles: 'false'
 
-  # --EXPERIMENTAL--
   # Shuffle the Boss and Run n' Gun levels.
   # Bosses and Run n' Guns are shuffled within their own group.
   # Note: Be careful with this option! This can easily break generation if used with plando.
   # Other values: enabled, plane_separate, disabled
   level_shuffle: disabled
+
+  # Shuffle the King Dice mini-bosses.
+  # This option is independent of Level Shuffle.
+  # Other values: 'false'
+  level_shuffle_kingdice: 'true'
 
   # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
   # In Cuphead, this only applies while you are in a level.
