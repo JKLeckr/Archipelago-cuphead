@@ -10,11 +10,12 @@ def get_level_shuffle_lists(
         mode: LevelShuffleMode,
         shuffle_kingdice: bool
     ) -> list[tuple[list[str],list[str]]]:
+    enabled = mode > 0
     separate_plane = mode == LevelShuffleMode.PLANE_SEPARATE
 
-    level_lists: list[tuple[list[str],list[str]]]
-
-    if separate_plane:
+    if not enabled:
+        level_lists: list[tuple[list[str],list[str]]] = []
+    elif separate_plane:
         level_lists: list[tuple[list[str],list[str]]] = [
             (list(ldef.level_boss_regular.keys()), [LocationNames.level_boss_kingdice]),
             (list(ldef.level_boss_plane.keys()), []),
@@ -25,9 +26,11 @@ def get_level_shuffle_lists(
             (list(ldef.level_boss.keys()), [LocationNames.level_boss_kingdice]),
             (list(ldef.level_rungun.keys()), []),
         ]
+
     if shuffle_kingdice:
         level_lists.append((list(ldef.level_dicepalace_boss.keys()), []))
-    if use_dlc:
+
+    if enabled and use_dlc:
         level_lists[0][0].extend(ldef.level_dlc_boss_regular.keys() if separate_plane else ldef.level_dlc_boss.keys())
         if separate_plane:
             level_lists[1][0].extend(ldef.level_dlc_boss_plane.keys())
