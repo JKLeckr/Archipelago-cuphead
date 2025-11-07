@@ -141,7 +141,7 @@ class OptionSanitizer:
         if not use_dlc:
             DLC_REASON = "DLC Off"
             # Sanitize mode
-            if _options.mode.value > 2:
+            if _options.mode.value > 4:
                 # TODO: Once modes can be combined, remove this and use randint
                 _MODE_CHOICES = [1, 2, 4]
                 self.override_num_option(_options.mode, self.random.choice(_MODE_CHOICES), DLC_REASON)
@@ -181,8 +181,9 @@ class OptionSanitizer:
             x
             for y in
                 levelshuffle.get_level_shuffle_lists(
-                        bool(options.use_dlc),
-                        LevelShuffleMode(options.mode)
+                    bool(options.use_dlc),
+                    LevelShuffleMode(options.mode),
+                    bool(options.level_shuffle_kingdice)
                 )
             for x in y[0] if x not in y[1]
         }

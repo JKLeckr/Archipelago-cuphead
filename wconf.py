@@ -12,6 +12,7 @@ class WorldConfig:
     start_weapon: int
     weapon_mode: e.WeaponMode
     level_shuffle: e.LevelShuffleMode
+    level_shuffle_kingdice: bool
     level_shuffle_seed: str
     level_placements: dict[str, str]
     freemove_isles: bool
@@ -62,6 +63,7 @@ class WorldConfig:
         self.start_weapon = int(options.start_weapon.value)
         self.weapon_mode = e.WeaponMode(options.weapon_mode.value)
         self.level_shuffle = e.LevelShuffleMode(options.level_shuffle.value)
+        self.level_shuffle_kingdice = bool(options.level_shuffle_kingdice)
         self.level_shuffle_seed = options.level_shuffle_seed.value
         self.level_placements = options.level_placements.value
         self.freemove_isles = bool(options.freemove_isles.value)
@@ -112,6 +114,7 @@ class WorldConfig:
         self.start_weapon = 0
         self.weapon_mode = e.WeaponMode(odefs.WeaponMode.default)
         self.level_shuffle = e.LevelShuffleMode(odefs.LevelShuffle.default)
+        self.level_shuffle_kingdice = bool(odefs.LevelShuffleDicePalace.default)
         self.level_shuffle_seed = "0"
         self.level_placements = odefs.LevelPlacements.default
         self.freemove_isles = bool(odefs.FreeMoveIsles.default)

@@ -18,6 +18,7 @@ class CupheadOptions(PerGameCommonOptions):
     contract_goal_requirements: odefs.ContractGoalRequirements
     dlc_ingredient_goal_requirements: odefs.DlcIngredientGoalRequirements
     level_shuffle: odefs.LevelShuffle
+    level_shuffle_kingdice: odefs.LevelShuffleDicePalace
     level_shuffle_seed: odefs.LevelShuffleSeed
     level_placements: odefs.LevelPlacements
     freemove_isles: odefs.FreeMoveIsles
@@ -69,6 +70,7 @@ cuphead_option_groups = [
         odefs.StartMaxHealth,
         odefs.StartMaxHealthP2,
         odefs.LevelShuffle,
+        odefs.LevelShuffleDicePalace,
         odefs.LevelShuffleSeed,
         odefs.LevelPlacements,
         odefs.FreeMoveIsles,

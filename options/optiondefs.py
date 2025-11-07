@@ -95,7 +95,7 @@ class WeaponMode(Choice):
 
 class ContractRequirements(Range):
     """
-    Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
+    Set the amount of contracts needed to confront King Dice and, ultimately, the devil.
     The required contracts for the die houses are evenly distributed.
     """
     name = "contract_requirements"
@@ -140,7 +140,6 @@ class DlcIngredientGoalRequirements(Range):
 
 class LevelShuffle(Choice):
     """
-    --EXPERIMENTAL--
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
     Note: Be careful with this option! This can easily break generation if used with plando.
@@ -151,6 +150,14 @@ class LevelShuffle(Choice):
     option_enabled = 1
     option_plane_separate = 2
     default = 0
+
+class LevelShuffleDicePalace(DefaultOnToggle):
+    """
+    Shuffle the King Dice mini-bosses.
+    This option is independent of Level Shuffle.
+    """
+    name = "level_shuffle_kingdice"
+    display_name = "Shuffle King Dice Bosses"
 
 class LevelShuffleSeed(FreeText):
     """
@@ -312,11 +319,11 @@ class DlcDicePalaceChaliceChecks(Choice):
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
     -REQUIRES CHALICE-
-    -REQUIRES KINGDICE BOSSSANITY-
-    Enable checks for completing Kingdice Bossanity checks as Ms. Chalice.
+    -REQUIRES KING DICE BOSSSANITY-
+    Enable checks for completing King Dice Bossanity checks as Ms. Chalice.
     """
     name = "dlc_kingdice_chalice_checks"
-    display_name = "[DLC] Kingdice Chalice Checks"
+    display_name = "[DLC] King Dice Chalice Checks"
     visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
     option_enabled = 1
@@ -358,11 +365,11 @@ class PacifistQuest(Toggle):
 class DicePalaceBossSanity(Toggle):
     """
     ---NOT YET IMPLEMENTED---
-    Enable checks for beating the Kingdice mini-bosses.
+    Enable checks for beating the King Dice mini-bosses.
     There is an indicator for which mini-bosses you defeated.
     """
     name = "kingdice_bosssanity"
-    display_name = "Kingdice BossSanity"
+    display_name = "King Dice BossSanity"
     visibility = Visibility.spoiler | Visibility.template
 
 class TrapLoadoutAnyWeapon(Toggle):
