@@ -15,5 +15,5 @@ lint.unfixable = ["B", "C901"]
 # Exclude a variety of commonly ignored directories.
 extend-exclude = ["**/__pycache__"]
 
-# Assume Python 3.10
-target-version = "py310"
+# Assume Python 3.11
+target-version = "py311"
