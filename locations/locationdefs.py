@@ -2,8 +2,9 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
-from .locationbase import LocationData
+
 from ..names import LocationNames
+from .locationbase import LocationData
 
 base_id = 12905168
 base_dlc_id = 12909264

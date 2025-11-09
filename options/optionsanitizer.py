@@ -2,17 +2,18 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
-from random import Random
+
 from collections.abc import Iterable
+from random import Random
+
 from ..auxiliary import format_list
-from ..enums import ChaliceMode, ChaliceCheckMode, LevelShuffleMode, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, LevelShuffleMode, WeaponMode
 from ..levels import levelshuffle, leveltype
-from .protocols import CupheadNumericOption, CupheadOptionSet
 from . import CupheadOptions
+from .protocols import CupheadNumericOption, CupheadOptionSet
+
 
 class OptionSanitizer:
-    option_overrides: list[str] = []
-
     def __init__(
             self, player: int,
             options: CupheadOptions,
@@ -20,7 +21,7 @@ class OptionSanitizer:
             log_overrides: bool = True,
             sanitize_goal_options: bool = False
         ):
-        self.option_overrides = []
+        self.option_overrides: list[str] = []
         self.player = player
         self.options = options
         self.random = random
@@ -36,12 +37,12 @@ class OptionSanitizer:
         ):
         _old_value_key = option.current_key
         option.value = value
-        string = f"{option.name}: \"{_old_value_key}\" -> \"{option.current_key}\"."
+        string = f'{option.name}: "{_old_value_key}" -> "{option.current_key}".'
         if reason:
             string += f" Reason: {reason}"
         self.option_overrides.append(string)
         if self.log_overrides and not quiet:
-            msg = f"Option \"{option.name}\" was overridden from \"{_old_value_key}\" to \"{option.current_key}\"."
+            msg = f'Option "{option.name}" was overridden from "{_old_value_key}" to "{option.current_key}".'
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
 
@@ -53,14 +54,14 @@ class OptionSanitizer:
             reason: str | None = None,
             quiet: bool = False
         ):
-        values_str = format_list(values, enc_start="\"", enc_end="\"")
+        values_str = format_list(values, enc_start="'", enc_end="'")
         mode_str = "added to" if add_mode else "removed from"
-        string = f"{option.name}: \"{values_str}\" {mode_str} set."
+        string = f"{option.name}: '{values_str}' {mode_str} set."
         if reason:
             string += f" Reason: {reason}"
         self.option_overrides.append(string)
         if self.log_overrides and not quiet:
-            msg = f"Option \"{option.name}\" was overridden with \"{values_str}\" {mode_str} set."
+            msg = f"Option '{option.name}' was overridden with '{values_str}' {mode_str} set."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
         if add_mode:
@@ -79,19 +80,19 @@ class OptionSanitizer:
             string += f" Reason: {reason}"
         self.option_overrides.append(string)
         if self.log_overrides and not quiet:
-            msg = f"Option \"{option.name}\" was overridden with set cleared."
+            msg = f"Option '{option.name}' was overridden with set cleared."
             msg_reason = f"Reason: {reason}."
             print(f"Warning: For player {self.player}: {msg} {msg_reason}")
         option.value.clear()
 
     def _sanitize_dlc_chalice_item_options(self, quiet: bool = False) -> None:
         _options = self.options
-        ABILITIES_VAL = "abilities"
+        abilities_val = "abilities"
         if len(_options.dlc_chalice_items_separate.value) > 0:
-            if ABILITIES_VAL in _options.dlc_chalice_items_separate.value and not _options.randomize_abilities:
+            if abilities_val in _options.dlc_chalice_items_separate.value and not _options.randomize_abilities:
                 self.override_option_set(
                     _options.dlc_chalice_items_separate,
-                    {ABILITIES_VAL},
+                    {abilities_val},
                     False,
                     "Randomize Abilities Off",
                     quiet
@@ -142,35 +143,35 @@ class OptionSanitizer:
         _options = self.options
         use_dlc = _options.use_dlc.value
         if not use_dlc:
-            DLC_REASON = "DLC Off"
+            dlc_reason = "DLC Off"
             # Sanitize mode
             if _options.mode.value > 4:
                 # TODO: Once modes can be combined, remove this and use randint
-                _MODE_CHOICES = [1, 2, 4]
-                self.override_num_option(_options.mode, self.random.choice(_MODE_CHOICES), DLC_REASON)
+                _mode_choices = [1, 2, 4]
+                self.override_num_option(_options.mode, self.random.choice(_mode_choices), dlc_reason)
             # Sanitize start_weapon
             if _options.start_weapon.value > 5:
-                self.override_num_option(_options.start_weapon, self.random.randint(0,5), DLC_REASON)
+                self.override_num_option(_options.start_weapon, self.random.randint(0,5), dlc_reason)
         self._sanitize_dlc_chalice_options(not use_dlc)
 
     def _sanitize_goal_requirements(self) -> None:
         _options = self.options
 
-        _GOAL_REASON = "Goal cannot be less than requirements"
+        _goal_reason = "Goal cannot be less than requirements"
 
         # Sanitize settings
         if _options.contract_goal_requirements.value < _options.contract_requirements.value:
             self.override_num_option(
                 _options.contract_goal_requirements,
                 _options.contract_requirements.value,
-                f"Contract {_GOAL_REASON}"
+                f"Contract {_goal_reason}"
             )
         if (_options.use_dlc and \
             _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value):
             self.override_num_option(
                 _options.dlc_ingredient_goal_requirements,
                 _options.dlc_ingredient_requirements.value,
-                f"Ingredient {_GOAL_REASON}"
+                f"Ingredient {_goal_reason}"
             )
 
     def _sanitize_level_placement(self) -> None:
@@ -191,8 +192,8 @@ class OptionSanitizer:
             for x in y[0] if x not in y[1]
         }
 
-        INVALID_LEVEL_REASON = "Invalid level"
-        INVALID_LEVEL_COMBO_REASON = "Invalid level combination"
+        invalid_level_reason = "Invalid level"
+        invalid_level_combo_reason = "Invalid level combination"
 
         nlpvalue: dict[str, str] = {}
         for k,v in lpvalue.items():
@@ -200,15 +201,15 @@ class OptionSanitizer:
             drop_reason = ""
             if k not in valid_levels or v not in valid_levels:
                 drop = True
-                drop_reason = INVALID_LEVEL_REASON
+                drop_reason = invalid_level_reason
             elif leveltype.get_level_type(k) != leveltype.get_level_type(v):
                 drop = True
-                drop_reason = INVALID_LEVEL_COMBO_REASON
+                drop_reason = invalid_level_combo_reason
             if drop:
-                string = f"level_placements: \"{k}: {v}\" removed from dict. Reason: {drop_reason}."
+                string = f"level_placements: '{k}: {v}' removed from dict. Reason: {drop_reason}."
                 self.option_overrides.append(string)
                 if self.log_overrides:
-                    msg = f"Option \"level_placements\" was overridden with \"{k}: {v}\" removed from dict."
+                    msg = f"Option 'level_placements' was overridden with '{k}: {v}' removed from dict."
                     msg_reason = f"Reason: {drop_reason}."
                     print(f"Warning: For player {self.player}: {msg} {msg_reason}")
             else:

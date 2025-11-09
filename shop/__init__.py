@@ -2,7 +2,9 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from typing import NamedTuple
+
 from ..names import LocationNames
 from ..wconf import WorldConfig
 

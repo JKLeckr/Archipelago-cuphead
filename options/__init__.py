@@ -3,8 +3,11 @@
 
 from dataclasses import dataclass
 from random import Random
-from Options import PerGameCommonOptions, OptionGroup
+
+from Options import OptionGroup, PerGameCommonOptions
+
 from . import options as odefs
+
 
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
@@ -137,8 +140,8 @@ def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
     # Resolve Random
     if options.mode.value == -1:
         # TODO: Once modes can be combined, remove this and use randint
-        _MODE_CHOICES = [1, 2, 4] + [8, 9, 16, 18] if options.use_dlc else []
-        options.mode.value = rand.choice(_MODE_CHOICES)
+        _mode_choices = [1, 2, 4] + ([8, 9, 16, 18] if options.use_dlc else [])
+        options.mode.value = rand.choice(_mode_choices)
     if options.start_weapon.value == -1:
         options.start_weapon.value = rand.randint(0,8 if options.use_dlc else 5)
     if options.boss_grade_checks.value == -1:

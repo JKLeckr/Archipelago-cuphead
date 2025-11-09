@@ -3,16 +3,20 @@
 
 
 from __future__ import annotations
+
 import typing
-import Utils
-from typing import Any
 from collections.abc import Iterable
-from typing import TypeVar
-from worlds.AutoWorld import World
+from typing import Any, TypeVar
+
+import Utils
 from BaseClasses import Region
+
+from worlds.AutoWorld import World
+
 from .auxiliary import format_list
 from .items.itemdefs import items_all
 from .locations.locationdefs import locations_all
+
 if typing.TYPE_CHECKING:
     from . import CupheadWorld
 

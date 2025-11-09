@@ -2,8 +2,11 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
-from BaseClasses import Location, Region, LocationProgressType
+
+from BaseClasses import Location, LocationProgressType, Region
+
 from . import locationsetup
+
 
 class CupheadLocation(Location):
     game: str = "Cuphead"

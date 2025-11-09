@@ -2,7 +2,9 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from BaseClasses import ItemClassification
+
 from ..names import ItemNames
 from .itembase import ItemData
 

@@ -2,10 +2,14 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
 from collections.abc import Callable, Iterable, Mapping
+
 from BaseClasses import CollectionState
+
 from ..debug import p
+
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 

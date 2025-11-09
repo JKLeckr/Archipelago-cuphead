@@ -2,10 +2,13 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 import unittest
-from ..enums import WeaponMode
-from ..items import itemsetup, weapons, itemdefs as idefs
-from ..names import ItemNames
+
 from .. import wconf
+from ..enums import WeaponMode
+from ..items import itemdefs as idefs
+from ..items import itemsetup, weapons
+from ..names import ItemNames
+
 
 class TestAPWorldItemSetup(unittest.TestCase):
     def test_setup_weapons(self):

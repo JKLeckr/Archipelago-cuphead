@@ -3,6 +3,7 @@
 
 from enum import IntEnum, IntFlag
 
+
 class GameMode(IntEnum):
     BEAT_DEVIL = 1
     COLLECT_CONTRACTS = 2

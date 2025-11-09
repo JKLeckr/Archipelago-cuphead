@@ -2,26 +2,32 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
-from typing import TextIO, Any
+
+from typing import Any, ClassVar, TextIO
+
+from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from typing_extensions import override
-from BaseClasses import Item, Tutorial, ItemClassification, CollectionState
-from worlds.AutoWorld import World, WebWorld
-from .rules import rules
+
+from worlds.AutoWorld import WebWorld, World
+
+from . import debug as dbg
+from . import items, levels, locations, options, regions, shop, slotdata
+from .enums import WeaponMode
+from .items import itemcreate, itemgroups, weapons
+from .items import itemdefs as idef
+from .items.itembase import ItemData
+from .levels.levelbase import LevelData
+from .levels.levelids import level_ids
+from .locations import locationdefs as ld
+from .locations.locationbase import LocationData
 from .names import ItemNames, LocationNames
 from .options import CupheadOptions, presets
 from .options.optionsanitizer import OptionSanitizer
-from .enums import WeaponMode
-from .wconf import WorldConfig
+from .rules import rules
 from .settings import CupheadSettings
-from .items import itemgroups, weapons, itemcreate, itemdefs as idef
-from .items.itembase import ItemData
-from .locations import locationdefs as ld
-from .locations.locationbase import LocationData
-from .levels.levelids import level_ids
-from .levels.levelbase import LevelData
 from .shop import ShopData
-from . import options, locations, levels, regions, items, shop, slotdata
-from . import debug as dbg
+from .wconf import WorldConfig
+
 
 class CupheadWebWorld(WebWorld):
     theme = "grass"
@@ -33,7 +39,7 @@ class CupheadWebWorld(WebWorld):
         "setup/en",
         ["JKLeckr"]
     )
-    tutorials = [setup_en]
+    tutorials = [setup_en]  # noqa: RUF012
     option_groups = options.cuphead_option_groups
     options_presets = presets.option_presets
 
@@ -64,8 +70,8 @@ class CupheadWorld(World):
 
     item_name_groups = itemgroups.item_groups
 
-    item_names = set(idef.items_all.keys())
-    location_names = set(ld.locations_all.keys())
+    item_names: ClassVar[set[str]] = set(idef.items_all.keys())
+    location_names: ClassVar[set[str]] = set(ld.locations_all.keys())
 
     settings: CupheadSettings # type: ignore
 
@@ -73,8 +79,6 @@ class CupheadWorld(World):
 
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
-
-    level_map: dict[int, int] = {}
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
@@ -117,6 +121,8 @@ class CupheadWorld(World):
 
         if len(self.level_map) < 1:
             self.level_map = levels.setup_level_map(self.wconfig)
+        else:
+            self.level_map = {}
 
         self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
@@ -150,11 +156,11 @@ class CupheadWorld(World):
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
-            spoiler_handle.write('\n'.join([x for x in self.option_sanitizer.option_overrides]) + '\n')
+            spoiler_handle.write("\n".join(list(self.option_sanitizer.option_overrides)) + "\n")
         if len(self.level_map)>0:
             spoiler_handle.write(f"\n{self.player_name} Level Shuffle Map:\n\n")
             spoiler_handle.write(
-                '\n'.join([f"{level_ids[x]} -> {level_ids[y]}" for x, y in self.level_map.items()]) + '\n'
+                "\n".join([f"{level_ids[x]} -> {level_ids[y]}" for x, y in self.level_map.items()]) + "\n"
             )
 
         def _gen_shop_list(y: list[str]) -> str:
@@ -179,7 +185,7 @@ class CupheadWorld(World):
                 state.add_item(_name, self.player, amount)
                 return True
             return False
-        elif (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
@@ -188,8 +194,7 @@ class CupheadWorld(World):
                 state.add_item(_name, self.player, 2)
                 return True
             return False
-        else:
-            return super().collect(state, item)
+        return super().collect(state, item)
 
     @override
     def remove(self, state: CollectionState, item: Item) -> bool:
@@ -204,7 +209,7 @@ class CupheadWorld(World):
                 state.remove_item(_name, self.player, amount)
                 return True
             return False
-        elif (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
@@ -214,8 +219,7 @@ class CupheadWorld(World):
                 state.remove_item(_name, self.player, 2)
                 return True
             return False
-        else:
-            return super().remove(state, item)
+        return super().remove(state, item)
 
     @override
     def get_filler_item_name(self) -> str:

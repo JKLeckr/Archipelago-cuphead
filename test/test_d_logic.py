@@ -1,8 +1,11 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# ruff: noqa: RUF012
+
 from ..names import ItemNames, LocationNames
 from . import CupheadTestBase
+
 
 class TestLogicBasic(CupheadTestBase):
     def test_default(self):

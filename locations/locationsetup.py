@@ -2,12 +2,15 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from BaseClasses import LocationProgressType
-from .locationbase import LocationData
-from ..enums import GameMode, GradeCheckMode, WeaponMode, ChessCastleMode, ChaliceMode
+
+from ..enums import ChaliceMode, ChessCastleMode, GameMode, GradeCheckMode, WeaponMode
 from ..names import LocationNames
 from ..wconf import WorldConfig
 from . import locationdefs as ld
+from .locationbase import LocationData
+
 
 def add_location(locations_ref: dict[str,LocationData], loc_name: str):
     locations_ref[loc_name] = ld.locations_all[loc_name]

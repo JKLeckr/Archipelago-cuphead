@@ -2,8 +2,11 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from typing import NamedTuple
+
 from BaseClasses import LocationProgressType
+
 
 class LocationData(NamedTuple):
     id: int | None

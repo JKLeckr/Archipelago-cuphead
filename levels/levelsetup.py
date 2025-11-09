@@ -2,13 +2,17 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from random import Random
-from ..names import LocationNames
-from ..locations.locationbase import LocationData
-from ..wconf import WorldConfig
+
 from ..auxiliary import scrub_list
+from ..locations.locationbase import LocationData
+from ..names import LocationNames
+from ..wconf import WorldConfig
+from . import leveldefs as ldef
+from . import levelids, levelshuffle
 from .levelbase import LevelData
-from . import levelshuffle, levelids, leveldefs as ldef
+
 
 def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
     use_dlc = wconf.use_dlc

@@ -2,9 +2,10 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import field
-from typing import TypeVar, Any
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -19,8 +20,7 @@ def create_field(
                 default_factory=lambda: converter(option_def.default),
                 metadata={"conv": converter, "odef": option_def, "oname": option_def.name},
             )
-        else:
-            return field(
+        return field(
             default=default,
             metadata={"conv": converter, "odef": option_def, "oname": option_def.name},
         )

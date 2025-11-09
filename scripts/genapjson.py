@@ -7,9 +7,9 @@
 genapjson.py - generate the archipelago.json file.
 """
 
+import argparse
 import ast
 import json
-import argparse
 from collections import OrderedDict
 
 APWORLD_ROOT_FILE: str = "__init__.py"
@@ -29,15 +29,16 @@ def _get_class_def(tree: ast.Module, class_name: str) -> ast.ClassDef | None:
     for node in tree.body:
         if isinstance(node, ast.ClassDef) and node.name == class_name:
             return node
+    return None
 
 def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes) -> None:
     # Convert version tuples to strings
     if isinstance(value, tuple) and all(isinstance(x, int) for x in value): # type: ignore
-        res_ref[key] = '.'.join(map(str, value)) # type: ignore
+        res_ref[key] = ".".join(map(str, value)) # type: ignore
     elif isinstance(value, FieldTypeTuple):
         res_ref[key] = value
     else:
-        raise TypeError(f"Unsupported value type for \"{key}\": {type(value)}") # type: ignore
+        raise TypeError(f"Unsupported value type for '{key}': {type(value)}")
 
 def get_apworld_fields(
         filepath: str,
@@ -63,7 +64,7 @@ def get_apworld_fields(
                     try:
                         value = ast.literal_eval(node.value) # type: ignore
                     except Exception as e:
-                        raise ValueError(f"Failed to evaluate value for \"{key}\": {e}") from e
+                        raise ValueError(f"Failed to evaluate value for '{key}': {e}") from e
 
                     if match_version and key == "APWORLD_VERSION" and value != match_version:
                         print(f"Version mismatch: {value} != {match_version}")

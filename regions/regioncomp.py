@@ -2,17 +2,21 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
 from collections.abc import Collection
+
 from BaseClasses import MultiWorld, Region
+
+from .. import debug, levels
 from ..levels import leveldefs as ldef
 from ..locations import CupheadLocation
 from ..names import LocationNames
 from ..rules import rulebase as rb
-from .. import levels, debug
+from . import regiondefs as rd
 from .regionbase import DefType, Target
 from .regiondefs import RegionData, RegionRule
-from . import regiondefs as rd
+
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -160,4 +164,4 @@ def list_multiworld_regions_names(multiworld: MultiWorld) -> list[str]:
     return list_regions_names(multiworld.get_regions(None))
 
 def list_regiondata_locations(region: RegionData) -> list[str]:
-    return [loc for loc in region.locations] if region.locations else []
+    return list(region.locations) if region.locations else []

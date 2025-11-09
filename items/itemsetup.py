@@ -2,12 +2,16 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from BaseClasses import ItemClassification
+
+from ..enums import ChaliceCheckMode, GradeCheckMode, ItemGroups, WeaponMode
 from ..names import ItemNames
-from ..enums import ItemGroups, WeaponMode, GradeCheckMode, ChaliceCheckMode
 from ..wconf import WorldConfig
+from . import itemdefs as idef
+from . import weapons
 from .itembase import ItemData
-from . import weapons, itemdefs as idef
+
 
 def add_item(items_ref: dict[str, ItemData], item: str):
     items_ref[item] = idef.items_all[item]

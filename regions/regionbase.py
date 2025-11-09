@@ -2,11 +2,15 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
-from typing_extensions import override
+
 from enum import IntEnum, IntFlag
+
+from typing_extensions import override
+
 from ..rules.rulebase import RegionRule
-from .dep import Dep
 from . import dep
+from .dep import Dep
+
 
 class DefType(IntEnum):
     SIMPLE = 0

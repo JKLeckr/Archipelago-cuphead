@@ -1,17 +1,22 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# ruff: noqa: RUF012
+
 import unittest
-from typing import Any
 from collections import Counter
 from dataclasses import fields
+from typing import Any
+
 from Options import PerGameCommonOptions
+
 from .. import options
 from . import CupheadTestBase
 
+
 class TestOptionNames(unittest.TestCase):
     def test_option_names(self):
-        common_fieldnames = {f for f in fields(PerGameCommonOptions)}
+        common_fieldnames = set(fields(PerGameCommonOptions))
         option_fields = [f for f in fields(options.CupheadOptions) if f not in common_fieldnames]
 
         for field in option_fields:
@@ -120,7 +125,7 @@ class TestOptions(CupheadTestBase):
     def _check_all_items_are_active(self, option_set_name: str):
         game_players = set(self.multiworld.get_game_players(self.game))
         player_items = {p: [x.name for x in self.multiworld.get_items() if x.player == p] for p in game_players}
-        for _player, items in player_items.items():
+        for items in player_items.values():
             remaining_items = Counter(items)
             for item in items:
                 assert remaining_items[item] > 0, \
@@ -133,7 +138,7 @@ class TestOptions(CupheadTestBase):
 
     def _check_all_locations_are_active(self, option_set_name: str):
         for player in self.multiworld.get_game_players(self.game):
-            remaining_locs = {x for x in self.multiworld.worlds[player].active_locations.keys()}
+            remaining_locs = set(self.multiworld.worlds[player].active_locations.keys())
             for region in self.multiworld.get_regions(player):
                 for loc in region.locations:
                     assert loc.name in remaining_locs, \
@@ -149,7 +154,7 @@ class TestOptions(CupheadTestBase):
         test_world._check_all_items_are_active(option_set_name)
         test_world._check_all_locations_are_active(option_set_name)
         if self.world.settings.is_debug_bit_on(1024): # type: ignore
-            print(f"Seed of \"{option_set_name}\": {test_world.multiworld.seed}")
+            print(f"Seed of '{option_set_name}': {test_world.multiworld.seed}")
         test_world.test_fill()
 
     def test_options(self):
@@ -161,7 +166,7 @@ class TestOptions(CupheadTestBase):
                 test_world._check_all_items_are_active(option_set)
                 test_world._check_all_locations_are_active(option_set)
                 if self.world.settings.is_debug_bit_on(1024): # type: ignore
-                    print(f"Seed of \"{option_set}\": {test_world.multiworld.seed}")
+                    print(f"Seed of '{option_set}': {test_world.multiworld.seed}")
                 test_world.test_fill()
                 test_world.world_setup()
                 test_world.test_empty_state_can_reach_something()

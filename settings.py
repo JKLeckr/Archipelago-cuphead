@@ -2,9 +2,12 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
-from typing import Union # type: ignore
+
 import os
+from typing import Union  # type: ignore
+
 import settings
+
 
 class CupheadSettings(settings.Group):
     class Debug(int):

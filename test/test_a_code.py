@@ -2,8 +2,10 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 import unittest
-from ..options.optionbase import _levelset
+
 from ..levels import levelids
+from ..options.optionbase import _levelset
+
 
 class TestCode(unittest.TestCase):
     def test_level_set(self):

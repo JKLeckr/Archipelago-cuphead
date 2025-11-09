@@ -2,7 +2,9 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from . import leveldefs as ldefs
+
 
 def get_level_type(level: str) -> str:
     if (level in ldefs.level_boss):

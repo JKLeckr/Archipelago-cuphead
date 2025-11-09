@@ -2,12 +2,15 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from enum import IntEnum
 from typing import NamedTuple
+
 from ..names import LocationNames
+from . import levelrules as lr
 from .leveldefs import levels_all
 from .levelrules import LevelRule
-from . import levelrules as lr
+
 
 class LevelRuleModes(IntEnum):
     NONE = 0

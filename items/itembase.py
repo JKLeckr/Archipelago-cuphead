@@ -2,10 +2,13 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
-from typing import NamedTuple
 from random import Random
+from typing import NamedTuple
+
 from BaseClasses import Item, ItemClassification
+
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 

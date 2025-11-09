@@ -2,9 +2,12 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
 from typing import Any
+
 from .. import regions, rules
+
 if typing.TYPE_CHECKING:
      from .. import CupheadWorld
 
@@ -50,15 +53,16 @@ def _parse_level_map(raw_level_map: dict[str, Any]) -> dict[int, int]:
 
 def interpret_slot_data(world: CupheadWorld, slot_data: dict[str, Any]) -> None:
     if "version" not in slot_data:
-        raise KeyError("\"version\" is missing from slot data!")
+        raise KeyError("'version' is missing from slot data!")
     if "world_version" not in slot_data:
-        raise KeyError("\"world_version\" is missing from slot data!\nIncompatible APWorld!")
+        raise KeyError("'world_version' is missing from slot data!\nIncompatible APWorld!")
     _version = slot_data["version"]
     if _version != world.SLOT_DATA_VERSION:
         raise ValueError(f"Slot data version mismatch. {_version}!={world.SLOT_DATA_VERSION}")
 
     _world_version = slot_data["world_version"]
 
+    # FIXME: Add option to enable/disable logging
     print(f"SlotData version: {_version}")
     print(f"Server APWorld Version: {_world_version}")
     print(f"This APWorld Version: {world.APWORLD_VERSION}")

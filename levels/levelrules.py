@@ -2,14 +2,16 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from collections.abc import Callable
-from ..names import ItemNames
-from ..wconf import WorldConfig
-from ..enums import WeaponMode, ChaliceMode, ChaliceCheckMode
-from ..items import weapons
-from ..rules import rulebase as rb
+
 from ..debug import p
+from ..enums import ChaliceCheckMode, ChaliceMode, WeaponMode
+from ..items import weapons
+from ..names import ItemNames
+from ..rules import rulebase as rb
 from ..rules.rulebase import RegionRule
+from ..wconf import WorldConfig
 
 LevelRule = Callable[[WorldConfig], RegionRule]
 
@@ -151,7 +153,7 @@ def lrule_weapon_ex(wconf: WorldConfig) -> RegionRule:
         )
     elif (wconf.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
         _rule = rb.rrule_has_any(
-            {x for x in weapons.weapon_ex_dict.values()}
+            set(weapons.weapon_ex_dict.values())
         )
     else:
         _rule = rb.rrule_none()

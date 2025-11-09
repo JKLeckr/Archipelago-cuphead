@@ -2,9 +2,10 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from ..names import LocationNames
-from .levellocrulebase import LevelLocRuleData, LRule, LevelRuleModes
 from . import levelrules as lr
+from .levellocrulebase import LevelLocRuleData, LevelRuleModes, LRule
 
 level_loc_rules_boss: list[LevelLocRuleData] = [
     LevelLocRuleData(LocationNames.level_boss_frogs, lr.lrule_parry_or_psugar, {

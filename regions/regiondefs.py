@@ -2,11 +2,14 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from collections.abc import Iterable
-from ..names import LocationNames, ItemNames
+
+from ..names import ItemNames, LocationNames
 from ..rules.rulebase import RegionRule, rrule_has, rrule_has_all
-from .regionbase import DefFlags, Target, LevelTarget, RegionData, LevelRegionData, WorldRegionData
 from . import dep
+from .regionbase import DefFlags, LevelRegionData, LevelTarget, RegionData, Target, WorldRegionData
+
 
 def rule_has(item: str, count: int = 1) -> RegionRule:
     return rrule_has(item, count)

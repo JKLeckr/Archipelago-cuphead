@@ -2,6 +2,7 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from ..names import LocationNames
 
 level_ids: dict[int, str] = {

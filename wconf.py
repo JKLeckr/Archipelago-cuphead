@@ -2,13 +2,17 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass, field, fields
 from typing import Any
-from .names import ItemNames, LocationNames
-from .options import CupheadOptions, options as odefs
-from .options.field import create_field
+
 from . import enums as e
+from .names import ItemNames, LocationNames
+from .options import CupheadOptions
+from .options import options as odefs
+from .options.field import create_field
+
 
 def _get_coin_amounts(options: CupheadOptions | None) -> tuple[int, int, int]:
     use_dlc = options.use_dlc.value if options else odefs.DeliciousLastCourse.default
@@ -137,7 +141,7 @@ class WorldConfig:
     require_secret_shortcuts: bool = True
     dlc_randomize_boat: bool = True
     dlc_requires_mausoleum: bool = True
-    dlc_chalice_items_separate: e.ItemGroups = _get_separate_items_mode(None)
+    dlc_chalice_items_separate: e.ItemGroups = odefs.DlcChaliceItemsSeparate.default
     dlc_curse_mode: e.CurseMode = e.CurseMode.VANILLA #create_field(e.CurseMode, odefs.DlcCurseMode)
     minimum_filler: int = create_field(int, odefs.MinimumFillerItems)
     trap_loadout_anyweapon: bool = create_field(bool, odefs.TrapLoadoutAnyWeapon)
@@ -181,7 +185,7 @@ class WorldConfig:
                 self.mode == e.GameMode.DLC_BEAT_BOTH or
                 self.mode == e.GameMode.DLC_BEAT_DEVIL_NO_ISLE4
             )
-        elif goal == LocationNames.loc_event_dlc_goal_saltbaker:
+        if goal == LocationNames.loc_event_dlc_goal_saltbaker:
             return (
                 self.mode == e.GameMode.DLC_BEAT_SALTBAKER or
                 self.mode == e.GameMode.DLC_BEAT_BOTH or

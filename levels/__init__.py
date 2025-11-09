@@ -2,9 +2,12 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
-from .levelbase import LevelData
+
 from . import levelids, levelsetup
+from .levelbase import LevelData
+
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 

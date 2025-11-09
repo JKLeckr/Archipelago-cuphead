@@ -2,8 +2,10 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
 from typing import NamedTuple
+
 if typing.TYPE_CHECKING:
     from .levelrules import LevelRule
 

@@ -1,11 +1,15 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from typing_extensions import override
-from typing import Any
 from collections.abc import Iterable
-from Options import Range, Choice, OptionDict, OptionError
+from typing import Any
+
+from typing_extensions import override
+
+from Options import Choice, OptionDict, OptionError, Range
+
 from . import _levelset
+
 
 class ChoiceEx(Choice):
     random_value: int = -1
@@ -16,7 +20,7 @@ class ChoiceEx(Choice):
         text = text.lower()
         if text == "random":
             return cls(cls.random_value)
-        return super(ChoiceEx, cls).from_text(text)
+        return super().from_text(text)
 
 class Weight(Range):
     range_start = 0
@@ -40,5 +44,5 @@ class LevelDict(OptionDict):
             if x in self.valid_keys and y in self.valid_values:
                 res[x] = y
             else:
-                raise OptionError(f"Option {self.__class__.__name__} contains invalid levels. \"{x}: {y}\" is invalid")
+                raise OptionError(f"Option {self.__class__.__name__} contains invalid levels. '{x}: {y}' is invalid")
         super().__init__(res)

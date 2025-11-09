@@ -3,6 +3,7 @@
 
 from typing import Protocol
 
+
 class CupheadOption(Protocol):
     name: str
     @property

@@ -2,18 +2,23 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import math
 import typing
 from collections.abc import Iterable
 from random import Random
+
 from BaseClasses import Item, ItemClassification, LocationProgressType
+
 from ..auxiliary import count_in_list
-from ..names import ItemNames, LocationNames
-from ..enums import WeaponMode, ItemGroups, ChaliceMode, CurseMode
-from ..wconf import WorldConfig
+from ..enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
 from ..locations import locationdefs as ldef
+from ..names import ItemNames, LocationNames
+from ..wconf import WorldConfig
+from . import itemdefs as idef
+from . import weapons
 from .itembase import CupheadItem, ItemData, get_filler_item_name, weighted_item_choice
-from . import weapons, itemdefs as idef
+
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -291,7 +296,7 @@ def create_items(world: CupheadWorld) -> None:
     weapons = setup_weapon_pool(world, precollected_item_names)
 
     #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
-    unfilled_locations = [x for x in world.multiworld.get_unfilled_locations(world.player)]
+    unfilled_locations = list(world.multiworld.get_unfilled_locations(world.player))
     unfilled_location_count = len(unfilled_locations)
     #print(total_locations)
     #print(unfilled_locations)

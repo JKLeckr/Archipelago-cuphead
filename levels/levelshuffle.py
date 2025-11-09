@@ -2,11 +2,14 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from random import Random
-from ..names import LocationNames
+
 from ..enums import LevelShuffleMode
+from ..names import LocationNames
 from . import leveldefs as ldef
 from . import levelids as lmap
+
 
 def get_level_shuffle_lists(
         use_dlc: bool,

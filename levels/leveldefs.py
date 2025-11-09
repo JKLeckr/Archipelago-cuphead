@@ -2,9 +2,10 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 from ..names import LocationNames
-from .levelbase import LevelData
 from . import levelrules as lr
+from .levelbase import LevelData
 
 # Levels
 level_boss_regular: dict[str, LevelData] = {

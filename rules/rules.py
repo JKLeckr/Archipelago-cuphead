@@ -2,17 +2,25 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+
 import typing
 from collections.abc import Iterable
-from BaseClasses import Location, Region, Entrance
-from worlds.generic.Rules import set_rule, add_rule, forbid_item, forbid_items_for_player
+
+from BaseClasses import Entrance, Location, Region
+
+from worlds.generic.Rules import add_rule, forbid_item, forbid_items_for_player, set_rule
+
+from ..enums import GameMode, ItemGroups
+from ..items import itemdefs as idef
+from ..levels import levellocruledefs as llrdefs
+from ..levels import levellocrules as llrules
+from ..levels import levelrules as lr
+from ..locations import locationdefs as ld
+from ..locations import locationsets
+from ..names import ItemNames, LocationNames
 from . import rulebase as rb
 from .rulebase import Rule
-from ..levels import levelrules as lr, levellocrules as llrules, levellocruledefs as llrdefs
-from ..items import itemdefs as idef
-from ..locations import locationsets, locationdefs as ld
-from ..names import ItemNames, LocationNames
-from ..enums import GameMode, ItemGroups
+
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
 
@@ -227,7 +235,7 @@ def set_shop_rules(world: CupheadWorld):
         # Prevent putting money in the shop
         [forbid_item(_loc, x, player) for x in coins]
         # Prevent putting local filler items in the shop
-        forbid_items_for_player(_loc, {x for x in idef.item_filler.keys()}, player)
+        forbid_items_for_player(_loc, set(idef.item_filler.keys()), player)
 
     # Set coin requirements for the shops
     shop_costs: list[int] = [0, 0, 0, 0]

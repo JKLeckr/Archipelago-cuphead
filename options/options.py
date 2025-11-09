@@ -1,8 +1,10 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from Options import Toggle, DefaultOnToggle, Range, Choice, OptionSet, FreeText, Visibility
-from .optionbase import ChoiceEx, Weight, LevelDict
+from Options import Choice, DefaultOnToggle, FreeText, OptionSet, Range, Toggle, Visibility
+
+from .optionbase import ChoiceEx, LevelDict, Weight
+
 
 class Version(FreeText):
     """

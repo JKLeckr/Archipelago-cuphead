@@ -1,12 +1,19 @@
-# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
-# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
-# McCabe complexity (`C901`) by default.
-lint.select = ["E", "F", "W", "B", "C901"]
+## ruff.toml
 
-# F401 is already being covered by pyright
-lint.ignore = ["F401"]
+lint.select = ["B", "C", "E", "F", "W", "I", "N", "Q", "UP", "RET", "RSE", "RUF", "ISC", "PLC", "PLE", "PLW", "T20", "PERF"]
+
+lint.ignore = [
+    #"C901",  # AP Author disagrees with limiting branch complexity
+    "PLC0415",  # AP Devs consider local imports totally fine & necessary
+    "UP015",  # Explicit is better than implicit, so we'd prefer to keep "r" in open() calls.
+
+    "F401",  # F401 is already being covered by pyright
+    "UP007",  # UP007 is already being covered by pyright
+    "T201",  # print is used in most places for debugging and is configurable in the APWorld.
+]
 
 line-length = 120
+indent-width = 4
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 lint.fixable = ["ALL"]
