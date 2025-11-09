@@ -1,0 +1,28 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
+from __future__ import annotations
+from collections.abc import Callable
+from dataclasses import field
+from typing import TypeVar, Any
+
+T = TypeVar("T")
+
+def create_field(
+    converter: Callable[[Any], T],
+    option_def: Any,
+    default: T | None = None,
+):
+    try:
+        if default is None:
+            return field(
+                default_factory=lambda: converter(option_def.default),
+                metadata={"conv": converter, "odef": option_def, "oname": option_def.name},
+            )
+        else:
+            return field(
+            default=default,
+            metadata={"conv": converter, "odef": option_def, "oname": option_def.name},
+        )
+    except NameError as err:
+        raise ValueError("option_def is not a valid Option Definition!") from err

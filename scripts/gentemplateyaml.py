@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
@@ -264,4 +265,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

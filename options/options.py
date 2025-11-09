@@ -42,14 +42,14 @@ class GameMode(ChoiceEx):
 
 class HardLogic(Toggle):
     """
-    -PARTIALLY WORKS, NOT STABLE-
+    -INCOMPLETE-
     Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
     Examples include requiring jumping into pits to get across gaps and requiring avoiding King Dice bosses that
     requires certain abilities to beat King Dice in logic.
     """
     name = "hard_logic"
     display_name = "Hard Logic"
-    visibility = Visibility.spoiler
+    visibility = Visibility.template | Visibility.spoiler
 
 class ExpertMode(Toggle):
     """
