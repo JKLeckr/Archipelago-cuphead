@@ -8,25 +8,33 @@ Cuphead:
   accessibility: items
   start_inventory: {}
 
+  ## DLC
+  #
   # Set whether or not to use Delicious Last Course content (Requires owning the DLC).
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   use_dlc: 'false'
 
+  ## Mode
+  #
   # Set the mode of the randomizer which includes goal.
   # NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
   #
   # Values: beat_devil, collect_contracts, buy_out_shop, dlc_beat_saltbaker, dlc_beat_both, dlc_collect_ingredients, dlc_collect_both
-  # Default: 1
-  mode: '1'
+  # Default: beat_devil
+  mode: beat_devil
 
+  ## Expert Mode
+  #
   # Set the boss difficulty to expert.
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   expert_mode: 'false'
 
+  ## Start Weapon
+  #
   # Choose weapon to start with.
   # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
   #
@@ -34,6 +42,8 @@ Cuphead:
   # Default: random
   start_weapon: random
 
+  ## Weapon Mode
+  #
   # Set how the weapons are shuffled in the pool.
   # Options:
   # - Normal: EX is part of the weapon you receive (vanilla behavior).
@@ -48,6 +58,8 @@ Cuphead:
   # Default: normal
   weapon_mode: normal
 
+  ## Contract Requirements
+  #
   # Set the amount of contracts needed to confront King Dice and, ultimately, the devil.
   # The required contracts for the die houses are evenly distributed.
   #
@@ -55,6 +67,8 @@ Cuphead:
   # Default: 17
   contract_requirements: '17'
 
+  ## [DLC] Ingredient Requirements
+  #
   # -DLC ONLY-
   # Set the amount of ingredients needed to confront Saltbaker.
   #
@@ -62,6 +76,8 @@ Cuphead:
   # Default: 5
   dlc_ingredient_requirements: '5'
 
+  ## Contract Goal Requirements
+  #
   # Set the amount of contracts needed for goal.
   # Note: Cannot be lower than Contract Requirements
   #
@@ -69,6 +85,8 @@ Cuphead:
   # Default: 17
   contract_goal_requirements: '17'
 
+  ## [DLC] Ingredient Goal Requirements
+  #
   # -DLC ONLY-
   # Set the amount of ingredients needed for goal.
   # Note: Cannot be lower than Ingredient Requirements
@@ -77,6 +95,8 @@ Cuphead:
   # Default: 5
   dlc_ingredient_goal_requirements: '5'
 
+  ## Level Shuffle
+  #
   # Shuffle the Boss and Run n' Gun levels.
   # Bosses and Run n' Guns are shuffled within their own group.
   # Note: Be careful with this option! This can easily break generation if used with plando.
@@ -85,19 +105,25 @@ Cuphead:
   # Default: disabled
   level_shuffle: disabled
 
+  ## Shuffle King Dice Bosses
+  #
   # Shuffle the King Dice mini-bosses.
   # This option is independent of Level Shuffle.
   #
   # Values: true, false
-  # Default: True
+  # Default: true
   level_shuffle_kingdice: 'true'
 
+  ## Free Move Isles
+  #
   # Allow all the levels on each island to be freely accessible without completing a previous level first.
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   freemove_isles: 'false'
 
+  ## Shop Mode
+  #
   # Set shop mode.
   # You get access to higher tiers the more shops you have access to.
   #
@@ -105,27 +131,35 @@ Cuphead:
   # Default: tiers
   shop_mode: tiers
 
+  ## Randomize Abilities
+  #
   # Randomize essential abilities like Duck, Parry, Dash, etc.
   #
   # Values: true, false
-  # Default: True
+  # Default: true
   randomize_abilities: 'true'
 
+  ## Boss Secret Checks
+  #
   # Also include beating the secret phases of the three bosses as checks.
   # The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
   # The secret phases are more difficult than the normal fight.
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   boss_secret_checks: 'false'
 
+  ## Boss Grade Checks
+  #
   # Enable grade checks for Boss Levels.
   # NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
   #
   # Values: disabled, a_minus_grade, a_grade, a_plus_grade, s_grade
-  # Default: 1
-  boss_grade_checks: '1'
+  # Default: a_minus_grade
+  boss_grade_checks: a_minus_grade
 
+  ## Run n' Gun Grade Checks
+  #
   # Enable grade checks for Run n' Gun levels.
   # Pacifist: Beat the level without killing any monsters (not easy).
   #
@@ -133,6 +167,8 @@ Cuphead:
   # Default: a_minus_grade
   rungun_grade_checks: a_minus_grade
 
+  ## [DLC] Chalice Check Grade Requirement
+  #
   # -DLC ONLY-
   # -REQUIRES CHALICE-
   # Enable checks for defeating each boss as Ms. Chalice.
@@ -143,6 +179,8 @@ Cuphead:
   # Default: disabled
   dlc_chalice_check_grade: disabled
 
+  ## [DLC] Boss Chalice Checks
+  #
   # -DLC ONLY-
   # -REQUIRES CHALICE-
   # Enable checks for defeating each boss as Ms. Chalice.
@@ -153,6 +191,8 @@ Cuphead:
   # Default: disabled
   dlc_boss_chalice_checks: disabled
 
+  ## [DLC] Run n' Gun Chalice Checks
+  #
   # -DLC ONLY-
   # -REQUIRES CHALICE-
   # Enable checks for completing each run n' gun as Ms. Chalice.
@@ -163,20 +203,26 @@ Cuphead:
   # Default: disabled
   dlc_rungun_chalice_checks: disabled
 
+  ## Silverworth Quest
+  #
   # Enable the Silverworth Quest check.
   # This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
   #
   # Values: true, false
-  # Default: True
+  # Default: true
   silverworth_quest: 'true'
 
+  ## Pacifist Quest
+  #
   # Enable the Pacifist Quest check.
   # This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   pacifist_quest: 'false'
 
+  ## [DLC] Ms. Chalice
+  #
   # -DLC ONLY-
   # Enable Ms. Chalice and the Astral Cookie.
   # Options:
@@ -189,6 +235,8 @@ Cuphead:
   # Default: randomized
   dlc_chalice: randomized
 
+  ## [DLC] The King's Leap
+  #
   # -DLC ONLY-
   # Choose how to handle the locations of The King's Leap.
   # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
@@ -197,6 +245,8 @@ Cuphead:
   # Default: exclude_gauntlet
   dlc_kingsleap: exclude_gauntlet
 
+  ## [DLC] Cactus Girl Quest
+  #
   # -DLC ONLY-
   # -REQUIRES CHALICE-
   # Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
@@ -204,9 +254,11 @@ Cuphead:
   # You can talk to the Cactus Girl to know which bosses you need to defeat still.
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   dlc_cactusgirl_quest: 'false'
 
+  ## [DLC] Curse Mode
+  #
   # -DLC ONLY-
   # Set how the cursed and devine relic is handled.
   # 
@@ -218,12 +270,16 @@ Cuphead:
   # Default: off
   dlc_curse_mode: off
 
+  ## Extra Coins
+  #
   # Set extra coins in the item pool.
   #
   # Range: 0-10
   # Default: 0
   extra_coins: '0'
 
+  ## Starting Max Health
+  #
   # Set starting max health.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
   #
@@ -231,6 +287,8 @@ Cuphead:
   # Default: 3
   start_maxhealth: '3'
 
+  ## Starting Max Health
+  #
   # Set starting max health for Player 2. Set to 0 to use Player 1's max health.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
   #
@@ -238,6 +296,8 @@ Cuphead:
   # Default: 0
   start_maxhealth_p2: '0'
 
+  ## Max Health Upgrades
+  #
   # Set number of max health upgrades in the pool.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
   #
@@ -245,6 +305,8 @@ Cuphead:
   # Default: 0
   maxhealth_upgrades: '0'
 
+  ## Minimum Filler Items
+  #
   # Set the minimum amount of filler items that should exist in this world.
   # NOTE: If there are not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
   #
@@ -252,29 +314,36 @@ Cuphead:
   # Default: 0
   minimum_filler: '0'
 
+  ## Extra Health Weight
+  #
   # Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
   #
   # Default: 3
   filler_weight_extrahealth: '3'
 
+  ## Super Recharge Weight
+  #
   # Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
   #
   # Default: 3
   filler_weight_supercharge: '3'
 
+  ## Death Link
+  #
   # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
   # In Cuphead, this only applies while you are in a level.
   #
   # Values: false, true
-  # Default: False
+  # Default: false
   deathlink: 'false'
 
+  ## Death Link Grace Count
+  #
   # -REQUIRES DEATHLINK-
   # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
   #
   # Range: 0-9
   # Default: 0
   deathlink_grace_count: '0'
-

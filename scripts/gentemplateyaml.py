@@ -52,7 +52,7 @@ def get_class_attrs(node: ast.ClassDef) -> dict[str, typing.Any]:
     return attrs
 
 def get_option_fields(node: ast.ClassDef) -> dict[str, int]:
-    """Find all class-level constants named option_* and return their keys."""
+    """Find all options: class-level constants named option_* and return their keys."""
     opt_val_to_name: dict[str, int] = {}
     for stmt in node.body:
         if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1:
@@ -74,6 +74,13 @@ def get_option_range(attrs: dict[str, typing.Any]) -> tuple[int, int] | None:
         return (range_start, range_end)
     return None
 
+def get_doc_lines(option_dname: str, doc: str) -> list[str]:
+    doc_lines: list[str] = []
+    if option_dname:
+        doc_lines.extend([f"## {option_dname}", "#"])
+    doc_lines.extend([f"# {line}" for line in doc.strip().splitlines()])
+    return doc_lines
+
 def generate_comments(
         node: ast.ClassDef,
         attrs: dict[str, typing.Any],
@@ -86,16 +93,20 @@ def generate_comments(
     doc = get_docstring(node)
     ranges = get_option_range(attrs)
 
-    if doc:
-        doc_lines = [f"# {line}" for line in doc.strip().splitlines()]
-        lines.extend(doc_lines)
+    option_dname = attrs.get("display_name", "")
+
+    if doc and isinstance(option_dname, str):
+        lines.extend(get_doc_lines(option_dname, doc))
 
     if "Toggle" in base_names:
         _option_names: list[str] = ["false", "true"]
+        _default = "true" if default else "false"
     elif "DefaultOnToggle" in base_names:
         _option_names: list[str] = ["true", "false"]
+        _default = "true" if default else "false"
     else:
         _option_names: list[str] = list(option_names) if option_names else []
+        _default = default
 
     _spaced = False
     if _option_names:
@@ -108,11 +119,11 @@ def generate_comments(
             lines.append("#")
             _spaced = True
         lines.append(f"# Range: {ranges[0]}-{ranges[1]}")
-    if default is not None:
+    if _default is not None:
         if lines and not _spaced:
             lines.append("#")
             _spaced = True
-        lines.append(f"# Default: {default}")
+        lines.append(f"# Default: {_default}")
 
     return lines
 
@@ -127,7 +138,7 @@ def get_default_option(attrs: dict[str, typing.Any], base_names: list[str], opti
             default = 0
         else:
             return ""
-    if "Choice" in base_names:
+    if "Choice" in base_names or "ChoiceEx" in base_names:
         if isinstance(default, int):
             return str(next((k for k, v in options.items() if v == default), default))
     return default
@@ -184,7 +195,7 @@ def get_value_string(value: typing.Any) -> str:
 def main():
     parser = argparse.ArgumentParser(description="generate the Player.yaml file")
     parser.add_argument("file", help="Path to the optiondefs py")
-    parser.add_argument("-o", "--output", default=DEFAULT_OUTPUT_FILE, help="Output file")
+    parser.add_argument("-o", "--output", default="", help="Output file")
     parser.add_argument("-c", "--comment", default=DEFAULT_HEADER, help="Add comment to header")
 
     args = parser.parse_args()
@@ -212,6 +223,10 @@ def main():
         else:
             lines.append(f"  {key}: {get_value_string(val)}")
             lines.append("")
+
+    # Trim end
+    if not lines[-1]:
+        lines.pop()
 
     if args.output:
         with open(args.output, "w") as f:
