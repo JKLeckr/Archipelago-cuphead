@@ -648,7 +648,7 @@ class DeathLink(Toggle):
     name = "deathlink"
     display_name = "Death Link"
 
-class DeathLinkMode(Toggle):
+class DeathLinkMode(Choice):
     """
     -REQUIRES DEATHLINK-
     Set DeathLink Mode.
@@ -663,6 +663,7 @@ class DeathLinkMode(Toggle):
     display_name = "Death Link Mode"
     option_lose = 0
     option_per_player = 1
+    default = 0
 
 class DeathLinkGraceCount(Range):
     """
