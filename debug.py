@@ -10,7 +10,6 @@ from typing import Any, TypeVar
 
 import Utils
 from BaseClasses import Region
-
 from worlds.AutoWorld import World
 
 from .auxiliary import format_list

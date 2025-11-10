@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+from typing import ClassVar
+
 from Options import Choice, DefaultOnToggle, FreeText, OptionSet, Range, Toggle, Visibility
 
 from .optionbase import ChoiceEx, LevelDict, Weight
@@ -184,7 +186,7 @@ class LevelPlacements(LevelDict):
     name = "level_placements"
     display_name = "Level Placements"
     visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
-    default: dict[str, str] = {}
+    default: ClassVar[dict[str, str]] = {}
 
 class FreeMoveIsles(Toggle):
     """

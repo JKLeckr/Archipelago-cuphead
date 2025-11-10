@@ -3,13 +3,16 @@
 
 from __future__ import annotations
 
+import typing
 from enum import IntEnum
 from typing import NamedTuple
 
 from ..names import LocationNames
 from . import levelrules as lr
-from .leveldefs import levels_all
-from .levelrules import LevelRule
+from .levelbase import LevelData
+
+if typing.TYPE_CHECKING:
+    from .levelrules import LevelRule
 
 
 class LevelRuleModes(IntEnum):
@@ -21,17 +24,26 @@ class LRule(NamedTuple):
     rule: LevelRule
     mode: LevelRuleModes | int = LevelRuleModes.NONE
 
+_all_levels: dict[str, LevelData] = {}
+
+def init(all_levels: dict[str, LevelData]):
+    _all_levels = all_levels
+
 class LevelLocRuleData:
     base_region: str
     base_rule: LevelRule | None
     loc_rules: dict[str, LevelRule]
 
-    def _get_loc_rules(self, loc_rules: dict[str, LRule | None], debug: bool = False) -> dict[str, LevelRule]: # noqa: C901
+    def _get_loc_rules( # noqa: C901
+            self,
+            loc_rules: dict[str, LRule | None],
+            debug: bool = False
+        ) -> dict[str, LevelRule]:
         _loc_rules = loc_rules.copy()
         _event_locs: set[str] = set()
         nloc_rules: dict[str, LevelRule] = {}
-        if levels_all[self.base_region]:
-            for _loc in levels_all[self.base_region].locations:
+        if _all_levels[self.base_region]:
+            for _loc in _all_levels[self.base_region].locations:
                 if _loc not in _loc_rules:
                     if _loc.startswith(LocationNames.loc_event_pfx):
                         _event_locs.add(_loc)

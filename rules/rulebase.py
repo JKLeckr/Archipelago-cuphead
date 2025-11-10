@@ -28,19 +28,19 @@ def rule_none() -> Rule:
 def rule_false() -> Rule:
     return lambda state: False
 
-def rule_has(world: "CupheadWorld", item: str, count: int = 1) -> Rule:
+def rule_has(world: CupheadWorld, item: str, count: int = 1) -> Rule:
     return lambda state, player=world.player: state.has(item, player, count)
-def rule_has_all(world: "CupheadWorld", items: Iterable[str]) -> Rule:
+def rule_has_all(world: CupheadWorld, items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_all(items, player)
-def rule_has_all_counts(world: "CupheadWorld", item_counts: Mapping[str, int]) -> Rule:
+def rule_has_all_counts(world: CupheadWorld, item_counts: Mapping[str, int]) -> Rule:
     return lambda state, player=world.player: state.has_all_counts(item_counts, player)
-def rule_has_any(world: "CupheadWorld", items: Iterable[str]) -> Rule:
+def rule_has_any(world: CupheadWorld, items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_any(items, player)
-def rule_has_any_count(world: "CupheadWorld", item_counts: Mapping[str, int]) -> Rule:
+def rule_has_any_count(world: CupheadWorld, item_counts: Mapping[str, int]) -> Rule:
     return lambda state, player=world.player: state.has_any_count(item_counts, player)
-def rule_has_group(world: "CupheadWorld", item_group: str, count: int = 1) -> Rule:
+def rule_has_group(world: CupheadWorld, item_group: str, count: int = 1) -> Rule:
     return lambda state, player=world.player: state.has_group(item_group, player, count)
-def rule_has_group_unique(world: "CupheadWorld", item_group: str, count: int = 1) -> Rule:
+def rule_has_group_unique(world: CupheadWorld, item_group: str, count: int = 1) -> Rule:
     return lambda state, player=world.player: state.has_group_unique(item_group, player, count)
 
 def _can_reach_all_regions(state: CollectionState, player: int, regions: Iterable[str]) -> bool:
@@ -54,13 +54,13 @@ def _can_reach_any_region(state: CollectionState, player: int, regions: Iterable
             return True
     return False
 
-def rule_can_reach(world: "CupheadWorld", location: str) -> Rule:
+def rule_can_reach(world: CupheadWorld, location: str) -> Rule:
     return lambda state, player=world.player: state.can_reach_location(location, player)
-def rule_can_reach_region(world: "CupheadWorld", region: str) -> Rule:
+def rule_can_reach_region(world: CupheadWorld, region: str) -> Rule:
     return lambda state, player=world.player: state.can_reach_region(region, player)
-def rule_can_reach_all_regions(world: "CupheadWorld", regions: Iterable[str]) -> Rule:
+def rule_can_reach_all_regions(world: CupheadWorld, regions: Iterable[str]) -> Rule:
     return lambda state, player=world.player: _can_reach_all_regions(state, player, regions)
-def rule_can_reach_any_region(world: "CupheadWorld", regions: Iterable[str]) -> Rule:
+def rule_can_reach_any_region(world: CupheadWorld, regions: Iterable[str]) -> Rule:
     return lambda state, player=world.player: _can_reach_any_region(state, player, regions)
 
 def rrule_to_rule(rrule: RegionRule, player: int) -> Rule:

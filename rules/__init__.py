@@ -6,3 +6,5 @@ from __future__ import annotations
 from . import rules
 
 set_rules = rules.set_rules
+
+register_level_loc_rules = rules.register_level_loc_rules

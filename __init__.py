@@ -5,9 +5,10 @@ from __future__ import annotations
 
 from typing import Any, ClassVar, TextIO
 
-from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from typing_extensions import override
 
+from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
+from Options import PerGameCommonOptions
 from worlds.AutoWorld import WebWorld, World
 
 from . import debug as dbg
@@ -48,27 +49,27 @@ class CupheadWorld(World):
     A classic run and gun action game heavily focused on boss battles
     """
 
-    GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "alpha02j"
+    GAME_NAME: ClassVar[str] = "Cuphead"
+    APWORLD_VERSION: ClassVar[str] = "alpha03a"
 
-    SLOT_DATA_VERSION: int = 4
+    SLOT_DATA_VERSION: ClassVar[int] = 4
 
-    WCONFIG_DEFAULT: WorldConfig = WorldConfig()
+    WCONFIG_DEFAULT: ClassVar[WorldConfig] = WorldConfig()
 
-    game: str = GAME_NAME # type: ignore
-    web = CupheadWebWorld()
-    options_dataclass = CupheadOptions
+    game: ClassVar[str] = GAME_NAME # type: ignore
+    web: ClassVar[WebWorld] = CupheadWebWorld()
+    options_dataclass: ClassVar[type[PerGameCommonOptions]] = CupheadOptions
     options: CupheadOptions # type: ignore
-    version: str = APWORLD_VERSION
+    version: ClassVar[str] = APWORLD_VERSION
     origin_region_name: str = "Start"
 
     required_client_version: tuple[int, int, int] = (0, 6, 0)
     required_server_version: tuple[int, int, int] = (0, 6, 0)
 
-    item_name_to_id = idef.name_to_id
-    location_name_to_id = ld.name_to_id
+    item_name_to_id: ClassVar[dict[str, int]] = idef.name_to_id
+    location_name_to_id: ClassVar[dict[str, int]] = ld.name_to_id
 
-    item_name_groups = itemgroups.item_groups
+    item_name_groups: ClassVar[dict[str, set[str]]] = itemgroups.item_groups
 
     item_names: ClassVar[set[str]] = set(idef.items_all.keys())
     location_names: ClassVar[set[str]] = set(ld.locations_all.keys())
@@ -79,6 +80,8 @@ class CupheadWorld(World):
 
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
+
+    level_map: dict[int, int]
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
@@ -117,12 +120,14 @@ class CupheadWorld(World):
 
         self.active_items: dict[str,ItemData] = items.setup_items(self.wconfig)
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wconfig)
-        self.active_levels: dict[str,LevelData] = levels.setup_levels(self.wconfig,self.active_locations)
+        self.active_levels: dict[str,LevelData] = levels.setup_levels(self.settings, self.wconfig,self.active_locations)
 
-        if len(self.level_map) < 1:
+        #print(self.level_map)
+        if not self.level_map:
             self.level_map = levels.setup_level_map(self.wconfig)
         else:
             self.level_map = {}
+        #print(self.level_map)
 
         self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
@@ -228,7 +233,7 @@ class CupheadWorld(World):
     @override
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]) -> None:
         hint_dict: dict[int, str] = {}
-        if len(self.level_map)>0:
+        if self.level_map:
             for level, lmap in self.level_map.items():
                 if (
                     level_ids[level] in self.active_levels and
@@ -265,6 +270,8 @@ class CupheadWorld(World):
 
     @override
     def __getattr__(self, item: str) -> Any:
+        if item == "level_map":
+            return {}
         if item == "wconfig":
             return self.__class__.WCONFIG_DEFAULT
         return super().__getattr__(item)
@@ -272,6 +279,6 @@ class CupheadWorld(World):
     # For Universal Tracker
     def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:
         slotdata.interpret_slot_data(self, slot_data)
-        #dbg.debug_print_regions(self)
         if self.settings.is_debug_bit_on(256):
+            #dbg.debug_print_regions(self)
             dbg.debug_visualize_regions(self, True, "UT")

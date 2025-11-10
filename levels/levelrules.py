@@ -35,8 +35,7 @@ def lrule_plane_bombs(wconf: WorldConfig) -> RegionRule:
 def lrule_plane(wconf: WorldConfig) -> RegionRule:
     if wconf.hard_logic:
         return lrule_or(lrule_plane_gun, lrule_plane_bombs)(wconf)
-    else:
-        return lrule_plane_gun(wconf)
+    return lrule_plane_gun(wconf)
 
 def lrule_duck(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
@@ -103,8 +102,7 @@ def lrule_plane_shrink(wconf: WorldConfig) -> RegionRule:
 def lrule_bird(wconf: WorldConfig):
     if wconf.hard_logic:
         return lrule_plane_gun(wconf)
-    else:
-        return lrule_and(lrule_plane_gun, lrule_plane_bombs)(wconf)
+    return lrule_and(lrule_plane_gun, lrule_plane_bombs)(wconf)
 def lrule_funhouse(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -149,7 +147,7 @@ def lrule_final(wconf: WorldConfig) -> RegionRule:
 def lrule_weapon_ex(wconf: WorldConfig) -> RegionRule:
     if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
         _rule = rb.rrule_has_any_count(
-            {x: 2 for x in weapons.weapon_p_dict.values()}
+            dict.fromkeys(weapons.weapon_p_dict.values(), 2)
         )
     elif (wconf.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
         _rule = rb.rrule_has_any(

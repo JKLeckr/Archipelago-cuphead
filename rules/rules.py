@@ -7,12 +7,10 @@ import typing
 from collections.abc import Iterable
 
 from BaseClasses import Entrance, Location, Region
-
 from worlds.generic.Rules import add_rule, forbid_item, forbid_items_for_player, set_rule
 
 from ..enums import GameMode, ItemGroups
 from ..items import itemdefs as idef
-from ..levels import levellocruledefs as llrdefs
 from ..levels import levellocrules as llrules
 from ..levels import levelrules as lr
 from ..locations import locationdefs as ld
@@ -23,6 +21,12 @@ from .rulebase import Rule
 
 if typing.TYPE_CHECKING:
     from .. import CupheadWorld
+    from ..levels.levellocrulebase import LevelLocRuleData
+
+_llrdefs_reg: list[LevelLocRuleData] = []
+
+def register_level_loc_rules(llrdefs: list[LevelLocRuleData]):
+    _llrdefs_reg.extend(llrdefs)
 
 def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
     return world.multiworld.get_entrance(exit+" -> "+entrance, world.player)
@@ -171,7 +175,7 @@ def add_level_grade_rules(world: CupheadWorld, locs: Iterable[str], exclude: set
 
 def set_level_loc_rules(world: CupheadWorld):
     w = world
-    loc_rules = llrdefs.level_loc_rules
+    loc_rules = _llrdefs_reg
     for _loc_rule in loc_rules:
         for loc, rule in _loc_rule.loc_rules.items():
             if loc in w.active_locations:

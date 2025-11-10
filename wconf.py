@@ -1,6 +1,10 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# RUF009 suppressed because create_field returns a field.
+# This issue seems to be a problem only when used with non-primative types.
+# ruff: noqa RUF009
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -146,7 +150,7 @@ class WorldConfig:
     minimum_filler: int = create_field(int, odefs.MinimumFillerItems)
     trap_loadout_anyweapon: bool = create_field(bool, odefs.TrapLoadoutAnyWeapon)
 
-    def __init__(self, options: CupheadOptions | None = None) -> None:
+    def __init__(self, options: CupheadOptions | None = None, debug_bit: int = 0) -> None:
         for f in fields(self):
             try:
                 default = (

@@ -13,7 +13,7 @@ class CupheadLocation(Location):
     def __init__(
             self,
             player: int,
-            name: str = '',
+            name: str = "",
             id: int | None = None,
             parent: Region | None = None,
             event: bool = False,

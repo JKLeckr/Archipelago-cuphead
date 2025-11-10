@@ -32,10 +32,13 @@ class CupheadSettings(settings.Group):
             4: Visualize Regions (generates PUML)
             8: Visualize Regions highlight reachable
             16: Debug hint_dict
+            32: Debug aux
             256: Visualize Regions generated for Universal Tracker
             512: Debug even in tests
             1024: Debug Tests
         """
+
+        #print(f"debug_bit_test {bit:f}")
 
         if "PYTEST_CURRENT_TEST" in os.environ and (int(self.debug) & 512) == 0:
             return False

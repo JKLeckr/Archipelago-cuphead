@@ -31,15 +31,15 @@ def format_list(
                 res += sep
             else:
                 first = False
-            res += f"{enc_start}{str(item)}{enc_end}"
+            res += f"{enc_start}{item!s}{enc_end}"
     res += ls_end
     return res
 
-def scrub_list(a: list[T], b: Iterable[T]) -> list[T]:
+def scrub_list(a: list[T], b: Iterable[T], debug: bool = False) -> list[T]:
     newlist: list[T] = []
     for item in a:
         if item in b:
             newlist.append(item)
-        #else:
-        #    print(f"Excluding: {item}")
+        elif debug:
+            print(f"Excluding: {item}")
     return newlist

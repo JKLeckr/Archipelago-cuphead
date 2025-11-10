@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from ..names import LocationNames
+from ..rules.rules import register_level_loc_rules
 from . import levelrules as lr
 from .levellocrulebase import LevelLocRuleData, LevelRuleModes, LRule
 
@@ -175,3 +176,5 @@ level_loc_rules: list[LevelLocRuleData] = [
     *level_loc_rules_dlc_tutorial,
     *level_loc_rules_dlc_chesscastle,
 ]
+
+register_level_loc_rules(level_loc_rules)

@@ -43,9 +43,8 @@ def create_item_ext(
 
     #print("Item: "+name+", "+str(classification))
 
-    new_item = CupheadItem(name, classification, data.id, player)
+    return CupheadItem(name, classification, data.id, player)
 
-    return new_item
 
 def create_filler_item(world: CupheadWorld) -> Item:
     return create_active_item(get_filler_item_name(world), world)
@@ -77,8 +76,10 @@ def create_traps(world: CupheadWorld, trap_count: int, wconf: WorldConfig, rand:
 
     res: list[Item] = []
 
-    for _ in range(trap_count):
+    [
         res.append(create_active_item(weighted_item_choice(active_trap_weights, rand), world))
+        for _ in range(trap_count)
+    ]
 
     return res
 
@@ -160,12 +161,14 @@ def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[I
     wconf = world.wconfig
     items: list[Item] = []
 
-    for _ in range(world.wconfig.maxhealth_upgrades):
+    [
         items.append(create_active_item(ItemNames.item_healthupgrade, world))
+        for _ in range(world.wconfig.maxhealth_upgrades)
+    ]
     if wconf.use_dlc:
         if wconf.dlc_chalice == ChaliceMode.RANDOMIZED and ItemNames.item_charm_dlc_cookie not in precollected:
             items.append(create_active_item(ItemNames.item_charm_dlc_cookie, world))
-        if (wconf.dlc_curse_mode == CurseMode.VANILLA or wconf.dlc_curse_mode == CurseMode.REVERSE and \
+        if ((wconf.dlc_curse_mode == CurseMode.VANILLA or wconf.dlc_curse_mode == CurseMode.REVERSE) and \
             ItemNames.item_charm_dlc_broken_relic not in precollected):
                 items.append(create_active_item(ItemNames.item_charm_dlc_broken_relic, world))
 

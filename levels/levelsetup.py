@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import typing
 from random import Random
 
 from ..auxiliary import scrub_list
@@ -13,19 +14,35 @@ from . import leveldefs as ldef
 from . import levelids, levelshuffle
 from .levelbase import LevelData
 
+if typing.TYPE_CHECKING:
+    from ..settings import CupheadSettings
 
-def setup_levels(wconf: WorldConfig, active_locations: dict[str,LocationData]) -> dict[str,LevelData]:
+def setup_levels(
+        settings: CupheadSettings,
+        wconf: WorldConfig,
+        active_locations: dict[str,LocationData]
+    ) -> dict[str,LevelData]:
     use_dlc = wconf.use_dlc
     levels: dict[str,LevelData] = {}
 
+    _debug_scrub = settings.is_debug_bit_on(32)
+
     levels[LocationNames.level_tutorial] = ldef.level_special[LocationNames.level_tutorial]
     for lev,data in {**ldef.level_boss, **ldef.level_boss_final, **ldef.level_rungun}.items():
-        levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
+        levels[lev] = LevelData(
+            data.world_location,
+            scrub_list(data.locations, active_locations.keys(), _debug_scrub),
+            data.rule
+        )
     levels.update(ldef.level_mausoleum)
 
     if use_dlc:
         for lev,data in {**ldef.level_dlc_boss, **ldef.level_dlc_boss_final}.items():
-            levels[lev] = LevelData(data.world_location, scrub_list(data.locations, active_locations.keys()), data.rule)
+            levels[lev] = LevelData(
+                data.world_location,
+                scrub_list(data.locations, active_locations.keys(), _debug_scrub),
+                data.rule
+            )
         levels.update(ldef.level_dlc_chesscastle_boss)
         levels.update(ldef.level_dlc_special)
 

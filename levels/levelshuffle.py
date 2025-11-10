@@ -66,7 +66,7 @@ def shuffle_levels(rand: Random, level_list: list[str], level_exclude_list: list
 
     for i in range(len(_levels)):
         res[_levels[i]] = levels_shuffled[i]
-    for x in _excluded_levels:
-        res[x] = x
+    if _excluded_levels:
+        res.update({x: x for x in _excluded_levels})
 
     return res

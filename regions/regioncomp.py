@@ -74,7 +74,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
 
     for loc_name in region_locations:
         if not loc_name: # If entry is None
-            print(f"WARNING: For \"{regc.name}\": location is None!")
+            print(f"WARNING: For '{regc.name}': location is None!")
         elif loc_name in locations: # If entry exits in active locations
             loc_id = locations[loc_name].id
             event = locations[loc_name].event if loc_id else True
@@ -84,11 +84,11 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
                 if loc_name not in locset:
                     locset.add(loc_name)
                 else:
-                    print(f"WARNING: \"{loc_name}\" already was registered!")
+                    print(f"WARNING: '{loc_name}' already was registered!")
             #print(location.name)
             region.locations.append(location)
         elif world.settings.is_debug_bit_on(1):
-            print(f"Skipping location \"{loc_name}\" for \"{regc.name}\" as it does not exist for this configuration.")
+            print(f"Skipping location '{loc_name}' for '{regc.name}' as it does not exist for this configuration.")
 
     multiworld.regions.append(region)
 
@@ -98,8 +98,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
 def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
     if b:
         return lambda s, p: a(s, p) and b(s, p)
-    else:
-        return a
+    return a
 
 def connect_target(world: CupheadWorld, region_name: str, target: Target, locset: set[str] | None = None):
     wconfig = world.wconfig
@@ -135,7 +134,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
             elif world.settings.is_debug_bit_on(1):
                 print(f"Skipping Target {target.name}")
         else:
-            print(f"WARNING: For \"{regc.name}\": a target is None!")
+            print(f"WARNING: For '{regc.name}': a target is None!")
 
 def create_regions(world: CupheadWorld) -> None:
     compile_regions = get_regions(world)
@@ -149,7 +148,7 @@ def create_regions(world: CupheadWorld) -> None:
             elif world.settings.is_debug_bit_on(1):
                 print("Skipping Region "+regc.name)
         else:
-            print(f"WARNING: For \"{compile_regions}\": region is None!")
+            print(f"WARNING: For '{compile_regions}': region is None!")
 
     # Connect Region Targets
     freemove_isles = world.wconfig.freemove_isles

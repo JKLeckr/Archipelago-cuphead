@@ -30,7 +30,7 @@ class Weight(Range):
     def __init__(self, value: int):
         if value < 0:
             raise OptionError(f"Option {self.__class__.__name__} cannot be negative!")
-        elif value > self.weight_max:
+        if value > self.weight_max:
             raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
         self.value = value
 
