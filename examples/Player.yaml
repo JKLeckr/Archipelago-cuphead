@@ -1,3 +1,6 @@
+# Template YAML generated with gentemplateyaml
+# alpha02f
+
 name: Player
 game: Cuphead
 Cuphead:
@@ -6,111 +9,148 @@ Cuphead:
   start_inventory: {}
 
   # Set whether or not to use Delicious Last Course content (Requires owning the DLC).
-  # Other values: 'true'
+  #
+  # Values: false, true
+  # Default: False
   use_dlc: 'false'
 
   # Set the mode of the randomizer which includes goal.
   # NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
-  # Other values: beat_devil, collect_contracts, buy_out_shop, dlc_beat_saltbaker, dlc_beat_both, dlc_collect_ingredients, dlc_collect_both
-  mode: beat_devil
-
-  # Set how the weapons are shuffled in the pool.
-  # Options:
-  # - Progressive: turns the weapons in the pool into progressive weapons (plane has a separate EX item).
-  # - EX Separate: makes each weapon's EX ability a separate item.
-  # - ... Except Start: makes the start weapon have normal behavior.
-  # Notes:
-  # - "Progressive" means that weapon EX is unlocked from having two of the same weapon.
-  # - A weapon EX item without the base weapon will give you a weapon that only can do EX shots.
-  # Other values: progressive, progressive_except_start, ex_separate, ex_separate_except_start, normal
-  weapon_mode: normal
+  #
+  # Values: beat_devil, collect_contracts, buy_out_shop, dlc_beat_saltbaker, dlc_beat_both, dlc_collect_ingredients, dlc_collect_both
+  # Default: 1
+  mode: '1'
 
   # Set the boss difficulty to expert.
-  # Other values: 'true'
+  #
+  # Values: false, true
+  # Default: False
   expert_mode: 'false'
 
   # Choose weapon to start with.
   # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
-  # Other values: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
+  #
+  # Values: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
+  # Default: random
   start_weapon: random
 
-  # Set the amount of contracts needed to confront Kingdice and, ultimately, the devil.
+  # Set how the weapons are shuffled in the pool.
+  # Options:
+  # - Normal: EX is part of the weapon you receive (vanilla behavior).
+  # - Progressive: turns the weapons in the pool into progressive weapons (plane has a separate EX item).
+  # - EX Separate makes each weapon's EX ability a separate item.
+  # - ... Except Start: makes the start weapon have normal behavior.
+  # Notes:
+  # - "Progressive" means that weapon EX is unlocked from having two of the same weapon.
+  # - A weapon EX item without the base weapon will give you a weapon that only can do EX shots.
+  #
+  # Values: normal, progressive, ex_separate, progressive_except_start, ex_separate_except_start
+  # Default: normal
+  weapon_mode: normal
+
+  # Set the amount of contracts needed to confront King Dice and, ultimately, the devil.
   # The required contracts for the die houses are evenly distributed.
+  #
+  # Range: 3-17
+  # Default: 17
   contract_requirements: '17'
 
   # -DLC ONLY-
   # Set the amount of ingredients needed to confront Saltbaker.
+  #
+  # Range: 1-5
+  # Default: 5
   dlc_ingredient_requirements: '5'
 
   # Set the amount of contracts needed for goal.
   # Note: Cannot be lower than Contract Requirements
+  #
+  # Range: 3-17
+  # Default: 17
   contract_goal_requirements: '17'
 
   # -DLC ONLY-
   # Set the amount of ingredients needed for goal.
   # Note: Cannot be lower than Ingredient Requirements
+  #
+  # Range: 1-5
+  # Default: 5
   dlc_ingredient_goal_requirements: '5'
-
-  # Allow all the levels on each island to be freely accessible without completing a previous level first.
-  # Other values: 'true'
-  freemove_isles: 'false'
 
   # Shuffle the Boss and Run n' Gun levels.
   # Bosses and Run n' Guns are shuffled within their own group.
   # Note: Be careful with this option! This can easily break generation if used with plando.
-  # Other values: enabled, plane_separate, disabled
+  #
+  # Values: disabled, enabled, plane_separate
+  # Default: disabled
   level_shuffle: disabled
 
   # Shuffle the King Dice mini-bosses.
   # This option is independent of Level Shuffle.
-  # Other values: 'false'
+  #
+  # Values: true, false
+  # Default: True
   level_shuffle_kingdice: 'true'
 
-  # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
-  # In Cuphead, this only applies while you are in a level.
-  # Other values: 'true'
-  deathlink: 'false'
+  # Allow all the levels on each island to be freely accessible without completing a previous level first.
+  #
+  # Values: false, true
+  # Default: False
+  freemove_isles: 'false'
 
-  # -REQUIRES DEATHLINK-
-  # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
-  deathlink_grace_count: '0'
+  # Set shop mode.
+  # You get access to higher tiers the more shops you have access to.
+  #
+  # Values: tiers, independent
+  # Default: tiers
+  shop_mode: tiers
 
   # Randomize essential abilities like Duck, Parry, Dash, etc.
-  # Other values: 'false'
+  #
+  # Values: true, false
+  # Default: True
   randomize_abilities: 'true'
 
   # Also include beating the secret phases of the three bosses as checks.
   # The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
   # The secret phases are more difficult than the normal fight.
-  # Other values: 'true'
+  #
+  # Values: false, true
+  # Default: False
   boss_secret_checks: 'false'
 
   # Enable grade checks for Boss Levels.
   # NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
-  # Other values: disabled, a_minus_grade, a_grade, a_plus_grade, s_grade
-  boss_grade_checks: a_minus_grade
+  #
+  # Values: disabled, a_minus_grade, a_grade, a_plus_grade, s_grade
+  # Default: 1
+  boss_grade_checks: '1'
 
   # Enable grade checks for Run n' Gun levels.
   # Pacifist: Beat the level without killing any monsters (not easy).
-  # Other values: disabled, a_minus_grade, a_grade, a_plus_grade, p_grade
+  #
+  # Values: disabled, a_minus_grade, a_grade, a_plus_grade, p_grade
+  # Default: a_minus_grade
   rungun_grade_checks: a_minus_grade
-
-  # Enable the Silverworth Quest check.
-  # This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
-  # Other values: 'false'
-  silverworth_quest: 'true'
-
-  # Enable the Pacifist Quest check.
-  # This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
-  # Other values: 'true'
-  pacifist_quest: 'false'
 
   # -DLC ONLY-
   # -REQUIRES CHALICE-
   # Enable checks for defeating each boss as Ms. Chalice.
   # Separate makes Chalice checks separate from level completion checks.
   # Grade Required has the set grade check requirement for bosses.
-  # Other values: disabled, enabled, separate, grade_required, separate_grade_required
+  #
+  # Values: disabled, a_minus_grade, a_grade, a_plus_grade, use_grade_check
+  # Default: disabled
+  dlc_chalice_check_grade: disabled
+
+  # -DLC ONLY-
+  # -REQUIRES CHALICE-
+  # Enable checks for defeating each boss as Ms. Chalice.
+  # Separate makes Chalice checks separate from level completion checks.
+  # Grade Required has the set grade check requirement for bosses.
+  #
+  # Values: disabled, enabled, separate, grade_required, separate_grade_required
+  # Default: disabled
   dlc_boss_chalice_checks: disabled
 
   # -DLC ONLY-
@@ -118,16 +158,24 @@ Cuphead:
   # Enable checks for completing each run n' gun as Ms. Chalice.
   # Separate makes Chalice checks separate from level completion checks.
   # Grade Required has the set grade check requirement for run n' guns.
-  # Other values: Other values: disabled, enabled, separate, grade_required, separate_grade_required
+  #
+  # Values: disabled, enabled, separate, grade_required, separate_grade_required
+  # Default: disabled
   dlc_rungun_chalice_checks: disabled
 
-  # -DLC ONLY-
-  # -REQUIRES CHALICE-
-  # Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
-  # This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
-  # You can talk to the Cactus Girl to know which bosses you need to defeat still.
-  # Other values: 'true'
-  dlc_cactusgirl_quest: 'false'
+  # Enable the Silverworth Quest check.
+  # This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
+  #
+  # Values: true, false
+  # Default: True
+  silverworth_quest: 'true'
+
+  # Enable the Pacifist Quest check.
+  # This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
+  #
+  # Values: false, true
+  # Default: False
+  pacifist_quest: 'false'
 
   # -DLC ONLY-
   # Enable Ms. Chalice and the Astral Cookie.
@@ -136,43 +184,97 @@ Cuphead:
   # - Start: The cookie is available at the start of the game.
   # - Vanilla: The cookie is obtained at the start of the DLC (Vanilla Behavior).
   # - Randomized: The cookie is in the item pool. Starting the DLC is a check.
-  # Other values: disabled, start, vanilla, randomized
+  #
+  # Values: disabled, start, vanilla, randomized
+  # Default: randomized
   dlc_chalice: randomized
 
   # -DLC ONLY-
   # Choose how to handle the locations of The King's Leap.
   # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
-  # Other values: exclude, exclude_gauntlet, include_all
+  #
+  # Values: exclude, exclude_gauntlet, include_all
+  # Default: exclude_gauntlet
   dlc_kingsleap: exclude_gauntlet
 
   # -DLC ONLY-
-  # Set how the cursed and devine relic is handled.
+  # -REQUIRES CHALICE-
+  # Enable the Cactus Girl Quest (aka Ms. Chalice Quest) check.
+  # This means that you will have to beat EVERY boss as Ms. Chalice (tedious) for a single check.
+  # You can talk to the Cactus Girl to know which bosses you need to defeat still.
   #
+  # Values: false, true
+  # Default: False
+  dlc_cactusgirl_quest: 'false'
+
+  # -DLC ONLY-
+  # Set how the cursed and devine relic is handled.
+  # 
   # Modes:
   # - Off: Broken Relic is removed from the game
   # - Vanilla: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
-  # Other values: off, vanilla
+  #
+  # Values: off, vanilla
+  # Default: off
   dlc_curse_mode: off
 
   # Set extra coins in the item pool.
+  #
+  # Range: 0-10
+  # Default: 0
   extra_coins: '0'
 
   # Set starting max health.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  #
+  # Range: 1-4
+  # Default: 3
   start_maxhealth: '3'
+
+  # Set starting max health for Player 2. Set to 0 to use Player 1's max health.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  #
+  # Range: 0-4
+  # Default: 0
+  start_maxhealth_p2: '0'
 
   # Set number of max health upgrades in the pool.
   # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  #
+  # Range: 0-3
+  # Default: 0
   maxhealth_upgrades: '0'
 
   # Set the minimum amount of filler items that should exist in this world.
   # NOTE: If there are not enough locations, some coins will be compressed into packs of 2 or 3 to make space.
+  #
+  # Range: 0-10
+  # Default: 0
   minimum_filler: '0'
 
   # Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
+  #
+  # Default: 3
   filler_weight_extrahealth: '3'
 
   # Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
+  #
+  # Default: 3
   filler_weight_supercharge: '3'
+
+  # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
+  # In Cuphead, this only applies while you are in a level.
+  #
+  # Values: false, true
+  # Default: False
+  deathlink: 'false'
+
+  # -REQUIRES DEATHLINK-
+  # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
+  #
+  # Range: 0-9
+  # Default: 0
+  deathlink_grace_count: '0'
+
