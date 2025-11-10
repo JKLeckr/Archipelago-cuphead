@@ -27,7 +27,7 @@ class LRule(NamedTuple):
 _all_levels: dict[str, LevelData] = {}
 
 def init(all_levels: dict[str, LevelData]):
-    _all_levels = all_levels
+    _all_levels.update(all_levels)
 
 class LevelLocRuleData:
     base_region: str
