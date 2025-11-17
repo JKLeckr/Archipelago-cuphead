@@ -382,17 +382,17 @@ location_level_boss_secret: dict[str, LocationData] = {
     LocationNames.loc_level_boss_sallystageplay_secret: LocationData(lid(127)),
 }
 location_level_dlc_boss_secret: dict[str, LocationData] = {
-    LocationNames.loc_level_dlc_boss_airplane_secret: LocationData(dlc_lid(77)),
+    LocationNames.loc_level_dlc_boss_airplane_secret: LocationData(dlc_lid(72)),
 }
 location_dlc_world: dict[str, LocationData] = {
-    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_lid(72)),
-    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_lid(73)),
+    LocationNames.loc_dlc_npc_newscat: LocationData(dlc_lid(73)),
+    LocationNames.loc_dlc_coin_isle4_secret: LocationData(dlc_lid(74)),
 }
 location_dlc_world_event: dict[str, LocationData] = {
     LocationNames.loc_event_dlc_boatarrival: LocationData(None),
 }
 location_dlc_world_quest: dict[str, LocationData] = {
-    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_lid(74)),
+    LocationNames.loc_dlc_quest_cactusgirl: LocationData(dlc_lid(75)),
 }
 
 # Special Locations
@@ -406,10 +406,10 @@ location_special: dict[str, LocationData] = {
     #LocationNames.loc_event_music: LocationData(None),
 }
 location_dlc_special: dict[str, LocationData] = {
-    LocationNames.loc_dlc_cookie: LocationData(dlc_lid(75)),
+    LocationNames.loc_dlc_cookie: LocationData(dlc_lid(76)),
     LocationNames.loc_event_mausoleum: LocationData(None),
     LocationNames.loc_event_dlc_cookie: LocationData(None),
-    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_lid(76)),
+    #LocationNames.loc_dlc_curse_complete: LocationData(dlc_lid(77)),
 }
 
 # Goal Locations
