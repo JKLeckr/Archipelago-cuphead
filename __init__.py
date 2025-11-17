@@ -52,7 +52,7 @@ class CupheadWorld(World):
     GAME_NAME: ClassVar[str] = "Cuphead"
     APWORLD_VERSION: ClassVar[str] = "alpha03a"
 
-    SLOT_DATA_VERSION: ClassVar[int] = 4
+    SLOT_DATA_VERSION: ClassVar[int] = 5
 
     WCONFIG_DEFAULT: ClassVar[WorldConfig] = WorldConfig()
 
