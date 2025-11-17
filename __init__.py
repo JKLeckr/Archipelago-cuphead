@@ -14,6 +14,7 @@ from worlds.AutoWorld import WebWorld, World
 from . import debug as dbg
 from . import items, levels, locations, options, regions, shop, slotdata
 from .enums import WeaponMode
+from .fver import FVersion
 from .items import itemcreate, itemgroups, weapons
 from .items import itemdefs as idef
 from .items.itembase import ItemData
@@ -50,7 +51,8 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: ClassVar[str] = "Cuphead"
-    APWORLD_VERSION: ClassVar[str] = "alpha03a"
+    APWORLD_INT_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 0)
+    APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_INT_VERSION))
 
     SLOT_DATA_VERSION: ClassVar[int] = 5
 
