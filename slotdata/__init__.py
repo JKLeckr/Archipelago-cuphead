@@ -10,11 +10,16 @@ from .. import regions, rules
 
 if typing.TYPE_CHECKING:
      from .. import CupheadWorld
+     from ..wconf import WorldConfig
+
+def _get_feature_bits(wconf: WorldConfig) -> int:
+    return 0
 
 def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
     slot_data: dict[str, Any] = {
         "version": world.SLOT_DATA_VERSION,
         "world_version": world.version,
+        "feature_bit_reqs": _get_feature_bits(world.wconfig),
         "level_map": world.level_map,
         "shop_map": world.shop.shop_map,
         "contract_requirements": world.contract_requirements,
