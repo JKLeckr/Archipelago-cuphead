@@ -102,7 +102,7 @@ class ContractRequirements(Range):
     display_name = "Contract Requirements"
     range_start = 3
     range_end = 17
-    default = 17
+    default: int = 17
 
 class DlcIngredientRequirements(Range):
     """

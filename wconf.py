@@ -174,9 +174,8 @@ class WorldConfig:
     def _get_contract_requirements(self, options: CupheadOptions | None) -> tuple[int, int, int]:
         max_contracts = (5, 10, 17)
         total_req = options.contract_requirements.value if options else odefs.ContractRequirements.default
-        distrib = total_req // 3
-        die1 = min(distrib, max_contracts[0])
-        die2 = die1 + min(distrib, max_contracts[1])
+        die1 = min(total_req // 3, max_contracts[0])
+        die2 = min((die1 + total_req) // 2, max_contracts[1])
 
         return (die1, die2, total_req)
 
