@@ -55,6 +55,8 @@ class CupheadWorld(World):
     def _int_version_to_tuple_version(version: tuple[int, int, int, int]) -> tuple[int, int, int]:
         _format = 1
         _pofx = 0
+        if version[0] > 0:
+            raise NotImplementedError("Version tuple parser not implemented for full versions!")
         return (
             version[0],
             version[1],
