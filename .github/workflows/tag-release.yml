@@ -40,7 +40,8 @@ jobs:
       - name: Generate archipelago.json
         working-directory: ../
         run: |
-          python ./genapjson.py ./Archipelago-cuphead/__init__.py -m ${{ env.RELEASE_VERSION }}
+          export SIMPLE_VERSION=$(printf '%s\n' "${{ env.RELEASE_VERSION }}" | sed 's/\.[0-9]\+//')
+          python ./genapjson.py ./Archipelago-cuphead/__init__.py -m ${SIMPLE_VERSION}
 
       - name: Build ZIP package
         working-directory: ../
