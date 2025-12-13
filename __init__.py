@@ -9,6 +9,7 @@ from typing_extensions import override
 
 from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from Options import PerGameCommonOptions
+from Utils import Version
 from worlds.AutoWorld import WebWorld, World
 
 from . import debug as dbg
@@ -50,8 +51,25 @@ class CupheadWorld(World):
     A classic run and gun action game heavily focused on boss battles
     """
 
+    @staticmethod
+    def _int_version_to_tuple_version(version: tuple[int, int, int, int]) -> tuple[int, int, int]:
+        _format = 1
+        _pofx = 0
+        return (
+            version[0],
+            version[1],
+            (
+                ((_format & 0xFF) << 24) |
+                ((version[2] & 0xFF) << 16) |
+                ((version[3] & 0xFF) << 8) |
+                (_pofx & 0xFF)
+            )
+        )
+
     GAME_NAME: ClassVar[str] = "Cuphead"
+
     APWORLD_INT_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 0)
+    APWORLD_TUPLE_VERSION: ClassVar[tuple[int, int, int]] = _int_version_to_tuple_version(APWORLD_INT_VERSION)
     APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_INT_VERSION))
 
     SLOT_DATA_VERSION: ClassVar[int] = 5
@@ -62,7 +80,7 @@ class CupheadWorld(World):
     web: ClassVar[WebWorld] = CupheadWebWorld()
     options_dataclass: ClassVar[type[PerGameCommonOptions]] = CupheadOptions
     options: CupheadOptions # type: ignore
-    version: ClassVar[str] = APWORLD_VERSION
+    world_version: ClassVar[Version] = Version(*APWORLD_TUPLE_VERSION)
     origin_region_name: str = "Start"
 
     required_client_version: tuple[int, int, int] = (0, 6, 0)
@@ -99,7 +117,7 @@ class CupheadWorld(World):
 
     @override
     def generate_early(self) -> None:
-        self.options.version.value = self.version
+        self.options.version.value = self.APWORLD_VERSION
 
         self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
 

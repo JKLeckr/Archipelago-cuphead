@@ -19,7 +19,8 @@ OUTPUT_FILE: str = "archipelago.json"
 APWORLD_FIELDS: dict[str, str] = {
     "GAME_NAME": "game",
     "required_server_version": "minimum_ap_version",
-    "APWORLD_VERSION": "world_version",
+    "APWORLD_TUPLE_VERSION": "world_version",
+    "APWORLD_VERSION": "world_friendly_version",
 }
 
 FieldTypes = str | int | None

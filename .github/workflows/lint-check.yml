@@ -41,7 +41,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          python -m pip install --upgrade pip ruff==0.14.4
+          python -m pip install --upgrade pip ruff==0.14.9
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
 
       - name: "Run ruff"

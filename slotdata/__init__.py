@@ -18,7 +18,7 @@ def _get_feature_bits(wconf: WorldConfig) -> int:
 def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
     slot_data: dict[str, Any] = {
         "version": world.SLOT_DATA_VERSION,
-        "world_version": world.version,
+        "world_version": world.APWORLD_VERSION,
         "feature_bit_reqs": _get_feature_bits(world.wconfig),
         "level_map": world.level_map,
         "shop_map": world.shop.shop_map,
