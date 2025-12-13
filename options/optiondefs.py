@@ -227,9 +227,9 @@ class RandomizeAimAbilities(Toggle):
 
 class BossSecretChecks(Toggle):
     """
-    Also include beating the secret phases of the three bosses as checks.
-    The three boss levels include: Botanic Panic, Pyramid Peril, and Dramatic Fanatic.
-    The secret phases are more difficult than the normal fight.
+    Also include beating the secret phases that certain bosses have as checks.
+    The boss levels include: Botanic Panic, Pyramid Peril, Dramatic Fanatic, and Doggone Dogfight (DLC).
+    The secret phases are generally more difficult than the normal fight.
     """
     name = "boss_secret_checks"
     display_name = "Boss Secret Checks"
