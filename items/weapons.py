@@ -1,9 +1,9 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from ..enums import WeaponMode
+from ..base.enums import WeaponMode
+from ..base.wconf import WorldConfig
 from ..names import ItemNames
-from ..wconf import WorldConfig
 
 weapon_dict: dict[int,str] = {
     0: ItemNames.item_weapon_peashooter,

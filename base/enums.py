@@ -14,6 +14,7 @@ class GameMode(IntEnum):
     DLC_COLLECT_BOTH = 18
     DLC_BEAT_DEVIL_NO_ISLE4 = 33
     DLC_BEAT_SALTBAKER_ISLE4_ONLY = 40
+
 class WeaponMode(IntEnum):
     NORMAL = 0
     EXCEPT_START = 4 # Not functional on its own.
@@ -21,14 +22,17 @@ class WeaponMode(IntEnum):
     PROGRESSIVE_EXCEPT_START = 5
     EX_SEPARATE = 2
     EX_SEPARATE_EXCEPT_START = 6
+
 class ShopMode(IntEnum):
     TIERS = 0
     STRICT_TIERS = 1
     INDEPENDENT = 2
+
 class LevelShuffleMode(IntEnum):
     DISABLED = 0
     ENABLED = 1
     PLANE_SEPARATE = 2
+
 class GradeCheckMode(IntEnum):
     DISABLED = 0
     A_MINUS_GRADE = 1
@@ -36,24 +40,28 @@ class GradeCheckMode(IntEnum):
     A_PLUS_GRADE = 3
     S_GRADE = 4
     PACIFIST = 5
+
 class ChaliceMode(IntEnum):
     DISABLED = 0
     START = 1
     VANILLA = 2
     RANDOMIZED = 3
     CHALICE_ONLY = 4
+
 class ChaliceCheckMode(IntEnum):
     DISABLED = 0
     ENABLED = 1
     SEPARATE = 2
     GRADE_REQUIRED = 4
     SEPARATE_GRADE_REQUIRED = 6
+
 # TODO: Switch to Flag format
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
     EXCLUDE_GAUNTLET = 1
     GAUNTLET_ONLY = 2
     INCLUDE_ALL = 3
+
 class CurseMode(IntEnum):
     OFF = 0
     VANILLA = 1

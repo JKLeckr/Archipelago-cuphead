@@ -6,16 +6,16 @@ from __future__ import annotations
 import typing
 from random import Random
 
-from ..auxiliary import scrub_list
+from ..base.auxiliary import scrub_list
+from ..base.wconf import WorldConfig
 from ..locations.locationbase import LocationData
 from ..names import LocationNames
-from ..wconf import WorldConfig
 from . import leveldefs as ldef
 from . import levelids, levelshuffle
 from .levelbase import LevelData
 
 if typing.TYPE_CHECKING:
-    from ..settings import CupheadSettings
+    from ..base.settings import CupheadSettings
 
 def setup_levels(
         settings: CupheadSettings,

@@ -11,11 +11,11 @@ from collections.abc import Callable
 from dataclasses import dataclass, field, fields
 from typing import Any
 
-from . import enums as e
-from .names import ItemNames, LocationNames
-from .options import CupheadOptions
-from .options import options as odefs
-from .options.field import create_field
+from ..base import enums as e
+from ..names import ItemNames, LocationNames
+from ..options import CupheadOptions
+from ..options import options as odefs
+from ..options.field import create_field
 
 
 def _get_coin_amounts(options: CupheadOptions | None) -> tuple[int, int, int]:
@@ -95,6 +95,7 @@ def _get_separate_items_mode(options: CupheadOptions | None) -> e.ItemGroups:
     _val |= _get_bit("weapon_ex", e.ItemGroups.WEAPON_EX)
     _val |= _get_bit("abilities", e.ItemGroups.ABILITIES)
 
+    # TODO: Change this when this is implemented
     return e.ItemGroups.NONE
 
 # These are settings stored and accessed by other classes

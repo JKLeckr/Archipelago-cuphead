@@ -5,17 +5,19 @@ from __future__ import annotations
 
 from typing import Any, ClassVar, TextIO
 
-from typing_extensions import override
-
 from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
-from Options import PerGameCommonOptions
+from typing_extensions import override
 from Utils import Version
+
+from Options import PerGameCommonOptions
 from worlds.AutoWorld import WebWorld, World
 
 from . import debug as dbg
 from . import items, levels, locations, options, regions, shop, slotdata
-from .enums import WeaponMode
-from .fver import FVersion
+from .base.enums import WeaponMode
+from .base.fver import FVersion
+from .base.settings import CupheadSettings
+from .base.wconf import WorldConfig
 from .items import itemcreate, itemgroups, weapons
 from .items import itemdefs as idef
 from .items.itembase import ItemData
@@ -27,9 +29,7 @@ from .names import ItemNames, LocationNames
 from .options import CupheadOptions, presets
 from .options.optionsanitizer import OptionSanitizer
 from .rules import rules
-from .settings import CupheadSettings
 from .shop import ShopData
-from .wconf import WorldConfig
 
 
 class CupheadWebWorld(WebWorld):
@@ -105,6 +105,9 @@ class CupheadWorld(World):
 
     level_map: dict[int, int]
 
+    fake_gen: bool = False
+    ut_can_gen_without_yaml: ClassVar[bool] = True
+
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
         if self.wconfig.randomize_abilities:
@@ -117,8 +120,17 @@ class CupheadWorld(World):
             _weapon = self.random.choice(weapons.weapon_ex_dict)
             self.multiworld.early_items[self.player][_weapon] = 1
 
+    def re_gen_setup(self) -> None:
+        re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
+        if re_gen_passthrough and self.game in re_gen_passthrough:
+            _slot_data_options = slotdata.get_slot_data_options() # TODO: Finish
+
     @override
     def generate_early(self) -> None:
+        self.fake_gen = getattr(self.multiworld, "generation_is_fake", False)
+        if self.fake_gen:
+            self.re_gen_setup()
+
         self.options.version.value = self.APWORLD_VERSION
 
         self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
@@ -284,6 +296,10 @@ class CupheadWorld(World):
         #debug.print_locations(self)
         if self.settings.is_debug_bit_on(4):
             dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))
+        if self.fake_gen and self.settings.is_debug_bit_on(256):
+            #dbg.debug_print_regions(self)
+            dbg.debug_visualize_regions(self, True, "UT")
+
         return super().post_fill()
 
     def get_start_locations(self) -> list[str]:
@@ -292,15 +308,26 @@ class CupheadWorld(World):
 
     @override
     def __getattr__(self, item: str) -> Any:
-        if item == "level_map":
-            return {}
         if item == "wconfig":
             return self.__class__.WCONFIG_DEFAULT
         return super().__getattr__(item)
 
     # For Universal Tracker
-    def interpret_slot_data(self, slot_data: dict[str, Any]) -> None:
-        slotdata.interpret_slot_data(self, slot_data)
-        if self.settings.is_debug_bit_on(256):
-            #dbg.debug_print_regions(self)
-            dbg.debug_visualize_regions(self, True, "UT")
+    @staticmethod
+    def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
+        if "version" not in slot_data:
+            raise KeyError("'version' is missing from slot data!")
+        if "world_version" not in slot_data:
+            raise KeyError("'world_version' is missing from slot data!\nIncompatible APWorld!")
+        _version = slot_data["version"]
+        if _version != CupheadWorld.SLOT_DATA_VERSION:
+            raise ValueError(f"Slot data version mismatch. {_version}!={CupheadWorld.SLOT_DATA_VERSION}")
+
+        _world_version = slot_data["world_version"]
+
+        # FIXME: Add option to enable/disable logging
+        print(f"SlotData version: {_version}")
+        print(f"Server APWorld Version: {_world_version}")
+        print(f"This APWorld Version: {CupheadWorld.APWORLD_VERSION}")
+
+        return slot_data

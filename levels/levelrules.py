@@ -5,13 +5,13 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from ..base.enums import ChaliceCheckMode, ChaliceMode, WeaponMode
+from ..base.wconf import WorldConfig
 from ..debug import p
-from ..enums import ChaliceCheckMode, ChaliceMode, WeaponMode
 from ..items import weapons
 from ..names import ItemNames
 from ..rules import rulebase as rb
 from ..rules.rulebase import RegionRule
-from ..wconf import WorldConfig
 
 LevelRule = Callable[[WorldConfig], RegionRule]
 

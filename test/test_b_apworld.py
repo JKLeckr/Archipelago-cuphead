@@ -2,13 +2,26 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 import unittest
+from dataclasses import fields
 
-from .. import wconf
-from ..enums import WeaponMode
+from .. import options
+from ..base import wconf
+from ..base.enums import WeaponMode
 from ..items import itemdefs as idefs
 from ..items import itemsetup, weapons
 from ..names import ItemNames
 
+
+class TestAPWorldOptionsWConf(unittest.TestCase):
+    exclude_options: set[str] = {
+        "options"
+    }
+    
+    def test_world_options_in_wconf(self):
+        wconf_fields = {x.name for x in fields(wconf.WorldConfig)}
+        for f in fields(options.CupheadOptions):
+            if f.name not in self.exclude_options:
+                self.assertIn(f.name, wconf_fields)
 
 class TestAPWorldItemSetup(unittest.TestCase):
     def test_setup_weapons(self):

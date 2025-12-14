@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from typing import NamedTuple
 
+from ..base.wconf import WorldConfig
 from ..names import LocationNames
-from ..wconf import WorldConfig
 
 shop_weapons = [
     LocationNames.loc_shop_weapon1,

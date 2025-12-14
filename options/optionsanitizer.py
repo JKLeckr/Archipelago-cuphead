@@ -6,8 +6,8 @@ from __future__ import annotations
 from collections.abc import Iterable
 from random import Random
 
-from ..auxiliary import format_list
-from ..enums import ChaliceCheckMode, ChaliceMode, LevelShuffleMode, WeaponMode
+from ..base.auxiliary import format_list
+from ..base.enums import ChaliceCheckMode, ChaliceMode, LevelShuffleMode, WeaponMode
 from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 from .protocols import CupheadNumericOption, CupheadOptionSet

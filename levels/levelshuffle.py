@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from random import Random
 
-from ..enums import LevelShuffleMode
+from ..base.enums import LevelShuffleMode
 from ..names import LocationNames
 from . import leveldefs as ldef
 from . import levelids as lmap

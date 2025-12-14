@@ -10,11 +10,11 @@ from random import Random
 
 from BaseClasses import Item, ItemClassification, LocationProgressType
 
-from ..auxiliary import count_in_list
-from ..enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
+from ..base.auxiliary import count_in_list
+from ..base.enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
+from ..base.wconf import WorldConfig
 from ..locations import locationdefs as ldef
 from ..names import ItemNames, LocationNames
-from ..wconf import WorldConfig
 from . import itemdefs as idef
 from . import weapons
 from .itembase import CupheadItem, ItemData, get_filler_item_name, weighted_item_choice
