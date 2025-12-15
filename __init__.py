@@ -105,7 +105,7 @@ class CupheadWorld(World):
     def re_gen_setup(self) -> None:
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
-            _slot_data_options = slotdata.get_slot_data_options() # TODO: Finish
+            _slot_data_options = slotdata.get_slot_data_options() # TODO: Finish (wconf bitify can be used)
 
     @override
     def generate_early(self) -> None:
@@ -124,6 +124,7 @@ class CupheadWorld(World):
 
         # World Config (See wconfig.py)
         self.wconfig = WorldConfig(self.options)
+        self.gen_bits = self.wconfig.bitify()
 
         self.topology_present = not self.wconfig.freemove_isles
 

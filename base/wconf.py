@@ -18,6 +18,23 @@ from ..options import options as odefs
 from ..options.field import create_field
 
 
+_bitifiable_fields: list[str] = [
+    "boss_secret_checks",
+    "buster_quest",
+    "dlc_cactusgirl_quest",
+    "dlc_requires_mausoleum",
+    "dlc_randomize_boat",
+    "fourmel_quest",
+    "freemove_isles",
+    "ginger_quest",
+    "hard_logic",
+    "kingdice_bosssanity",
+    "music_quest",
+    "pacifist_quest",
+    "require_secret_shortcuts",
+    "silverworth_quest",
+]
+
 def _get_coin_amounts(options: CupheadOptions | None) -> tuple[int, int, int]:
     use_dlc = options.use_dlc.value if options else odefs.DeliciousLastCourse.default
     extra_coins = options.extra_coins.value if options else odefs.ExtraCoins.default
@@ -179,6 +196,30 @@ class WorldConfig:
                     value = getattr(options, oname).value
                     conv: Callable[[Any], Any] | None = meta.get("conv") or None
                     setattr(self, f.name, conv(value) if conv else value)
+
+    def bitify(self) -> int:
+        res = 0
+
+        shift = 0
+        for bit in _bitifiable_fields:
+            if (hasattr(self, bit)):
+                _field = getattr(self, bit)
+                res |= ((1 if _field else 0) << shift) & 1
+            else:
+                raise KeyError(f"{bit} is not in wconf!")
+            shift += 1
+
+        return res
+    
+    def debitify(self, bits: int) -> None:
+        shift = 0
+        for bit in _bitifiable_fields:
+            if (hasattr(self, bit)):
+                res = (bits << shift) & 1
+                setattr(self, bit, bool(res))
+            else:
+                raise KeyError(f"{bit} is not in wconf!")
+            shift += 1
 
     def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
         return (self.dlc_chalice_items_separate & item_group) > 0
