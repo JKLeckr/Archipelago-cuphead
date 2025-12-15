@@ -7,7 +7,6 @@ from typing import Any, ClassVar, TextIO
 
 from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from typing_extensions import override
-from Utils import Version
 
 from Options import PerGameCommonOptions
 from worlds.AutoWorld import WebWorld, World
@@ -15,9 +14,9 @@ from worlds.AutoWorld import WebWorld, World
 from . import debug as dbg
 from . import items, levels, locations, options, regions, shop, slotdata
 from .base.enums import WeaponMode
-from .base.fver import FVersion
 from .base.settings import CupheadSettings
 from .base.wconf import WorldConfig
+from .fver import FVersion
 from .items import itemcreate, itemgroups, weapons
 from .items import itemdefs as idef
 from .items.itembase import ItemData
@@ -51,28 +50,12 @@ class CupheadWorld(World):
     A classic run and gun action game heavily focused on boss battles
     """
 
-    @staticmethod
-    def _int_version_to_tuple_version(version: tuple[int, int, int, int]) -> tuple[int, int, int]:
-        _format = 1
-        _pofx = 0
-        if version[0] > 0:
-            raise NotImplementedError("Version tuple parser not implemented for full versions!")
-        return (
-            version[0],
-            version[1],
-            (
-                ((_format & 0xFF) << 24) |
-                ((version[2] & 0xFF) << 16) |
-                ((version[3] & 0xFF) << 8) |
-                (_pofx & 0xFF)
-            )
-        )
-
     GAME_NAME: ClassVar[str] = "Cuphead"
 
-    APWORLD_INT_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 0)
-    APWORLD_TUPLE_VERSION: ClassVar[tuple[int, int, int]] = _int_version_to_tuple_version(APWORLD_INT_VERSION)
-    APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_INT_VERSION))
+    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 0)
+    APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_SEM_VERSION))
+
+    AUTHORS: ClassVar[list[str]] = ["JKLeckr"]
 
     SLOT_DATA_VERSION: ClassVar[int] = 5
 
@@ -82,11 +65,10 @@ class CupheadWorld(World):
     web: ClassVar[WebWorld] = CupheadWebWorld()
     options_dataclass: ClassVar[type[PerGameCommonOptions]] = CupheadOptions
     options: CupheadOptions # type: ignore
-    world_version: ClassVar[Version] = Version(*APWORLD_TUPLE_VERSION)
     origin_region_name: str = "Start"
 
-    required_client_version: tuple[int, int, int] = (0, 6, 0)
-    required_server_version: tuple[int, int, int] = (0, 6, 0)
+    required_client_version: tuple[int, int, int] = (0, 6, 4)
+    required_server_version: tuple[int, int, int] = (0, 6, 4)
 
     item_name_to_id: ClassVar[dict[str, int]] = idef.name_to_id
     location_name_to_id: ClassVar[dict[str, int]] = ld.name_to_id

@@ -3,6 +3,7 @@
 
 import unittest
 from dataclasses import fields
+from typing import ClassVar
 
 from .. import options
 from ..base import wconf
@@ -13,10 +14,10 @@ from ..names import ItemNames
 
 
 class TestAPWorldOptionsWConf(unittest.TestCase):
-    exclude_options: set[str] = {
+    exclude_options: ClassVar[set[str]] = {
         "options"
     }
-    
+
     def test_world_options_in_wconf(self):
         wconf_fields = {x.name for x in fields(wconf.WorldConfig)}
         for f in fields(options.CupheadOptions):
