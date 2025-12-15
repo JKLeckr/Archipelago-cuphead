@@ -101,55 +101,55 @@ def _get_separate_items_mode(options: CupheadOptions | None) -> e.ItemGroups:
 # These are settings stored and accessed by other classes
 @dataclass
 class WorldConfig:
-    use_dlc: bool = create_field(bool, odefs.DeliciousLastCourse)
-    mode: e.GameMode = create_field(e.GameMode, odefs.GameMode)
-    hard_logic: bool = create_field(bool, odefs.HardLogic)
-    expert_mode: bool = create_field(bool, odefs.ExpertMode)
-    start_weapon: int = create_field(int, odefs.StartWeapon, 0)
-    weapon_mode: e.WeaponMode = create_field(e.WeaponMode, odefs.WeaponMode)
-    level_shuffle: e.LevelShuffleMode = create_field(e.LevelShuffleMode, odefs.LevelShuffle)
-    level_shuffle_kingdice: bool = create_field(bool, odefs.LevelShuffleDicePalace)
-    level_shuffle_seed: str = create_field(str, odefs.LevelShuffleSeed)
-    level_placements: dict[str, str] = create_field(dict[str, str], odefs.LevelPlacements)
-    freemove_isles: bool = create_field(bool, odefs.FreeMoveIsles)
-    shop_mode: e.ShopMode = e.ShopMode.TIERS #create_field(e.ShopMode, odefs.ShopMode)
-    weapon_gate: bool = False #create_field(bool, odefs.WeaponGate)
-    randomize_abilities: bool = create_field(bool, odefs.RandomizeAbilities)
-    randomize_abilities_aim: bool = False #create_field(bool, odefs.RandomizeAimAbilities)
-    maxhealth_upgrades: int = create_field(int, odefs.MaxHealthUpgrades)
-    traps: int = create_field(int, odefs.Traps)
-    filler_item_weights: list[tuple[str, int]] = field(default_factory=list[tuple[str, int]])
-    trap_item_weights: list[tuple[str, int]] = field(default_factory=list[tuple[str, int]])
     boss_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.BossGradeChecks)
-    rungun_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.RunGunGradeChecks)
     boss_secret_checks: bool = create_field(bool, odefs.BossSecretChecks)
-    kingdice_bosssanity: bool = create_field(bool, odefs.DicePalaceBossSanity)
-    dlc_boss_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcBossChaliceChecks)
-    dlc_rungun_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcRunGunChaliceChecks)
-    dlc_kingdice_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcDicePalaceChaliceChecks)
-    dlc_chess_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcChessChaliceChecks)
     buster_quest: bool = True
-    ginger_quest: bool = True
-    fourmel_quest: bool = True
-    lucien_quest: bool = False
-    silverworth_quest: bool = create_field(bool, odefs.SilverworthQuest)
-    pacifist_quest: bool = create_field(bool, odefs.PacifistQuest)
-    dlc_chalice: e.ChaliceMode = create_field(e.ChaliceMode, odefs.DlcChaliceMode)
-    music_quest: bool = False
-    dlc_kingsleap: e.ChessCastleMode = create_field(e.ChessCastleMode, odefs.DlcChessCastle)
-    dlc_cactusgirl_quest: bool = create_field(bool, odefs.DlcCactusGirlQuest)
     coin_amounts: tuple[int, int, int] = _get_coin_amounts(None)
-    contract_requirements: tuple[int, int, int] = _get_contract_requirements(None)
-    dlc_ingredient_requirements: int = create_field(int, odefs.DlcIngredientRequirements)
     contract_goal_requirements: int = create_field(int, odefs.ContractGoalRequirements)
+    contract_requirements: tuple[int, int, int] = _get_contract_requirements(None)
+    dlc_boss_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcBossChaliceChecks)
+    dlc_cactusgirl_quest: bool = create_field(bool, odefs.DlcCactusGirlQuest)
+    dlc_chalice_items_separate: e.ItemGroups = odefs.DlcChaliceItemsSeparate.default
+    dlc_chalice: e.ChaliceMode = create_field(e.ChaliceMode, odefs.DlcChaliceMode)
+    dlc_chess_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcChessChaliceChecks)
+    dlc_curse_mode: e.CurseMode = e.CurseMode.VANILLA #create_field(e.CurseMode, odefs.DlcCurseMode)
     dlc_ingredient_goal_requirements: int = create_field(int, odefs.DlcIngredientGoalRequirements)
-    require_secret_shortcuts: bool = True
+    dlc_ingredient_requirements: int = create_field(int, odefs.DlcIngredientRequirements)
+    dlc_kingdice_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcDicePalaceChaliceChecks)
+    dlc_kingsleap: e.ChessCastleMode = create_field(e.ChessCastleMode, odefs.DlcChessCastle)
     dlc_randomize_boat: bool = True
     dlc_requires_mausoleum: bool = True
-    dlc_chalice_items_separate: e.ItemGroups = odefs.DlcChaliceItemsSeparate.default
-    dlc_curse_mode: e.CurseMode = e.CurseMode.VANILLA #create_field(e.CurseMode, odefs.DlcCurseMode)
+    dlc_rungun_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcRunGunChaliceChecks)
+    expert_mode: bool = create_field(bool, odefs.ExpertMode)
+    filler_item_weights: list[tuple[str, int]] = field(default_factory=list[tuple[str, int]])
+    fourmel_quest: bool = True
+    freemove_isles: bool = create_field(bool, odefs.FreeMoveIsles)
+    ginger_quest: bool = True
+    hard_logic: bool = create_field(bool, odefs.HardLogic)
+    kingdice_bosssanity: bool = create_field(bool, odefs.DicePalaceBossSanity)
+    level_placements: dict[str, str] = create_field(dict[str, str], odefs.LevelPlacements)
+    level_shuffle_kingdice: bool = create_field(bool, odefs.LevelShuffleDicePalace)
+    level_shuffle_seed: str = create_field(str, odefs.LevelShuffleSeed)
+    level_shuffle: e.LevelShuffleMode = create_field(e.LevelShuffleMode, odefs.LevelShuffle)
+    lucien_quest: bool = False
+    maxhealth_upgrades: int = create_field(int, odefs.MaxHealthUpgrades)
     minimum_filler: int = create_field(int, odefs.MinimumFillerItems)
+    mode: e.GameMode = create_field(e.GameMode, odefs.GameMode)
+    music_quest: bool = False
+    pacifist_quest: bool = create_field(bool, odefs.PacifistQuest)
+    randomize_abilities_aim: bool = False #create_field(bool, odefs.RandomizeAimAbilities)
+    randomize_abilities: bool = create_field(bool, odefs.RandomizeAbilities)
+    require_secret_shortcuts: bool = True
+    rungun_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.RunGunGradeChecks)
+    shop_mode: e.ShopMode = e.ShopMode.TIERS #create_field(e.ShopMode, odefs.ShopMode)
+    silverworth_quest: bool = create_field(bool, odefs.SilverworthQuest)
+    start_weapon: int = create_field(int, odefs.StartWeapon, 0)
+    trap_item_weights: list[tuple[str, int]] = field(default_factory=list[tuple[str, int]])
     trap_loadout_anyweapon: bool = create_field(bool, odefs.TrapLoadoutAnyWeapon)
+    traps: int = create_field(int, odefs.Traps)
+    use_dlc: bool = create_field(bool, odefs.DeliciousLastCourse)
+    weapon_gate: bool = False #create_field(bool, odefs.WeaponGate)
+    weapon_mode: e.WeaponMode = create_field(e.WeaponMode, odefs.WeaponMode)
 
     def __init__(self, options: CupheadOptions | None = None, debug_bit: int = 0) -> None:
         for f in fields(self):
