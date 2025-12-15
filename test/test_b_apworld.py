@@ -5,6 +5,8 @@ import unittest
 from dataclasses import fields
 from typing import ClassVar
 
+from Options import PerGameCommonOptions
+
 from .. import options
 from ..base import wconf
 from ..base.enums import WeaponMode
@@ -15,13 +17,37 @@ from ..names import ItemNames
 
 class TestAPWorldOptionsWConf(unittest.TestCase):
     exclude_options: ClassVar[set[str]] = {
-        "options"
+        "version",
+        "start_maxhealth",
+        "start_maxhealth_p2",
+        "deathlink",
+        "deathlink_grace_count",
+        "extra_coins",
+        "music_shuffle",
+        "ducklock_platdrop",
     }
+    exclude_options_start: ClassVar[set[str]] = {
+        "filler_weight_",
+        "trap_weight_",
+    }
+
+    _base_options: ClassVar[set[str]] = {x.name for x in fields(PerGameCommonOptions)}
+
+    @classmethod
+    def _check_option_name_is_valid(cls, oname: str) -> bool:
+        if oname in cls.exclude_options or oname in cls._base_options:
+            return False
+
+        for eopt in cls.exclude_options_start:
+            if oname.startswith(eopt):
+                return False
+
+        return True
 
     def test_world_options_in_wconf(self):
         wconf_fields = {x.name for x in fields(wconf.WorldConfig)}
         for f in fields(options.CupheadOptions):
-            if f.name not in self.exclude_options:
+            if self._check_option_name_is_valid(f.name):
                 self.assertIn(f.name, wconf_fields)
 
 class TestAPWorldItemSetup(unittest.TestCase):

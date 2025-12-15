@@ -139,11 +139,7 @@ class CupheadWorld(World):
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.settings, self.wconfig,self.active_locations)
 
         #print(self.level_map)
-        if not self.level_map:
-            self.level_map = levels.setup_level_map(self.wconfig)
-        else:
-            self.level_map = {}
-        #print(self.level_map)
+        self.level_map = levels.setup_level_map(self.wconfig)
 
         self.shop: ShopData = shop.setup_shop_data(self.wconfig)
 
