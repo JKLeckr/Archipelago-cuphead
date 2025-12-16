@@ -45,5 +45,5 @@ jobs:
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
 
       - name: "Run ruff"
-        working-directory: Archipelago/worlds/cuphead
-        run: ruff --config ./ruff.toml check
+        working-directory: Archipelago
+        run: ruff --config ./ruff-jkl.toml check ./worlds/cuphead

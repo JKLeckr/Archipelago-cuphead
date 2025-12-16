@@ -7,7 +7,7 @@ lint.ignore = [
     "PLC0415",  # AP Devs consider local imports totally fine & necessary
     "UP015",  # Explicit is better than implicit, so we'd prefer to keep "r" in open() calls.
 
-    "I001",  # Acts inconsistently with VSCode Ruff (which has the context of the entire project)
+    "I001",  # Acts inconsistently with parent project ruff with whole context.
     "F401",  # F401 is already being covered by pyright
     "UP007",  # UP007 is already being covered by pyright
     "T201",  # print is used in most places for debugging and is configurable in the APWorld.

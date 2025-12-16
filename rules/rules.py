@@ -7,7 +7,6 @@ import typing
 from collections.abc import Iterable
 
 from BaseClasses import Entrance, Location, Region
-
 from worlds.generic.Rules import add_rule, forbid_item, forbid_items_for_player, set_rule
 
 from ..base.enums import GameMode, ItemGroups

@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from typing import Any, ClassVar, TextIO
 
-from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from typing_extensions import override
 
+from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from Options import PerGameCommonOptions
 from worlds.AutoWorld import WebWorld, World
 
