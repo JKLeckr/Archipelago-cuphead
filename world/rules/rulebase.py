@@ -8,8 +8,6 @@ from collections.abc import Callable, Iterable, Mapping
 
 from BaseClasses import CollectionState
 
-from ...debug import p
-
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
 
@@ -67,9 +65,9 @@ def rrule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, plr=player: rrule(state, plr)
 
 def rrule_and(*rules: RegionRule) -> RegionRule:
-    return lambda state, player: all(p(p(rule)(state, player)) for rule in rules)
+    return lambda state, player: all(((rule)(state, player)) for rule in rules)
 def rrule_or(*rules: RegionRule) -> RegionRule:
-    return lambda state, player: any(p(p(rule)(state, player)) for rule in rules)
+    return lambda state, player: any(((rule)(state, player)) for rule in rules)
 def rrule_not(rule: RegionRule) -> RegionRule:
     return lambda state, player: not rule(state, player)
 

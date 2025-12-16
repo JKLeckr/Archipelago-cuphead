@@ -30,13 +30,13 @@ jobs:
         run: |
           # Move examples dir and genapjson out as they are not needed in the apworld
           mv examples ..
-          mv scripts/genapjson.py ..
+          mv tools/genapjson.py ..
           # Remove unnecessary files and directories
           find . -type d -name "__pycache__" -exec rm -rf {} \; 2>/dev/null
           find . -type d -name ".ruff_cache" -exec rm -rf {} \; 2>/dev/null
           rm -rf .git .github .gitignore
           rm -rf extras
-          rm -rf scripts
+          rm -rf tools
           rm -f ruff.toml
           rm -f pyrightconfig.json
 

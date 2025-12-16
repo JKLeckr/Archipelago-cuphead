@@ -6,6 +6,9 @@
 .cursorrules
 .cursorignore
 
+# Generated JSON Schemas
+*.generated.schema.json
+
 setups
 build
 bundle/components.wxs

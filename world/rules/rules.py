@@ -12,10 +12,10 @@ from worlds.generic.Rules import add_rule, forbid_item, forbid_items_for_player,
 from ..enums import GameMode, ItemGroups
 from ..items import itemdefs as idef
 from ..levels import levellocrules as llrules
-from ..levels import levelrules as lr
 from ..locations import locationdefs as ld
 from ..locations import locationsets
 from ..names import ItemNames, LocationNames
+from . import levelrules as lr
 from . import rulebase as rb
 from .rulebase import Rule
 

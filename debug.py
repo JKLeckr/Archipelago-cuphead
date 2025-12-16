@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import typing
 from collections.abc import Iterable
-from typing import Any, TypeVar
+from typing import TypeVar
 
 import Utils
 from BaseClasses import Region
@@ -20,10 +20,6 @@ if typing.TYPE_CHECKING:
     from . import CupheadWorld
 
 T = TypeVar("T")
-
-def p(v: Any) -> Any:
-    #print(v)
-    return v
 
 def test_duplicates(ls: Iterable[T]) -> int:
     seen: set[T] = set()

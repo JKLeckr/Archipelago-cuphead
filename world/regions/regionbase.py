@@ -7,8 +7,8 @@ from enum import IntEnum, IntFlag
 
 from typing_extensions import override
 
-from ..rules import dep
-from ..rules.dep import Dep
+from ..rules import deps
+from ..rules.deps import Dep
 from ..rules.rulebase import RegionRule
 
 
@@ -35,7 +35,7 @@ class Target:
         ):
         self.name = name
         self.rule = rule
-        self.depends = depends if depends else dep.dep_none
+        self.depends = depends if depends else deps.dep_none
         self.tgt_type = tgt_type
     @override
     def __str__(self) -> str:
@@ -61,7 +61,7 @@ class RegionData:
         self.name = name
         self.locations = locations
         self.connect_to = connect_to
-        self.depends = depends if depends else dep.dep_none
+        self.depends = depends if depends else deps.dep_none
         self.region_type = region_type
         self.flags = flags
     @override

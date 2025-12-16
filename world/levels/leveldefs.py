@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from ..names import LocationNames
-from . import levelrules as lr
+from ..rules import levelrules as lr
 from .levelbase import LevelData
 from .levellocrulebase import init as llrb_init
 
