@@ -15,6 +15,7 @@
     },
     "levels": {
       "type": "object",
+      "propertyNames": { "type": "string" },
       "additionalProperties": { "$ref": "#/$defs/level" }
     }
   },
@@ -129,6 +130,7 @@
         "base": { "$ref": "#/$defs/ruleContainer" },
         "locations": {
           "type": "object",
+          "propertyNames": { "type": "string" },
           "additionalProperties": { "$ref": "#/$defs/location" }
         }
       },

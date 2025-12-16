@@ -18,6 +18,10 @@ RULES_MOD_PATH = f"{WORLD_MOD}{RULES_MOD}"
 DEP_MOD = ".deps"
 DEP_MOD_PATH = f"{RULES_MOD_PATH}{DEP_MOD}"
 LEVELRULES_MOD = ".levelrules"
+LEVELS_MOD = ".levels"
+LEVELS_MOD_PATH = f"{WORLD_MOD}{LEVELS_MOD}"
+LEVELDEFS_MOD = ".leveldefs"
+LEVELDEFS_MOD_PATH = f"{LEVELS_MOD_PATH}{LEVELDEFS_MOD}"
 LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
 
 WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
@@ -28,14 +32,20 @@ DEST_DIR = os.path.join("schemas", "levelrules.generated.schema.json")
 
 def main():
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
-        "This directory must be the Archipelago root directory!"
-        f"Files will be written to '{DEST_DIR}'."
+        " This directory must be the Archipelago root directory!"
+        f" Files will be written to '{DEST_DIR}'."
     )
 
     parser = argparse.ArgumentParser(description="Generate levelrules schema from apworld rules")
     parser.add_argument(
         "--yes",
         help=f"Accept {_fate_desc}",
+        action="store_true"
+    )
+    parser.add_argument(
+        "-L",
+        "--include-lnames",
+        help="Include level and location names in the schema",
         action="store_true"
     )
 
@@ -65,6 +75,15 @@ def main():
     deps = _deps
     levelrules = _levelrules
 
+    if args.include_lnames:
+        _ldspec = importlib.util.find_spec(LEVELDEFS_MOD, package=LEVELS_MOD_PATH)
+        _leveldefs = _ldspec.loader.load_module(LEVELDEFS_MOD_PATH) if _ldspec and _ldspec.loader else None
+        if not _leveldefs:
+            raise ImportError("Could not import leveldefs module.")
+        leveldefs = _leveldefs
+    else:
+        leveldefs = None
+
     base = json.load(open(BASE_SCHEMA_PATH))
 
     lrule_names = sorted(levelrules.LRULES)
@@ -78,6 +97,16 @@ def main():
     base["$defs"]["depSelector"]["enum"] = (
         dep_names + ["!" + d for d in dep_names]
     )
+
+    if leveldefs:
+        level_names = sorted(leveldefs.LEVEL_DEFS.keys())
+        location_names = sorted(
+            loc
+            for locs in leveldefs.LEVEL_DEFS.values()
+            for loc in locs
+        )
+        base["properties"]["levels"]["propertyNames"]["enum"] = level_names
+        base["$defs"]["level"]["properties"]["locations"]["propertyNames"]["enum"] = location_names
 
     if not os.path.isdir("schemas"):
         os.mkdir("schemas", mode=0o755)

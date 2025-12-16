@@ -142,7 +142,7 @@ def lint(data: Any, known_rules: set[str], known_deps: set[str]):
 
 def main():
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
-        "This directory must be the Archipelago root directory!"
+        " This directory must be the Archipelago root directory!"
     )
 
     parser = argparse.ArgumentParser(description="Check levelrules json")
