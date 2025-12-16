@@ -13,14 +13,14 @@ on:
       - "**.py"
       - '!examples/**'
       - '!extras/**'
-      - '!scripts/**'
+      - '!tools/**'
       - '.github/workflows/unittests.yml'
   pull_request:
     paths:
       - "**.py"
       - '!examples/**'
       - '!extras/**'
-      - '!scripts/**'
+      - '!tools/**'
       - '.github/workflows/unittests.yml'
 
 jobs:

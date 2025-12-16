@@ -6,13 +6,17 @@ name: LevelRuleDefsSchemaCheck
 on:
   pull_request:
     paths:
-      - "**.py"
-      - "ruff.toml"
+      - "tools/genlevelruleschema.py"
+      - "tools/checklevelrulesjson.py"
+      - "tools/schemas/levelrules.schema.json"
+      - "world/rules/data/levelruledefs.json"
       - ".github/workflows/levelruledefs-schema-check.yml"
   push:
     paths:
-      - "**.py"
-      - "ruff.toml"
+      - "tools/genlevelruleschema.py"
+      - "tools/checklevelrulesjson.py"
+      - "tools/schemas/levelrules.schema.json"
+      - "world/rules/data/levelruledefs.json"
       - ".github/workflows/levelruledefs-schema-check.yml"
 
 jobs:
