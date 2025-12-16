@@ -28,7 +28,7 @@ WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
 
 def validate_schema(data: Any, schema: Any):
     try:
-        jsonschema.validate(data, schema)
+        jsonschema.validate(data, schema) # type: ignore
     except jsonschema.ValidationError as e:
         print(f"JSON Schema validation error: {e.message}")
         print("Errors occured during schema validation.")
