@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from BaseClasses import ItemClassification
 
-from ..base.enums import ChaliceCheckMode, GradeCheckMode, ItemGroups, WeaponMode
-from ..base.wconf import WorldConfig
+from ..enums import ChaliceCheckMode, GradeCheckMode, ItemGroups, WeaponMode
 from ..names import ItemNames
+from ..wconf import WorldConfig
 from . import itemdefs as idef
 from . import weapons
 from .itembase import ItemData

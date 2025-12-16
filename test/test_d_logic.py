@@ -3,7 +3,7 @@
 
 # ruff: noqa: RUF012
 
-from ..names import ItemNames, LocationNames
+from ..world.names import ItemNames, LocationNames
 from . import CupheadTestBase
 
 

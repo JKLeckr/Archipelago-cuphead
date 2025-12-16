@@ -9,7 +9,7 @@ from . import levelids, levelsetup
 from .levelbase import LevelData
 
 if typing.TYPE_CHECKING:
-    from .. import CupheadWorld
+    from ... import CupheadWorld
 
 setup_levels = levelsetup.setup_levels
 

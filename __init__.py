@@ -12,23 +12,23 @@ from Options import PerGameCommonOptions
 from worlds.AutoWorld import WebWorld, World
 
 from . import debug as dbg
-from . import items, levels, locations, options, regions, shop, slotdata
-from .base.enums import WeaponMode
-from .base.settings import CupheadSettings
-from .base.wconf import WorldConfig
 from .fver import FVersion
-from .items import itemcreate, itemgroups, weapons
-from .items import itemdefs as idef
-from .items.itembase import ItemData
-from .levels.levelbase import LevelData
-from .levels.levelids import level_ids
-from .locations import locationdefs as ld
-from .locations.locationbase import LocationData
-from .names import ItemNames, LocationNames
-from .options import CupheadOptions, presets
-from .options.optionsanitizer import OptionSanitizer
-from .rules import rules
-from .shop import ShopData
+from .world import items, levels, locations, options, regions, shop, slotdata
+from .world.enums import WeaponMode
+from .world.items import itemcreate, itemgroups, weapons
+from .world.items import itemdefs as idef
+from .world.items.itembase import ItemData
+from .world.levels.levelbase import LevelData
+from .world.levels.levelids import level_ids
+from .world.locations import locationdefs as ld
+from .world.locations.locationbase import LocationData
+from .world.names import ItemNames, LocationNames
+from .world.options import CupheadOptions, presets
+from .world.options.optionsanitizer import OptionSanitizer
+from .world.rules import rules
+from .world.settings import CupheadSettings
+from .world.shop import ShopData
+from .world.wconf import WorldConfig
 
 
 class CupheadWebWorld(WebWorld):

@@ -7,8 +7,8 @@ import typing
 from typing import Any
 
 if typing.TYPE_CHECKING:
-     from .. import CupheadWorld
-     from ..base.wconf import WorldConfig
+     from ... import CupheadWorld
+     from ..wconf import WorldConfig
 
 def _get_feature_bits(wconf: WorldConfig) -> int:
     return 0
@@ -25,7 +25,6 @@ _slot_data_options: list[str] = [
     "randomize_abilities",
     "boss_grade_checks",
     "rungun_grade_checks",
-    "shop_mode",
     "start_maxhealth",
     "start_maxhealth_p2",
     "dlc_kingsleap",
@@ -50,6 +49,7 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
         "feature_bit_reqs": _get_feature_bits(world.wconfig),
         "gen_bits": world.gen_bits,
         "level_map": world.level_map,
+        "shop_mode": world.wconfig.shop_mode,
         "shop_map": world.shop.shop_map,
         "contract_requirements": world.contract_requirements,
         "dlc_ingredient_requirements": world.dlc_ingredient_requirements,

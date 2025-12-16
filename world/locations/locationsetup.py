@@ -5,9 +5,9 @@ from __future__ import annotations
 
 from BaseClasses import LocationProgressType
 
-from ..base.enums import ChaliceMode, ChessCastleMode, GameMode, GradeCheckMode, WeaponMode
-from ..base.wconf import WorldConfig
+from ..enums import ChaliceMode, ChessCastleMode, GameMode, GradeCheckMode, WeaponMode
 from ..names import LocationNames
+from ..wconf import WorldConfig
 from . import locationdefs as ld
 from .locationbase import LocationData
 

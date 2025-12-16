@@ -11,11 +11,11 @@ from collections.abc import Callable
 from dataclasses import dataclass, field, fields
 from typing import Any
 
-from ..base import enums as e
-from ..names import ItemNames, LocationNames
-from ..options import CupheadOptions
-from ..options import options as odefs
-from ..options.field import create_field
+from . import enums as e
+from .names import ItemNames, LocationNames
+from .options import CupheadOptions
+from .options import options as odefs
+from .options.field import create_field
 
 
 _bitifiable_fields: list[str] = [

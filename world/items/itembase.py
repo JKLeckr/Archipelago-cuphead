@@ -10,7 +10,7 @@ from typing import NamedTuple
 from BaseClasses import Item, ItemClassification
 
 if typing.TYPE_CHECKING:
-    from .. import CupheadWorld
+    from ... import CupheadWorld
 
 class CupheadItem(Item):
     game: str = "Cuphead"

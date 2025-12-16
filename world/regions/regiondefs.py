@@ -6,8 +6,8 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from ..names import ItemNames, LocationNames
+from ..rules import dep
 from ..rules.rulebase import RegionRule, rrule_has, rrule_has_all
-from . import dep
 from .regionbase import DefFlags, LevelRegionData, LevelTarget, RegionData, Target, WorldRegionData
 
 

@@ -3,8 +3,8 @@
 
 import unittest
 
-from ..levels import levelids
-from ..options.optionbase import _levelset
+from ..world.levels import levelids
+from ..world.options.optionbase import _levelset
 
 
 class TestCode(unittest.TestCase):

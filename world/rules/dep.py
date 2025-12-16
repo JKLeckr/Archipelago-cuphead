@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from ..base.wconf import WorldConfig
+from ..wconf import WorldConfig
 
 Dep = Callable[[WorldConfig], bool]
 

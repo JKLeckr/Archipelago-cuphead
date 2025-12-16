@@ -10,17 +10,17 @@ from random import Random
 
 from BaseClasses import Item, ItemClassification, LocationProgressType
 
-from ..base.auxiliary import count_in_list
-from ..base.enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
-from ..base.wconf import WorldConfig
+from ..auxiliary import count_in_list
+from ..enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
 from ..locations import locationdefs as ldef
 from ..names import ItemNames, LocationNames
+from ..wconf import WorldConfig
 from . import itemdefs as idef
 from . import weapons
 from .itembase import CupheadItem, ItemData, get_filler_item_name, weighted_item_choice
 
 if typing.TYPE_CHECKING:
-    from .. import CupheadWorld
+    from ... import CupheadWorld
 
 def create_item(name: str, player: int, force_classification: ItemClassification | None = None) -> Item:
     return create_item_ext(name, player, idef.items_all, force_classification)

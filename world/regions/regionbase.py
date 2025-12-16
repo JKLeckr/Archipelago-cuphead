@@ -7,9 +7,9 @@ from enum import IntEnum, IntFlag
 
 from typing_extensions import override
 
+from ..rules import dep
+from ..rules.dep import Dep
 from ..rules.rulebase import RegionRule
-from . import dep
-from .dep import Dep
 
 
 class DefType(IntEnum):

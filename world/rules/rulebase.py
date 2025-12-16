@@ -8,10 +8,10 @@ from collections.abc import Callable, Iterable, Mapping
 
 from BaseClasses import CollectionState
 
-from ..debug import p
+from ...debug import p
 
 if typing.TYPE_CHECKING:
-    from .. import CupheadWorld
+    from ... import CupheadWorld
 
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]

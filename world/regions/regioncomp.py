@@ -8,7 +8,8 @@ from collections.abc import Collection
 
 from BaseClasses import MultiWorld, Region
 
-from .. import debug, levels
+from ... import debug
+from .. import levels
 from ..levels import leveldefs as ldef
 from ..locations import CupheadLocation
 from ..names import LocationNames
@@ -18,7 +19,7 @@ from .regionbase import DefType, Target
 from .regiondefs import RegionData, RegionRule
 
 if typing.TYPE_CHECKING:
-    from .. import CupheadWorld
+    from ... import CupheadWorld
 
 ## Currently, with shuffling levels, locations are relocated onto static regions.
 ## Eventually, it might be better (maybe) to properly map regions

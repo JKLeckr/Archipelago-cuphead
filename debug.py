@@ -12,9 +12,9 @@ import Utils
 from BaseClasses import Region
 from worlds.AutoWorld import World
 
-from .base.auxiliary import format_list
-from .items.itemdefs import items_all
-from .locations.locationdefs import locations_all
+from .world.auxiliary import format_list
+from .world.items.itemdefs import items_all
+from .world.locations.locationdefs import locations_all
 
 if typing.TYPE_CHECKING:
     from . import CupheadWorld

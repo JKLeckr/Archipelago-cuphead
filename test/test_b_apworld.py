@@ -8,11 +8,11 @@ from typing import ClassVar
 from Options import PerGameCommonOptions
 
 from .. import options
-from ..base import wconf
-from ..base.enums import WeaponMode
-from ..items import itemdefs as idefs
-from ..items import itemsetup, weapons
-from ..names import ItemNames
+from ..world import wconf
+from ..world.enums import WeaponMode
+from ..world.items import itemdefs as idefs
+from ..world.items import itemsetup, weapons
+from ..world.names import ItemNames
 
 
 class TestAPWorldOptionsWConf(unittest.TestCase):
