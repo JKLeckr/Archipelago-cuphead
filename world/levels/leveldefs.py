@@ -403,7 +403,4 @@ levels_all: dict[str, LevelData] = {
     **level_dlc_special,
 }
 
-# TODO: Use field names instead of values directly.
-LEVEL_DEFS: dict[str, set[str]] = {lv: set(ld.locations) for lv, ld in levels_all.items()}
-
 llrb_init(levels_all)

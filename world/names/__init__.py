@@ -1,8 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from . import names
+from . import itemnames, locationnames
 
-ItemNames = names.ItemNames
+ItemNames = itemnames.ItemNames
 
-LocationNames = names.LocationNames
+LocationNames = locationnames.LocationNames
