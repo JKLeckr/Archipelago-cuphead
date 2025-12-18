@@ -8,12 +8,12 @@ from typing import Any, ClassVar, TextIO
 from typing_extensions import override
 
 from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
-from Options import PerGameCommonOptions
+from Options import Option, PerGameCommonOptions
 from worlds.AutoWorld import WebWorld, World
 
 from . import debug as dbg
 from .fver import FVersion
-from .world import items, levels, locations, options, regions, shop, slotdata
+from .world import items, levels, locations, options, regions, slotdata
 from .world.enums import WeaponMode
 from .world.items import itemcreate, itemgroups, weapons
 from .world.items import itemdefs as idef
@@ -59,8 +59,6 @@ class CupheadWorld(World):
 
     SLOT_DATA_VERSION: ClassVar[int] = 5
 
-    WCONFIG_DEFAULT: ClassVar[WorldConfig] = WorldConfig()
-
     game: ClassVar[str] = GAME_NAME # type: ignore
     web: ClassVar[WebWorld] = CupheadWebWorld()
     options_dataclass: ClassVar[type[PerGameCommonOptions]] = CupheadOptions
@@ -105,13 +103,31 @@ class CupheadWorld(World):
     def re_gen_setup(self) -> None:
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
-            _slot_data_options = slotdata.get_slot_data_options() # TODO: Finish (wconf bitify can be used)
+            slot_data: dict[str, Any] = re_gen_passthrough[self.game]
+
+            _slot_data_options = slotdata.get_slot_data_options()
+            for okey in _slot_data_options:
+                opt: Option[Any] | None = getattr(self.options, okey, None)
+                if opt is not None:
+                    setattr(self.options, okey, opt.from_any(slot_data[okey]))
+                else:
+                    print(f"re_gen_setup: WARNING: {okey} is not registered!")
+
+            self.wconfig = WorldConfig(self.options)
+
+            bits: int = slot_data["gen_bits"]
+            self.wconfig.debitify(bits) # TODO: TEST
+
+            self.level_map = slot_data["level_map"]
+            self.wconfig.shop_mode = slot_data["shop_mode"]
+            self.shop = ShopData(slot_data["shop_map"])
+            self.wconfig.contract_requirements = slot_data["contract_requirements"]
+            self.wconfig.dlc_ingredient_requirements = slot_data["dlc_ingredient_requirements"]
+
 
     @override
     def generate_early(self) -> None:
         self.fake_gen = getattr(self.multiworld, "generation_is_fake", False)
-        if self.fake_gen:
-            self.re_gen_setup()
 
         self.options.version.value = self.APWORLD_VERSION
 
@@ -122,15 +138,21 @@ class CupheadWorld(World):
 
         self.option_sanitizer.sanitize_options()
 
-        # World Config (See wconfig.py)
-        self.wconfig = WorldConfig(self.options)
+        if self.fake_gen:
+            self.re_gen_setup()
+        else:
+            # World Config (See wconfig.py)
+            self.wconfig = WorldConfig(self.options)
+            #print(self.level_map)
+            self.level_map = levels.setup_level_map(self.wconfig)
+            self.shop: ShopData = ShopData.create_from_wconf(self.wconfig)
+
         self.gen_bits = self.wconfig.bitify()
 
         self.topology_present = not self.wconfig.freemove_isles
 
         self.use_dlc = self.wconfig.use_dlc
         self.start_weapon = self.wconfig.start_weapon
-        self.level_shuffle = self.wconfig.level_shuffle
 
         coin_amounts = self.wconfig.coin_amounts
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
@@ -138,14 +160,6 @@ class CupheadWorld(World):
         self.active_items: dict[str,ItemData] = items.setup_items(self.wconfig)
         self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wconfig)
         self.active_levels: dict[str,LevelData] = levels.setup_levels(self.settings, self.wconfig,self.active_locations)
-
-        #print(self.level_map)
-        self.level_map = levels.setup_level_map(self.wconfig)
-
-        self.shop: ShopData = shop.setup_shop_data(self.wconfig)
-
-        self.contract_requirements: tuple[int,int,int] = self.wconfig.contract_requirements
-        self.dlc_ingredient_requirements: int = self.wconfig.dlc_ingredient_requirements
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
@@ -288,7 +302,7 @@ class CupheadWorld(World):
     @override
     def __getattr__(self, item: str) -> Any:
         if item == "wconfig":
-            return self.__class__.WCONFIG_DEFAULT
+            return WorldConfig()
         return super().__getattr__(item)
 
     # For Universal Tracker

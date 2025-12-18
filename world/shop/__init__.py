@@ -3,10 +3,13 @@
 
 from __future__ import annotations
 
-from typing import NamedTuple
+import typing
 
 from ..names import LocationNames
-from ..wconf import WorldConfig
+
+if typing.TYPE_CHECKING:
+    from ..wconf import WorldConfig
+
 
 shop_weapons = [
     LocationNames.loc_shop_weapon1,
@@ -29,31 +32,31 @@ shop_charms = [
     LocationNames.loc_shop_dlc_charm8
 ]
 
-class ShopData(NamedTuple):
+class ShopData:
     shop_map: list[tuple[int, int]]
-    shop_locations: dict[str,list[str]]
+    shop_locations: dict[str, list[str]]
 
-# Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-def get_shop_map(wconf: WorldConfig) -> list[tuple[int, int]]:
-        return [(2,2), (2,2), (1,2), (3,2)] if not wconf.use_dlc else [(2,2), (2,2), (2,2), (2,2)]
+    def __init__(self, shop_map: list[tuple[int, int]]) -> None:
+        shop_locations: dict[str, list[str]] = {}
 
-def setup_shop_data(wconf: WorldConfig) -> ShopData:
-    shop_map: list[tuple[int, int]] = get_shop_map(wconf)
-    shop_locations: dict[str,list[str]] = {}
+        weapon_index = 0
+        charm_index = 0
+        for i in range(4):
+            shop_region: list[str] = []
+            if (i == 3):
+                shop_region += shop_weapons[weapon_index:]+shop_charms[charm_index:]
+            else:
+                wcount = min(shop_map[i][0], len(shop_weapons)-weapon_index)
+                ccount = min(shop_map[i][1], len(shop_charms)-charm_index)
+                shop_region += shop_weapons[weapon_index:(weapon_index+wcount)]
+                shop_region += shop_charms[charm_index:(charm_index+ccount)]
+                weapon_index+=wcount
+                charm_index+=ccount
+            shop_locations[LocationNames.shop_sets[i]] = shop_region
 
-    weapon_index = 0
-    charm_index = 0
-    for i in range(4):
-        shop_region: list[str] = []
-        if (i == 3):
-            shop_region += shop_weapons[weapon_index:]+shop_charms[charm_index:]
-        else:
-            wcount = min(shop_map[i][0], len(shop_weapons)-weapon_index)
-            ccount = min(shop_map[i][1], len(shop_charms)-charm_index)
-            shop_region += shop_weapons[weapon_index:(weapon_index+wcount)]
-            shop_region += shop_charms[charm_index:(charm_index+ccount)]
-            weapon_index+=wcount
-            charm_index+=ccount
-        shop_locations[LocationNames.shop_sets[i]] = shop_region
+        self.shop_map = shop_map
+        self.shop_locations = shop_locations
 
-    return ShopData(shop_map, shop_locations)
+    @classmethod
+    def create_from_wconf(cls, wconf: WorldConfig) -> ShopData:
+        return ShopData(wconf.shop_map)

@@ -51,8 +51,8 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
         "level_map": world.level_map,
         "shop_mode": world.wconfig.shop_mode,
         "shop_map": world.shop.shop_map,
-        "contract_requirements": world.contract_requirements,
-        "dlc_ingredient_requirements": world.dlc_ingredient_requirements,
+        "contract_requirements": world.wconfig.contract_requirements,
+        "dlc_ingredient_requirements": world.wconfig.dlc_ingredient_requirements,
     }
     for option in _slot_data_options:
         slot_data.update(world.options.as_dict(option))

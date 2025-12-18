@@ -22,8 +22,8 @@ _bitifiable_fields: list[str] = [
     "boss_secret_checks",
     "buster_quest",
     "dlc_cactusgirl_quest",
-    "dlc_requires_mausoleum",
     "dlc_randomize_boat",
+    "dlc_requires_mausoleum",
     "fourmel_quest",
     "freemove_isles",
     "ginger_quest",
@@ -115,6 +115,11 @@ def _get_separate_items_mode(options: CupheadOptions | None) -> e.ItemGroups:
     # TODO: Change this when this is implemented
     return e.ItemGroups.NONE
 
+# Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
+def _get_shop_map(options: CupheadOptions | None) -> list[tuple[int, int]]:
+        dlc = options.use_dlc.value if options else odefs.DeliciousLastCourse.default
+        return [(2,2), (2,2), (1,2), (3,2)] if not dlc else [(2,2), (2,2), (2,2), (2,2)]
+
 # These are settings stored and accessed by other classes
 @dataclass
 class WorldConfig:
@@ -158,6 +163,7 @@ class WorldConfig:
     randomize_abilities: bool = create_field(bool, odefs.RandomizeAbilities)
     require_secret_shortcuts: bool = True
     rungun_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.RunGunGradeChecks)
+    shop_map: list[tuple[int, int]] = field(default_factory=list[tuple[int, int]])
     shop_mode: e.ShopMode = e.ShopMode.TIERS #create_field(e.ShopMode, odefs.ShopMode)
     silverworth_quest: bool = create_field(bool, odefs.SilverworthQuest)
     start_weapon: int = create_field(int, odefs.StartWeapon, 0)
@@ -167,6 +173,17 @@ class WorldConfig:
     use_dlc: bool = create_field(bool, odefs.DeliciousLastCourse)
     weapon_gate: bool = False #create_field(bool, odefs.WeaponGate)
     weapon_mode: e.WeaponMode = create_field(e.WeaponMode, odefs.WeaponMode)
+
+
+    def _apply_options(self, options: CupheadOptions) -> None:
+        for f in fields(self):
+            meta = f.metadata
+            if meta and "conv" in meta and "oname" in meta:
+                oname = meta.get("oname") or f.name
+                if hasattr(options, oname):
+                    value = getattr(options, oname).value
+                    conv: Callable[[Any], Any] | None = meta.get("conv") or None
+                    setattr(self, f.name, conv(value) if conv else value)
 
     def __init__(self, options: CupheadOptions | None = None, debug_bit: int = 0) -> None:
         for f in fields(self):
@@ -181,21 +198,18 @@ class WorldConfig:
         if options:
             self._apply_options(options)
 
-        self.filler_item_weights = _get_filler_item_weights(options)
-        self.trap_item_weights = _get_trap_item_weights(options)
         self.coin_amounts = _get_coin_amounts(options)
         self.contract_requirements = _get_contract_requirements(options)
         self.dlc_chalice_items_separate = _get_separate_items_mode(options)
-
-    def _apply_options(self, options: CupheadOptions) -> None:
-        for f in fields(self):
-            meta = f.metadata
-            if meta and "conv" in meta and "oname" in meta:
-                oname = meta.get("oname") or f.name
-                if hasattr(options, oname):
-                    value = getattr(options, oname).value
-                    conv: Callable[[Any], Any] | None = meta.get("conv") or None
-                    setattr(self, f.name, conv(value) if conv else value)
+        self.filler_item_weights = _get_filler_item_weights(options)
+        self.trap_item_weights = _get_trap_item_weights(options)
+        self.shop_map = _get_shop_map(options)
+    
+    @classmethod
+    def from_bits(cls, bits: int, options: CupheadOptions | None = None) -> WorldConfig:
+        res = WorldConfig(options)
+        res.debitify(bits)
+        return res
 
     def bitify(self) -> int:
         res = 0
