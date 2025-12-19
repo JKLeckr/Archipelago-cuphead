@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from ..enums import ChaliceMode
 from ..wconf import WorldConfig
 
 Dep = Callable[[WorldConfig], bool]
@@ -47,8 +48,17 @@ def dep_lucien_quest(c: WorldConfig) -> bool:
 def dep_music_quest(c: WorldConfig) -> bool:
     return c.music_quest
 @dep
-def dep_dicepalace(c: WorldConfig) -> bool:
+def dep_dicepalace_sanity(c: WorldConfig) -> bool:
     return c.kingdice_bosssanity
+@dep
+def dep_hard_logic(c: WorldConfig) -> bool:
+    return c.hard_logic
+@dep
+def dep_rando_abilities(c: WorldConfig) -> bool:
+    return c.randomize_abilities
+@dep
+def dep_dlc_cookie(c: WorldConfig) -> bool:
+    return c.dlc_chalice == ChaliceMode.VANILLA or c.dlc_chalice == ChaliceMode.RANDOMIZED
 @dep
 def dep_dlc_boatitem(c: WorldConfig) -> bool:
     return c.use_dlc and c.dlc_randomize_boat

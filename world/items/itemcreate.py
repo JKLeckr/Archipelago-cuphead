@@ -8,7 +8,7 @@ import typing
 from collections.abc import Iterable
 from random import Random
 
-from BaseClasses import Item, ItemClassification, LocationProgressType
+from BaseClasses import Item, ItemClassification, Location, LocationProgressType
 
 from ..auxiliary import count_in_list
 from ..enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
@@ -25,7 +25,9 @@ if typing.TYPE_CHECKING:
 def create_item(name: str, player: int, force_classification: ItemClassification | None = None) -> Item:
     return create_item_ext(name, player, idef.items_all, force_classification)
 
-def create_active_item(name: str, world: CupheadWorld, force_classification: ItemClassification | None = None) -> Item:
+def create_active_item(world: CupheadWorld, name: str, force_classification: ItemClassification | None = None) -> Item:
+    if name not in world.active_items:
+        raise KeyError(f"Item {name} is not in active items!")
     return create_item_ext(name, world.player, world.active_items, force_classification)
 
 def create_item_ext(
@@ -47,7 +49,7 @@ def create_item_ext(
 
 
 def create_filler_item(world: CupheadWorld) -> Item:
-    return create_active_item(get_filler_item_name(world), world)
+    return create_active_item(world, get_filler_item_name(world))
 
 def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Filler count: {filler_count}")
@@ -77,7 +79,7 @@ def create_traps(world: CupheadWorld, trap_count: int, wconf: WorldConfig, rand:
     res: list[Item] = []
 
     [
-        res.append(create_active_item(weighted_item_choice(active_trap_weights, rand), world))
+        res.append(create_active_item(world, weighted_item_choice(active_trap_weights, rand)))
         for _ in range(trap_count)
     ]
 
@@ -92,9 +94,12 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
             #if qty<0:
             #    print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
             if item.id and qty>0:
-                _itempool += [create_active_item(itemname, world, item.item_type) for _ in range(qty)]
+                _itempool += [create_active_item(world, itemname, item.item_type) for _ in range(qty)]
     return _itempool
 
+def place_locked_item(world: CupheadWorld, item: Item, location: str):
+    world.multiworld.get_location(location, world.player) \
+        .place_locked_item(item)
 def create_locked_item(
         world: CupheadWorld,
         name: str,
@@ -102,8 +107,7 @@ def create_locked_item(
         force_classification: ItemClassification | None = None
     ):
     #print(f"Create locked item: '{name}' at '{location}'")
-    world.multiworld.get_location(location, world.player) \
-        .place_locked_item(create_active_item(name, world, force_classification))
+    place_locked_item(world, create_active_item(world, name, force_classification), location)
 def create_locked_items_at(
         world: CupheadWorld,
         name: str,
@@ -123,7 +127,7 @@ def create_dlc_locked_items(world: CupheadWorld):
         create_locked_item(world, ItemNames.item_charm_dlc_cookie, LocationNames.loc_event_dlc_cookie)
     if LocationNames.loc_event_dlc_goal_saltbaker in world.active_locations:
         if not world.wconfig.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
-            print("WARNING: Saltbaker Goal location created even if it shouldn't")
+            raise ValueError("Saltbaker Goal location created even if it shouldn't")
         create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
     create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, ldef.locations_dlc_event_boss_chaliced)
     create_locked_items_at(
@@ -151,7 +155,7 @@ def create_locked_items(world: CupheadWorld):
         create_locked_items_at(world, ItemNames.item_event_pacifist, ldef.location_level_rungun_event_pacifist)
     if LocationNames.loc_event_goal_devil in world.active_locations:
         if not world.wconfig.is_goal_used(LocationNames.loc_event_goal_devil):
-            print("WARNING: Devil Goal location created even if it shouldn't")
+            raise KeyError("Devil Goal location created even if it shouldn't")
         create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
 
     if world.use_dlc:
@@ -162,15 +166,15 @@ def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[I
     items: list[Item] = []
 
     [
-        items.append(create_active_item(ItemNames.item_healthupgrade, world))
+        items.append(create_active_item(world, ItemNames.item_healthupgrade))
         for _ in range(world.wconfig.maxhealth_upgrades)
     ]
     if wconf.use_dlc:
         if wconf.dlc_chalice == ChaliceMode.RANDOMIZED and ItemNames.item_charm_dlc_cookie not in precollected:
-            items.append(create_active_item(ItemNames.item_charm_dlc_cookie, world))
+            items.append(create_active_item(world, ItemNames.item_charm_dlc_cookie))
         if ((wconf.dlc_curse_mode == CurseMode.VANILLA or wconf.dlc_curse_mode == CurseMode.REVERSE) and \
             ItemNames.item_charm_dlc_broken_relic not in precollected):
-                items.append(create_active_item(ItemNames.item_charm_dlc_broken_relic, world))
+                items.append(create_active_item(world, ItemNames.item_charm_dlc_broken_relic))
 
     return items
 
@@ -282,9 +286,9 @@ def create_coins(world: CupheadWorld, location_count: int, precollected_item_nam
 
     total_coins = compress_coins((total_single_coins, total_double_coins, total_triple_coins), location_count)
 
-    res += [create_active_item(coin_items[0], world) for _ in range(total_coins[0])]
-    res += [create_active_item(coin_items[1], world) for _ in range(total_coins[1])]
-    res += [create_active_item(coin_items[2], world) for _ in range(total_coins[2])]
+    res += [create_active_item(world, coin_items[0]) for _ in range(total_coins[0])]
+    res += [create_active_item(world, coin_items[1]) for _ in range(total_coins[1])]
+    res += [create_active_item(world, coin_items[2]) for _ in range(total_coins[2])]
 
     return res
 
@@ -299,8 +303,8 @@ def create_items(world: CupheadWorld) -> None:
     weapons = setup_weapon_pool(world, precollected_item_names)
 
     #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
-    unfilled_locations = list(world.multiworld.get_unfilled_locations(world.player))
-    unfilled_location_count = len(unfilled_locations)
+    #unfilled_locations = list(world.multiworld.get_unfilled_locations(world.player))
+    #unfilled_location_count = len(unfilled_locations)
     #print(total_locations)
     #print(unfilled_locations)
     # This can fail if someone uses plando
@@ -335,10 +339,19 @@ def create_items(world: CupheadWorld) -> None:
     # Add special Items
     itempool += create_special_items(world, precollected_item_names)
 
-    excluded_location_count = len(
-        [x for x in unfilled_locations if x.progress_type == LocationProgressType.EXCLUDED]
-    )
-    minimum_filler = max(world.wconfig.minimum_filler, excluded_location_count)
+    minimum_filler = world.wconfig.minimum_filler
+
+    def _exclude_location(loc: Location) -> bool:
+        if loc.progress_type == LocationProgressType.EXCLUDED:
+            place_locked_item(world, create_filler_item(world), loc.name)
+            return False
+        return True
+    unfilled_locations = [
+        x for x in world.multiworld.get_unfilled_locations(world.player)
+        if _exclude_location(x)
+    ]
+
+    unfilled_location_count = len(unfilled_locations)
 
     # Add Coins
     leftover_locations = unfilled_location_count - len(itempool) - minimum_filler

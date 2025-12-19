@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from BaseClasses import ItemClassification
 
-from ..enums import ChaliceCheckMode, GradeCheckMode, ItemGroups, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, GradeCheckMode, ItemGroups, WeaponMode
 from ..names import ItemNames
 from ..wconf import WorldConfig
 from . import itemdefs as idef
@@ -24,7 +24,7 @@ def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: in
 
 def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
     items_ref.update(idef.items_dlc)
-    if wconf.dlc_chalice>0:
+    if wconf.dlc_chalice == ChaliceMode.VANILLA or wconf.dlc_chalice == ChaliceMode.RANDOMIZED:
         add_item(items_ref, ItemNames.item_charm_dlc_cookie)
         if wconf.dlc_boss_chalice_checks or wconf.dlc_cactusgirl_quest:
             change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)

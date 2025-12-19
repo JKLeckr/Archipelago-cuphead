@@ -27,8 +27,7 @@ def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
 def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
     levels = world.active_levels
     if level not in levels:
-        print(f"WARNING: For '{level}': level is invalid!")
-        return LevelData(None, [])
+        raise ValueError(f"For '{level}': level is invalid!")
     if not map:
         return levels[level]
     return levels[get_mapped_level_name(world, level)]

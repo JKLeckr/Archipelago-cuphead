@@ -18,7 +18,6 @@ from .world.enums import WeaponMode
 from .world.items import itemcreate, itemgroups, weapons
 from .world.items import itemdefs as idef
 from .world.items.itembase import ItemData
-from .world.levels.levelbase import LevelData
 from .world.levels.levelids import level_ids
 from .world.locations import locationdefs as ld
 from .world.locations.locationbase import LocationData
@@ -145,7 +144,7 @@ class CupheadWorld(World):
             self.wconfig = WorldConfig(self.options)
             #print(self.level_map)
             self.level_map = levels.setup_level_map(self.wconfig)
-            self.shop: ShopData = ShopData.create_from_wconf(self.wconfig)
+            self.shop = ShopData.create_from_wconf(self.wconfig)
 
         self.gen_bits = self.wconfig.bitify()
 
@@ -157,9 +156,9 @@ class CupheadWorld(World):
         coin_amounts = self.wconfig.coin_amounts
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        self.active_items: dict[str,ItemData] = items.setup_items(self.wconfig)
-        self.active_locations: dict[str,LocationData] = locations.setup_locations(self.wconfig)
-        self.active_levels: dict[str,LevelData] = levels.setup_levels(self.settings, self.wconfig,self.active_locations)
+        self.active_items = items.setup_items(self.wconfig)
+        self.active_locations = locations.setup_locations(self.wconfig)
+        self.active_levels = levels.setup_levels(self.settings, self.wconfig,self.active_locations)
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
@@ -220,7 +219,7 @@ class CupheadWorld(World):
         if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
-                itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
+                itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
             )
             if _name:
                 state.add_item(_name, self.player, 2)
@@ -244,7 +243,7 @@ class CupheadWorld(World):
         if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
-                itemcreate.create_active_item(weapons.weapon_p_dict[weapons.weapon_to_index[item.name]], self),
+                itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
                 True
             )
             if _name:
