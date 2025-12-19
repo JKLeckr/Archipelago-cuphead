@@ -58,7 +58,7 @@ def lint_rule_container(
     used_rules: set[str] = set()
     used_presets: set[str] = set()
 
-    for frag in container.get("fragments", []):
+    for frag in container.get("rules", []):
         for dep in frag.get("when", []):
             name = dep[1:] if dep.startswith("!") else dep
             if name not in known_deps:
@@ -81,7 +81,7 @@ def build_preset_graph(presets: Any) -> dict[str, set[str]]:
         used_rules: set[str] = set()
         used_presets: set[str] = set()
 
-        for frag in container.get("fragments", []):
+        for frag in container.get("rules", []):
             walk_rule_expr(frag["requires"], used_rules, used_presets)
 
         graph[name] = used_presets

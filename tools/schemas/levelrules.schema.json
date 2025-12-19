@@ -101,7 +101,7 @@
       "type": "object",
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
-        "fragments": {
+        "rules": {
           "type": "array",
           "items": { "$ref": "#/$defs/ruleFragment" }
         }
