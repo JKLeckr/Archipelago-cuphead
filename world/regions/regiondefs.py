@@ -116,7 +116,7 @@ region_dlc_worlds = [
         LevelTarget(LocationNames.level_dlc_boss_rumrunners),
         LevelTarget(LocationNames.level_dlc_boss_plane_cowboy, None, deps.dep_freemove),
         LevelTarget(LocationNames.level_dlc_boss_snowcult, None, deps.dep_freemove),
-        LevelTarget(LocationNames.level_dlc_boss_airplane, None, deps.dep_freemove),
+        LevelTarget(LocationNames.level_dlc_boss_airplane, None, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
         #LevelTarget(LocationNames.level_dlc_graveyard, None, dep.dep_freemove),
         LevelTarget(LocationNames.level_dlc_boss_saltbaker, None)
     ]),
