@@ -106,7 +106,7 @@ def main():  # noqa: C901
             if not isinstance(name, str):
                 print(f"WARNING: Skipping non-str name: {name}")
                 continue
-            if name.startswith("loc_level_"):
+            if name.startswith("loc_level_") or (name.startswith("loc_event_") and "goal" in name):
                 location_names.append(name)
             elif name.startswith("level_"):
                 level_names.append(name)

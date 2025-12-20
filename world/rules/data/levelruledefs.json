@@ -120,6 +120,420 @@
         "loc_level_boss_slime_dlc_chaliced": {},
         "loc_level_boss_slime_event_dlc_chaliced": {}
       }
+    },
+    "level_boss_frogs": {
+      "locations": {
+        "loc_level_boss_frogs": {},
+        "loc_level_boss_frogs_topgrade": {},
+        "loc_level_boss_frogs_event_agrade": {},
+        "loc_level_boss_frogs_dlc_chaliced": {},
+        "loc_level_boss_frogs_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_flower": {
+      "locations": {
+        "loc_level_boss_flower": {},
+        "loc_level_boss_flower_topgrade": {},
+        "loc_level_boss_flower_event_agrade": {},
+        "loc_level_boss_flower_dlc_chaliced": {},
+        "loc_level_boss_flower_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_baroness": {
+      "locations": {
+        "loc_level_boss_baroness": {},
+        "loc_level_boss_baroness_topgrade": {},
+        "loc_level_boss_baroness_event_agrade": {},
+        "loc_level_boss_baroness_dlc_chaliced": {},
+        "loc_level_boss_baroness_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_clown": {
+      "locations": {
+        "loc_level_boss_clown": {},
+        "loc_level_boss_clown_topgrade": {},
+        "loc_level_boss_clown_event_agrade": {},
+        "loc_level_boss_clown_dlc_chaliced": {},
+        "loc_level_boss_clown_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_dragon": {
+      "locations": {
+        "loc_level_boss_dragon": {},
+        "loc_level_boss_dragon_topgrade": {},
+        "loc_level_boss_dragon_event_agrade": {},
+        "loc_level_boss_dragon_dlc_chaliced": {},
+        "loc_level_boss_dragon_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_bee": {
+      "locations": {
+        "loc_level_boss_bee": {},
+        "loc_level_boss_bee_topgrade": {},
+        "loc_level_boss_bee_event_agrade": {},
+        "loc_level_boss_bee_dlc_chaliced": {},
+        "loc_level_boss_bee_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_pirate": {
+      "locations": {
+        "loc_level_boss_pirate": {},
+        "loc_level_boss_pirate_topgrade": {},
+        "loc_level_boss_pirate_event_agrade": {},
+        "loc_level_boss_pirate_dlc_chaliced": {},
+        "loc_level_boss_pirate_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_mouse": {
+      "locations": {
+        "loc_level_boss_mouse": {},
+        "loc_level_boss_mouse_topgrade": {},
+        "loc_level_boss_mouse_event_agrade": {},
+        "loc_level_boss_mouse_dlc_chaliced": {},
+        "loc_level_boss_mouse_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_sallystageplay": {
+      "locations": {
+        "loc_level_boss_sallystageplay": {},
+        "loc_level_boss_sallystageplay_topgrade": {},
+        "loc_level_boss_sallystageplay_secret": {},
+        "loc_level_boss_sallystageplay_event_agrade": {},
+        "loc_level_boss_sallystageplay_dlc_chaliced": {},
+        "loc_level_boss_sallystageplay_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_train": {
+      "locations": {
+        "loc_level_boss_train": {},
+        "loc_level_boss_train_topgrade": {},
+        "loc_level_boss_train_event_agrade": {},
+        "loc_level_boss_train_dlc_chaliced": {},
+        "loc_level_boss_train_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_kingdice": {
+      "locations": {
+        "loc_level_boss_kingdice": {},
+        "loc_level_boss_kingdice_topgrade": {},
+        "loc_level_boss_kingdice_event_agrade": {},
+        "loc_level_boss_kingdice_dlc_chaliced": {},
+        "loc_level_boss_kingdice_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_plane_blimp": {
+      "locations": {
+        "loc_level_boss_plane_blimp": {},
+        "loc_level_boss_plane_blimp_topgrade": {},
+        "loc_level_boss_plane_blimp_event_agrade": {},
+        "loc_level_boss_plane_blimp_dlc_chaliced": {},
+        "loc_level_boss_plane_blimp_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_plane_genie": {
+      "locations": {
+        "loc_level_boss_plane_genie": {},
+        "loc_level_boss_plane_genie_topgrade": {},
+        "loc_level_boss_plane_genie_secret": {},
+        "loc_level_boss_plane_genie_event_agrade": {},
+        "loc_level_boss_plane_genie_dlc_chaliced": {},
+        "loc_level_boss_plane_genie_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_plane_bird": {
+      "locations": {
+        "loc_level_boss_plane_bird": {},
+        "loc_level_boss_plane_bird_topgrade": {},
+        "loc_level_boss_plane_bird_event_agrade": {},
+        "loc_level_boss_plane_bird_dlc_chaliced": {},
+        "loc_level_boss_plane_bird_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_plane_mermaid": {
+      "locations": {
+        "loc_level_boss_plane_mermaid": {},
+        "loc_level_boss_plane_mermaid_topgrade": {},
+        "loc_level_boss_plane_mermaid_event_agrade": {},
+        "loc_level_boss_plane_mermaid_dlc_chaliced": {},
+        "loc_level_boss_plane_mermaid_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_plane_robot": {
+      "locations": {
+        "loc_level_boss_plane_robot": {},
+        "loc_level_boss_plane_robot_topgrade": {},
+        "loc_level_boss_plane_robot_event_agrade": {},
+        "loc_level_boss_plane_robot_dlc_chaliced": {},
+        "loc_level_boss_plane_robot_event_dlc_chaliced": {}
+      }
+    },
+    "level_boss_devil": {
+      "locations": {
+        "loc_level_boss_devil": {},
+        "loc_level_boss_devil_topgrade": {},
+        "loc_level_boss_devil_event_agrade": {},
+        "loc_level_boss_devil_dlc_chaliced": {},
+        "loc_level_boss_devil_event_dlc_chaliced": {},
+        "loc_event_goal_devil": {}
+      }
+    },
+    "level_dlc_boss_oldman": {
+      "locations": {
+        "loc_level_dlc_boss_oldman": {},
+        "loc_level_dlc_boss_oldman_topgrade": {},
+        "loc_level_dlc_boss_oldman_dlc_chaliced": {},
+        "loc_level_dlc_boss_oldman_event_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_boss_rumrunners": {
+      "locations": {
+        "loc_level_dlc_boss_rumrunners": {},
+        "loc_level_dlc_boss_rumrunners_topgrade": {},
+        "loc_level_dlc_boss_rumrunners_dlc_chaliced": {},
+        "loc_level_dlc_boss_rumrunners_event_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_boss_snowcult": {
+      "locations": {
+        "loc_level_dlc_boss_snowcult": {},
+        "loc_level_dlc_boss_snowcult_topgrade": {},
+        "loc_level_dlc_boss_snowcult_dlc_chaliced": {},
+        "loc_level_dlc_boss_snowcult_event_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_boss_airplane": {
+      "locations": {
+        "loc_level_dlc_boss_airplane": {},
+        "loc_level_dlc_boss_airplane_topgrade": {},
+        "loc_level_dlc_boss_airplane_secret": {},
+        "loc_level_dlc_boss_airplane_dlc_chaliced": {},
+        "loc_level_dlc_boss_airplane_event_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_boss_plane_cowboy": {
+      "locations": {
+        "loc_level_dlc_boss_plane_cowboy": {},
+        "loc_level_dlc_boss_plane_cowboy_topgrade": {},
+        "loc_level_dlc_boss_plane_cowboy_dlc_chaliced": {},
+        "loc_level_dlc_boss_plane_cowboy_event_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_boss_saltbaker": {
+      "locations": {
+        "loc_level_dlc_boss_saltbaker": {},
+        "loc_level_dlc_boss_saltbaker_topgrade": {},
+        "loc_level_dlc_boss_saltbaker_event_agrade": {},
+        "loc_level_dlc_boss_saltbaker_dlc_chaliced": {},
+        "loc_level_dlc_boss_saltbaker_event_dlc_chaliced": {},
+        "loc_event_dlc_goal_saltbaker": {}
+      }
+    },
+    "level_dicepalace_boss_booze": {
+      "locations": {
+        "loc_level_dicepalace_boss_booze": {},
+        "loc_level_dicepalace_boss_booze_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_chips": {
+      "locations": {
+        "loc_level_dicepalace_boss_chips": {},
+        "loc_level_dicepalace_boss_chips_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_cigar": {
+      "locations": {
+        "loc_level_dicepalace_boss_cigar": {},
+        "loc_level_dicepalace_boss_cigar_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_domino": {
+      "locations": {
+        "loc_level_dicepalace_boss_domino": {},
+        "loc_level_dicepalace_boss_domino_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_rabbit": {
+      "locations": {
+        "loc_level_dicepalace_boss_rabbit": {},
+        "loc_level_dicepalace_boss_rabbit_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_plane_horse": {
+      "locations": {
+        "loc_level_dicepalace_boss_plane_horse": {},
+        "loc_level_dicepalace_boss_plane_horse_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_roulette": {
+      "locations": {
+        "loc_level_dicepalace_boss_roulette": {},
+        "loc_level_dicepalace_boss_roulette_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_eightball": {
+      "locations": {
+        "loc_level_dicepalace_boss_eightball": {},
+        "loc_level_dicepalace_boss_eightball_dlc_chaliced": {}
+      }
+    },
+    "level_dicepalace_boss_plane_memory": {
+      "locations": {
+        "loc_level_dicepalace_boss_plane_memory": {},
+        "loc_level_dicepalace_boss_plane_memory_dlc_chaliced": {}
+      }
+    },
+    "level_rungun_forest": {
+      "locations": {
+        "loc_level_rungun_forest": {},
+        "loc_level_rungun_forest_agrade": {},
+        "loc_level_rungun_forest_pacifist": {},
+        "loc_level_rungun_forest_coin1": {},
+        "loc_level_rungun_forest_coin2": {},
+        "loc_level_rungun_forest_coin3": {},
+        "loc_level_rungun_forest_coin4": {},
+        "loc_level_rungun_forest_coin5": {},
+        "loc_level_rungun_forest_dlc_chaliced": {},
+        "loc_level_rungun_forest_event_agrade": {},
+        "loc_level_rungun_forest_event_pacifist": {}
+      }
+    },
+    "level_rungun_tree": {
+      "locations": {
+        "loc_level_rungun_tree": {},
+        "loc_level_rungun_tree_agrade": {},
+        "loc_level_rungun_tree_pacifist": {},
+        "loc_level_rungun_tree_coin1": {},
+        "loc_level_rungun_tree_coin2": {},
+        "loc_level_rungun_tree_coin3": {},
+        "loc_level_rungun_tree_coin4": {},
+        "loc_level_rungun_tree_coin5": {},
+        "loc_level_rungun_tree_dlc_chaliced": {},
+        "loc_level_rungun_tree_event_agrade": {},
+        "loc_level_rungun_tree_event_pacifist": {}
+      }
+    },
+    "level_rungun_circus": {
+      "locations": {
+        "loc_level_rungun_circus": {},
+        "loc_level_rungun_circus_agrade": {},
+        "loc_level_rungun_circus_pacifist": {},
+        "loc_level_rungun_circus_coin1": {},
+        "loc_level_rungun_circus_coin2": {},
+        "loc_level_rungun_circus_coin3": {},
+        "loc_level_rungun_circus_coin4": {},
+        "loc_level_rungun_circus_coin5": {},
+        "loc_level_rungun_circus_dlc_chaliced": {},
+        "loc_level_rungun_circus_event_agrade": {},
+        "loc_level_rungun_circus_event_pacifist": {}
+      }
+    },
+    "level_rungun_funhouse": {
+      "locations": {
+        "loc_level_rungun_funhouse": {},
+        "loc_level_rungun_funhouse_agrade": {},
+        "loc_level_rungun_funhouse_pacifist": {},
+        "loc_level_rungun_funhouse_coin1": {},
+        "loc_level_rungun_funhouse_coin2": {},
+        "loc_level_rungun_funhouse_coin3": {},
+        "loc_level_rungun_funhouse_coin4": {},
+        "loc_level_rungun_funhouse_coin5": {},
+        "loc_level_rungun_funhouse_dlc_chaliced": {},
+        "loc_level_rungun_funhouse_event_agrade": {},
+        "loc_level_rungun_funhouse_event_pacifist": {}
+      }
+    },
+    "level_rungun_harbour": {
+      "locations": {
+        "loc_level_rungun_harbour": {},
+        "loc_level_rungun_harbour_agrade": {},
+        "loc_level_rungun_harbour_pacifist": {},
+        "loc_level_rungun_harbour_coin1": {},
+        "loc_level_rungun_harbour_coin2": {},
+        "loc_level_rungun_harbour_coin3": {},
+        "loc_level_rungun_harbour_coin4": {},
+        "loc_level_rungun_harbour_coin5": {},
+        "loc_level_rungun_harbour_dlc_chaliced": {},
+        "loc_level_rungun_harbour_event_agrade": {},
+        "loc_level_rungun_harbour_event_pacifist": {}
+      }
+    },
+    "level_rungun_mountain": {
+      "locations": {
+        "loc_level_rungun_mountain": {},
+        "loc_level_rungun_mountain_agrade": {},
+        "loc_level_rungun_mountain_pacifist": {},
+        "loc_level_rungun_mountain_coin1": {},
+        "loc_level_rungun_mountain_coin2": {},
+        "loc_level_rungun_mountain_coin3": {},
+        "loc_level_rungun_mountain_coin4": {},
+        "loc_level_rungun_mountain_coin5": {},
+        "loc_level_rungun_mountain_dlc_chaliced": {},
+        "loc_level_rungun_mountain_event_agrade": {},
+        "loc_level_rungun_mountain_event_pacifist": {}
+      }
+    },
+    "level_mausoleum_i": {
+      "locations": {
+        "loc_level_mausoleum_i": {}
+      }
+    },
+    "level_mausoleum_ii": {
+      "locations": {
+        "loc_level_mausoleum_ii": {}
+      }
+    },
+    "level_mausoleum_iii": {
+      "locations": {
+        "loc_level_mausoleum_iii": {}
+      }
+    },
+    "level_dlc_chesscastle_pawn": {
+      "locations": {
+        "loc_level_dlc_chesscastle_pawn": {},
+        "loc_level_dlc_chesscastle_pawn_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_chesscastle_knight": {
+      "locations": {
+        "loc_level_dlc_chesscastle_knight": {},
+        "loc_level_dlc_chesscastle_knight_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_chesscastle_bishop": {
+      "locations": {
+        "loc_level_dlc_chesscastle_bishop": {},
+        "loc_level_dlc_chesscastle_bishop_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_chesscastle_rook": {
+      "locations": {
+        "loc_level_dlc_chesscastle_rook": {},
+        "loc_level_dlc_chesscastle_rook_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_chesscastle_queen": {
+      "locations": {
+        "loc_level_dlc_chesscastle_queen": {},
+        "loc_level_dlc_chesscastle_queen_dlc_chaliced": {}
+      }
+    },
+    "level_dlc_chesscastle_run": {
+      "locations": {
+        "loc_level_dlc_chesscastle_run": {},
+        "loc_level_dlc_chesscastle_run_dlc_chaliced": {}
+      }
+    },
+    "level_tutorial": {
+      "locations": {
+        "loc_level_tutorial": {},
+        "loc_level_tutorial_coin": {}
+      }
+    },
+    "level_dlc_tutorial": {
+      "locations": {
+        "loc_level_dlc_tutorial": {},
+        "loc_level_dlc_tutorial_coin": {}
+      }
     }
   }
 }
