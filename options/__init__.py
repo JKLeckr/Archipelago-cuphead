@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from random import Random
 from Options import PerGameCommonOptions, OptionGroup
-from . import optiondefs as odefs
+from . import options as odefs
 
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
