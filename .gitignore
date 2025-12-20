@@ -6,6 +6,10 @@
 .cursorrules
 .cursorignore
 
+# aider
+.aider*
+map.md
+
 # Generated JSON Schemas
 *.generated.schema.json
 
