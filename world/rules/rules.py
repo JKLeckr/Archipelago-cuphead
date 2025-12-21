@@ -11,7 +11,7 @@ from worlds.generic.Rules import add_rule, forbid_item, forbid_items_for_player,
 
 from ..enums import GameMode, ItemGroups
 from ..items import itemdefs as idef
-from ..levels import levellocrules as llrules
+from ..levels.legacy import levellocrules as llrules
 from ..locations import locationdefs as ld
 from ..locations import locationsets
 from ..names import ItemNames, LocationNames
@@ -21,7 +21,7 @@ from .rulebase import Rule
 
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
-    from ..levels.levellocrulebase import LevelLocRuleData
+    from ..levels.legacy.levellocrulebase import LevelLocRuleData
 
 _llrdefs_reg: list[LevelLocRuleData] = []
 

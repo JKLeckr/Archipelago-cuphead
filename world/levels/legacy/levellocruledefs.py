@@ -3,9 +3,9 @@
 
 from __future__ import annotations
 
-from ..names import LocationNames
-from ..rules import levelrules as lr
-from ..rules.rules import register_level_loc_rules
+from ...names import LocationNames
+from ...rules import levelrules as lr
+from ...rules.rules import register_level_loc_rules
 from .levellocrulebase import LevelLocRuleData, LevelRuleModes, LRule
 
 level_loc_rules_boss: list[LevelLocRuleData] = [

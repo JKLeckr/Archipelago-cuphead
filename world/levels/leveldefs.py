@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from ..names import LocationNames
 from ..rules import levelrules as lr
+from .legacy.levellocrulebase import init as llrb_init
 from .levelbase import LevelData
-from .levellocrulebase import init as llrb_init
 
 # Levels
 level_boss_regular: dict[str, LevelData] = {

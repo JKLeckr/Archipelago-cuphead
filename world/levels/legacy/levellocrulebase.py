@@ -7,12 +7,12 @@ import typing
 from enum import IntEnum
 from typing import NamedTuple
 
-from ..names import LocationNames
-from ..rules import levelrules as lr
-from .levelbase import LevelData
+from ...names import LocationNames
+from ...rules import levelrules as lr
+from ..levelbase import LevelData
 
 if typing.TYPE_CHECKING:
-    from ..rules.levelrules import LevelRule
+    from ...rules.levelrules import LevelRule
 
 
 class LevelRuleModes(IntEnum):
