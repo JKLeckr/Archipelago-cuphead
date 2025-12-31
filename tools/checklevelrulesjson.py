@@ -140,6 +140,15 @@ def lint(data: Any, known_rules: set[str], known_deps: set[str]):
                     f"location '{loc}'"
                 )
 
+def fix_ref_str(schema: Any) -> None:
+    prefix = "levelrules.generated.schema.json"
+    pcomment = schema["properties"]["$comment"]
+    ppresetsprops = schema["properties"]["presets"]["additionalProperties"]
+    cref = str(pcomment["$ref"])
+    pref = str(ppresetsprops["$ref"])
+    pcomment["$ref"] = cref.removeprefix(prefix)
+    ppresetsprops["$ref"] = pref.removeprefix(prefix)
+
 def main():
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
         " This directory must be the Archipelago root directory!"
@@ -147,7 +156,9 @@ def main():
 
     parser = argparse.ArgumentParser(description="Check levelrules json")
     parser.add_argument("file", help="File of the levelrules json to check")
-    parser.add_argument("schema", help="Schema file to validate against")
+    parser.add_argument("presets_file", help="File of the levelrulepresets json to check")
+    parser.add_argument("schema", help="Rules Schema file to validate against")
+    parser.add_argument("presets_schema", help="Presets Schema file to validate against")
     parser.add_argument(
         "--yes",
         help=f"Accept {_fate_desc}",
@@ -187,14 +198,32 @@ def main():
         print(f"File '{args.file}' does not exist!")
         exit(1)
 
+    if not os.path.isfile(args.presets_file):
+        print(f"Schema file '{args.schema}' does not exist!")
+        exit(1)
+
     if not os.path.isfile(args.schema):
+        print(f"File '{args.file}' does not exist!")
+        exit(1)
+
+    if not os.path.isfile(args.presets_schema):
         print(f"Schema file '{args.schema}' does not exist!")
         exit(1)
 
     lrjson = json.load(open(args.file, "r", encoding="utf-8"))
+    lrpjson = json.load(open(args.presets_file, "r", encoding="utf-8"))
     schema = json.load(open(args.schema, "r", encoding="utf-8"))
+    pschema = json.load(open(args.presets_schema, "r", encoding="utf-8"))
+
+    # Mash
+    schema["properties"]["$comment"] = pschema["properties"]["$comment"]
+    schema["properties"]["presets"] = pschema["properties"]["presets"]
+    fix_ref_str(schema)
+
+    lrjson["presets"] = lrpjson["presets"]
 
     validate_schema(lrjson, schema)
+
     lint(lrjson, known_lrules, known_deps)
 
 if __name__ == "__main__":

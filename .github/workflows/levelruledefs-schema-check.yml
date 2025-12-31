@@ -9,14 +9,18 @@ on:
       - "tools/genlevelruleschema.py"
       - "tools/checklevelrulesjson.py"
       - "tools/schemas/levelrules.schema.json"
+      - "tools/schemas/levelrulepresets.schema.json"
       - "world/rules/data/levelruledefs.json"
+      - "world/rules/data/levelrulepresets.json"
       - ".github/workflows/levelruledefs-schema-check.yml"
   push:
     paths:
       - "tools/genlevelruleschema.py"
       - "tools/checklevelrulesjson.py"
       - "tools/schemas/levelrules.schema.json"
+      - "tools/schemas/levelrulepresets.schema.json"
       - "world/rules/data/levelruledefs.json"
+      - "world/rules/data/levelrulepresets.json"
       - ".github/workflows/levelruledefs-schema-check.yml"
 
 jobs:
@@ -54,4 +58,4 @@ jobs:
 
       - name: "Run checklevelrulesjson.py"
         working-directory: Archipelago/worlds/cuphead
-        run: python ./tools/checklevelrulesjson.py --yes ./world/rules/data/levelruledefs.json ./schemas/levelrules.generated.schema.json
+        run: python ./tools/checklevelrulesjson.py --yes ./world/rules/data/levelruledefs.json ./world/rules/data/levelrulepresets.json ./schemas/levelrules.generated.schema.json ./schemas/levelrulepresets.generated.schema.json

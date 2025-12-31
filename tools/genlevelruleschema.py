@@ -24,16 +24,24 @@ LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
 NAMES_MOD = ".names"
 NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
 
-WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
-BASE_SCHEMA_PATH = os.path.join(THIS_DIR, "schemas", "levelrules.schema.json")
+DATA_PATH = os.path.join("world", "rules", "data")
+PRESET_DEFS_PATH = os.path.join(DATA_PATH, "levelrulepresets.json")
 
-DEST_DIR = os.path.join("schemas", "levelrules.generated.schema.json")
+WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
+BASE_SCHEMAS_DIR = os.path.join(THIS_DIR, "schemas")
+BASE_RULES_SCHEMA_PATH = os.path.join(BASE_SCHEMAS_DIR, "levelrules.schema.json")
+BASE_PRESETS_SCHEMA_PATH = os.path.join(BASE_SCHEMAS_DIR, "levelrulepresets.schema.json")
+
+GEN_RULES_SCHEMA_NAME = "levelrules.generated.schema.json"
+GEN_RULES_SCHEMA_DEST = os.path.join("schemas", GEN_RULES_SCHEMA_NAME)
+GEN_PRESETS_SCHEMA_NAME = "levelrulepresets.generated.schema.json"
+GEN_PRESETS_SCHEMA_DEST = os.path.join("schemas", GEN_PRESETS_SCHEMA_NAME)
 
 
 def main():  # noqa: C901
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
         " This directory must be the Archipelago root directory!"
-        f" Files will be written to '{DEST_DIR}'."
+        f" Files will be written to '{GEN_RULES_SCHEMA_DEST}'."
     )
 
     parser = argparse.ArgumentParser(description="Generate levelrules schema from apworld rules")
@@ -84,15 +92,21 @@ def main():  # noqa: C901
     else:
         names = None
 
-    base = json.load(open(BASE_SCHEMA_PATH))
+    base = json.load(open(BASE_RULES_SCHEMA_PATH))
+    presets_base = json.load(open(BASE_PRESETS_SCHEMA_PATH))
+    presets_data = json.load(open(PRESET_DEFS_PATH))
 
     lrule_names = sorted(levelrules.LRULES)
     dep_names = sorted(deps.DEPS)
+
+    preset_names = sorted(presets_data["presets"].keys())
 
     # Patch enums
     for variant in base["$defs"]["ruleExpr"]["oneOf"]:
         if "rule" in variant.get("properties", {}):
             variant["properties"]["rule"]["enum"] = lrule_names
+        if "preset" in variant.get("properties", {}):
+            variant["properties"]["preset"]["enum"] = preset_names
 
     base["$defs"]["depSelector"]["enum"] = (
         dep_names + ["!" + d for d in dep_names]
@@ -114,12 +128,22 @@ def main():  # noqa: C901
         base["properties"]["levels"]["propertyNames"]["enum"] = level_names
         base["$defs"]["level"]["properties"]["locations"]["propertyNames"]["enum"] = location_names
 
+    presets_base["properties"]["$comment"]["$ref"] = f"{GEN_RULES_SCHEMA_NAME}#/$defs/comment"
+    presets_base["properties"]["presets"]["additionalProperties"]["$ref"] = (
+        f"{GEN_RULES_SCHEMA_NAME}#/$defs/ruleContainer"
+    )
+
     if not os.path.isdir("schemas"):
         os.mkdir("schemas", mode=0o755)
 
     json.dump(
         base,
-        open(DEST_DIR, "w"),
+        open(GEN_RULES_SCHEMA_DEST, "w"),
+        indent=2
+    )
+    json.dump(
+        presets_base,
+        open(GEN_PRESETS_SCHEMA_DEST, "w"),
         indent=2
     )
 

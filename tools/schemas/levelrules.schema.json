@@ -9,10 +9,6 @@
   "required": ["levels"],
   "properties": {
     "$comment": { "$ref": "#/$defs/comment" },
-    "presets": {
-      "type": "object",
-      "additionalProperties": { "$ref": "#/$defs/ruleContainer" }
-    },
     "levels": {
       "type": "object",
       "propertyNames": { "type": "string" },
