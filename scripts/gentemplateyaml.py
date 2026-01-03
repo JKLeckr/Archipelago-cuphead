@@ -17,6 +17,26 @@ DEFAULT_OUTPUT_FILE: str = "Player.yaml"
 DEFAULT_HEADER: str = "Template YAML generated with gentemplateyaml"
 
 
+def parse_valid_option_classes(init_path: str, dataclass_name: str = "GameOptions") -> set[str]:
+    """
+    Parse the __init__.py file and return the set of option class names
+    """
+    with open(init_path, "r", encoding="utf-8") as f:
+        tree = ast.parse(f.read(), filename=init_path)
+    res: set[str] = set()
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == dataclass_name:
+            for stmt in node.body:
+                if isinstance(stmt, ast.AnnAssign) and isinstance(stmt.target, ast.Name):
+                    annotation = stmt.annotation
+                    # odefs.Version
+                    if isinstance(annotation, ast.Attribute):
+                        res.add(annotation.attr)
+                    # Version (unlikely but safe)
+                    elif isinstance(annotation, ast.Name):
+                        res.add(annotation.id)
+    return res
+
 def parse_optiondefs(path: str) -> list[ast.ClassDef]:
     """Parse optiondefs.py into a list of class definitions."""
     with open(path, "r", encoding="utf-8") as f:
@@ -151,7 +171,7 @@ def should_skip_visibility(visibility_value: str):
     return any(flag in vis_str for flag in VISIBILITY_SKIP_KEYWORDS)
 
 
-def generate_yaml_data(classes: Iterable[ast.ClassDef]) -> dict[str, typing.Any]:
+def generate_yaml_data(classes: Iterable[ast.ClassDef], allowed_classes: set[str]) -> dict[str, typing.Any]:
     """Build structured data for YAML output."""
     yaml_data: dict[str, typing.Any] = {
         "name": "Player",
@@ -160,6 +180,9 @@ def generate_yaml_data(classes: Iterable[ast.ClassDef]) -> dict[str, typing.Any]
     }
 
     for node in classes:
+        if node.name not in allowed_classes:
+            continue
+
         attrs = get_class_attrs(node)
         name = attrs.get("name", node.name)
         if name in EXCLUDE_OPTION_TYPE:
@@ -194,14 +217,16 @@ def get_value_string(value: typing.Any) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="generate the Player.yaml file")
-    parser.add_argument("file", help="Path to the optiondefs py")
+    parser.add_argument("file", help="Path to the options __init__ py")
+    parser.add_argument("ofile", help="Path to the options definitions py")
     parser.add_argument("-o", "--output", default="", help="Output file")
     parser.add_argument("-c", "--comment", default=DEFAULT_HEADER, help="Add comment to header")
 
     args = parser.parse_args()
 
-    classes = parse_optiondefs(args.file)
-    yaml_dict = generate_yaml_data(classes)
+    valid_option_classes = parse_valid_option_classes(args.file, "CupheadOptions")
+    classes = parse_optiondefs(args.ofile)
+    yaml_dict = generate_yaml_data(classes, valid_option_classes)
 
     header = args.comment if args.comment else DEFAULT_HEADER
 

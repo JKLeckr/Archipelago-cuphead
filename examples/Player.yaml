@@ -1,5 +1,5 @@
 # Template YAML generated with gentemplateyaml
-# alpha02h
+# alpha02i
 
 name: Player
 game: Cuphead
@@ -122,15 +122,6 @@ Cuphead:
   # Default: false
   freemove_isles: 'false'
 
-  ## Shop Mode
-  #
-  # Set shop mode.
-  # You get access to higher tiers the more shops you have access to.
-  #
-  # Values: tiers, independent
-  # Default: tiers
-  shop_mode: tiers
-
   ## Randomize Abilities
   #
   # Randomize essential abilities like Duck, Parry, Dash, etc.
@@ -166,18 +157,6 @@ Cuphead:
   # Values: disabled, a_minus_grade, a_grade, a_plus_grade, p_grade
   # Default: a_minus_grade
   rungun_grade_checks: a_minus_grade
-
-  ## [DLC] Chalice Check Grade Requirement
-  #
-  # -DLC ONLY-
-  # -REQUIRES CHALICE-
-  # Enable checks for defeating each boss as Ms. Chalice.
-  # Separate makes Chalice checks separate from level completion checks.
-  # Grade Required has the set grade check requirement for bosses.
-  #
-  # Values: disabled, a_minus_grade, a_grade, a_plus_grade, use_grade_check
-  # Default: disabled
-  dlc_chalice_check_grade: disabled
 
   ## [DLC] Boss Chalice Checks
   #

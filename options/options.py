@@ -46,6 +46,7 @@ class HardLogic(Toggle):
     """
     name = "hard_logic"
     display_name = "Hard Logic"
+    visibility = Visibility.spoiler
 
 class ExpertMode(Toggle):
     """
@@ -102,7 +103,7 @@ class ContractRequirements(Range):
     display_name = "Contract Requirements"
     range_start = 3
     range_end = 17
-    default: int = 17
+    default = 17
 
 class DlcIngredientRequirements(Range):
     """
@@ -189,11 +190,13 @@ class FreeMoveIsles(Toggle):
 
 class ShopMode(Choice):
     """
+    --NOT YET IMPLEMENTED--
     Set shop mode.
     You get access to higher tiers the more shops you have access to.
     """
     name = "shop_mode"
     display_name = "Shop Mode"
+    visibility = Visibility.spoiler
     option_tiers = 0
     #option_strict_tiers = 1
     option_independent = 2
@@ -267,9 +270,8 @@ class DlcChaliceCheckGrade(Choice):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
-    Enable checks for defeating each boss as Ms. Chalice.
-    Separate makes Chalice checks separate from level completion checks.
-    Grade Required has the set grade check requirement for bosses.
+    --- NOT IMPLEMENTED ---
+    [MISSINGDESCRIPTION]
     """
     name = "dlc_chalice_check_grade"
     display_name = "[DLC] Chalice Check Grade Requirement"
