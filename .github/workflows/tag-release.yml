@@ -51,11 +51,6 @@ jobs:
           mv cuphead Archipelago-cuphead
           mv cuphead.zip cuphead.apworld
 
-      - name: Calculate SHA256 checksum
-        working-directory: ../
-        run: |
-          sha256sum cuphead.apworld > cuphead.apworld.sha256
-
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
@@ -65,5 +60,4 @@ jobs:
           token: ${{ secrets.AP_TOKEN }}
           files: |
             ../cuphead.apworld
-            ../cuphead.apworld.sha256
             ../examples/*
