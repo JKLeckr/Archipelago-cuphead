@@ -216,7 +216,6 @@ def main():
     pschema = json.load(open(args.presets_schema, "r", encoding="utf-8"))
 
     # Mash
-    schema["properties"]["$comment"] = pschema["properties"]["$comment"]
     schema["properties"]["presets"] = pschema["properties"]["presets"]
     fix_ref_str(schema)
 

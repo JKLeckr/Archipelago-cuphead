@@ -24,7 +24,7 @@ LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
 NAMES_MOD = ".names"
 NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
 
-DATA_PATH = os.path.join("world", "rules", "data")
+DATA_PATH = os.path.join("world", "data")
 PRESET_DEFS_PATH = os.path.join(DATA_PATH, "levelrulepresets.json")
 
 WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
