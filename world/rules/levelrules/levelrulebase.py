@@ -3,14 +3,11 @@
 
 from __future__ import annotations
 
-import typing
 from dataclasses import dataclass
 from typing import Literal
 
-from ..deps import DEPS, Dep
-
-if typing.TYPE_CHECKING:
-    from ...wconf import WorldConfig
+from ..deps import Dep
+from .levelrules import LevelRule
 
 ### Base intermediary representation data classes
 
@@ -19,7 +16,8 @@ if typing.TYPE_CHECKING:
 class RuleExpr: ...
 
 @dataclass(frozen=True)
-class RuleRef(RuleExpr):
+class LRule(RuleExpr):
+    rule: LevelRule
     name: str
 
 @dataclass(frozen=True)
@@ -43,26 +41,16 @@ class Not(RuleExpr):
 
 @dataclass(frozen=True)
 class RuleDep:
-    _expr: Dep
-    _expr_name: str
-
-    @classmethod
-    def from_str(cls, dep: str) -> RuleDep:
-        try:
-            _expr = DEPS[dep]
-        except KeyError as e:
-            raise KeyError(f"'{dep}' is not a valid dep!") from e
-        return cls(_expr, dep)
-
-    def eval(self, wconf: WorldConfig) -> bool:
-        return self._expr(wconf)
+    ref: Dep
+    negated: bool
+    name: str
 
 
 ## Rule Containers
 
 @dataclass(frozen=True)
 class RuleFragment:
-    when: tuple[Dep, ...]
+    when: list[RuleDep]
     requires: RuleExpr
     source_path: str
 

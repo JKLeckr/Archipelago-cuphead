@@ -108,7 +108,7 @@ def main():  # noqa: C901
         if "preset" in variant.get("properties", {}):
             variant["properties"]["preset"]["enum"] = preset_names
 
-    base["$defs"]["depSelector"]["enum"] = (
+    base["$defs"]["ruleDep"]["enum"] = (
         dep_names + ["!" + d for d in dep_names]
     )
 

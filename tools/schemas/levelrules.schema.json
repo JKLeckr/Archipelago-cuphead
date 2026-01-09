@@ -18,14 +18,14 @@
   "additionalProperties": false,
 
   "$defs": {
-    "depSelector": {
+    "ruleDep": {
       "type": "string",
       "pattern": "^!?[A-Za-z_][A-Za-z0-9_]*$"
     },
 
     "whenList": {
       "type": "array",
-      "items": { "$ref": "#/$defs/depSelector" },
+      "items": { "$ref": "#/$defs/ruleDep" },
       "uniqueItems": true
     },
 
