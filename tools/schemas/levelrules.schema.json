@@ -18,10 +18,12 @@
   "additionalProperties": false,
 
   "$defs": {
-    "ruleDep": {
+    "refString": {
       "type": "string",
       "pattern": "^!?[A-Za-z_][A-Za-z0-9_]*$"
     },
+
+    "ruleDep": { "$ref": "#/$defs/refString" },
 
     "whenList": {
       "type": "array",
@@ -35,7 +37,7 @@
           "type": "object",
           "required": ["rule"],
           "properties": {
-            "rule": { "type": "string" }
+            "rule": { "$ref": "#/$defs/refString" }
           },
           "additionalProperties": false
         },
@@ -93,14 +95,16 @@
       "additionalProperties": false
     },
 
+    "ruleList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ruleFragment" }
+    },
+
     "ruleContainer": {
       "type": "object",
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
-        "rules": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/ruleFragment" }
-        }
+        "rules": { "$ref": "#/$defs/ruleList" }
       },
       "additionalProperties": false
     },

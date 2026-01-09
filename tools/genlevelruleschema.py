@@ -21,6 +21,8 @@ LEVELS_MOD = ".levels"
 LEVELS_MOD_PATH = f"{WORLD_MOD}{LEVELS_MOD}"
 LEVELRULES_MOD = ".levelrules"
 LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
+LEVELRULES_RULES_MOD = ".levelrules"
+LEVELRULES_RULES_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_RULES_MOD}"
 NAMES_MOD = ".names"
 NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
 
@@ -77,11 +79,14 @@ def main():  # noqa: C901
     _lrspec = importlib.util.find_spec(LEVELRULES_MOD, package=RULES_MOD_PATH)
     _levelrules = _lrspec.loader.load_module(LEVELRULES_MOD_PATH) if _lrspec and _lrspec.loader else None
 
-    if not _deps or not _levelrules:
+    _lrrspec = importlib.util.find_spec(LEVELRULES_RULES_MOD, package=LEVELRULES_MOD_PATH)
+    _levelrulesrules = _lrrspec.loader.load_module(LEVELRULES_RULES_MOD_PATH) if _lrrspec and _lrrspec.loader else None
+
+    if not _deps or not _levelrulesrules:
         raise ImportError("Could not import necessary modules.")
 
     deps = _deps
-    levelrules = _levelrules
+    levelrules = _levelrulesrules
 
     if args.include_lnames:
         _nspec = importlib.util.find_spec(NAMES_MOD, package=WORLD_MOD)
@@ -129,8 +134,11 @@ def main():  # noqa: C901
         base["$defs"]["level"]["properties"]["locations"]["propertyNames"]["enum"] = location_names
 
     presets_base["properties"]["$comment"]["$ref"] = f"{GEN_RULES_SCHEMA_NAME}#/$defs/comment"
-    presets_base["properties"]["presets"]["additionalProperties"]["$ref"] = (
-        f"{GEN_RULES_SCHEMA_NAME}#/$defs/ruleContainer"
+    presets_base["$defs"]["preset"]["properties"]["$comment"]["$ref"] = (
+        f"{GEN_RULES_SCHEMA_NAME}#/$defs/comment"
+    )
+    presets_base["$defs"]["preset"]["properties"]["rules"]["$ref"] = (
+        f"{GEN_RULES_SCHEMA_NAME}#/$defs/ruleList"
     )
 
     if not os.path.isdir("schemas"):

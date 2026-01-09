@@ -9,11 +9,26 @@
     "$comment": { "$ref": "levelrules.schema.json#/$defs/comment" },
     "presets": {
       "type": "object",
-      "additionalProperties": {
-        "$ref": "levelrules.schema.json#/$defs/ruleContainer"
-      }
+      "propertyNames": { "type": "string" },
+      "additionalProperties": { "$ref": "#/$defs/preset" }
     }
   },
+  "additionalProperties": false,
 
-  "additionalProperties": false
+  "$defs": {
+    "preset": {
+      "type": "object",
+      "required": ["rules"],
+      "properties": {
+        "$comment": { "$ref": "levelrules.schema.json#/$defs/comment" },
+        "requires_presets": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "rules": { "$ref": "levelrules.schema.json#/$defs/ruleList" }
+      },
+      "additionalProperties": false
+    }
+  }
 }

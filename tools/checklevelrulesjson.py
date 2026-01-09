@@ -22,6 +22,8 @@ DEP_MOD = ".deps"
 DEP_MOD_PATH = f"{RULES_MOD_PATH}{DEP_MOD}"
 LEVELRULES_MOD = ".levelrules"
 LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
+LEVELRULES_RULES_MOD = ".levelrules"
+LEVELRULES_RULES_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_RULES_MOD}"
 
 WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
 
@@ -143,11 +145,14 @@ def lint(data: Any, known_rules: set[str], known_deps: set[str]):
 def fix_ref_str(schema: Any) -> None:
     prefix = "levelrules.generated.schema.json"
     pcomment = schema["properties"]["$comment"]
-    ppresetsprops = schema["properties"]["presets"]["additionalProperties"]
+    ppresetscomment = schema["$defs"]["preset"]["properties"]["$comment"]
+    ppresetsrules = schema["$defs"]["preset"]["properties"]["rules"]
     cref = str(pcomment["$ref"])
-    pref = str(ppresetsprops["$ref"])
+    pcref = str(ppresetscomment["$ref"])
+    prref = str(ppresetsrules["$ref"])
     pcomment["$ref"] = cref.removeprefix(prefix)
-    ppresetsprops["$ref"] = pref.removeprefix(prefix)
+    ppresetscomment["$ref"] = pcref.removeprefix(prefix)
+    ppresetsrules["$ref"] = prref.removeprefix(prefix)
 
 def main():
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
@@ -185,11 +190,14 @@ def main():
     _lrspec = importlib.util.find_spec(LEVELRULES_MOD, package=RULES_MOD_PATH)
     _levelrules = _lrspec.loader.load_module(LEVELRULES_MOD_PATH) if _lrspec and _lrspec.loader else None
 
-    if not _deps or not _levelrules:
+    _lrrspec = importlib.util.find_spec(LEVELRULES_RULES_MOD, package=LEVELRULES_MOD_PATH)
+    _levelrulesrules = _lrrspec.loader.load_module(LEVELRULES_RULES_MOD_PATH) if _lrrspec and _lrrspec.loader else None
+
+    if not _deps or not _levelrulesrules:
         raise ImportError("Could not import necessary modules.")
 
     deps = _deps
-    levelrules = _levelrules
+    levelrules = _levelrulesrules
 
     known_lrules: set[str] = set(levelrules.LRULES)
     known_deps: set[str] = set(deps.DEPS)
@@ -217,6 +225,7 @@ def main():
 
     # Mash
     schema["properties"]["presets"] = pschema["properties"]["presets"]
+    schema["$defs"]["preset"] = pschema["$defs"]["preset"]
     fix_ref_str(schema)
 
     lrjson["presets"] = lrpjson["presets"]
