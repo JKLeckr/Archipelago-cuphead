@@ -21,6 +21,11 @@
       "required": ["rules"],
       "properties": {
         "$comment": { "$ref": "levelrules.schema.json#/$defs/comment" },
+        "requires_presets": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
         "rules": { "$ref": "levelrules.schema.json#/$defs/ruleList" }
       },
       "additionalProperties": false
