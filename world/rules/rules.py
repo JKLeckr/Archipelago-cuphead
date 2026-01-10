@@ -6,8 +6,7 @@ from __future__ import annotations
 import typing
 from collections.abc import Iterable
 
-from BaseClasses import Entrance, Location, Region
-from worlds.generic.Rules import add_rule, forbid_item, forbid_items_for_player, set_rule
+from worlds.generic.Rules import forbid_item, forbid_items_for_player, set_rule
 
 from ..enums import GameMode, ItemGroups
 from ..items import itemdefs as idef
@@ -17,7 +16,6 @@ from ..locations import locationsets
 from ..names import ItemNames, LocationNames
 from . import levelrules as lr
 from . import rulebase as rb
-from .rulebase import Rule
 
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
@@ -28,47 +26,20 @@ _llrdefs_reg: list[LevelLocRuleData] = []
 def register_level_loc_rules(llrdefs: list[LevelLocRuleData]):
     _llrdefs_reg.extend(llrdefs)
 
-def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
-    return world.multiworld.get_entrance(exit+" -> "+entrance, world.player)
-def get_location(world: CupheadWorld, location: str) -> Location:
-    return world.multiworld.get_location(location, world.player)
-def get_region(world: CupheadWorld, region: str) -> Region:
-    return world.multiworld.get_region(region, world.player)
-def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
-    set_loc_rule(world, loc, rb.rule_has(world, item, count))
-def add_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
-    add_loc_rule(world, loc, rb.rule_has(world, item, count), combine_and)
-def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
-    set_rule(get_location(world, loc), rule)
-def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule, combine_and: bool = True) -> None:
-    add_rule(get_location(world, loc), rule, "and" if combine_and else "or")
-def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
-    region = get_region(world, region_name)
-    for entrance in region.entrances:
-        set_rule(entrance, rule)
-def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
-    region = get_region(world, region_name)
-    for entrance in region.entrances:
-        add_rule(entrance, rule, "and" if combine_and else "or")
-
 def set_rules(world: CupheadWorld):
     w = world
     wconfig = w.wconfig
     use_dlc = w.use_dlc
     contract_reqs = wconfig.contract_requirements
 
-    set_region_rules(w, LocationNames.world_inkwell_2, rb.rule_has(w, ItemNames.item_contract, contract_reqs[0]))
-    set_region_rules(w, LocationNames.world_inkwell_3, rb.rule_has(w, ItemNames.item_contract, contract_reqs[1]))
-    set_region_rules(w, LocationNames.level_boss_kingdice,
-                     rb.rule_and(
-                         rb.rule_has(w, ItemNames.item_contract, contract_reqs[2]),
-                         rb.rrule_to_rule(lr.lrule_kingdice(wconfig), w.player)
-                     ))
+    rb.set_region_rules(w, LocationNames.world_inkwell_2, rb.rule_has(w, ItemNames.item_contract, contract_reqs[0]))
+    rb.set_region_rules(w, LocationNames.world_inkwell_3, rb.rule_has(w, ItemNames.item_contract, contract_reqs[1]))
+
     set_shop_rules(w)
 
     set_level_rules(w)
 
-    set_item_rule(w, LocationNames.loc_coin_isle1_secret, ItemNames.item_event_isle1_secret_prereq, 5)
+    rb.set_item_rule(w, LocationNames.loc_coin_isle1_secret, ItemNames.item_event_isle1_secret_prereq, 5)
 
     set_quest_rules(w)
 
@@ -80,13 +51,13 @@ def set_rules(world: CupheadWorld):
 def add_level_chalice_rule(world: CupheadWorld, loc: str):
     w = world
     if loc in locationsets.s_plane_locations:
-        add_loc_rule(
+        rb.add_loc_rule(
             w,
             loc,
             rb.rrule_to_rule(lr.lrule_dlc_boss_plane_chaliced(w.wconfig), w.player)
         )
     else:
-        add_loc_rule(
+        rb.add_loc_rule(
             w,
             loc,
             rb.rrule_to_rule(lr.lrule_dlc_boss_chaliced(w.wconfig), w.player)
@@ -104,7 +75,7 @@ def set_dlc_rules(world: CupheadWorld):
     wconfig = w.wconfig
     ingredient_reqs = wconfig.dlc_ingredient_requirements
     set_dlc_boat_rules(w)
-    set_region_rules(
+    rb.set_region_rules(
         w,
         LocationNames.level_dlc_boss_saltbaker,
         rb.rule_has(w, ItemNames.item_dlc_ingredient, ingredient_reqs)
@@ -114,7 +85,7 @@ def set_dlc_rules(world: CupheadWorld):
     if wconfig.dlc_cactusgirl_quest:
         add_level_chalice_rules(w, ld.locations_dlc_event_boss_chaliced.keys())
         num_chaliced_events = len(ld.locations_dlc_event_boss_chaliced.keys())
-        set_loc_rule(
+        rb.set_loc_rule(
             w,
             LocationNames.loc_dlc_quest_cactusgirl,
             rb.rule_has(w, ItemNames.item_event_dlc_boss_chaliced, num_chaliced_events)
@@ -126,41 +97,41 @@ def set_dlc_boat_rules(world: CupheadWorld):
     randomize_boat = wconfig.dlc_randomize_boat
     require_mausoleum = wconfig.dlc_requires_mausoleum
     if require_mausoleum:
-        add_region_rules(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_event_mausoleum))
+        rb.add_region_rules(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_event_mausoleum))
     if randomize_boat:
-        add_region_rules(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_dlc_boat))
+        rb.add_region_rules(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_dlc_boat))
 
 def set_quest_rules(world: CupheadWorld):
     w = world
     wconfig = w.wconfig
     if wconfig.fourmel_quest:
-        set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
+        rb.set_item_rule(w, LocationNames.loc_quest_4mel, ItemNames.item_event_quest_4mel_4th)
     if wconfig.ginger_quest:
-        set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
+        rb.set_item_rule(w, LocationNames.loc_quest_ginger, ItemNames.item_event_isle2_shortcut)
     if wconfig.buster_quest and wconfig.randomize_abilities:
-        set_item_rule(w, LocationNames.loc_quest_buster, ItemNames.item_ability_parry)
+        rb.set_item_rule(w, LocationNames.loc_quest_buster, ItemNames.item_ability_parry)
         if wconfig.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
-            add_loc_rule(w, LocationNames.loc_quest_buster, rb.rule_has_all(w, {
+            rb.add_loc_rule(w, LocationNames.loc_quest_buster, rb.rule_has_all(w, {
                 ItemNames.item_ability_dlc_cdash,
                 ItemNames.item_ability_dlc_cparry,
             }), False)
     if wconfig.silverworth_quest:
-        set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
+        rb.set_item_rule(w, LocationNames.loc_quest_silverworth, ItemNames.item_event_agrade, 15)
     if wconfig.pacifist_quest:
-        set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
+        rb.set_item_rule(w, LocationNames.loc_quest_pacifist, ItemNames.item_event_pacifist, 6)
     if wconfig.music_quest:
-        set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
+        rb.set_item_rule(w, LocationNames.loc_quest_music, ItemNames.item_event_ludwig)
 
 def add_level_grade_rule(world: CupheadWorld, loc: str):
     w = world
     if loc in locationsets.s_plane_locations:
-        add_loc_rule(
+        rb.add_loc_rule(
             w,
             loc,
             rb.rrule_to_rule(lr.lrule_plane_topgrade(w.wconfig), w.player)
         )
     else:
-        add_loc_rule(
+        rb.add_loc_rule(
             w,
             loc,
             rb.rrule_to_rule(lr.lrule_topgrade(w.wconfig), w.player)
@@ -179,7 +150,7 @@ def set_level_loc_rules(world: CupheadWorld):
     for _loc_rule in loc_rules:
         for loc, rule in _loc_rule.loc_rules.items():
             if loc in w.active_locations:
-                set_loc_rule(w, loc, rb.rrule_to_rule(rule(w.wconfig), w.player))
+                rb.set_loc_rule(w, loc, rb.rrule_to_rule(rule(w.wconfig), w.player))
             elif world.settings.is_debug_bit_on(1):
                 print(f"[set_level_loc_rules] Skipping {loc}")
 
@@ -235,7 +206,7 @@ def set_shop_rules(world: CupheadWorld):
 
     # Prevent certain items from appearing in the shop
     for shop_item in shop_items.keys():
-        _loc = get_location(w, shop_item)
+        _loc = rb.get_location(w, shop_item)
         # Prevent putting money in the shop
         [forbid_item(_loc, x, player) for x in coins]
         # Prevent putting local filler items in the shop
@@ -260,7 +231,7 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
     cost = 0
     for i in range(shop_index+1):
         cost += shop_costs[i]
-    region = get_region(world, LocationNames.shop_sets[shop_index])
+    region = rb.get_region(world, LocationNames.shop_sets[shop_index])
     for entrance in region.entrances:
         set_rule(entrance, lambda state: state.has(ItemNames.item_coin, player, cost))
 

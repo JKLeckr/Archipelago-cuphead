@@ -2,11 +2,16 @@
   "$comment": "Copyright 2025-2026 JKLeckr, SPDX-License-Identifier: MPL-2.0",
   "levels": {
     "level_boss_veggies": {
+      "_comment": "TODO: Finish",
       "locations": {
         "loc_level_boss_veggies": {},
-        "loc_level_boss_veggies_topgrade": {},
+        "loc_level_boss_veggies_topgrade": {
+          "rule": { "rules": [{ "requires": { "preset": "topgrade" } }] }
+        },
         "loc_level_boss_veggies_secret": {},
-        "loc_level_boss_veggies_event_agrade": {},
+        "loc_level_boss_veggies_event_agrade": {
+          "rule": { "rules": [{ "requires": { "preset": "topgrade" } }] }
+        },
         "loc_level_boss_veggies_dlc_chaliced": {},
         "loc_level_boss_veggies_event_dlc_chaliced": {}
       }
@@ -112,12 +117,39 @@
       }
     },
     "level_boss_kingdice": {
+      "_comment": "TODO: Finish",
+      "access": { "rules": [{ "requires": { "rule": "has_contract_req" } }] },
+      "base": {
+        "rules": [
+          {
+            "requires": {
+              "and": [{ "preset": "dash_and_parry" }, { "preset": "plane" }]
+            },
+            "when": ["!dicepalace_sanity"]
+          }
+        ]
+      },
       "locations": {
-        "loc_level_boss_kingdice": {},
-        "loc_level_boss_kingdice_topgrade": {},
-        "loc_level_boss_kingdice_event_agrade": {},
-        "loc_level_boss_kingdice_dlc_chaliced": {},
-        "loc_level_boss_kingdice_event_dlc_chaliced": {}
+        "loc_level_boss_kingdice": {
+          "inherit": "and",
+          "rule": {}
+        },
+        "loc_level_boss_kingdice_topgrade": {
+          "inherit": "and",
+          "rule": {}
+        },
+        "loc_level_boss_kingdice_event_agrade": {
+          "inherit": "and",
+          "rule": {}
+        },
+        "loc_level_boss_kingdice_dlc_chaliced": {
+          "inherit": "and",
+          "rule": {}
+        },
+        "loc_level_boss_kingdice_event_dlc_chaliced": {
+          "inherit": "and",
+          "rule": {}
+        }
       }
     },
     "level_boss_plane_blimp": {

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from ..enums import ChaliceMode
+from ..enums import ChaliceCheckMode, ChaliceMode
 from ..wconf import WorldConfig
 
 Dep = Callable[[WorldConfig], bool]
@@ -57,17 +57,20 @@ def dep_hard_logic(c: WorldConfig) -> bool:
 def dep_rando_abilities(c: WorldConfig) -> bool:
     return c.randomize_abilities
 @dep
+def dep_dlc_chalice(c: WorldConfig) -> bool:
+    return c.dlc_chalice > 0
+@dep
 def dep_dlc_cookie(c: WorldConfig) -> bool:
     return c.dlc_chalice == ChaliceMode.VANILLA or c.dlc_chalice == ChaliceMode.RANDOMIZED
+@dep
+def dep_dlc_chaliced_grade_required(c: WorldConfig) -> bool:
+    return (c.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
 def dep_dlc_boatitem(c: WorldConfig) -> bool:
     return c.use_dlc and c.dlc_randomize_boat
 @dep
 def dep_dlc_boat_mausoleum(c: WorldConfig) -> bool:
     return c.use_dlc and c.dlc_requires_mausoleum
-@dep
-def dep_dlc_chalice(c: WorldConfig) -> bool:
-    return c.dlc_chalice > 0
 @dep
 def dep_dlc_cactusgirl_quest(c: WorldConfig) -> bool:
     return c.use_dlc and c.dlc_cactusgirl_quest

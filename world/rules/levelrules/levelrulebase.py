@@ -3,11 +3,15 @@
 
 from __future__ import annotations
 
+import typing
 from dataclasses import dataclass
 from enum import IntEnum
 
 from ..deps import Dep
 from .levelrules import LevelRule
+
+if typing.TYPE_CHECKING:
+    from ...wconf import WorldConfig
 
 ### Base intermediary representation data classes
 
@@ -48,6 +52,10 @@ class RuleDep:
     ref: Dep
     negated: bool
     name: str
+
+    def eval(self, wconf: WorldConfig) -> bool:
+        res = self.ref(wconf)
+        return not res if self.negated else res
 
 
 ## Rule Containers

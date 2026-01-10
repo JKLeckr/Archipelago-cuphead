@@ -56,8 +56,6 @@ class LevelRuleData:
         if src.startswith("presets"):
             raise NotImplementedError(f"From {src}: Presets cannot reference other presets")
         if preset not in cls._preset_reg:
-            # If the preset reference presets system is implemented,
-            # we would instead reference the preset by name in this case instead.
             raise KeyError(f"From {src}: '{preset}' does not exist!")
         preset_ref = cls._preset_reg[preset]
         return PresetRef(f"{src}.preset[{preset}]", preset_ref, preset)
@@ -177,17 +175,25 @@ class LevelRuleData:
         return res
 
     @staticmethod
+    def _compile_presets(json_obj: dict[str, Any], *, src: str) -> dict[str, RuleContainer]:
+        res: dict[str, RuleContainer] = {}
+        for pname, preset_json in json_obj.items():
+            res[pname] = __class__._compile_preset(
+                preset_json,
+                name=pname,
+                src=f"{src}.{pname}"
+            )
+        # TODO: Add presets_needed
+        return res
+
+    @staticmethod
     def _compile_levelruledata(levelrules_json: dict[str, Any], presets_json: dict[str, Any]) -> LevelRules:
         levelrule_presets: dict[str, RuleContainer] = {}
         levelrules: dict[str, LevelDef] = {}
 
         _proot = presets_json.get("presets", {})
-        for pname, preset_json in _proot.items():
-            levelrule_presets[pname] = __class__._compile_preset(
-                preset_json,
-                name=pname,
-                src=f"presets.{pname}"
-            )
+        levelrule_presets = __class__._compile_presets(_proot, src="presets")
+
         _lrroot = levelrules_json.get("levels", {})
         for lname, level_json in _lrroot.items():
             levelrules[lname] = __class__._compile_level(

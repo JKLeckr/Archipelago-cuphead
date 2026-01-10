@@ -127,6 +127,9 @@ def lrule_plane_shrink(wconf: WorldConfig) -> RegionRule:
         return lrule_none(wconf)
     return rb.rrule_has(ItemNames.item_ability_plane_shrink)
 
+@lrule
+def lrule_has_contract_req(wconf: WorldConfig) -> RegionRule:
+    return rb.rrule_has(ItemNames.item_contract, wconf.contract_requirements[2])
 
 @lrule # TODO: Remove
 def lrule_bird(wconf: WorldConfig):
@@ -323,3 +326,7 @@ def lrule_dlc_rungun_chaliced_parry(wconf: WorldConfig) -> RegionRule:
 @lrule
 def lrule_dlc_relic(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_has(ItemNames.item_charm_dlc_broken_relic, 1)
+
+@lrule
+def lrule_dlc_has_ingredient_req(wconf: WorldConfig) -> RegionRule:
+    return rb.rrule_has(ItemNames.item_dlc_ingredient, wconf.dlc_ingredient_requirements)

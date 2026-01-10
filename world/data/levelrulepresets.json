@@ -98,6 +98,10 @@
           "when": ["rando_abilities"]
         }
       ]
+    },
+    "topgrade": {
+      "_comment": "TODO: Finish",
+      "rules": []
     }
   }
 }

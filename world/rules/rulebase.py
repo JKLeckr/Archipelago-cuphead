@@ -6,13 +6,17 @@ from __future__ import annotations
 import typing
 from collections.abc import Callable, Iterable, Mapping
 
-from BaseClasses import CollectionState
+from BaseClasses import CollectionState, Entrance, Location, Region
+from worlds.generic.Rules import add_rule, set_rule
 
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
 
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
+
+
+# Base Rule functions
 
 def rule_and(*rules: Rule) -> Rule:
     return lambda state: all(rule(state) for rule in rules)
@@ -61,6 +65,9 @@ def rule_can_reach_all_regions(world: CupheadWorld, regions: Iterable[str]) -> R
 def rule_can_reach_any_region(world: CupheadWorld, regions: Iterable[str]) -> Rule:
     return lambda state, player=world.player: _can_reach_any_region(state, player, regions)
 
+
+# Region rule functions
+
 def rrule_to_rule(rrule: RegionRule, player: int) -> Rule:
     return lambda state, plr=player: rrule(state, plr)
 
@@ -90,3 +97,29 @@ def rrule_has_group(item_group: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has_group(item_group, player, count)
 def rrule_has_group_unique(item_group: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has_group_unique(item_group, player, count)
+
+
+# Rule helper functions
+
+def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
+    return world.multiworld.get_entrance(exit+" -> "+entrance, world.player)
+def get_location(world: CupheadWorld, location: str) -> Location:
+    return world.multiworld.get_location(location, world.player)
+def get_region(world: CupheadWorld, region: str) -> Region:
+    return world.multiworld.get_region(region, world.player)
+def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
+    set_loc_rule(world, loc, rule_has(world, item, count))
+def add_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
+    add_loc_rule(world, loc, rule_has(world, item, count), combine_and)
+def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
+    set_rule(get_location(world, loc), rule)
+def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule, combine_and: bool = True) -> None:
+    add_rule(get_location(world, loc), rule, "and" if combine_and else "or")
+def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
+    region = get_region(world, region_name)
+    for entrance in region.entrances:
+        set_rule(entrance, rule)
+def add_region_rules(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
+    region = get_region(world, region_name)
+    for entrance in region.entrances:
+        add_rule(entrance, rule, "and" if combine_and else "or")
