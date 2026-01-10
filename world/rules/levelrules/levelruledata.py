@@ -7,12 +7,37 @@ from typing import Any, ClassVar
 
 from ... import data
 from ..deps import DEPS
-from .levelrulebase import LevelDef, LevelRules, LocationDef, RuleContainer, RuleDep, RuleExpr, RuleFragment, LRule
+from . import levelrulebase as lrb
+from .levelrulebase import (
+    InheritMode,
+    LevelDef,
+    LevelRules,
+    LocationDef,
+    LRule,
+    PresetRef,
+    RuleContainer,
+    RuleDep,
+    RuleExpr,
+    RuleFragment,
+)
 from .levelrules import LRULES
 
 
 class LevelRuleData:
     _data: ClassVar[LevelRules | None] = None
+    _preset_reg: ClassVar[dict[str, RuleContainer]] = {}
+
+    @staticmethod
+    def _compile_rule_combo(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
+        condition = "and" if "and" in json_obj else "or"
+        children_json: list[dict[str, Any]] = json_obj[condition]
+        if not isinstance(children_json, list): # type: ignore
+            raise ValueError(f"{src}.{condition} must be a list")
+        children = [
+            __class__._compile_rule_expr(child, src=f"{src}.{condition}[{i}]")
+            for i, child in enumerate(children_json)
+        ]
+        return lrb.And(src, children) if condition == "and" else lrb.Or(src, children)
 
     @staticmethod
     def _compile_levelrule(lrule: str, *, src: str) -> LRule:
@@ -20,14 +45,38 @@ class LevelRuleData:
             _expr = LRULES[lrule]
         except KeyError as e:
             raise KeyError(f"From {src}: '{lrule}' is not a valid level rule!") from e
-        return LRule(_expr, lrule)
+        return LRule(src, _expr, lrule)
+
+    @classmethod
+    def _compile_preset_ref(cls, preset: str, *, src: str) -> PresetRef:
+        if not isinstance(preset, str): # type: ignore
+            raise ValueError(f"{src}.preset is not a valid string")
+
+        # TODO: Add functionality for presets to reference other presets
+        if src.startswith("presets"):
+            raise NotImplementedError(f"From {src}: Presets cannot reference other presets")
+        if preset not in cls._preset_reg:
+            # If the preset reference presets system is implemented,
+            # we would instead reference the preset by name in this case instead.
+            raise KeyError(f"From {src}: '{preset}' does not exist!")
+        preset_ref = cls._preset_reg[preset]
+        return PresetRef(f"{src}.preset[{preset}]", preset_ref, preset)
 
     @staticmethod
     def _compile_rule_expr(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
-        switch json_obj
+        if "rule" in json_obj:
+            return __class__._compile_levelrule(json_obj["rule"], src=src)
+        if "preset" in json_obj:
+            return __class__._compile_preset_ref(json_obj["preset"], src=src)
+        if "and" in json_obj or "or" in json_obj:
+            return __class__._compile_rule_combo(json_obj, src=src)
+        if "not" in json_obj:
+            return lrb.Not(src, __class__._compile_rule_expr(json_obj["not"], src=f"{src}.not"))
+
+        raise ValueError(f"{src} is an invalid rule expression")
 
     @staticmethod
-    def _compile_ruledeps(depname: str, *, src: str) -> RuleDep:
+    def _compile_ruledep(depname: str, *, src: str) -> RuleDep:
         negated = depname.startswith("!")
         dname = depname[1:] if negated else depname
 
@@ -36,7 +85,7 @@ class LevelRuleData:
         except KeyError as e:
             raise KeyError(f"From {src}: '{depname}' is not a valid dep!") from e
 
-        return RuleDep(dep, negated, depname)
+        return RuleDep(src, dep, negated, depname)
 
     @staticmethod
     def _compile_rule_fragment(json_obj: dict[str, Any], *, src: str) -> RuleFragment:
@@ -44,12 +93,12 @@ class LevelRuleData:
         requires_json: dict[str, Any] | None = json_obj.get("requires")
 
         if not requires_json:
-            raise ValueError(f"{src}.requires is required")
+            raise ValueError(f"{src}.requires is required!")
         if not isinstance(when_json, list): # type: ignore
-            raise ValueError(f"{src}.when must be a list")
+            raise ValueError(f"{src}.when must be a list!")
 
         when = [
-            __class__._compile_ruledeps(dep, src=f"{src}.when")
+            __class__._compile_ruledep(dep, src=f"{src}.when")
             for dep in when_json
         ]
 
@@ -58,7 +107,7 @@ class LevelRuleData:
             src=f"${src}.requires"
         )
 
-        return RuleFragment(when, requires, src)
+        return RuleFragment(src, when, requires)
 
     @staticmethod
     def _compile_rule_container(json_obj: dict[str, Any], *, src: str) -> RuleContainer:
@@ -71,15 +120,61 @@ class LevelRuleData:
             for i, rule_json in enumerate(rules_json)
         ]
 
-        return RuleContainer(rules, src)
+        return RuleContainer(src, rules)
 
     @staticmethod
-    def _compile_loc(json_obj: dict[str, Any], *, src: str) -> LocationDef:
-        pass
+    def _compile_lloc(json_obj: dict[str, Any], *, src: str) -> LocationDef:
+        rule = (
+            __class__._compile_rule_container(json_obj["rule"], src=f"{src}.rule")
+            if "rule" in json_obj
+            else None
+        )
+
+        inherit_raw = json_obj.get("inherit", "none")
+        if not isinstance(inherit_raw, str):
+            raise ValueError(f"{src}.inherit is not a valid string!")
+        match inherit_raw:
+            case "and":
+                inherit = InheritMode.AND
+            case "or":
+                inherit = InheritMode.OR
+            case "none":
+                inherit = InheritMode.NONE
+            case _:
+                raise ValueError(f"{src}.inherit needs to be one of: [and,or,none]")
+
+        return LocationDef(src, rule, inherit)
 
     @staticmethod
     def _compile_level(json_obj: dict[str, Any], *, src: str) -> LevelDef:
-        pass
+        access = (
+            __class__._compile_rule_container(json_obj["access"], src=f"{src}.access")
+            if "access" in json_obj
+            else None
+        )
+
+        base = (
+            __class__._compile_rule_container(json_obj["base"], src=f"{src}.base")
+            if "base" in json_obj
+            else None
+        )
+
+        locations: dict[str, LocationDef] = {}
+        locs_json: dict[str, Any] = json_obj.get("locations", {})
+        if not isinstance(locs_json, dict): # type: ignore
+            raise ValueError(f"{src}.locations is an invalid json object!")
+        for name, loc_json in locs_json.items():
+            locations[name] = __class__._compile_lloc(loc_json, src=f"{src}.locations.{name}")
+
+        return LevelDef(src, access, base, locations)
+
+    @classmethod
+    def _compile_preset(cls, json_obj: dict[str, Any], *, name: str, src: str) -> RuleContainer:
+        res = __class__._compile_rule_container(json_obj, src=src)
+        if name in cls._preset_reg:
+            raise KeyError(f"From {src}: '{name}' already is registered!")
+        cls._preset_reg[name] = res
+        return res
 
     @staticmethod
     def _compile_levelruledata(levelrules_json: dict[str, Any], presets_json: dict[str, Any]) -> LevelRules:
@@ -88,11 +183,11 @@ class LevelRuleData:
 
         _proot = presets_json.get("presets", {})
         for pname, preset_json in _proot.items():
-            levelrule_presets[pname] = __class__._compile_rule_container(
+            levelrule_presets[pname] = __class__._compile_preset(
                 preset_json,
+                name=pname,
                 src=f"presets.{pname}"
-            ) # TODO: Resolve presets to the actual rule containers instead of simply string references.
-
+            )
         _lrroot = levelrules_json.get("levels", {})
         for lname, level_json in _lrroot.items():
             levelrules[lname] = __class__._compile_level(
@@ -111,10 +206,11 @@ class LevelRuleData:
         _json_presets_data = data.get_json_data("levelrulepresets")
 
         if not isinstance(_json_data, dict):
-            raise ValueError("Level rules JSON must be an object")
+            raise ValueError("Level rules JSON must be an object!")
         if not isinstance(_json_presets_data, dict):
-            raise ValueError("Preset rules JSON must be an object")
+            raise ValueError("Preset rules JSON must be an object!")
 
+        cls._preset_reg = {}
         cls._data = cls._compile_levelruledata(_json_data, _json_presets_data) # pyright: ignore[reportUnknownArgumentType]
 
         data.unload_data("levelrulepresets")

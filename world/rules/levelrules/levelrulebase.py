@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal
+from enum import IntEnum
 
 from ..deps import Dep
 from .levelrules import LevelRule
@@ -13,7 +13,9 @@ from .levelrules import LevelRule
 
 ## Rule Expressions
 
-class RuleExpr: ...
+@dataclass(frozen=True)
+class RuleExpr:
+    source_path: str
 
 @dataclass(frozen=True)
 class LRule(RuleExpr):
@@ -22,6 +24,7 @@ class LRule(RuleExpr):
 
 @dataclass(frozen=True)
 class PresetRef(RuleExpr):
+    item: RuleContainer | None
     name: str
 
 @dataclass(frozen=True)
@@ -41,6 +44,7 @@ class Not(RuleExpr):
 
 @dataclass(frozen=True)
 class RuleDep:
+    source_path: str
     ref: Dep
     negated: bool
     name: str
@@ -50,26 +54,33 @@ class RuleDep:
 
 @dataclass(frozen=True)
 class RuleFragment:
+    source_path: str
     when: list[RuleDep]
     requires: RuleExpr
-    source_path: str
 
 
 @dataclass(frozen=True)
 class RuleContainer:
-    rules: list[RuleFragment]
     source_path: str
+    rules: list[RuleFragment]
 
 
 ## Data Structure
 
+class InheritMode(IntEnum):
+    NONE = 0
+    AND = 1
+    OR = 2
+
 @dataclass(frozen=True)
 class LocationDef:
+    source_path: str
     rule: RuleContainer | None
-    inherit: Literal["and", "or", "none"]
+    inherit: InheritMode
 
 @dataclass(frozen=True)
 class LevelDef:
+    source_path: str
     access: RuleContainer | None
     base: RuleContainer | None
     locations: dict[str, LocationDef]
