@@ -52,11 +52,12 @@ class LevelRuleData:
         if not isinstance(preset, str): # type: ignore
             raise ValueError(f"{src}.preset is not a valid string")
 
-        # TODO: Add functionality for presets to reference other presets
-        if src.startswith("presets"):
-            raise NotImplementedError(f"From {src}: Presets cannot reference other presets")
         if preset not in cls._preset_reg:
-            raise KeyError(f"From {src}: '{preset}' does not exist!")
+            raise KeyError(
+                f"From {src}: Preset Reference '{preset}' does not exist or is not resolved!",
+                f"Make sure you add '{preset}' to 'requires_presets' for preset '{src.split('.', 2)[1]}'."
+            )
+
         preset_ref = cls._preset_reg[preset]
         return PresetRef(f"{src}.preset[{preset}]", preset_ref, preset)
 
@@ -175,15 +176,55 @@ class LevelRuleData:
         return res
 
     @staticmethod
-    def _compile_presets(json_obj: dict[str, Any], *, src: str) -> dict[str, RuleContainer]:
+    def _toposort_presets(graph: dict[str, set[str]]) -> list[str]:
+        res: list[str] = []
+        visiting: set[str] = set()
+        visited: set[str] = set()
+
+        def dfs(node: str):
+            if node in visiting:
+                raise ValueError(f"Preset cycle with '{node}'")
+            if node in visited:
+                return
+
+            visiting.add(node)
+            for dep in graph[node]:
+                if dep not in graph:
+                    raise ValueError(f"Preset '{node}' depends on unknown preset '{dep}'")
+                dfs(dep)
+            visiting.remove(node)
+
+            visited.add(node)
+            res.append(node)
+
+        for name in graph:
+            if name not in visited:
+                dfs(name)
+
+        return res
+
+    @staticmethod
+    def _compile_presets(presets_json: dict[str, Any], *, src: str) -> dict[str, RuleContainer]:
+        preset_req_graph: dict[str, set[str]] = {name: set() for name in presets_json}
+
+        for pname, preset_json in presets_json.items():
+            preset_reqs: list[str] = preset_json["requires_presets"]
+            if isinstance(preset_reqs, list): # type: ignore
+                preset_req_graph[pname] = set(preset_reqs)
+            else:
+                raise ValueError(f"{src}.{pname} has malformed 'requires_presets' entry")
+
+        comp_order: list[str] = __class__._toposort_presets(preset_req_graph)
+
         res: dict[str, RuleContainer] = {}
-        for pname, preset_json in json_obj.items():
+
+        for pname in comp_order:
             res[pname] = __class__._compile_preset(
-                preset_json,
+                presets_json[pname],
                 name=pname,
                 src=f"{src}.{pname}"
             )
-        # TODO: Add presets_needed
+
         return res
 
     @staticmethod

@@ -6,7 +6,8 @@ from __future__ import annotations
 import typing
 from collections.abc import Callable, Iterable
 
-from .. import deps, rulebase as rb
+from .. import deps
+from .. import rulebase as rb
 from ..rulebase import RegionRule
 from . import levelrulebase as lrb
 from . import levelrules
