@@ -21,8 +21,8 @@ LEVELS_MOD = ".levels"
 LEVELS_MOD_PATH = f"{WORLD_MOD}{LEVELS_MOD}"
 LEVELRULES_MOD = ".levelrules"
 LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
-LEVELRULES_RULES_MOD = ".levelrules"
-LEVELRULES_RULES_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_RULES_MOD}"
+LEVELRULES_SELECTORS_MOD = ".levelruleselectors"
+LEVELRULES_SELECTORS_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_SELECTORS_MOD}"
 NAMES_MOD = ".names"
 NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
 
@@ -79,14 +79,16 @@ def main():  # noqa: C901
     _lrspec = importlib.util.find_spec(LEVELRULES_MOD, package=RULES_MOD_PATH)
     _levelrules = _lrspec.loader.load_module(LEVELRULES_MOD_PATH) if _lrspec and _lrspec.loader else None
 
-    _lrrspec = importlib.util.find_spec(LEVELRULES_RULES_MOD, package=LEVELRULES_MOD_PATH)
-    _levelrulesrules = _lrrspec.loader.load_module(LEVELRULES_RULES_MOD_PATH) if _lrrspec and _lrrspec.loader else None
+    _lrsspec = importlib.util.find_spec(LEVELRULES_SELECTORS_MOD, package=LEVELRULES_MOD_PATH)
+    _levelruleselectors = (
+        _lrsspec.loader.load_module(LEVELRULES_SELECTORS_MOD_PATH) if _lrsspec and _lrsspec.loader else None
+    )
 
-    if not _deps or not _levelrulesrules:
+    if not _deps or not _levelruleselectors:
         raise ImportError("Could not import necessary modules.")
 
     deps = _deps
-    levelrules = _levelrulesrules
+    levelruleselectors = _levelruleselectors
 
     if args.include_lnames:
         _nspec = importlib.util.find_spec(NAMES_MOD, package=WORLD_MOD)
@@ -101,25 +103,26 @@ def main():  # noqa: C901
     presets_base = json.load(open(BASE_PRESETS_SCHEMA_PATH))
     presets_data = json.load(open(PRESET_DEFS_PATH))
 
-    lrule_names = sorted(levelrules.LRULES)
+    lrselector_names = sorted(levelruleselectors.LRSELECTORS)
     dep_names = sorted(deps.DEPS)
 
     preset_names = sorted(presets_data["presets"].keys())
 
     # Patch enums
     for variant in base["$defs"]["ruleExpr"]["oneOf"]:
-        if "rule" in variant.get("properties", {}):
-            variant["properties"]["rule"]["enum"] = lrule_names
         if "preset" in variant.get("properties", {}):
             variant["properties"]["preset"]["enum"] = preset_names
 
-    base["$defs"]["ruleDep"]["enum"] = (
+    base["$defs"]["ruleDepRef"]["enum"] = (
         dep_names + ["!" + d for d in dep_names]
     )
+
+    base["$defs"]["apItemSelectorRef"]["enum"] = lrselector_names
 
     if names:
         level_names: list[str] = []
         location_names: list[str] = []
+        item_names: list[str] = []
 
         for name in sorted(vars(names.LocationNames).keys()): # type: ignore
             if not isinstance(name, str):
@@ -130,8 +133,16 @@ def main():  # noqa: C901
             elif name.startswith("level_"):
                 level_names.append(name)
 
+        for name in sorted(vars(names.ItemNames).keys()): # type: ignore
+            if not isinstance(name, str):
+                print(f"WARNING: Skipping non-str name: {name}")
+                continue
+            if not name.startswith("_") and not name.endswith("_"):
+                item_names.append(name)
+
         base["properties"]["levels"]["propertyNames"]["enum"] = level_names
         base["$defs"]["level"]["properties"]["locations"]["propertyNames"]["enum"] = location_names
+        base["$defs"]["apItemRef"]["enum"] = item_names
 
     presets_base["properties"]["$comment"]["$ref"] = f"{GEN_RULES_SCHEMA_NAME}#/$defs/comment"
     presets_base["$defs"]["preset"]["properties"]["$comment"]["$ref"] = (

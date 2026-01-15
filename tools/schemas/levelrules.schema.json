@@ -18,17 +18,89 @@
   "additionalProperties": false,
 
   "$defs": {
-    "refString": {
-      "type": "string",
-      "pattern": "^!?[A-Za-z_][A-Za-z0-9_]*$"
-    },
-
-    "ruleDep": { "$ref": "#/$defs/refString" },
+    "ruleDepRef": { "$ref": "#/$defs/refString" },
 
     "whenList": {
       "type": "array",
-      "items": { "$ref": "#/$defs/ruleDep" },
+      "items": { "$ref": "#/$defs/ruleDepRef" },
       "uniqueItems": true
+    },
+
+    "apItemRef": {
+      "type": "string"
+    },
+
+    "apItemGroupRef": {
+      "type": "string"
+    },
+
+    "apItemSelectorRef": {
+      "type": "string"
+    },
+
+    "apItemCounts": {
+      "type": "array",
+      "prefixItems": [{ "$ref": "#/$defs/apItemRef" }, { "type": "integer" }],
+      "items": false,
+      "unevaluatedItems": false
+    },
+
+    "ruleItemExpr": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["has"],
+          "properties": {
+            "has": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/apItemRef" }
+            },
+            "has_any": { "type": "boolean" },
+            "count": { "type": "integer" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["has_selection"],
+          "properties": {
+            "has_selection": {
+              "type": "object",
+              "required": ["select"],
+              "properties": {
+                "select": { "$ref": "#/$defs/apItemSelectorRef" }
+              }
+            },
+            "has_any": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["has_from_list"],
+          "properties": {
+            "has_from_list": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/apItemRef" }
+            },
+            "count": { "type": "integer" },
+            "unique": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["has_group"],
+          "properties": {
+            "has_group": { "$ref": "#/$defs/apItemGroupRef" },
+            "count": { "type": "integer" },
+            "unique": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        }
+      ]
     },
 
     "ruleExpr": {
@@ -37,7 +109,7 @@
           "type": "object",
           "required": ["rule"],
           "properties": {
-            "rule": { "$ref": "#/$defs/refString" }
+            "rule": { "$ref": "#/$defs/ruleItemExpr" }
           },
           "additionalProperties": false
         },
