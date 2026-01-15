@@ -38,6 +38,7 @@ def lrule_plane_gun(wconf: WorldConfig) -> RegionRule:
 def lrule_plane_bombs(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_has(ItemNames.item_plane_bombs)
 
+# TODO: Remove
 def lrule_plane(wconf: WorldConfig) -> RegionRule:
     if wconf.hard_logic:
         return lrule_or(lrule_plane_gun, lrule_plane_bombs)(wconf)

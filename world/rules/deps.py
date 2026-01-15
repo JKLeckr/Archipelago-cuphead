@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from ..enums import ChaliceCheckMode, ChaliceMode
+from ..enums import ChaliceCheckMode, ChaliceMode, WeaponMode
 from ..wconf import WorldConfig
 
 Dep = Callable[[WorldConfig], bool]
@@ -57,8 +57,14 @@ def dep_hard_logic(c: WorldConfig) -> bool:
 def dep_rando_abilities(c: WorldConfig) -> bool:
     return c.randomize_abilities
 @dep
+def dep_weapon_ex_rando(c: WorldConfig) -> bool:
+    return c.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0
+@dep
 def dep_dlc_chalice(c: WorldConfig) -> bool:
     return c.dlc_chalice > 0
+@dep
+def dep_dlc_chalice_only(c: WorldConfig) -> bool:
+    return c.dlc_chalice == ChaliceMode.CHALICE_ONLY
 @dep
 def dep_dlc_cookie(c: WorldConfig) -> bool:
     return c.dlc_chalice == ChaliceMode.VANILLA or c.dlc_chalice == ChaliceMode.RANDOMIZED

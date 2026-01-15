@@ -18,7 +18,9 @@
   "additionalProperties": false,
 
   "$defs": {
-    "ruleDepRef": { "$ref": "#/$defs/refString" },
+    "ruleDepRef": {
+      "type": "string"
+    },
 
     "whenList": {
       "type": "array",
@@ -36,13 +38,6 @@
 
     "apItemSelectorRef": {
       "type": "string"
-    },
-
-    "apItemCounts": {
-      "type": "array",
-      "prefixItems": [{ "$ref": "#/$defs/apItemRef" }, { "type": "integer" }],
-      "items": false,
-      "unevaluatedItems": false
     },
 
     "ruleItemExpr": {

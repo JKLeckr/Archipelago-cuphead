@@ -10,17 +10,21 @@ from ..deps import DEPS
 from . import levelrulebase as lrb
 from .levelrulebase import (
     InheritMode,
+    ItemRule,
+    ItemRuleHas,
+    ItemRuleHasFromList,
+    ItemRuleHasGroup,
+    ItemRuleHasSelection,
     LevelDef,
     LevelRules,
     LocationDef,
-    LRule,
     PresetRef,
     RuleContainer,
     RuleDep,
     RuleExpr,
     RuleFragment,
 )
-from .levelrules import LRULES
+from .levelruleselectors import LRSELECTORS
 
 
 class LevelRuleData:
@@ -28,11 +32,30 @@ class LevelRuleData:
     _preset_reg: ClassVar[dict[str, RuleContainer]] = {}
 
     @staticmethod
+    def _check_item_entries(
+        src: str,
+        ls_str: str = "",
+        ls: list[Any] | None = None,
+        s_str: str = "",
+        s: str | None = None,
+        i_str: str = "",
+        i: int | None = None
+    ) -> None:
+        if ls:
+            if not isinstance(ls, list): # type: ignore
+                raise ValueError(f"{src}{ls_str} must be a list!")
+        if s:
+            if not isinstance(s, str): # type: ignore
+                raise ValueError(f"{src}{s_str} must be a valid string!")
+        if i:
+            if not isinstance(i, int): # type: ignore
+                raise ValueError(f"{src}{i_str} must be an integer!")
+
+    @staticmethod
     def _compile_rule_combo(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
         condition = "and" if "and" in json_obj else "or"
         children_json: list[dict[str, Any]] = json_obj[condition]
-        if not isinstance(children_json, list): # type: ignore
-            raise ValueError(f"{src}.{condition} must be a list")
+        __class__._check_item_entries(f"{src}.{condition}", ls = children_json)
         children = [
             __class__._compile_rule_expr(child, src=f"{src}.{condition}[{i}]")
             for i, child in enumerate(children_json)
@@ -40,17 +63,47 @@ class LevelRuleData:
         return lrb.And(src, children) if condition == "and" else lrb.Or(src, children)
 
     @staticmethod
-    def _compile_levelrule(lrule: str, *, src: str) -> LRule:
+    def _compile_itemrule_selector(lrselector: str, *, src: str, has_any: bool = False) -> ItemRule:
         try:
-            _expr = LRULES[lrule]
+            _sel = LRSELECTORS[lrselector]
         except KeyError as e:
-            raise KeyError(f"From {src}: '{lrule}' is not a valid level rule!") from e
-        return LRule(src, _expr, lrule)
+            raise KeyError(f"From {src}: '{lrselector}' is not a valid level rule!") from e
+        return ItemRuleHasSelection(src, _sel, lrselector, has_any)
+
+    @staticmethod
+    def _compile_itemrule(json_obj: dict[str, Any], *, src: str) -> ItemRule:
+        if "has" in json_obj:
+            has_list: list[str] = json_obj["has"]
+            has_any = bool(json_obj["has_any"])
+            has_count = json_obj["count"]
+            __class__._check_item_entries(
+                f"{src}.has", ls = has_list, i = has_count, i_str = " count"
+            )
+            return ItemRuleHas(src, has_list, has_any, has_count)
+        if "has_selection" in json_obj:
+            return __class__._compile_itemrule_selector(json_obj["select"], src=f"{src}.has_selection")
+        if "has_from_list" in json_obj:
+            has_from_list: list[str] = json_obj["has_from_list"]
+            has_count = json_obj["count"]
+            unique = bool(json_obj["unique"])
+            __class__._check_item_entries(
+                f"{src}.has_from_list", ls = has_from_list, i = has_count, i_str = " count"
+            )
+            return ItemRuleHasFromList(src, has_from_list, has_count, unique)
+        if "has_group" in json_obj:
+            has_group = json_obj["has"]
+            has_count = json_obj["count"]
+            unique = bool(json_obj["unique"])
+            __class__._check_item_entries(
+                    f"{src}.has_group", s = has_group, i = has_count, i_str = " count"
+                )
+            return ItemRuleHasGroup(src, has_group, has_count, unique)
+
+        raise ValueError(f"{src} is an invalid rule expression")
 
     @classmethod
     def _compile_preset_ref(cls, preset: str, *, src: str) -> PresetRef:
-        if not isinstance(preset, str): # type: ignore
-            raise ValueError(f"{src}.preset is not a valid string")
+        __class__._check_item_entries(f"{src}.preset", s = preset)
 
         if preset not in cls._preset_reg:
             raise KeyError(
@@ -64,7 +117,7 @@ class LevelRuleData:
     @staticmethod
     def _compile_rule_expr(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
         if "rule" in json_obj:
-            return __class__._compile_levelrule(json_obj["rule"], src=src)
+            return __class__._compile_itemrule(json_obj["rule"], src=f"{src}.rule")
         if "preset" in json_obj:
             return __class__._compile_preset_ref(json_obj["preset"], src=src)
         if "and" in json_obj or "or" in json_obj:
@@ -93,8 +146,7 @@ class LevelRuleData:
 
         if not requires_json:
             raise ValueError(f"{src}.requires is required!")
-        if not isinstance(when_json, list): # type: ignore
-            raise ValueError(f"{src}.when must be a list!")
+        __class__._check_item_entries(f"{src}.when", ls = when_json)
 
         when = [
             __class__._compile_ruledep(dep, src=f"{src}.when")
@@ -111,8 +163,7 @@ class LevelRuleData:
     @staticmethod
     def _compile_rule_container(json_obj: dict[str, Any], *, src: str) -> RuleContainer:
         rules_json: list[dict[str, Any]] = json_obj.get("rules", [])
-        if not isinstance(rules_json, list): # type: ignore
-            raise ValueError(f"{src}.rules must be a list")
+        __class__._check_item_entries(f"{src}.rules", ls = rules_json)
 
         rules = [
             __class__._compile_rule_fragment(rule_json, src=f"{src}.rules['{i}']")

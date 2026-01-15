@@ -232,7 +232,7 @@ def main():
 
     validate_schema(lrjson, schema)
 
-    lint(lrjson, known_lrules, known_deps)
+    lint(lrjson, known_lrules, known_deps) # TODO: Fix lint with new schema
 
 if __name__ == "__main__":
     main()

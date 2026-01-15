@@ -4,17 +4,18 @@
 from __future__ import annotations
 
 import typing
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from enum import IntEnum
 
 from ..deps import Dep
-from ..rulebase import RegionRule
+from ..rulebase import RegionRule # TODO: Remove
 
 if typing.TYPE_CHECKING:
     from ...wconf import WorldConfig
 
-LevelRule = Callable[[WorldConfig], RegionRule]
+LevelRule = Callable[["WorldConfig"], RegionRule] # TODO: Remove
+LRSelector = Callable[["WorldConfig"], Mapping[str, int]]
 
 ### Base intermediary representation data classes
 
@@ -23,11 +24,6 @@ LevelRule = Callable[[WorldConfig], RegionRule]
 @dataclass(frozen=True)
 class RuleExpr:
     source_path: str
-
-@dataclass(frozen=True)
-class LRule(RuleExpr):
-    rule: LevelRule
-    name: str
 
 @dataclass(frozen=True)
 class PresetRef(RuleExpr):
@@ -46,6 +42,35 @@ class Or(RuleExpr):
 class Not(RuleExpr):
     item: RuleExpr
 
+
+## Item Rules
+
+@dataclass(frozen=True)
+class ItemRule(RuleExpr): ...
+
+@dataclass(frozen=True)
+class ItemRuleHas(ItemRule):
+    items: list[str]
+    has_any: bool
+    count: int
+
+@dataclass(frozen=True)
+class ItemRuleHasSelection(ItemRule):
+    selector: LRSelector
+    selector_name: str
+    has_any: bool
+
+@dataclass(frozen=True)
+class ItemRuleHasFromList(ItemRule):
+    items: list[str]
+    count: int
+    unique: bool
+
+@dataclass(frozen=True)
+class ItemRuleHasGroup(ItemRule):
+    group: str
+    count: int
+    unique: bool
 
 ## Deps
 

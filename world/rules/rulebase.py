@@ -40,6 +40,10 @@ def rule_has_any(world: CupheadWorld, items: Iterable[str]) -> Rule:
     return lambda state, player=world.player: state.has_any(items, player)
 def rule_has_any_count(world: CupheadWorld, item_counts: Mapping[str, int]) -> Rule:
     return lambda state, player=world.player: state.has_any_count(item_counts, player)
+def rule_has_from_list(world: CupheadWorld, items: Iterable[str], count: int = 1) -> Rule:
+    return lambda state, player=world.player: state.has_from_list(items, player, count)
+def rule_has_from_list_unique(world: CupheadWorld, items: Iterable[str], count: int = 1) -> Rule:
+    return lambda state, player=world.player: state.has_from_list_unique(items, player, count)
 def rule_has_group(world: CupheadWorld, item_group: str, count: int = 1) -> Rule:
     return lambda state, player=world.player: state.has_group(item_group, player, count)
 def rule_has_group_unique(world: CupheadWorld, item_group: str, count: int = 1) -> Rule:
@@ -93,6 +97,10 @@ def rrule_has_any(items: Iterable[str]) -> RegionRule:
     return lambda state, player: state.has_any(items, player)
 def rrule_has_any_count(item_counts: Mapping[str, int]) -> RegionRule:
     return lambda state, player: state.has_any_count(item_counts, player)
+def rrule_has_from_list(items: Iterable[str], count: int = 1) -> RegionRule:
+    return lambda state, player: state.has_from_list(items, player, count)
+def rrule_has_from_list_unique(items: Iterable[str], count: int = 1) -> RegionRule:
+    return lambda state, player: state.has_from_list_unique(items, player, count)
 def rrule_has_group(item_group: str, count: int = 1) -> RegionRule:
     return lambda state, player: state.has_group(item_group, player, count)
 def rrule_has_group_unique(item_group: str, count: int = 1) -> RegionRule:

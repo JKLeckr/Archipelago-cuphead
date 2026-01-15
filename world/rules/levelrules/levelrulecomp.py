@@ -20,10 +20,41 @@ def _combine_rules(*rules: lrb.RuleExpr | None) -> list[lrb.RuleExpr]:
         return _res
     raise ValueError("All rules are None!")
 
+def _compile_item_rule(wconf: WorldConfig, irule: type[lrb.ItemRule]) -> RegionRule:  # noqa: C901
+    match irule:
+        case lrb.ItemRuleHas:
+            if len(irule.items) < 1:
+                raise ValueError(f"{irule.source_path}: cannot be empty")
+            if len(irule.items) == 1:
+                return rb.rrule_has(irule.items[0])
+            count = irule.count if irule.count else 1
+            if irule.has_any:
+                return rb.rrule_has_any_count(dict.fromkeys(irule.items, count))
+            return rb.rrule_has_all_counts(dict.fromkeys(irule.items, count))
+        case lrb.ItemRuleHasSelection:
+            selection = irule.selector(wconf)
+            if irule.has_any:
+                return rb.rrule_has_any_count(selection)
+            return rb.rrule_has_all_counts(selection)
+        case lrb.ItemRuleHasFromList:
+            if len(irule.items) < 1:
+                raise ValueError(f"{irule.source_path}: cannot be empty")
+            count = irule.count if irule.count else 1
+            if irule.unique:
+                return rb.rrule_has_from_list_unique(irule.items, count)
+            return rb.rrule_has_from_list(irule.items, count)
+        case lrb.ItemRuleHasGroup:
+            count = irule.count if irule.count else 1
+            if irule.unique:
+                return rb.rrule_has_group_unique(irule.group, count)
+            return rb.rrule_has_group(irule.group, count)
+        case _:
+            raise NotImplementedError(f"{type(irule)} is not a supported item rule type")
+
 def compile_rule_expr(wconf: WorldConfig, rule_expr: lrb.RuleExpr) -> RegionRule:
     match rule_expr:
-        case lrb.LRule:
-            return rule_expr.rule(wconf)
+        case lrb.ItemRule:
+            return _compile_item_rule(wconf, rule_expr)
         case lrb.PresetRef:
             if rule_expr.item:
                 return compile_rule_container(wconf, rule_expr.item)
