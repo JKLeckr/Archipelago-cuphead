@@ -4,14 +4,17 @@
 from __future__ import annotations
 
 import typing
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import IntEnum
 
 from ..deps import Dep
-from .levelrules import LevelRule
+from ..rulebase import RegionRule
 
 if typing.TYPE_CHECKING:
     from ...wconf import WorldConfig
+
+LevelRule = Callable[[WorldConfig], RegionRule]
 
 ### Base intermediary representation data classes
 

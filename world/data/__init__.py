@@ -8,6 +8,9 @@ from enum import IntEnum
 from importlib import resources
 from typing import Any, Literal
 
+if not __package__:
+    raise ImportError("Package is None")
+
 data_files = resources.files(__package__)
 
 _loaded_data: dict[str, str | bytes] = {}

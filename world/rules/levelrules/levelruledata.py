@@ -129,7 +129,7 @@ class LevelRuleData:
             else None
         )
 
-        inherit_raw = json_obj.get("inherit", "none")
+        inherit_raw = json_obj.get("inherit", "and") # and is the default
         if not isinstance(inherit_raw, str):
             raise ValueError(f"{src}.inherit is not a valid string!")
         match inherit_raw:

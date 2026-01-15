@@ -7,7 +7,7 @@ import typing
 from typing import NamedTuple
 
 if typing.TYPE_CHECKING:
-    from ..rules.levelrules import LevelRule
+    from ..rules.levelrules.levelrulebase import LevelRule
 
 class LevelData(NamedTuple):
     world_location: str | None

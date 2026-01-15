@@ -131,23 +131,18 @@
       },
       "locations": {
         "loc_level_boss_kingdice": {
-          "inherit": "and",
           "rule": {}
         },
         "loc_level_boss_kingdice_topgrade": {
-          "inherit": "and",
           "rule": {}
         },
         "loc_level_boss_kingdice_event_agrade": {
-          "inherit": "and",
           "rule": {}
         },
         "loc_level_boss_kingdice_dlc_chaliced": {
-          "inherit": "and",
           "rule": {}
         },
         "loc_level_boss_kingdice_event_dlc_chaliced": {
-          "inherit": "and",
           "rule": {}
         }
       }

@@ -14,8 +14,8 @@ from ..levels.legacy import levellocrules as llrules
 from ..locations import locationdefs as ld
 from ..locations import locationsets
 from ..names import ItemNames, LocationNames
-from . import levelrules as lr
 from . import rulebase as rb
+from .levelrules import levelrules as lr
 
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
@@ -97,9 +97,9 @@ def set_dlc_boat_rules(world: CupheadWorld):
     randomize_boat = wconfig.dlc_randomize_boat
     require_mausoleum = wconfig.dlc_requires_mausoleum
     if require_mausoleum:
-        rb.add_region_rules(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_event_mausoleum))
+        rb.add_region_rule(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_event_mausoleum))
     if randomize_boat:
-        rb.add_region_rules(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_dlc_boat))
+        rb.add_region_rule(w, LocationNames.reg_dlc_boat, rb.rule_has(w, ItemNames.item_dlc_boat))
 
 def set_quest_rules(world: CupheadWorld):
     w = world
