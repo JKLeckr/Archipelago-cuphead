@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+## TODO: Remove this after migration
+
 from __future__ import annotations
 
 from ...enums import ChaliceCheckMode, ChaliceMode, WeaponMode
@@ -38,7 +40,6 @@ def lrule_plane_gun(wconf: WorldConfig) -> RegionRule:
 def lrule_plane_bombs(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_has(ItemNames.item_plane_bombs)
 
-# TODO: Remove
 def lrule_plane(wconf: WorldConfig) -> RegionRule:
     if wconf.hard_logic:
         return lrule_or(lrule_plane_gun, lrule_plane_bombs)(wconf)
@@ -126,16 +127,12 @@ def lrule_plane_shrink(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_has(ItemNames.item_ability_plane_shrink)
 
 @lrule
-def lrule_has_contract_req(wconf: WorldConfig) -> RegionRule:
-    return rb.rrule_has(ItemNames.item_contract, wconf.contract_requirements[2])
-
-@lrule # TODO: Remove
 def lrule_bird(wconf: WorldConfig):
     if wconf.hard_logic:
         return lrule_plane_gun(wconf)
     return lrule_and(lrule_plane_gun, lrule_plane_bombs)(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_funhouse(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -143,7 +140,7 @@ def lrule_funhouse(wconf: WorldConfig) -> RegionRule:
         return lrule_parry(wconf)
     return lrule_or(lrule_parry, lrule_and(lrule_psugar, lrule_dash))(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_mouse(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -151,7 +148,7 @@ def lrule_mouse(wconf: WorldConfig) -> RegionRule:
         return lrule_and(lrule_parry, lrule_duck)(wconf)
     return lrule_and(lrule_parry_or_psugar, lrule_duck)(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_pirate(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -159,31 +156,31 @@ def lrule_pirate(wconf: WorldConfig) -> RegionRule:
         return lrule_duck(wconf)
     return lrule_or(lrule_duck, lrule_and(lrule_parry, lrule_dash))(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_robot(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_plane(wconf)
     return lrule_and(lrule_plane, lrule_plane_parry)(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_sallystageplay_secret(wconf: WorldConfig) -> RegionRule:
     if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
         return lrule_and(lrule_parry, lrule_dlc_doublejump)(wconf)
     return lrule_parry(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_harbour(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
     return lrule_and(lrule_dash, lrule_parry)(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_kingdice(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_plane(wconf)
     return lrule_and(lrule_plane, lrule_and(lrule_parry, lrule_dash))(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_final(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -211,7 +208,7 @@ def lrule_any_super(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_has_group("Super")
 
 
-@lrule # TODO: Remove
+@lrule
 def lrule_topgrade(wconf: WorldConfig) -> RegionRule:
     _rule = rb.rrule_none()
     if wconf.randomize_abilities:
@@ -261,7 +258,7 @@ def lrule_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
         return lrule_none(wconf)
     return rb.rrule_has(ItemNames.item_ability_dlc_cdoublejump)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dash_or_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -270,18 +267,18 @@ def lrule_dash_or_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
         _rule = lrule_or(_rule, lrule_dlc_doublejump)
     return _rule(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_tutorial_coin(wconf: WorldConfig) -> RegionRule:
     return lrule_and(lrule_dash_and_parry, lrule_dlc_doublejump)(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_oldman(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
     return lrule_and(lrule_parry_or_psugar, lrule_dash)(wconf)
 
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_boss_chaliced(wconf: WorldConfig) -> RegionRule:
     _rule = lrule_dlc_cookie
     if (wconf.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0:
@@ -290,21 +287,21 @@ def lrule_dlc_boss_chaliced(wconf: WorldConfig) -> RegionRule:
             _rule = lrule_and(_rule, lrule_dash)
     return _rule(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_boss_plane_chaliced(wconf: WorldConfig) -> RegionRule:
     _rule = lrule_dlc_cookie
     if (wconf.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0:
         _rule = lrule_and(_rule, lrule_plane_topgrade)
     return _rule(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_boss_chaliced_parry(wconf: WorldConfig) -> RegionRule:
     _rule = lrule_dlc_boss_chaliced
     if (wconf.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) == 0:
         _rule = lrule_and(_rule, lrule_dash)
     return _rule(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_rungun_chaliced(wconf: WorldConfig) -> RegionRule:
     _rule = lrule_dlc_cookie
     if (wconf.dlc_rungun_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0:
@@ -313,7 +310,7 @@ def lrule_dlc_rungun_chaliced(wconf: WorldConfig) -> RegionRule:
             _rule = lrule_and(_rule, lrule_dash)
     return _rule(wconf)
 
-@lrule # TODO: Remove
+@lrule
 def lrule_dlc_rungun_chaliced_parry(wconf: WorldConfig) -> RegionRule:
     _rule = lrule_dlc_rungun_chaliced
     if (wconf.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) == 0:
@@ -324,7 +321,3 @@ def lrule_dlc_rungun_chaliced_parry(wconf: WorldConfig) -> RegionRule:
 @lrule
 def lrule_dlc_relic(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_has(ItemNames.item_charm_dlc_broken_relic, 1)
-
-@lrule
-def lrule_dlc_has_ingredient_req(wconf: WorldConfig) -> RegionRule:
-    return rb.rrule_has(ItemNames.item_dlc_ingredient, wconf.dlc_ingredient_requirements)

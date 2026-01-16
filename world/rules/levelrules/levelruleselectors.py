@@ -7,6 +7,7 @@ import typing
 from collections.abc import Mapping
 
 from ...items import weapons
+from ...names import ItemNames
 from .levelrulebase import LRSelector
 
 if typing.TYPE_CHECKING:
@@ -25,3 +26,11 @@ def lrs_all_p_weapons_full(wconf: WorldConfig) -> Mapping[str, int]:
 @selector
 def lrs_all_weapon_ex(wconf: WorldConfig) -> Mapping[str, int]:
     return dict.fromkeys(weapons.weapon_ex_dict.values(), 1)
+
+@selector
+def lrs_contract_req(wconf: WorldConfig) -> Mapping[str, int]:
+    return {ItemNames.item_contract: wconf.contract_requirements[2]}
+
+@selector
+def lrs_dlc_ingredient_req(wconf: WorldConfig) -> Mapping[str, int]:
+    return {ItemNames.item_dlc_ingredient: wconf.dlc_ingredient_requirements}

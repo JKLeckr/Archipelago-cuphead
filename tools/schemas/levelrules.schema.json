@@ -60,13 +60,7 @@
           "type": "object",
           "required": ["has_selection"],
           "properties": {
-            "has_selection": {
-              "type": "object",
-              "required": ["select"],
-              "properties": {
-                "select": { "$ref": "#/$defs/apItemSelectorRef" }
-              }
-            },
+            "has_selection": { "$ref": "#/$defs/apItemSelectorRef" },
             "has_any": { "type": "boolean" }
           },
           "additionalProperties": false

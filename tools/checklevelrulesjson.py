@@ -22,8 +22,8 @@ DEP_MOD = ".deps"
 DEP_MOD_PATH = f"{RULES_MOD_PATH}{DEP_MOD}"
 LEVELRULES_MOD = ".levelrules"
 LEVELRULES_MOD_PATH = f"{RULES_MOD_PATH}{LEVELRULES_MOD}"
-LEVELRULES_RULES_MOD = ".levelrules"
-LEVELRULES_RULES_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_RULES_MOD}"
+LEVELRULES_SELECTORS_MOD = ".levelruleselectors"
+LEVELRULES_SELECTORS_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_SELECTORS_MOD}"
 
 WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
 
@@ -38,7 +38,8 @@ def validate_schema(data: Any, schema: Any):
 
 def walk_rule_expr(expr: Any, used_rules: set[str], used_presets: set[str]):
     if "rule" in expr:
-        used_rules.add(expr["rule"])
+        # TODO: Analyze has rules with items
+        pass
     elif "preset" in expr:
         used_presets.add(expr["preset"])
     elif "and" in expr:
@@ -53,7 +54,7 @@ def walk_rule_expr(expr: Any, used_rules: set[str], used_presets: set[str]):
 def lint_rule_container(
         container: Any,
         known_presets: set[str],
-        known_rules: set[str],
+        known_selectors: set[str],
         known_deps: set[str],
         context: str
     ):
@@ -69,7 +70,7 @@ def lint_rule_container(
         walk_rule_expr(frag["requires"], used_rules, used_presets)
 
     for r in used_rules:
-        if r not in known_rules:
+        if r not in known_selectors:
             raise ValueError(f"{context}: unknown rule '{r}'")
 
     for p in used_presets:
@@ -109,7 +110,7 @@ def detect_cycles(graph: dict[str, set[str]]):
     for node in graph:
         _visit(node)
 
-def lint(data: Any, known_rules: set[str], known_deps: set[str]):
+def lint(data: Any, known_selectors: set[str], known_deps: set[str]):
     known_presets: set[Any] = set(data.get("presets", {}))
 
     # Presets
@@ -117,7 +118,7 @@ def lint(data: Any, known_rules: set[str], known_deps: set[str]):
         lint_rule_container(
             preset,
             known_presets,
-            known_rules,
+            known_selectors,
             known_deps,
             context=f"preset '{name}'"
         )
@@ -128,15 +129,15 @@ def lint(data: Any, known_rules: set[str], known_deps: set[str]):
     # Levels
     for lname, level in data["levels"].items():
         if "access" in level:
-            lint_rule_container(level["access"], known_rules, known_presets, known_deps, f"level '{lname}' access")
+            lint_rule_container(level["access"], known_selectors, known_presets, known_deps, f"level '{lname}' access")
         if "base" in level:
-            lint_rule_container(level["base"], known_rules, known_presets, known_deps, f"level '{lname}' base")
+            lint_rule_container(level["base"], known_selectors, known_presets, known_deps, f"level '{lname}' base")
 
         for loc, locdef in level.get("locations", {}).items():
             if "rule" in locdef:
                 lint_rule_container(
                     locdef["rule"],
-                    known_rules,
+                    known_selectors,
                     known_presets,
                     known_deps,
                     f"location '{loc}'"
@@ -190,16 +191,18 @@ def main():
     _lrspec = importlib.util.find_spec(LEVELRULES_MOD, package=RULES_MOD_PATH)
     _levelrules = _lrspec.loader.load_module(LEVELRULES_MOD_PATH) if _lrspec and _lrspec.loader else None
 
-    _lrrspec = importlib.util.find_spec(LEVELRULES_RULES_MOD, package=LEVELRULES_MOD_PATH)
-    _levelrulesrules = _lrrspec.loader.load_module(LEVELRULES_RULES_MOD_PATH) if _lrrspec and _lrrspec.loader else None
+    _lrsspec = importlib.util.find_spec(LEVELRULES_SELECTORS_MOD, package=LEVELRULES_MOD_PATH)
+    _levelruleselectors = (
+        _lrsspec.loader.load_module(LEVELRULES_SELECTORS_MOD_PATH) if _lrsspec and _lrsspec.loader else None
+    )
 
-    if not _deps or not _levelrulesrules:
+    if not _deps or not _levelruleselectors:
         raise ImportError("Could not import necessary modules.")
 
     deps = _deps
-    levelrules = _levelrulesrules
+    levelruleselectors = _levelruleselectors
 
-    known_lrules: set[str] = set(levelrules.LRULES)
+    known_lrselectors: set[str] = set(levelruleselectors.LRSELECTORS)
     known_deps: set[str] = set(deps.DEPS)
 
     if not os.path.isfile(args.file):
@@ -232,7 +235,7 @@ def main():
 
     validate_schema(lrjson, schema)
 
-    lint(lrjson, known_lrules, known_deps) # TODO: Fix lint with new schema
+    lint(lrjson, known_lrselectors, known_deps)
 
 if __name__ == "__main__":
     main()

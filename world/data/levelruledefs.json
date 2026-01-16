@@ -2,16 +2,11 @@
   "$comment": "Copyright 2025-2026 JKLeckr, SPDX-License-Identifier: MPL-2.0",
   "levels": {
     "level_boss_veggies": {
-      "_comment": "TODO: Finish",
       "locations": {
         "loc_level_boss_veggies": {},
-        "loc_level_boss_veggies_topgrade": {
-          "rule": { "rules": [{ "requires": { "preset": "topgrade" } }] }
-        },
+        "loc_level_boss_veggies_topgrade": {},
         "loc_level_boss_veggies_secret": {},
-        "loc_level_boss_veggies_event_agrade": {
-          "rule": { "rules": [{ "requires": { "preset": "topgrade" } }] }
-        },
+        "loc_level_boss_veggies_event_agrade": {},
         "loc_level_boss_veggies_dlc_chaliced": {},
         "loc_level_boss_veggies_event_dlc_chaliced": {}
       }
@@ -117,8 +112,17 @@
       }
     },
     "level_boss_kingdice": {
-      "_comment": "TODO: Finish",
-      "access": { "rules": [{ "requires": { "rule": "has_contract_req" } }] },
+      "access": {
+        "rules": [
+          {
+            "requires": {
+              "rule": {
+                "has_selection": "contract_req"
+              }
+            }
+          }
+        ]
+      },
       "base": {
         "rules": [
           {

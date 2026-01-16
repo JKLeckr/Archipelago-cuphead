@@ -4,12 +4,15 @@
     "plane": {
       "rules": [
         {
-          "requires": { "rule": "plane_gun" },
+          "requires": { "rule": { "has": ["item_plane_gun"] } },
           "when": ["!hard_logic"]
         },
         {
           "requires": {
-            "or": [{ "rule": "plane_gun" }, { "rule": "plane_bombs" }]
+            "rule": {
+              "has": ["item_plane_gun", "item_plane_bombs"],
+              "has_any": true
+            }
           },
           "when": ["hard_logic"]
         }
@@ -19,7 +22,10 @@
       "rules": [
         {
           "requires": {
-            "or": [{ "rule": "duck" }, { "rule": "dash" }]
+            "rule": {
+              "has": ["item_ability_duck", "item_ability_dash"],
+              "has_any": true
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -29,7 +35,9 @@
       "rules": [
         {
           "requires": {
-            "and": [{ "rule": "duck" }, { "rule": "dash" }]
+            "rule": {
+              "has": ["item_ability_duck", "item_ability_dash"]
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -39,7 +47,10 @@
       "rules": [
         {
           "requires": {
-            "or": [{ "rule": "parry" }, { "rule": "psugar" }]
+            "rule": {
+              "has": ["item_ability_parry", "item_charm_psugar"],
+              "has_any": true
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -49,7 +60,10 @@
       "rules": [
         {
           "requires": {
-            "or": [{ "rule": "dash" }, { "rule": "parry" }]
+            "rule": {
+              "has": ["item_ability_dash", "item_ability_parry"],
+              "has_any": true
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -59,7 +73,9 @@
       "rules": [
         {
           "requires": {
-            "and": [{ "rule": "dash" }, { "rule": "parry" }]
+            "rule": {
+              "has": ["item_ability_dash", "item_ability_parry"]
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -69,11 +85,14 @@
       "rules": [
         {
           "requires": {
-            "or": [
-              { "rule": "dash" },
-              { "rule": "parry" },
-              { "rule": "psugar" }
-            ]
+            "rule": {
+              "has": [
+                "item_ability_dash",
+                "item_ability_parry",
+                "item_charm_psugar"
+              ],
+              "has_any": true
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -83,7 +102,9 @@
       "rules": [
         {
           "requires": {
-            "and": [{ "rule": "duck" }, { "rule": "parry" }]
+            "rule": {
+              "has": ["item_ability_duck", "item_ability_parry"]
+            }
           },
           "when": ["rando_abilities"]
         }
@@ -93,15 +114,17 @@
       "rules": [
         {
           "requires": {
-            "and": [{ "rule": "duck" }, { "rule": "dash" }, { "rule": "parry" }]
+            "rule": {
+              "has": [
+                "item_ability_dash",
+                "item_ability_parry",
+                "item_charm_psugar"
+              ]
+            }
           },
           "when": ["rando_abilities"]
         }
       ]
-    },
-    "topgrade": {
-      "_comment": "TODO: Finish",
-      "rules": []
     }
   }
 }
