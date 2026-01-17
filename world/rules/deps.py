@@ -61,19 +61,19 @@ def dep_weapon_ex_rando(c: WorldConfig) -> bool:
     return c.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0
 @dep
 def dep_dlc_chalice(c: WorldConfig) -> bool:
-    return c.dlc_chalice > 0
+    return c.use_dlc and c.dlc_chalice > 0
 @dep
 def dep_dlc_chalice_only(c: WorldConfig) -> bool:
-    return c.dlc_chalice == ChaliceMode.CHALICE_ONLY
+    return c.use_dlc and c.dlc_chalice == ChaliceMode.CHALICE_ONLY
 @dep
 def dep_dlc_cookie(c: WorldConfig) -> bool:
-    return c.dlc_chalice == ChaliceMode.VANILLA or c.dlc_chalice == ChaliceMode.RANDOMIZED
+    return c.use_dlc and (c.dlc_chalice == ChaliceMode.VANILLA or c.dlc_chalice == ChaliceMode.RANDOMIZED)
 @dep
 def dep_dlc_chaliced_grade_required(c: WorldConfig) -> bool:
-    return (c.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+    return c.use_dlc and (c.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
 def dep_dlc_rungun_chaliced_grade_required(c: WorldConfig) -> bool:
-    return (c.dlc_rungun_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+    return c.use_dlc and (c.dlc_rungun_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
 def dep_dlc_boatitem(c: WorldConfig) -> bool:
     return c.use_dlc and c.dlc_randomize_boat

@@ -199,11 +199,7 @@ class LevelRuleData:
 
     @staticmethod
     def _compile_lloc(json_obj: dict[str, Any], *, src: str) -> LocationDef:
-        rule = (
-            __class__._compile_rule_container(json_obj["rule"], src=f"{src}.rule")
-            if "rule" in json_obj
-            else None
-        )
+        rules = __class__._compile_rule_container(json_obj, src=src).rules
 
         inherit_raw = json_obj.get("inherit", "and") # and is the default
         if not isinstance(inherit_raw, str):
@@ -218,7 +214,7 @@ class LevelRuleData:
             case _:
                 raise ValueError(f"{src}.inherit needs to be one of: [and,or,none]")
 
-        return LocationDef(src, rule, inherit)
+        return LocationDef(src, rules, inherit)
 
     @staticmethod
     def _compile_level(json_obj: dict[str, Any], *, src: str) -> LevelDef:

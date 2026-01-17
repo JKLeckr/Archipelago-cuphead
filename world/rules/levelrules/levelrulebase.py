@@ -109,9 +109,7 @@ class InheritMode(IntEnum):
     OR = 2
 
 @dataclass(frozen=True)
-class LocationDef:
-    source_path: str
-    rule: RuleContainer | None
+class LocationDef(RuleContainer):
     inherit: InheritMode
 
 @dataclass(frozen=True)

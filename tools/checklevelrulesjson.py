@@ -235,7 +235,7 @@ def main():
 
     validate_schema(lrjson, schema)
 
-    lint(lrjson, known_lrselectors, known_deps)
+    lint(lrjson, known_lrselectors, known_deps) # TODO: Fix
 
 if __name__ == "__main__":
     main()

@@ -96,7 +96,7 @@ def compile_location(
     loc: lrb.LocationDef
     ) -> RegionRule:
     root_src = loc.source_path
-    loc_rule = construct_rule_expr(wconf, loc.rule) if loc.rule else None
+    loc_rule = construct_rule_expr(wconf, loc) if loc else None
 
     if level.base:
         match loc.inherit:
