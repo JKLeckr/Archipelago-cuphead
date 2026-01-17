@@ -13,7 +13,7 @@ from BaseClasses import Item, ItemClassification, Location, LocationProgressType
 from ..auxiliary import count_in_list
 from ..enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
 from ..locations import locationdefs as ldef
-from ..names import ItemNames, LocationNames
+from ..names import itemnames, locationnames
 from ..wconf import WorldConfig
 from . import itemdefs as idef
 from . import weapons
@@ -121,42 +121,42 @@ def create_locked_items_at(
             print(f"Skipped {name} for {loc}")
 
 def create_dlc_locked_items(world: CupheadWorld):
-    create_locked_item(world, ItemNames.item_event_mausoleum, LocationNames.loc_event_mausoleum)
-    create_locked_item(world, ItemNames.item_event_dlc_boataccess, LocationNames.loc_event_dlc_boatarrival)
+    create_locked_item(world, itemnames.item_event_mausoleum, locationnames.loc_event_mausoleum)
+    create_locked_item(world, itemnames.item_event_dlc_boataccess, locationnames.loc_event_dlc_boatarrival)
     if world.wconfig.dlc_chalice == ChaliceMode.VANILLA:
-        create_locked_item(world, ItemNames.item_charm_dlc_cookie, LocationNames.loc_event_dlc_cookie)
-    if LocationNames.loc_event_dlc_goal_saltbaker in world.active_locations:
-        if not world.wconfig.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+        create_locked_item(world, itemnames.item_charm_dlc_cookie, locationnames.loc_event_dlc_cookie)
+    if locationnames.loc_event_dlc_goal_saltbaker in world.active_locations:
+        if not world.wconfig.is_goal_used(locationnames.loc_event_dlc_goal_saltbaker):
             raise ValueError("Saltbaker Goal location created even if it shouldn't")
-        create_locked_item(world, ItemNames.item_event_goal_dlc_saltbakerko, LocationNames.loc_event_dlc_goal_saltbaker)
-    create_locked_items_at(world, ItemNames.item_event_dlc_boss_chaliced, ldef.locations_dlc_event_boss_chaliced)
+        create_locked_item(world, itemnames.item_event_goal_dlc_saltbakerko, locationnames.loc_event_dlc_goal_saltbaker)
+    create_locked_items_at(world, itemnames.item_event_dlc_boss_chaliced, ldef.locations_dlc_event_boss_chaliced)
     create_locked_items_at(
         world,
-        ItemNames.item_event_dlc_boss_chaliced,
+        itemnames.item_event_dlc_boss_chaliced,
         ldef.locations_dlc_event_boss_final_chaliced
     )
 
 def create_locked_items(world: CupheadWorld):
     # Locked Items
     for i in range(1,6):
-        _loc = LocationNames.loc_event_isle1_secret_prereq+" "+str(i)
-        create_locked_item(world, ItemNames.item_event_isle1_secret_prereq, _loc)
+        _loc = locationnames.loc_event_isle1_secret_prereq+" "+str(i)
+        create_locked_item(world, itemnames.item_event_isle1_secret_prereq, _loc)
     if world.wconfig.ginger_quest:
-        create_locked_item(world, ItemNames.item_event_isle2_shortcut, LocationNames.loc_event_isle2_shortcut)
+        create_locked_item(world, itemnames.item_event_isle2_shortcut, locationnames.loc_event_isle2_shortcut)
     if world.wconfig.fourmel_quest:
-        create_locked_item(world, ItemNames.item_event_quest_4mel_4th, LocationNames.loc_event_quest_4mel_4th)
+        create_locked_item(world, itemnames.item_event_quest_4mel_4th, locationnames.loc_event_quest_4mel_4th)
     if world.wconfig.music_quest:
-        create_locked_item(world, ItemNames.item_event_ludwig, LocationNames.loc_event_quest_ludwig)
-        #create_locked_item(world, ItemNames.item_event_wolfgang, LocationNames.loc_event_quest_wolfgang)
+        create_locked_item(world, itemnames.item_event_ludwig, locationnames.loc_event_quest_ludwig)
+        #create_locked_item(world, itemnames.item_event_wolfgang, locationnames.loc_event_quest_wolfgang)
     if world.wconfig.silverworth_quest:
-        create_locked_items_at(world, ItemNames.item_event_agrade, ldef.locations_event_agrade)
-        create_locked_items_at(world, ItemNames.item_event_agrade, ldef.location_level_boss_final_event_agrade)
+        create_locked_items_at(world, itemnames.item_event_agrade, ldef.locations_event_agrade)
+        create_locked_items_at(world, itemnames.item_event_agrade, ldef.location_level_boss_final_event_agrade)
     if world.wconfig.pacifist_quest:
-        create_locked_items_at(world, ItemNames.item_event_pacifist, ldef.location_level_rungun_event_pacifist)
-    if LocationNames.loc_event_goal_devil in world.active_locations:
-        if not world.wconfig.is_goal_used(LocationNames.loc_event_goal_devil):
+        create_locked_items_at(world, itemnames.item_event_pacifist, ldef.location_level_rungun_event_pacifist)
+    if locationnames.loc_event_goal_devil in world.active_locations:
+        if not world.wconfig.is_goal_used(locationnames.loc_event_goal_devil):
             raise KeyError("Devil Goal location created even if it shouldn't")
-        create_locked_item(world, ItemNames.item_event_goal_devilko, LocationNames.loc_event_goal_devil)
+        create_locked_item(world, itemnames.item_event_goal_devilko, locationnames.loc_event_goal_devil)
 
     if world.use_dlc:
         create_dlc_locked_items(world)
@@ -166,15 +166,15 @@ def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[I
     items: list[Item] = []
 
     [
-        items.append(create_active_item(world, ItemNames.item_healthupgrade))
+        items.append(create_active_item(world, itemnames.item_healthupgrade))
         for _ in range(world.wconfig.maxhealth_upgrades)
     ]
     if wconf.use_dlc:
-        if wconf.dlc_chalice == ChaliceMode.RANDOMIZED and ItemNames.item_charm_dlc_cookie not in precollected:
-            items.append(create_active_item(world, ItemNames.item_charm_dlc_cookie))
+        if wconf.dlc_chalice == ChaliceMode.RANDOMIZED and itemnames.item_charm_dlc_cookie not in precollected:
+            items.append(create_active_item(world, itemnames.item_charm_dlc_cookie))
         if ((wconf.dlc_curse_mode == CurseMode.VANILLA or wconf.dlc_curse_mode == CurseMode.REVERSE) and \
-            ItemNames.item_charm_dlc_broken_relic not in precollected):
-                items.append(create_active_item(world, ItemNames.item_charm_dlc_broken_relic))
+            itemnames.item_charm_dlc_broken_relic not in precollected):
+                items.append(create_active_item(world, itemnames.item_charm_dlc_broken_relic))
 
     return items
 
@@ -211,16 +211,16 @@ def create_start_weapons(world: CupheadWorld) -> set[str]:
 
     weapon = weapon_dict[wconf.start_weapon]
 
-    create_locked_item(world, weapon, LocationNames.loc_event_start_weapon, ItemClassification.progression)
+    create_locked_item(world, weapon, locationnames.loc_event_start_weapon, ItemClassification.progression)
     res.add(weapon)
-    if LocationNames.loc_event_start_weapon_ex in world.active_locations:
+    if locationnames.loc_event_start_weapon_ex in world.active_locations:
         if wconf.weapon_mode == WeaponMode.PROGRESSIVE_EXCEPT_START:
             weapon_ex = weapons.weapon_p_dict[wconf.start_weapon]
         elif wconf.weapon_mode == WeaponMode.EX_SEPARATE_EXCEPT_START:
             weapon_ex = weapons.weapon_ex_dict[wconf.start_weapon]
         else:
             weapon_ex = ""
-        create_locked_item(world, weapon_ex, LocationNames.loc_event_start_weapon_ex, ItemClassification.progression)
+        create_locked_item(world, weapon_ex, locationnames.loc_event_start_weapon_ex, ItemClassification.progression)
         res.add(weapon_ex)
     return res
 
@@ -248,7 +248,7 @@ def setup_ability_pool(world: CupheadWorld, precollected_item_names: list[str]) 
     if world.wconfig.dlc_chalice_items_separate & ItemGroups.ABILITIES:
         abilities.extend(idef.item_dlc_chalice_abilities.keys())
     else:
-        abilities.append(ItemNames.item_ability_dlc_cdoublejump)
+        abilities.append(itemnames.item_ability_dlc_cdoublejump)
     # FIXME: Is checking precollected needed? (it is probably done elsewhere)
     return abilities
 
@@ -314,7 +314,7 @@ def create_items(world: CupheadWorld) -> None:
     #print(weapons)
 
     # Item names for coins
-    coin_items = (ItemNames.item_coin, ItemNames.item_coin2, ItemNames.item_coin3)
+    coin_items = (itemnames.item_coin, itemnames.item_coin2, itemnames.item_coin3)
 
     essential_items = (
         [y for y in idef.item_essential.keys() if y not in coin_items] + \

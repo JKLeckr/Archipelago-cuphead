@@ -75,6 +75,23 @@
       }
     },
     "level_boss_pirate": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "duck" },
+            "when": ["rando_abilities", "dlc_chalice_only"]
+          },
+          {
+            "requires": {
+              "or": [
+                { "preset": "duck" },
+                { "and": [{ "preset": "parry" }, { "preset": "dash" }] }
+              ]
+            },
+            "when": ["rando_abilities", "!dlc_chalice_only"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_pirate": {},
         "loc_level_boss_pirate_topgrade": {},
@@ -84,6 +101,22 @@
       }
     },
     "level_boss_mouse": {
+      "base": {
+        "rules": [
+          {
+            "requires": {
+              "and": [{ "preset": "parry" }, { "preset": "duck" }]
+            },
+            "when": ["rando_abilities", "dlc_chalice_only"]
+          },
+          {
+            "requires": {
+              "and": [{ "preset": "parry_or_psugar" }, { "preset": "duck" }]
+            },
+            "when": ["rando_abilities", "!dlc_chalice_only"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_mouse": {},
         "loc_level_boss_mouse_topgrade": {},
@@ -171,6 +204,22 @@
       }
     },
     "level_boss_plane_bird": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "rule": { "has": ["item_plane_gun"] } },
+            "when": ["hard_logic"]
+          },
+          {
+            "requires": {
+              "rule": {
+                "has": ["item_plane_gun", "item_plane_bombs"]
+              }
+            },
+            "when": ["!hard_logic"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_plane_bird": {},
         "loc_level_boss_plane_bird_topgrade": {},
@@ -198,6 +247,18 @@
       }
     },
     "level_boss_devil": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry" },
+            "when": ["rando_abilities", "dlc_chalice_only"]
+          },
+          {
+            "requires": { "preset": "dash_and_parry" },
+            "when": ["rando_abilities", "!dlc_chalice_only"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_devil": {},
         "loc_level_boss_devil_topgrade": {},
@@ -358,6 +419,20 @@
       }
     },
     "level_rungun_funhouse": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry" },
+            "when": ["rando_abilities", "dlc_chalice_only"]
+          },
+          {
+            "requires": {
+              "preset": "parry_or_both_psugar_and_dash"
+            },
+            "when": ["rando_abilities", "!dlc_chalice_only"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_rungun_funhouse": {},
         "loc_level_rungun_funhouse_agrade": {},

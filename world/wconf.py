@@ -12,7 +12,7 @@ from dataclasses import dataclass, field, fields
 from typing import Any
 
 from . import enums as e
-from .names import ItemNames, LocationNames
+from .names import itemnames, locationnames
 from .options import CupheadOptions
 from .options import options as odefs
 from .options.field import create_field
@@ -56,9 +56,9 @@ def _get_contract_requirements(options: CupheadOptions | None) -> tuple[int, int
 
 def _get_filler_item_weights(options: CupheadOptions | None) -> list[tuple[str, int]]:
     filler_items: list[str] = [
-        ItemNames.item_level_extrahealth,
-        ItemNames.item_level_supercharge,
-        ItemNames.item_level_fastfire,
+        itemnames.item_level_extrahealth,
+        itemnames.item_level_supercharge,
+        itemnames.item_level_fastfire,
     ]
     filler_item_weights: list[int] = [
         options.filler_weight_extrahealth.value,
@@ -76,11 +76,11 @@ def _get_filler_item_weights(options: CupheadOptions | None) -> list[tuple[str, 
 
 def _get_trap_item_weights(options: CupheadOptions | None) -> list[tuple[str, int]]:
     trap_items: list[str] = [
-        ItemNames.item_level_trap_fingerjam,
-        ItemNames.item_level_trap_slowfire,
-        ItemNames.item_level_trap_superdrain,
-        ItemNames.item_level_trap_loadout,
-        ItemNames.item_level_trap_screen,
+        itemnames.item_level_trap_fingerjam,
+        itemnames.item_level_trap_slowfire,
+        itemnames.item_level_trap_superdrain,
+        itemnames.item_level_trap_loadout,
+        itemnames.item_level_trap_screen,
     ]
     trap_item_weights: list[int] = [
         options.trap_weight_fingerjam.value,
@@ -204,7 +204,7 @@ class WorldConfig:
         self.filler_item_weights = _get_filler_item_weights(options)
         self.trap_item_weights = _get_trap_item_weights(options)
         self.shop_map = _get_shop_map(options)
-    
+
     @classmethod
     def from_bits(cls, bits: int, options: CupheadOptions | None = None) -> WorldConfig:
         res = WorldConfig(options)
@@ -224,7 +224,7 @@ class WorldConfig:
             shift += 1
 
         return res
-    
+
     def debitify(self, bits: int) -> None:
         shift = 0
         for bit in _bitifiable_fields:
@@ -239,13 +239,13 @@ class WorldConfig:
         return (self.dlc_chalice_items_separate & item_group) > 0
 
     def is_goal_used(self, goal: str) -> bool:
-        if goal == LocationNames.loc_event_goal_devil:
+        if goal == locationnames.loc_event_goal_devil:
             return (
                 self.mode == e.GameMode.BEAT_DEVIL or
                 self.mode == e.GameMode.DLC_BEAT_BOTH or
                 self.mode == e.GameMode.DLC_BEAT_DEVIL_NO_ISLE4
             )
-        if goal == LocationNames.loc_event_dlc_goal_saltbaker:
+        if goal == locationnames.loc_event_dlc_goal_saltbaker:
             return (
                 self.mode == e.GameMode.DLC_BEAT_SALTBAKER or
                 self.mode == e.GameMode.DLC_BEAT_BOTH or

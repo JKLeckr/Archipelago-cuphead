@@ -8,28 +8,28 @@ A place for discarded code that might be useful in the future
 ```python
 
 shop_item_weapons = [
-        LocationNames.loc_shop_weapon1,
-        LocationNames.loc_shop_weapon2,
-        LocationNames.loc_shop_weapon3,
-        LocationNames.loc_shop_weapon4,
-        LocationNames.loc_shop_weapon5,
+        locationnames.loc_shop_weapon1,
+        locationnames.loc_shop_weapon2,
+        locationnames.loc_shop_weapon3,
+        locationnames.loc_shop_weapon4,
+        locationnames.loc_shop_weapon5,
 ]
 shop_item_dlc_weapons = [
-        LocationNames.loc_shop_dlc_weapon6,
-        LocationNames.loc_shop_dlc_weapon7,
-        LocationNames.loc_shop_dlc_weapon8,
+        locationnames.loc_shop_dlc_weapon6,
+        locationnames.loc_shop_dlc_weapon7,
+        locationnames.loc_shop_dlc_weapon8,
 ]
 shop_item_charms = [
-        LocationNames.loc_shop_charm1,
-        LocationNames.loc_shop_charm2,
-        LocationNames.loc_shop_charm3,
-        LocationNames.loc_shop_charm4,
-        LocationNames.loc_shop_charm5,
-        LocationNames.loc_shop_charm6,
+        locationnames.loc_shop_charm1,
+        locationnames.loc_shop_charm2,
+        locationnames.loc_shop_charm3,
+        locationnames.loc_shop_charm4,
+        locationnames.loc_shop_charm5,
+        locationnames.loc_shop_charm6,
 ]
 shop_item_dlc_charms = [
-        LocationNames.loc_shop_dlc_charm7,
-        LocationNames.loc_shop_dlc_charm8,
+        locationnames.loc_shop_dlc_charm7,
+        locationnames.loc_shop_dlc_charm8,
 ]
 shop_items_list = shop_item_weapons + shop_item_charms + ((shop_item_dlc_weapons + shop_item_dlc_charms) if using_dlc else [])
 
@@ -63,11 +63,11 @@ def create_weapongates(multiworld: MultiWorld, player: int, weapon_tiers: dict[i
         weapon_pool = []
         if levels[level].is_starter:
             weapon_pool = weapon_tiers[0]
-        elif levels[level].world_location == LocationNames.world_inkwell_1:
+        elif levels[level].world_location == locationnames.world_inkwell_1:
             weapon_pool = weapon_tiers[0] + weapon_tiers[1]
-        elif levels[level].world_location == LocationNames.world_inkwell_2:
+        elif levels[level].world_location == locationnames.world_inkwell_2:
             weapon_pool = weapon_tiers[0] + weapon_tiers[1] + weapon_tiers[2]
-        elif levels[level].world_location == LocationNames.world_inkwell_3:
+        elif levels[level].world_location == locationnames.world_inkwell_3:
             weapon_pool = weapons
         else:
             weapon_pool = weapons
@@ -107,7 +107,7 @@ class TestLogicBase(CupheadTestBase):
         _world: CupheadWorld = cast(CupheadWorld, self.world)
         wconfig = _world.wconfig
 
-        self.assertTrue(self.can_reach_location(LocationNames.loc_event_start_weapon))
+        self.assertTrue(self.can_reach_location(locationnames.loc_event_start_weapon))
 
         weapon_progressive = (wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0
 
@@ -118,17 +118,17 @@ class TestLogicBase(CupheadTestBase):
 
         _start_locations = tuple(self.multiworld.get_region("Start", self.player).locations)
 
-        start_weapon_loc = self.multiworld.get_location(LocationNames.loc_event_start_weapon, self.player)
+        start_weapon_loc = self.multiworld.get_location(locationnames.loc_event_start_weapon, self.player)
         self.assertIn(start_weapon_loc, _start_locations)
         self.multiworld.state.collect(_start_weapon, location=start_weapon_loc)
 
         if (wconfig.weapon_mode & WeaponMode.EXCEPT_START) > 0:
-            self.assertTrue(self.can_reach_location(LocationNames.loc_event_start_weapon_ex))
+            self.assertTrue(self.can_reach_location(locationnames.loc_event_start_weapon_ex))
             _start_weapon_ex = self.get_item_by_name(
                 weapons.weapon_p_dict[wconfig.start_weapon] if weapon_progressive else
                 weapons.weapon_ex_dict[wconfig.start_weapon]
             )
-            start_weapon_ex_loc = self.multiworld.get_location(LocationNames.loc_event_start_weapon_ex, self.player)
+            start_weapon_ex_loc = self.multiworld.get_location(locationnames.loc_event_start_weapon_ex, self.player)
             self.assertIn(start_weapon_ex_loc, _start_locations)
             self.multiworld.state.collect(_start_weapon_ex, location=start_weapon_ex_loc)
 
@@ -145,7 +145,7 @@ class TestLogicInit(TestLogicBase):
 
         #test.setup_initial_items()
 
-        test.assertEqual(test.count(ItemNames.item_weapon_peashooter), 1)
+        test.assertEqual(test.count(itemnames.item_weapon_peashooter), 1)
 
     def test_start_p_weapon(self):
         _options: dict[str, Any] = {
@@ -160,7 +160,7 @@ class TestLogicInit(TestLogicBase):
 
         #test.setup_initial_items()
 
-        test.assertEqual(test.count(ItemNames.item_p_weapon_spread), 1)
+        test.assertEqual(test.count(itemnames.item_p_weapon_spread), 1)
 
     def test_start_p_weapon_except_start(self):
         _options: dict[str, Any] = {
@@ -175,7 +175,7 @@ class TestLogicInit(TestLogicBase):
 
         #test.setup_initial_items()
 
-        test.assertEqual(test.count(ItemNames.item_p_weapon_dlc_crackshot), 2)
+        test.assertEqual(test.count(itemnames.item_p_weapon_dlc_crackshot), 2)
 
     def test_start_weapon_ex(self):
         _options: dict[str, Any] = {
@@ -190,7 +190,7 @@ class TestLogicInit(TestLogicBase):
 
         #test.setup_initial_items()
 
-        test.assertEqual(test.count(ItemNames.item_weapon_dlc_twistup), 1)
+        test.assertEqual(test.count(itemnames.item_weapon_dlc_twistup), 1)
 
     def test_start_weapon_ex_except_start(self):
         _options: dict[str, Any] = {
@@ -205,6 +205,6 @@ class TestLogicInit(TestLogicBase):
 
         test.setup_initial_items()
 
-        test.assertEqual(test.count(ItemNames.item_weapon_lobber), 1)
-        test.assertEqual(test.count(ItemNames.item_weapon_lobber_ex), 1)
+        test.assertEqual(test.count(itemnames.item_weapon_lobber), 1)
+        test.assertEqual(test.count(itemnames.item_weapon_lobber_ex), 1)
 ```

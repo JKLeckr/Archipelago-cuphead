@@ -6,8 +6,9 @@ from __future__ import annotations
 import typing
 from collections.abc import Mapping
 
+from ...enums import WeaponMode
 from ...items import weapons
-from ...names import ItemNames
+from ...names import itemnames
 from .levelrulebase import LRSelector
 
 if typing.TYPE_CHECKING:
@@ -20,17 +21,15 @@ def selector(fn: LRSelector) -> LRSelector:
     return fn
 
 @selector
-def lrs_all_p_weapons_full(wconf: WorldConfig) -> Mapping[str, int]:
-    return dict.fromkeys(weapons.weapon_p_dict.values(), 2)
-
-@selector
 def lrs_all_weapon_ex(wconf: WorldConfig) -> Mapping[str, int]:
+    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+        return dict.fromkeys(weapons.weapon_p_dict.values(), 2)
     return dict.fromkeys(weapons.weapon_ex_dict.values(), 1)
 
 @selector
 def lrs_contract_req(wconf: WorldConfig) -> Mapping[str, int]:
-    return {ItemNames.item_contract: wconf.contract_requirements[2]}
+    return {itemnames.item_contract: wconf.contract_requirements[2]}
 
 @selector
 def lrs_dlc_ingredient_req(wconf: WorldConfig) -> Mapping[str, int]:
-    return {ItemNames.item_dlc_ingredient: wconf.dlc_ingredient_requirements}
+    return {itemnames.item_dlc_ingredient: wconf.dlc_ingredient_requirements}

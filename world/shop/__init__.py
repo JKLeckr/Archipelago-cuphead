@@ -5,31 +5,31 @@ from __future__ import annotations
 
 import typing
 
-from ..names import LocationNames
+from ..names import locationnames
 
 if typing.TYPE_CHECKING:
     from ..wconf import WorldConfig
 
 
 shop_weapons = [
-    LocationNames.loc_shop_weapon1,
-    LocationNames.loc_shop_weapon2,
-    LocationNames.loc_shop_weapon3,
-    LocationNames.loc_shop_weapon4,
-    LocationNames.loc_shop_weapon5,
-    LocationNames.loc_shop_dlc_weapon6,
-    LocationNames.loc_shop_dlc_weapon7,
-    LocationNames.loc_shop_dlc_weapon8
+    locationnames.loc_shop_weapon1,
+    locationnames.loc_shop_weapon2,
+    locationnames.loc_shop_weapon3,
+    locationnames.loc_shop_weapon4,
+    locationnames.loc_shop_weapon5,
+    locationnames.loc_shop_dlc_weapon6,
+    locationnames.loc_shop_dlc_weapon7,
+    locationnames.loc_shop_dlc_weapon8
 ]
 shop_charms = [
-    LocationNames.loc_shop_charm1,
-    LocationNames.loc_shop_charm2,
-    LocationNames.loc_shop_charm3,
-    LocationNames.loc_shop_charm4,
-    LocationNames.loc_shop_charm5,
-    LocationNames.loc_shop_charm6,
-    LocationNames.loc_shop_dlc_charm7,
-    LocationNames.loc_shop_dlc_charm8
+    locationnames.loc_shop_charm1,
+    locationnames.loc_shop_charm2,
+    locationnames.loc_shop_charm3,
+    locationnames.loc_shop_charm4,
+    locationnames.loc_shop_charm5,
+    locationnames.loc_shop_charm6,
+    locationnames.loc_shop_dlc_charm7,
+    locationnames.loc_shop_dlc_charm8
 ]
 
 class ShopData:
@@ -52,7 +52,7 @@ class ShopData:
                 shop_region += shop_charms[charm_index:(charm_index+ccount)]
                 weapon_index+=wcount
                 charm_index+=ccount
-            shop_locations[LocationNames.shop_sets[i]] = shop_region
+            shop_locations[locationnames.shop_sets[i]] = shop_region
 
         self.shop_map = shop_map
         self.shop_locations = shop_locations

@@ -1,7 +1,7 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from ..names import ItemNames
+from ..names import itemnames
 from . import itemdefs as idefs
 
 item_groups: dict[str, set[str]] = {
@@ -19,7 +19,7 @@ item_groups: dict[str, set[str]] = {
     "Charm": {
         *idefs.item_charms.keys(),
         *idefs.item_dlc_charms.keys(),
-        ItemNames.item_charm_dlc_cookie
+        itemnames.item_charm_dlc_cookie
     },
     "Super": {
         *idefs.item_super.keys(),
@@ -33,7 +33,7 @@ item_groups: dict[str, set[str]] = {
     },
 
     ## Aliases
-    ItemNames.item_contract_a: {ItemNames.item_contract},
-    ItemNames.item_plane_gun_a: {ItemNames.item_plane_gun},
-    ItemNames.item_dlc_cplane_gun_a: {ItemNames.item_dlc_cplane_gun},
+    itemnames.item_contract_a: {itemnames.item_contract},
+    itemnames.item_plane_gun_a: {itemnames.item_plane_gun},
+    itemnames.item_dlc_cplane_gun_a: {itemnames.item_dlc_cplane_gun},
 }

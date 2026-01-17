@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from ...enums import ChaliceCheckMode, ChaliceMode, WeaponMode
 from ...items import weapons
-from ...names import ItemNames
+from ...names import itemnames
 from ...wconf import WorldConfig
 from .. import rulebase as rb
 from ..rulebase import RegionRule
@@ -32,30 +32,26 @@ def lrule_none(wconf: WorldConfig) -> RegionRule:
 def lrule_false(wconf: WorldConfig) -> RegionRule:
     return rb.rrule_false()
 
-@lrule
 def lrule_plane_gun(wconf: WorldConfig) -> RegionRule:
-    return rb.rrule_has(ItemNames.item_plane_gun)
+    return rb.rrule_has(itemnames.item_plane_gun)
 
-@lrule
 def lrule_plane_bombs(wconf: WorldConfig) -> RegionRule:
-    return rb.rrule_has(ItemNames.item_plane_bombs)
+    return rb.rrule_has(itemnames.item_plane_bombs)
 
 def lrule_plane(wconf: WorldConfig) -> RegionRule:
     if wconf.hard_logic:
         return lrule_or(lrule_plane_gun, lrule_plane_bombs)(wconf)
     return lrule_plane_gun(wconf)
 
-@lrule
 def lrule_duck(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_ability_duck)
+    return rb.rrule_has(itemnames.item_ability_duck)
 
-@lrule
 def lrule_dash(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_ability_dash)
+    return rb.rrule_has(itemnames.item_ability_dash)
 
 def lrule_duck_or_dash(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
@@ -67,22 +63,20 @@ def lrule_duck_and_dash(wconf: WorldConfig) -> RegionRule:
         return lrule_none(wconf)
     return lrule_and(lrule_duck, lrule_dash)(wconf)
 
-@lrule
 def lrule_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
     if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
         return rb.rrule_and(
-            rb.rrule_has(ItemNames.item_ability_parry),
-            rb.rrule_has(ItemNames.item_ability_dash)
+            rb.rrule_has(itemnames.item_ability_parry),
+            rb.rrule_has(itemnames.item_ability_dash)
         )
-    return rb.rrule_has(ItemNames.item_ability_parry)
+    return rb.rrule_has(itemnames.item_ability_parry)
 
-@lrule
 def lrule_psugar(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_charm_psugar)
+    return rb.rrule_has(itemnames.item_charm_psugar)
 
 def lrule_parry_or_psugar(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
@@ -114,19 +108,16 @@ def lrule_duck_dash_and_parry(wconf: WorldConfig) -> RegionRule:
         return lrule_none(wconf)
     return lrule_and(lrule_duck, lrule_dash_and_parry)(wconf)
 
-@lrule
 def lrule_plane_parry(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_ability_plane_parry)
+    return rb.rrule_has(itemnames.item_ability_plane_parry)
 
-@lrule
 def lrule_plane_shrink(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_ability_plane_shrink)
+    return rb.rrule_has(itemnames.item_ability_plane_shrink)
 
-@lrule
 def lrule_bird(wconf: WorldConfig):
     if wconf.hard_logic:
         return lrule_plane_gun(wconf)
@@ -212,9 +203,9 @@ def lrule_any_super(wconf: WorldConfig) -> RegionRule:
 def lrule_topgrade(wconf: WorldConfig) -> RegionRule:
     _rule = rb.rrule_none()
     if wconf.randomize_abilities:
-        _rule = rb.rrule_has(ItemNames.item_ability_parry)
+        _rule = rb.rrule_has(itemnames.item_ability_parry)
         if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
-            _rule = rb.rrule_and(_rule, rb.rrule_has(ItemNames.item_ability_dash))
+            _rule = rb.rrule_and(_rule, rb.rrule_has(itemnames.item_ability_dash))
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         _rule = rb.rrule_and(
             _rule,
@@ -226,13 +217,13 @@ def lrule_topgrade(wconf: WorldConfig) -> RegionRule:
 def lrule_plane_topgrade(wconf: WorldConfig) -> RegionRule:
     _rule = rb.rrule_none()
     if wconf.randomize_abilities:
-        _rule = rb.rrule_has(ItemNames.item_ability_plane_parry)
+        _rule = rb.rrule_has(itemnames.item_ability_plane_parry)
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         _rule = rb.rrule_and(_rule, rb.rrule_has_any({
-            ItemNames.item_plane_ex,
-            ItemNames.item_plane_super,
-            ItemNames.item_dlc_cplane_ex,
-            ItemNames.item_dlc_cplane_super,
+            itemnames.item_plane_ex,
+            itemnames.item_plane_super,
+            itemnames.item_dlc_cplane_ex,
+            itemnames.item_dlc_cplane_super,
         }))
     return _rule
 
@@ -240,9 +231,9 @@ def lrule_plane_topgrade(wconf: WorldConfig) -> RegionRule:
 def lrule_rungun_topgrade(wconf: WorldConfig) -> RegionRule:
     _rule = rb.rrule_none()
     if wconf.randomize_abilities:
-        _rule = rb.rrule_has(ItemNames.item_ability_parry)
+        _rule = rb.rrule_has(itemnames.item_ability_parry)
         if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
-            _rule = rb.rrule_and(_rule, rb.rrule_has(ItemNames.item_ability_dash))
+            _rule = rb.rrule_and(_rule, rb.rrule_has(itemnames.item_ability_dash))
     return _rule
 
 
@@ -250,13 +241,13 @@ def lrule_rungun_topgrade(wconf: WorldConfig) -> RegionRule:
 def lrule_dlc_cookie(wconf: WorldConfig) -> RegionRule:
     if wconf.dlc_chalice <= ChaliceMode.START or wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_charm_dlc_cookie)
+    return rb.rrule_has(itemnames.item_charm_dlc_cookie)
 
 @lrule
 def lrule_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
-    return rb.rrule_has(ItemNames.item_ability_dlc_cdoublejump)
+    return rb.rrule_has(itemnames.item_ability_dlc_cdoublejump)
 
 @lrule
 def lrule_dash_or_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
@@ -320,4 +311,4 @@ def lrule_dlc_rungun_chaliced_parry(wconf: WorldConfig) -> RegionRule:
 
 @lrule
 def lrule_dlc_relic(wconf: WorldConfig) -> RegionRule:
-    return rb.rrule_has(ItemNames.item_charm_dlc_broken_relic, 1)
+    return rb.rrule_has(itemnames.item_charm_dlc_broken_relic, 1)

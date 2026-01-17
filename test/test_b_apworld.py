@@ -12,7 +12,7 @@ from ..world import wconf
 from ..world.enums import WeaponMode
 from ..world.items import itemdefs as idefs
 from ..world.items import itemsetup, weapons
-from ..world.names import ItemNames
+from ..world.names import itemnames
 
 
 class TestAPWorldOptionsWConf(unittest.TestCase):
@@ -56,7 +56,7 @@ class TestAPWorldItemSetup(unittest.TestCase):
         _wconf.use_dlc = True
         _wconf.start_weapon = 0
 
-        _start_weapon = ItemNames.item_weapon_peashooter
+        _start_weapon = itemnames.item_weapon_peashooter
 
         self.assertEqual(weapons.weapon_dict[0], _start_weapon)
 

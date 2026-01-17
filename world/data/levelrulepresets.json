@@ -18,6 +18,62 @@
         }
       ]
     },
+    "duck": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_ability_duck"] } },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "dash": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_ability_dash"] } },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "parry": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_ability_parry"] } },
+          "when": ["rando_abilities", "!dlc_chalice_only"]
+        },
+        {
+          "requires": {
+            "rule": {
+              "has": ["item_ability_parry", "item_ability_dash"]
+            }
+          },
+          "when": ["rando_abilities", "dlc_chalice_only"]
+        }
+      ]
+    },
+    "psugar": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_charm_psugar"] } },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "plane_parry": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_ability_plane_parry"] } },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "plane_shrink": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_ability_plane_shrink"] } },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
     "duck_or_dash": {
       "rules": [
         {
@@ -98,6 +154,25 @@
         }
       ]
     },
+    "parry_or_both_psugar_and_dash": {
+      "rules": [
+        {
+          "requires": {
+            "or": [
+              {
+                "rule": { "has": ["item_ability_parry"] }
+              },
+              {
+                "rule": {
+                  "has": ["item_ability_dash", "item_charm_psugar"]
+                }
+              }
+            ]
+          },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
     "duck_and_parry": {
       "rules": [
         {
@@ -116,13 +191,241 @@
           "requires": {
             "rule": {
               "has": [
+                "item_ability_duck",
                 "item_ability_dash",
-                "item_ability_parry",
-                "item_charm_psugar"
+                "item_ability_parry"
               ]
             }
           },
           "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "mouse": {
+      "requires_presets": ["duck", "parry", "parry_or_psugar"],
+      "rules": [
+        { "requires": { "preset": "duck" } },
+        {
+          "requires": { "preset": "parry" },
+          "when": ["rando_abilities", "dlc_chalice_only"]
+        },
+        {
+          "requires": { "preset": "parry_or_psugar" },
+          "when": ["rando_abilities", "!dlc_chalice_only"]
+        }
+      ]
+    },
+    "pirate": {
+      "requires_presets": ["duck", "parry", "dash"],
+      "rules": [
+        {
+          "requires": { "preset": "duck" },
+          "when": ["rando_abilities", "dlc_chalice_only"]
+        },
+        {
+          "requires": {
+            "or": [
+              { "preset": "duck" },
+              {
+                "and": [{ "preset": "parry" }, { "preset": "dash" }]
+              }
+            ]
+          },
+          "when": ["rando_abilities", "!dlc_chalice_only"]
+        }
+      ]
+    },
+    "robot": {
+      "requires_presets": ["plane", "plane_parry"],
+      "rules": [
+        { "requires": { "preset": "plane" } },
+        { "requires": { "preset": "plane_parry" }, "when": ["rando_abilities"] }
+      ]
+    },
+    "sallystageplay_secret": {
+      "requires_presets": ["parry", "dlc_doublejump"],
+      "rules": [
+        { "requires": { "preset": "parry" } },
+        {
+          "requires": { "preset": "dlc_doublejump" },
+          "when": ["dlc_chalice_only"]
+        }
+      ]
+    },
+    "harbour": {
+      "requires_presets": ["dash_and_parry"],
+      "rules": [{ "requires": { "preset": "dash_and_parry" } }]
+    },
+    "kingdice": {
+      "requires_presets": ["plane", "dash_and_parry"],
+      "rules": [
+        { "requires": { "preset": "plane" } },
+        {
+          "requires": { "preset": "dash_and_parry" },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "any_super": {
+      "rules": [
+        { "requires": { "rule": { "has_group": "Super", "count": 1 } } }
+      ]
+    },
+    "weapon_ex": {
+      "rules": [
+        {
+          "requires": {
+            "rule": {
+              "has_selection": "all_weapon_ex",
+              "has_any": true
+            }
+          },
+          "when": ["weapon_ex_rando"]
+        }
+      ]
+    },
+    "topgrade": {
+      "requires_presets": ["parry", "any_super", "weapon_ex"],
+      "rules": [
+        { "requires": { "preset": "parry" } },
+        {
+          "requires": {
+            "or": [{ "preset": "any_super" }, { "preset": "weapon_ex" }]
+          },
+          "when": ["weapon_ex_rando"]
+        }
+      ]
+    },
+    "plane_topgrade": {
+      "requires_presets": ["plane_parry"],
+      "rules": [
+        { "requires": { "preset": "plane_parry" } },
+        {
+          "requires": {
+            "rule": {
+              "has": [
+                "item_plane_ex",
+                "item_plane_super",
+                "item_dlc_cplane_ex",
+                "item_dlc_cplane_super"
+              ],
+              "has_any": true
+            }
+          },
+          "when": ["weapon_ex_rando"]
+        }
+      ]
+    },
+    "rungun_topgrade": {
+      "requires_presets": ["parry"],
+      "rules": [{ "requires": { "preset": "parry" } }]
+    },
+    "dlc_cookie": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_charm_dlc_cookie"] } },
+          "when": ["dlc_cookie"]
+        }
+      ]
+    },
+    "dlc_doublejump": {
+      "rules": [
+        {
+          "requires": { "rule": { "has": ["item_ability_dlc_cdoublejump"] } },
+          "when": ["rando_abilities"]
+        }
+      ]
+    },
+    "dash_or_dlc_doublejump": {
+      "requires_presets": ["dash", "dlc_doublejump"],
+      "rules": [
+        {
+          "requires": { "preset": "dash" },
+          "when": ["!dlc_chalice"]
+        },
+        {
+          "requires": {
+            "or": [{ "preset": "dash" }, { "preset": "dlc_doublejump" }]
+          },
+          "when": ["dlc_chalice"]
+        }
+      ]
+    },
+    "dlc_tutorial_coin": {
+      "requires_presets": ["dash_and_parry", "dlc_doublejump"],
+      "rules": [
+        { "requires": { "preset": "dash_and_parry" } },
+        { "requires": { "preset": "dlc_doublejump" } }
+      ]
+    },
+    "dlc_oldman": {
+      "requires_presets": ["dash_parry_or_psugar"],
+      "rules": [{ "requires": { "preset": "dash_parry_or_psugar" } }]
+    },
+    "dlc_boss_chaliced": {
+      "requires_presets": ["dlc_cookie", "topgrade", "dash"],
+      "rules": [
+        { "requires": { "preset": "dlc_cookie" } },
+        {
+          "requires": { "preset": "topgrade" },
+          "when": ["dlc_chaliced_grade_required"]
+        },
+        {
+          "requires": { "preset": "dash" },
+          "when": ["dlc_chaliced_grade_required", "!dlc_chalice_only"]
+        }
+      ]
+    },
+    "dlc_boss_plane_chaliced": {
+      "requires_presets": ["dlc_cookie", "plane_topgrade"],
+      "rules": [
+        { "requires": { "preset": "dlc_cookie" } },
+        {
+          "requires": { "preset": "plane_topgrade" },
+          "when": ["dlc_chaliced_grade_required"]
+        }
+      ]
+    },
+    "dlc_boss_chaliced_parry": {
+      "requires_presets": ["dlc_boss_chaliced", "dash"],
+      "rules": [
+        { "requires": { "preset": "dlc_boss_chaliced" } },
+        {
+          "requires": { "preset": "dash" },
+          "when": ["!dlc_chaliced_grade_required"]
+        }
+      ]
+    },
+    "dlc_rungun_chaliced": {
+      "requires_presets": ["dlc_cookie", "rungun_topgrade", "dash"],
+      "rules": [
+        { "requires": { "preset": "dlc_cookie" } },
+        {
+          "requires": { "preset": "rungun_topgrade" },
+          "when": ["dlc_rungun_chaliced_grade_required"]
+        },
+        {
+          "requires": { "preset": "dash" },
+          "when": ["dlc_rungun_chaliced_grade_required", "!dlc_chalice_only"]
+        }
+      ]
+    },
+    "dlc_rungun_chaliced_parry": {
+      "requires_presets": ["dlc_rungun_chaliced", "dash"],
+      "rules": [
+        { "requires": { "preset": "dlc_rungun_chaliced" } },
+        {
+          "requires": { "preset": "dash" },
+          "when": ["!dlc_chaliced_grade_required"]
+        }
+      ]
+    },
+    "dlc_relic": {
+      "rules": [
+        {
+          "requires": {
+            "rule": { "has": ["item_charm_dlc_broken_relic"], "count": 1 }
+          }
         }
       ]
     }

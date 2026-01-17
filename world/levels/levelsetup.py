@@ -8,7 +8,7 @@ from random import Random
 
 from ..auxiliary import scrub_list
 from ..locations.locationbase import LocationData
-from ..names import LocationNames
+from ..names import locationnames
 from ..wconf import WorldConfig
 from . import leveldefs as ldef
 from . import levelids, levelshuffle
@@ -27,7 +27,7 @@ def setup_levels(
 
     _debug_scrub = settings.is_debug_bit_on(32)
 
-    levels[LocationNames.level_tutorial] = ldef.level_special[LocationNames.level_tutorial]
+    levels[locationnames.level_tutorial] = ldef.level_special[locationnames.level_tutorial]
     for lev,data in {**ldef.level_boss, **ldef.level_boss_final, **ldef.level_rungun}.items():
         levels[lev] = LevelData(
             data.world_location,

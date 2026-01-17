@@ -12,7 +12,7 @@ from ... import debug
 from .. import levels
 from ..levels import leveldefs as ldef
 from ..locations import CupheadLocation
-from ..names import LocationNames
+from ..names import locationnames
 from ..rules import rulebase as rb
 from . import regiondefs as rd
 from .regionbase import DefType, Target
@@ -33,7 +33,7 @@ def get_regions(world: CupheadWorld) -> list[RegionData]:
 
     for shop_name, locs in shop_locations.items():
         shop_region = RegionData(shop_name, locs, None)
-        if shop_name == LocationNames.shop_set4:
+        if shop_name == locationnames.shop_set4:
             region_dlc_shops.append(shop_region)
         else:
             region_shops.append(shop_region)

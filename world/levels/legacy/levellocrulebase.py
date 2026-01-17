@@ -7,7 +7,7 @@ import typing
 from enum import IntEnum
 from typing import NamedTuple
 
-from ...names import LocationNames
+from ...names import locationnames
 from ...rules.levelrules import levelrules as lr
 from ..levelbase import LevelData
 
@@ -45,7 +45,7 @@ class LevelLocRuleData:
         if _all_levels[self.base_region]:
             for _loc in _all_levels[self.base_region].locations:
                 if _loc not in _loc_rules:
-                    if _loc.startswith(LocationNames.loc_event_pfx):
+                    if _loc.startswith(locationnames.loc_event_pfx):
                         _event_locs.add(_loc)
                         #print(f"Adding event location {_loc}...")
                     else:
@@ -65,7 +65,7 @@ class LevelLocRuleData:
             elif debug:
                 print(f"No rule for {_loc}. Skipping.")
         for _eloc in _event_locs:
-            _loc = _eloc.removeprefix(LocationNames.loc_event_pfx)
+            _loc = _eloc.removeprefix(locationnames.loc_event_pfx)
             if _loc in nloc_rules:
                 nloc_rules[_eloc] = nloc_rules[_loc]
                 #print(f"Adding event rule {_eloc}...")

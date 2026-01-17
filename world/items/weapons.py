@@ -2,41 +2,41 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from ..enums import WeaponMode
-from ..names import ItemNames
+from ..names import itemnames
 from ..wconf import WorldConfig
 
 weapon_dict: dict[int,str] = {
-    0: ItemNames.item_weapon_peashooter,
-    1: ItemNames.item_weapon_spread,
-    2: ItemNames.item_weapon_chaser,
-    3: ItemNames.item_weapon_lobber,
-    4: ItemNames.item_weapon_charge,
-    5: ItemNames.item_weapon_roundabout,
-    6: ItemNames.item_weapon_dlc_crackshot,
-    7: ItemNames.item_weapon_dlc_converge,
-    8: ItemNames.item_weapon_dlc_twistup,
+    0: itemnames.item_weapon_peashooter,
+    1: itemnames.item_weapon_spread,
+    2: itemnames.item_weapon_chaser,
+    3: itemnames.item_weapon_lobber,
+    4: itemnames.item_weapon_charge,
+    5: itemnames.item_weapon_roundabout,
+    6: itemnames.item_weapon_dlc_crackshot,
+    7: itemnames.item_weapon_dlc_converge,
+    8: itemnames.item_weapon_dlc_twistup,
 }
 weapon_ex_dict: dict[int,str] = {
-    0: ItemNames.item_weapon_peashooter_ex,
-    1: ItemNames.item_weapon_spread_ex,
-    2: ItemNames.item_weapon_chaser_ex,
-    3: ItemNames.item_weapon_lobber_ex,
-    4: ItemNames.item_weapon_charge_ex,
-    5: ItemNames.item_weapon_roundabout_ex,
-    6: ItemNames.item_weapon_dlc_crackshot_ex,
-    7: ItemNames.item_weapon_dlc_converge_ex,
-    8: ItemNames.item_weapon_dlc_twistup_ex,
+    0: itemnames.item_weapon_peashooter_ex,
+    1: itemnames.item_weapon_spread_ex,
+    2: itemnames.item_weapon_chaser_ex,
+    3: itemnames.item_weapon_lobber_ex,
+    4: itemnames.item_weapon_charge_ex,
+    5: itemnames.item_weapon_roundabout_ex,
+    6: itemnames.item_weapon_dlc_crackshot_ex,
+    7: itemnames.item_weapon_dlc_converge_ex,
+    8: itemnames.item_weapon_dlc_twistup_ex,
 }
 weapon_p_dict: dict[int,str] = {
-    0: ItemNames.item_p_weapon_peashooter,
-    1: ItemNames.item_p_weapon_spread,
-    2: ItemNames.item_p_weapon_chaser,
-    3: ItemNames.item_p_weapon_lobber,
-    4: ItemNames.item_p_weapon_charge,
-    5: ItemNames.item_p_weapon_roundabout,
-    6: ItemNames.item_p_weapon_dlc_crackshot,
-    7: ItemNames.item_p_weapon_dlc_converge,
-    8: ItemNames.item_p_weapon_dlc_twistup,
+    0: itemnames.item_p_weapon_peashooter,
+    1: itemnames.item_p_weapon_spread,
+    2: itemnames.item_p_weapon_chaser,
+    3: itemnames.item_p_weapon_lobber,
+    4: itemnames.item_p_weapon_charge,
+    5: itemnames.item_p_weapon_roundabout,
+    6: itemnames.item_p_weapon_dlc_crackshot,
+    7: itemnames.item_p_weapon_dlc_converge,
+    8: itemnames.item_p_weapon_dlc_twistup,
 }
 weapon_to_index: dict[str, int] = {y:x for x,y in weapon_dict.items()}
 

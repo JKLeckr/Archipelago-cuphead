@@ -21,7 +21,7 @@ from .world.items.itembase import ItemData
 from .world.levels.levelids import level_ids
 from .world.locations import locationdefs as ld
 from .world.locations.locationbase import LocationData
-from .world.names import ItemNames, LocationNames
+from .world.names import itemnames, locationnames
 from .world.options import CupheadOptions, presets
 from .world.options.optionsanitizer import OptionSanitizer
 from .world.rules import rules
@@ -90,8 +90,8 @@ class CupheadWorld(World):
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
         if self.wconfig.randomize_abilities:
-            self.multiworld.early_items[self.player][ItemNames.item_ability_parry] = 1
-            self.multiworld.early_items[self.player][ItemNames.item_ability_dash] = 1
+            self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
+            self.multiworld.early_items[self.player][itemnames.item_ability_dash] = 1
         if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
             _start_weapon = weapons.weapon_p_dict[self.start_weapon]
             self.multiworld.early_items[self.player][_start_weapon] = 1
@@ -173,7 +173,7 @@ class CupheadWorld(World):
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
-        #print(self.multiworld.get_region(LocationNames.level_mausoleum_ii, self.player).locations)
+        #print(self.multiworld.get_region(locationnames.level_mausoleum_ii, self.player).locations)
 
     @override
     def create_item(self, name: str, force_classification: ItemClassification | None = None) -> Item:
@@ -200,17 +200,17 @@ class CupheadWorld(World):
         spoiler_handle.write(f"\n{self.player_name} Shop Items:\n\n")
         spoiler_handle.write("\n".join([
             f"{x}:\n{_gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
-                if (x != LocationNames.shop_set4 or self.use_dlc)
+                if (x != locationnames.shop_set4 or self.use_dlc)
         ]))
 
     @override
     def collect(self, state: CollectionState, item: Item) -> bool:
         #print(item.name)
-        if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
-            amount = 3 if item.name == ItemNames.item_coin3 else 2
+        if item.name in (itemnames.item_coin2, itemnames.item_coin3):
+            amount = 3 if item.name == itemnames.item_coin3 else 2
             _name = self.collect_item(
                 state,
-                itemcreate.create_item(ItemNames.item_coin, self.player)
+                itemcreate.create_item(itemnames.item_coin, self.player)
             )
             if _name:
                 state.add_item(_name, self.player, amount)
@@ -229,11 +229,11 @@ class CupheadWorld(World):
 
     @override
     def remove(self, state: CollectionState, item: Item) -> bool:
-        if item.name in (ItemNames.item_coin2, ItemNames.item_coin3):
-            amount = 3 if item.name == ItemNames.item_coin3 else 2
+        if item.name in (itemnames.item_coin2, itemnames.item_coin3):
+            amount = 3 if item.name == itemnames.item_coin3 else 2
             _name = self.collect_item(
                 state,
-                itemcreate.create_item(ItemNames.item_coin, self.player),
+                itemcreate.create_item(itemnames.item_coin, self.player),
                 True
             )
             if _name:
@@ -274,7 +274,7 @@ class CupheadWorld(World):
                         #else:
                         #    print(f"{loc} not valid for shuffle hint.")
         for shopl, locs in self.shop.shop_locations.items():
-            if shopl != LocationNames.shop_set4 or self.use_dlc:
+            if shopl != locationnames.shop_set4 or self.use_dlc:
                 for loc in locs:
                     hint_dict[self.location_name_to_id[loc]] = shopl
         hint_data.update({self.player: hint_dict})

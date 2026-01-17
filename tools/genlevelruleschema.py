@@ -25,6 +25,10 @@ LEVELRULES_SELECTORS_MOD = ".levelruleselectors"
 LEVELRULES_SELECTORS_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_SELECTORS_MOD}"
 NAMES_MOD = ".names"
 NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
+ITEM_NAMES_MOD = ".itemnames"
+ITEM_NAMES_MOD_PATH = f"{NAMES_MOD_PATH}{ITEM_NAMES_MOD}"
+LOCATION_NAMES_MOD = ".locationnames"
+LOCATION_NAMES_MOD_PATH = f"{NAMES_MOD_PATH}{LOCATION_NAMES_MOD}"
 
 DATA_PATH = os.path.join("world", "data")
 PRESET_DEFS_PATH = os.path.join(DATA_PATH, "levelrulepresets.json")
@@ -93,11 +97,17 @@ def main():  # noqa: C901
     if args.include_lnames:
         _nspec = importlib.util.find_spec(NAMES_MOD, package=WORLD_MOD)
         _names = _nspec.loader.load_module(NAMES_MOD_PATH) if _nspec and _nspec.loader else None
-        if not _names:
-            raise ImportError("Could not import names module.")
-        names = _names
+        _inspec = importlib.util.find_spec(ITEM_NAMES_MOD, package=NAMES_MOD_PATH)
+        _inames = _inspec.loader.load_module(ITEM_NAMES_MOD_PATH) if _inspec and _inspec.loader else None
+        _lnspec = importlib.util.find_spec(LOCATION_NAMES_MOD, package=NAMES_MOD_PATH)
+        _lnames = _lnspec.loader.load_module(LOCATION_NAMES_MOD_PATH) if _lnspec and _lnspec.loader else None
+        if not _names or not _inames or not _lnames:
+            raise ImportError("Could not import names modules.")
+        itemnames = _inames
+        locationnames = _lnames
     else:
-        names = None
+        itemnames = None
+        locationnames = None
 
     base = json.load(open(BASE_RULES_SCHEMA_PATH))
     presets_base = json.load(open(BASE_PRESETS_SCHEMA_PATH))
@@ -119,26 +129,21 @@ def main():  # noqa: C901
 
     base["$defs"]["apItemSelectorRef"]["enum"] = lrselector_names
 
-    if names:
+    if itemnames and locationnames:
         level_names: list[str] = []
         location_names: list[str] = []
         item_names: list[str] = []
 
-        for name in sorted(vars(names.LocationNames).keys()): # type: ignore
-            if not isinstance(name, str):
-                print(f"WARNING: Skipping non-str name: {name}")
-                continue
+        for name in sorted(dir(locationnames)): # type: ignore
             if name.startswith("loc_level_") or (name.startswith("loc_event_") and "goal" in name):
                 location_names.append(name)
             elif name.startswith("level_"):
                 level_names.append(name)
 
-        for name in sorted(vars(names.ItemNames).keys()): # type: ignore
-            if not isinstance(name, str):
-                print(f"WARNING: Skipping non-str name: {name}")
-                continue
-            if not name.startswith("_") and not name.endswith("_"):
-                item_names.append(name)
+        item_names = [
+            name for name in sorted(dir(itemnames))
+            if not name.startswith("_") and not name.endswith("_")
+        ]
 
         base["properties"]["levels"]["propertyNames"]["enum"] = level_names
         base["$defs"]["level"]["properties"]["locations"]["propertyNames"]["enum"] = location_names

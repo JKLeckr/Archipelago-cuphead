@@ -6,7 +6,7 @@ from __future__ import annotations
 from BaseClasses import ItemClassification
 
 from ..enums import ChaliceCheckMode, ChaliceMode, GradeCheckMode, ItemGroups, WeaponMode
-from ..names import ItemNames
+from ..names import itemnames
 from ..wconf import WorldConfig
 from . import itemdefs as idef
 from . import weapons
@@ -25,9 +25,9 @@ def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: in
 def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
     items_ref.update(idef.items_dlc)
     if wconf.dlc_chalice == ChaliceMode.VANILLA or wconf.dlc_chalice == ChaliceMode.RANDOMIZED:
-        add_item(items_ref, ItemNames.item_charm_dlc_cookie)
+        add_item(items_ref, itemnames.item_charm_dlc_cookie)
         if wconf.dlc_boss_chalice_checks or wconf.dlc_cactusgirl_quest:
-            change_item_type(items_ref, ItemNames.item_charm_dlc_cookie, ItemClassification.progression)
+            change_item_type(items_ref, itemnames.item_charm_dlc_cookie, ItemClassification.progression)
     if wconf.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
         items_ref.update(idef.item_dlc_chalice_essential)
     if wconf.is_dlc_chalice_items_separate(ItemGroups.SUPER):
@@ -36,7 +36,7 @@ def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
         (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0 and
         wconf.is_dlc_chalice_items_separate(ItemGroups.WEAPON_EX)
     ):
-        change_item_quantity(items_ref, ItemNames.item_dlc_cplane_ex, 1)
+        change_item_quantity(items_ref, itemnames.item_dlc_cplane_ex, 1)
 
 def setup_abilities(items_ref: dict[str, ItemData], wconf: WorldConfig):
     items_ref.update(idef.item_abilities)
@@ -44,10 +44,10 @@ def setup_abilities(items_ref: dict[str, ItemData], wconf: WorldConfig):
         if wconf.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
             items_ref.update(idef.item_dlc_chalice_abilities)
         else:
-            add_item(items_ref, ItemNames.item_ability_dlc_cdoublejump)
-    change_item_type(items_ref, ItemNames.item_charm_psugar, ItemClassification.progression)
+            add_item(items_ref, itemnames.item_ability_dlc_cdoublejump)
+    change_item_type(items_ref, itemnames.item_charm_psugar, ItemClassification.progression)
     if wconf.boss_secret_checks:
-        change_item_type(items_ref, ItemNames.item_ability_plane_shrink, ItemClassification.progression)
+        change_item_type(items_ref, itemnames.item_ability_plane_shrink, ItemClassification.progression)
 
 def setup_weapon_gate(items_ref: dict[str, ItemData], wconf: WorldConfig):
     weapon_keys = {
@@ -81,7 +81,7 @@ def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
                 for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()
             ]
     if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
-        change_item_quantity(items_ref, ItemNames.item_plane_ex, 1)
+        change_item_quantity(items_ref, itemnames.item_plane_ex, 1)
         if _grade_checks_required:
             [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
 

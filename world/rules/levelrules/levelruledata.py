@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import Any, ClassVar
 
 from ... import data
+from ...names import itemnames, locationnames
 from ..deps import DEPS
 from . import levelrulebase as lrb
 from .levelrulebase import (
@@ -52,6 +53,23 @@ class LevelRuleData:
                 raise ValueError(f"{src}{i_str} must be an integer!")
 
     @staticmethod
+    def _parse_item_names(fnames: list[str], src: str) -> list[str]:
+        res: list[str] = []
+        for fname in fnames:
+            iname = getattr(itemnames, fname)
+            if not iname or not isinstance(res, str):
+                raise ValueError(f"For {src}: {fname} is an unknown item")
+            res.append(iname)
+        return res
+
+    @staticmethod
+    def _parse_location_names(fname: str, src: str) -> str:
+        res = getattr(locationnames, fname)
+        if res and isinstance(res, str):
+            return res
+        raise ValueError(f"For {src}: {fname} is an unknown location")
+
+    @staticmethod
     def _compile_rule_combo(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
         condition = "and" if "and" in json_obj else "or"
         children_json: list[dict[str, Any]] = json_obj[condition]
@@ -74,26 +92,33 @@ class LevelRuleData:
     def _compile_itemrule(json_obj: dict[str, Any], *, src: str) -> ItemRule:
         if "has" in json_obj:
             has_list: list[str] = json_obj["has"]
-            has_any = bool(json_obj["has_any"])
-            has_count = json_obj["count"]
+            has_any = bool(json_obj.get("has_any", False))
+            has_count = json_obj.get("count", 1)
             __class__._check_item_entries(
                 f"{src}.has", ls = has_list, i = has_count, i_str = " count"
             )
-            return ItemRuleHas(src, has_list, has_any, has_count)
+            item_list = __class__._parse_item_names(has_list, src=f"{src}.has")
+            return ItemRuleHas(src, item_list, has_any, has_count)
         if "has_selection" in json_obj:
-            return __class__._compile_itemrule_selector(json_obj["select"], src=f"{src}.has_selection")
+            has_any = bool(json_obj.get("has_any", False))
+            return __class__._compile_itemrule_selector(
+                json_obj["has_selection"],
+                src=f"{src}.has_selection",
+                has_any=has_any
+            )
         if "has_from_list" in json_obj:
             has_from_list: list[str] = json_obj["has_from_list"]
-            has_count = json_obj["count"]
-            unique = bool(json_obj["unique"])
+            has_count = json_obj.get("count", 1)
+            unique = bool(json_obj.get("unique", False))
             __class__._check_item_entries(
                 f"{src}.has_from_list", ls = has_from_list, i = has_count, i_str = " count"
             )
-            return ItemRuleHasFromList(src, has_from_list, has_count, unique)
+            item_hlist = __class__._parse_item_names(has_from_list, src=f"{src}.has_from_list")
+            return ItemRuleHasFromList(src, item_hlist, has_count, unique)
         if "has_group" in json_obj:
-            has_group = json_obj["has"]
-            has_count = json_obj["count"]
-            unique = bool(json_obj["unique"])
+            has_group = json_obj["has_group"]
+            has_count = json_obj.get("count", 1)
+            unique = bool(json_obj.get("unique", False))
             __class__._check_item_entries(
                     f"{src}.has_group", s = has_group, i = has_count, i_str = " count"
                 )
@@ -214,7 +239,9 @@ class LevelRuleData:
         if not isinstance(locs_json, dict): # type: ignore
             raise ValueError(f"{src}.locations is an invalid json object!")
         for name, loc_json in locs_json.items():
-            locations[name] = __class__._compile_lloc(loc_json, src=f"{src}.locations.{name}")
+            locations[__class__._parse_location_names(name, src=f"{src}.locations")] = (
+                __class__._compile_lloc(loc_json, src=f"{src}.locations.{name}")
+            )
 
         return LevelDef(src, access, base, locations)
 
@@ -259,7 +286,7 @@ class LevelRuleData:
         preset_req_graph: dict[str, set[str]] = {name: set() for name in presets_json}
 
         for pname, preset_json in presets_json.items():
-            preset_reqs: list[str] = preset_json["requires_presets"]
+            preset_reqs: list[str] = preset_json.get("requires_presets", [])
             if isinstance(preset_reqs, list): # type: ignore
                 preset_req_graph[pname] = set(preset_reqs)
             else:

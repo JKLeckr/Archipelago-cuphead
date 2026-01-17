@@ -6,7 +6,7 @@ from __future__ import annotations
 from BaseClasses import LocationProgressType
 
 from ..enums import ChaliceMode, ChessCastleMode, GameMode, GradeCheckMode, WeaponMode
-from ..names import LocationNames
+from ..names import locationnames
 from ..wconf import WorldConfig
 from . import locationdefs as ld
 from .locationbase import LocationData
@@ -36,26 +36,26 @@ def setup_quest_locations(locations_ref: dict[str,LocationData], wconf: WorldCon
     def _add_location(name: str):
         add_location(locations_ref, name)
     if wconf.buster_quest:
-        _add_location(LocationNames.loc_quest_buster)
+        _add_location(locationnames.loc_quest_buster)
     if wconf.ginger_quest:
-        _add_location(LocationNames.loc_quest_ginger)
-        _add_location(LocationNames.loc_event_isle2_shortcut)
+        _add_location(locationnames.loc_quest_ginger)
+        _add_location(locationnames.loc_event_isle2_shortcut)
     if wconf.fourmel_quest:
-        _add_location(LocationNames.loc_quest_4mel)
-        _add_location(LocationNames.loc_event_quest_4mel_4th)
+        _add_location(locationnames.loc_quest_4mel)
+        _add_location(locationnames.loc_event_quest_4mel_4th)
     if wconf.lucien_quest:
-        _add_location(LocationNames.loc_quest_lucien)
+        _add_location(locationnames.loc_quest_lucien)
     if wconf.music_quest:
-        _add_location(LocationNames.loc_quest_music)
-        _add_location(LocationNames.loc_event_quest_ludwig)
-        _add_location(LocationNames.loc_event_quest_wolfgang)
+        _add_location(locationnames.loc_quest_music)
+        _add_location(locationnames.loc_event_quest_ludwig)
+        _add_location(locationnames.loc_event_quest_wolfgang)
     if wconf.silverworth_quest:
         locations_ref.update(ld.locations_event_agrade)
         locations_ref.update(ld.location_level_boss_final_event_agrade)
-        _add_location(LocationNames.loc_quest_silverworth)
+        _add_location(locationnames.loc_quest_silverworth)
     if wconf.pacifist_quest:
         locations_ref.update(ld.location_level_rungun_event_pacifist)
-        _add_location(LocationNames.loc_quest_pacifist)
+        _add_location(locationnames.loc_quest_pacifist)
 
 def setup_boss_final_locations(
         locations_ref: dict[str,LocationData],
@@ -71,9 +71,9 @@ def setup_boss_final_locations(
 def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
     locations_ref.update(ld.location_level_dlc_tutorial)
     if wconf.dlc_chalice == ChaliceMode.RANDOMIZED:
-        add_location(locations_ref, LocationNames.loc_dlc_cookie)
+        add_location(locations_ref, locationnames.loc_dlc_cookie)
     elif wconf.dlc_chalice == ChaliceMode.VANILLA:
-        add_location(locations_ref, LocationNames.loc_event_dlc_cookie)
+        add_location(locations_ref, locationnames.loc_event_dlc_cookie)
     if wconf.dlc_boss_chalice_checks:
         locations_ref.update(ld.locations_dlc_boss_chaliced)
         if wconf.mode != GameMode.BEAT_DEVIL:
@@ -94,7 +94,7 @@ def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], wconf: Wo
             ld.location_level_boss_final_event_dlc_chaliced,
             ld.location_level_dlc_boss_final_event_dlc_chaliced,
         )
-        add_location(locations_ref, LocationNames.loc_dlc_quest_cactusgirl)
+        add_location(locations_ref, locationnames.loc_dlc_quest_cactusgirl)
 
 def setup_dlc_locations(locations_ref: dict[str,LocationData], wconf: WorldConfig):
     locations_ref.update(ld.locations_dlc)
@@ -103,7 +103,7 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], wconf: WorldConfi
         if wconf.mode != GameMode.DLC_BEAT_SALTBAKER:
             locations_ref.update(ld.location_level_dlc_boss_final_topgrade)
     if wconf.dlc_requires_mausoleum:
-        add_location(locations_ref, LocationNames.loc_event_mausoleum)
+        add_location(locations_ref, locationnames.loc_event_mausoleum)
     if wconf.dlc_chalice > 0:
         setup_dlc_chalice_locations(locations_ref, wconf)
     if wconf.dlc_kingsleap != ChessCastleMode.INCLUDE_ALL:
@@ -115,14 +115,14 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], wconf: WorldConfi
                 (
                     wconf.dlc_kingsleap == ChessCastleMode.EXCLUDE_GAUNTLET and
                     (
-                        loc == LocationNames.loc_level_dlc_chesscastle_run or
-                        loc == LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced
+                        loc == locationnames.loc_level_dlc_chesscastle_run or
+                        loc == locationnames.loc_level_dlc_chesscastle_run_dlc_chaliced
                     )
                 ) or (
                     wconf.dlc_kingsleap == ChessCastleMode.GAUNTLET_ONLY and
                     (
-                        loc != LocationNames.loc_level_dlc_chesscastle_run and
-                        loc != LocationNames.loc_level_dlc_chesscastle_run_dlc_chaliced
+                        loc != locationnames.loc_level_dlc_chesscastle_run and
+                        loc != locationnames.loc_level_dlc_chesscastle_run_dlc_chaliced
                     )
                 ) or wconf.dlc_kingsleap == ChessCastleMode.EXCLUDE
             ):
@@ -132,9 +132,9 @@ def setup_locations(wconf: WorldConfig) -> dict[str,LocationData]:
     use_dlc = wconf.use_dlc
     locations: dict[str,LocationData] = {**ld.locations_base}
 
-    add_location(locations, LocationNames.loc_event_start_weapon)
+    add_location(locations, locationnames.loc_event_start_weapon)
     if (wconf.weapon_mode & WeaponMode.EXCEPT_START) > 0:
-        add_location(locations, LocationNames.loc_event_start_weapon_ex)
+        add_location(locations, locationnames.loc_event_start_weapon_ex)
 
     setup_grade_check_locations(locations, wconf)
 
@@ -148,9 +148,9 @@ def setup_locations(wconf: WorldConfig) -> dict[str,LocationData]:
     if use_dlc:
         setup_dlc_locations(locations, wconf)
 
-    if wconf.is_goal_used(LocationNames.loc_event_goal_devil):
+    if wconf.is_goal_used(locationnames.loc_event_goal_devil):
         locations.update(ld.location_goal)
-    if use_dlc and wconf.is_goal_used(LocationNames.loc_event_dlc_goal_saltbaker):
+    if use_dlc and wconf.is_goal_used(locationnames.loc_event_dlc_goal_saltbaker):
         locations.update(ld.location_dlc_goal)
 
     setup_boss_final_locations(

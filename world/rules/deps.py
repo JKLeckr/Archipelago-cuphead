@@ -72,6 +72,9 @@ def dep_dlc_cookie(c: WorldConfig) -> bool:
 def dep_dlc_chaliced_grade_required(c: WorldConfig) -> bool:
     return (c.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
+def dep_dlc_rungun_chaliced_grade_required(c: WorldConfig) -> bool:
+    return (c.dlc_rungun_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+@dep
 def dep_dlc_boatitem(c: WorldConfig) -> bool:
     return c.use_dlc and c.dlc_randomize_boat
 @dep
