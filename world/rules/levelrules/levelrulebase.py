@@ -26,9 +26,13 @@ class RuleExpr:
     source_path: str
 
 @dataclass(frozen=True)
-class PresetRef(RuleExpr):
+class RuleRef(RuleExpr):
     item: RuleContainer | None
     name: str
+
+@dataclass(frozen=True)
+class RuleBool(RuleExpr):
+    value: bool
 
 @dataclass(frozen=True)
 class And(RuleExpr):
@@ -41,7 +45,6 @@ class Or(RuleExpr):
 @dataclass(frozen=True)
 class Not(RuleExpr):
     item: RuleExpr
-
 
 ## Item Rules
 

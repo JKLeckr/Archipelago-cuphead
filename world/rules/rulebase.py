@@ -26,6 +26,8 @@ def rule_not(rule: Rule) -> Rule:
     return lambda state: not rule(state)
 
 def rule_none() -> Rule:
+    return rule_true()
+def rule_true() -> Rule:
     return lambda state: True
 def rule_false() -> Rule:
     return lambda state: False
@@ -83,6 +85,8 @@ def rrule_not(rule: RegionRule) -> RegionRule:
     return lambda state, player: not rule(state, player)
 
 def rrule_none() -> RegionRule:
+    return rrule_true()
+def rrule_true() -> RegionRule:
     return lambda state, player: True
 def rrule_false() -> RegionRule:
     return lambda state, player: False

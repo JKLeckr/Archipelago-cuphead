@@ -53,12 +53,14 @@ def _compile_item_rule(wconf: WorldConfig, irule: type[lrb.ItemRule]) -> RegionR
 
 def compile_rule_expr(wconf: WorldConfig, rule_expr: lrb.RuleExpr) -> RegionRule:
     match rule_expr:
-        case lrb.ItemRule:
-            return _compile_item_rule(wconf, rule_expr)
-        case lrb.PresetRef:
+        case lrb.RuleRef:
             if rule_expr.item:
                 return compile_rule_container(wconf, rule_expr.item)
             return rb.rrule_none()
+        case lrb.RuleBool:
+            return rb.rrule_false() if not rule_expr.value else rb.rrule_none()
+        case lrb.ItemRule:
+            return _compile_item_rule(wconf, rule_expr)
         case lrb.And:
             rules = [compile_rule_expr(wconf, i) for i in rule_expr.items]
             return rb.rrule_and(*rules)

@@ -40,6 +40,21 @@
       "type": "string"
     },
 
+    "ruleDefs": {
+      "type": "object",
+      "propertyNames": { "type": "string" },
+      "additionalProperties": { "$ref": "#/$defs/ruleContainer" }
+    },
+
+    "fromExpr": {
+      "type": "object",
+      "required": ["from"],
+      "properties": {
+        "from": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
     "ruleItemExpr": {
       "oneOf": [
         {
@@ -96,17 +111,17 @@
       "oneOf": [
         {
           "type": "object",
-          "required": ["rule"],
+          "required": ["preset"],
           "properties": {
-            "rule": { "$ref": "#/$defs/ruleItemExpr" }
+            "preset": { "type": "string" }
           },
           "additionalProperties": false
         },
         {
           "type": "object",
-          "required": ["preset"],
+          "required": ["rule"],
           "properties": {
-            "preset": { "type": "string" }
+            "rule": { "$ref": "#/$defs/ruleItemExpr" }
           },
           "additionalProperties": false
         },
@@ -151,7 +166,9 @@
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
         "when": { "$ref": "#/$defs/whenList" },
-        "requires": { "$ref": "#/$defs/ruleExpr" }
+        "requires": {
+          "oneOf": [{ "type": "boolean" }, { "$ref": "#/$defs/ruleExpr" }]
+        }
       },
       "additionalProperties": false
     },
@@ -174,7 +191,15 @@
       "type": "object",
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
-        "rules": { "$ref": "#/$defs/ruleList" },
+        "rules": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/ruleFragment" },
+              { "$ref": "#/$defs/fromExpr" }
+            ]
+          }
+        },
         "inherit": {
           "type": "string",
           "enum": ["and", "or", "none"]
@@ -189,6 +214,7 @@
         "$comment": { "$ref": "#/$defs/comment" },
         "access": { "$ref": "#/$defs/ruleContainer" },
         "base": { "$ref": "#/$defs/ruleContainer" },
+        "rule_defs": { "$ref": "#/$defs/ruleDefs" },
         "locations": {
           "type": "object",
           "propertyNames": { "type": "string" },

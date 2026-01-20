@@ -131,7 +131,6 @@ def lrule_funhouse(wconf: WorldConfig) -> RegionRule:
         return lrule_parry(wconf)
     return lrule_or(lrule_parry, lrule_and(lrule_psugar, lrule_dash))(wconf)
 
-@lrule
 def lrule_mouse(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -139,7 +138,6 @@ def lrule_mouse(wconf: WorldConfig) -> RegionRule:
         return lrule_and(lrule_parry, lrule_duck)(wconf)
     return lrule_and(lrule_parry_or_psugar, lrule_duck)(wconf)
 
-@lrule
 def lrule_pirate(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -147,13 +145,11 @@ def lrule_pirate(wconf: WorldConfig) -> RegionRule:
         return lrule_duck(wconf)
     return lrule_or(lrule_duck, lrule_and(lrule_parry, lrule_dash))(wconf)
 
-@lrule
 def lrule_robot(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_plane(wconf)
     return lrule_and(lrule_plane, lrule_plane_parry)(wconf)
 
-@lrule
 def lrule_sallystageplay_secret(wconf: WorldConfig) -> RegionRule:
     if wconf.dlc_chalice == ChaliceMode.CHALICE_ONLY:
         return lrule_and(lrule_parry, lrule_dlc_doublejump)(wconf)
@@ -165,13 +161,11 @@ def lrule_harbour(wconf: WorldConfig) -> RegionRule:
         return lrule_none(wconf)
     return lrule_and(lrule_dash, lrule_parry)(wconf)
 
-@lrule
 def lrule_kingdice(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_plane(wconf)
     return lrule_and(lrule_plane, lrule_and(lrule_parry, lrule_dash))(wconf)
 
-@lrule
 def lrule_final(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -253,7 +247,6 @@ def lrule_dash_or_dlc_doublejump(wconf: WorldConfig) -> RegionRule:
 def lrule_dlc_tutorial_coin(wconf: WorldConfig) -> RegionRule:
     return lrule_and(lrule_dash_and_parry, lrule_dlc_doublejump)(wconf)
 
-@lrule
 def lrule_dlc_oldman(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)

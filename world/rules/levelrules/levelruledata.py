@@ -19,11 +19,12 @@ from .levelrulebase import (
     LevelDef,
     LevelRules,
     LocationDef,
-    PresetRef,
+    RuleBool,
     RuleContainer,
     RuleDep,
     RuleExpr,
     RuleFragment,
+    RuleRef,
 )
 from .levelruleselectors import LRSELECTORS
 
@@ -126,8 +127,24 @@ class LevelRuleData:
 
         raise ValueError(f"{src} is an invalid rule expression")
 
+    @staticmethod
+    def _compile_rule_ref(ref: str, ref_data: dict[str, RuleContainer], *, src: str) -> RuleFragment:
+        __class__._check_item_entries(src, s = ref)
+
+        if ref not in ref_data:
+            raise KeyError(
+                f"From {src}: Rule Reference '{ref}' does not exist!"
+            )
+
+        rule_ref = ref_data[ref]
+        return RuleFragment(
+            f"{src}[{ref}]",
+            [],
+            RuleRef(f"{src}[{ref}].requires", rule_ref, ref)
+        )
+
     @classmethod
-    def _compile_preset_ref(cls, preset: str, *, src: str) -> PresetRef:
+    def _compile_preset_ref(cls, preset: str, *, src: str) -> RuleRef:
         __class__._check_item_entries(f"{src}.preset", s = preset)
 
         if preset not in cls._preset_reg:
@@ -137,18 +154,27 @@ class LevelRuleData:
             )
 
         preset_ref = cls._preset_reg[preset]
-        return PresetRef(f"{src}.preset[{preset}]", preset_ref, preset)
+        return RuleRef(f"{src}.preset[{preset}]", preset_ref, preset)
 
     @staticmethod
-    def _compile_rule_expr(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
-        if "rule" in json_obj:
-            return __class__._compile_itemrule(json_obj["rule"], src=f"{src}.rule")
+    def _compile_rule_expr(json_obj: dict[str, dict[str, Any] | bool], *, src: str) -> RuleExpr:
         if "preset" in json_obj:
-            return __class__._compile_preset_ref(json_obj["preset"], src=src)
+            _preset = json_obj["preset"]
+            if isinstance(_preset, str):
+                return __class__._compile_preset_ref(_preset, src=src)
+            raise ValueError(f"{src}.preset is an invalid type")
+        if "rule" in json_obj:
+            _rule = json_obj["rule"]
+            if isinstance(_rule, dict):
+                return __class__._compile_itemrule(_rule, src=f"{src}.rule")
+            raise ValueError(f"{src}.rule is an invalid type")
         if "and" in json_obj or "or" in json_obj:
             return __class__._compile_rule_combo(json_obj, src=src)
         if "not" in json_obj:
-            return lrb.Not(src, __class__._compile_rule_expr(json_obj["not"], src=f"{src}.not"))
+            _not = json_obj["not"]
+            if isinstance(_not, dict):
+                return lrb.Not(src, __class__._compile_rule_expr(_not, src=f"{src}.not"))
+            raise ValueError(f"{src}.not is an invalid type")
 
         raise ValueError(f"{src} is an invalid rule expression")
 
@@ -167,9 +193,9 @@ class LevelRuleData:
     @staticmethod
     def _compile_rule_fragment(json_obj: dict[str, Any], *, src: str) -> RuleFragment:
         when_json: list[str] = json_obj.get("when", [])
-        requires_json: dict[str, Any] | None = json_obj.get("requires")
+        requires_json: dict[str, Any] | bool | None = json_obj.get("requires")
 
-        if not requires_json:
+        if requires_json is None:
             raise ValueError(f"{src}.requires is required!")
         __class__._check_item_entries(f"{src}.when", ls = when_json)
 
@@ -178,28 +204,64 @@ class LevelRuleData:
             for dep in when_json
         ]
 
-        requires = __class__._compile_rule_expr(
-            requires_json,
-            src=f"${src}.requires"
-        )
+        if isinstance(requires_json, bool):
+            if requires_json:
+                raise SyntaxWarning(f"{src}.true is discouraged! Disable rule instead.")
+            _res_str = "false" if not requires_json else "true"
+            requires = RuleBool(f"{src}.{_res_str}", requires_json)
+        elif isinstance(requires_json, dict): # type: ignore
+            requires = __class__._compile_rule_expr(
+                requires_json,
+                src=f"${src}.requires"
+            )
+        else:
+            raise ValueError(f"{src}.preset is an invalid type")
 
         return RuleFragment(src, when, requires)
 
     @staticmethod
-    def _compile_rule_container(json_obj: dict[str, Any], *, src: str) -> RuleContainer:
+    def _build_rules(
+        json_obj: dict[str, Any], *,
+        src: str,
+        rule_defs: dict[str, RuleContainer] | None = None
+    ) -> list[RuleFragment]:
         rules_json: list[dict[str, Any]] = json_obj.get("rules", [])
         __class__._check_item_entries(f"{src}.rules", ls = rules_json)
 
-        rules = [
-            __class__._compile_rule_fragment(rule_json, src=f"{src}.rules['{i}']")
-            for i, rule_json in enumerate(rules_json)
-        ]
+        res: list[RuleFragment] = []
 
+        for i, rule_json in enumerate(rules_json):
+            if "from" in rule_json:
+                rdsrc = f"{src}.rules[{i}].from"
+                if rule_defs is None:
+                    raise ValueError(f"{rdsrc} cannot be used outside of locations!")
+                ruledef_ref: str = rule_json["from"]
+                if not isinstance(ruledef_ref, str): # type: ignore
+                    raise ValueError(f"{rdsrc} must be a string!")
+                if ruledef_ref not in rule_defs:
+                    raise KeyError(f"{rdsrc}: {ruledef_ref} does not exist in rule_defs!")
+                res.append(
+                    __class__._compile_rule_ref(ruledef_ref, rule_defs, src=rdsrc)
+                )
+            else:
+                res.append(
+                    __class__._compile_rule_fragment(rule_json, src=f"{src}.rules['{i}']")
+                )
+
+        return res
+
+    @staticmethod
+    def _compile_rule_container(json_obj: dict[str, Any], *, src: str) -> RuleContainer:
+        rules = __class__._build_rules(json_obj, src=src)
         return RuleContainer(src, rules)
 
     @staticmethod
-    def _compile_lloc(json_obj: dict[str, Any], *, src: str) -> LocationDef:
-        rules = __class__._compile_rule_container(json_obj, src=src).rules
+    def _compile_lloc(
+        json_obj: dict[str, Any], *,
+        src: str,
+        rule_defs: dict[str, RuleContainer] | None = None
+    ) -> LocationDef:
+        rules = __class__._build_rules(json_obj, src=src, rule_defs=rule_defs)
 
         inherit_raw = json_obj.get("inherit", "and") # and is the default
         if not isinstance(inherit_raw, str):
@@ -217,6 +279,18 @@ class LevelRuleData:
         return LocationDef(src, rules, inherit)
 
     @staticmethod
+    def _populate_ruledefs(json_obj: dict[str, Any], *, src: str) -> dict[str, RuleContainer]:
+        ruledefs_json: dict[str, Any] = json_obj.get("rule_defs", {})
+
+        if not isinstance(ruledefs_json, dict): # type: ignore
+            raise ValueError(f"{src}.rule_defs is an invalid json object!")
+
+        return {
+            rdname: __class__._compile_rule_container(ruledef, src=f"{src}.rule_defs[{rdname}]")
+            for rdname, ruledef in ruledefs_json.items()
+        }
+
+    @staticmethod
     def _compile_level(json_obj: dict[str, Any], *, src: str) -> LevelDef:
         access = (
             __class__._compile_rule_container(json_obj["access"], src=f"{src}.access")
@@ -230,13 +304,19 @@ class LevelRuleData:
             else None
         )
 
+        rule_defs = (
+            __class__._populate_ruledefs(json_obj, src=src)
+            if "rule_defs" in json_obj
+            else None
+        )
+
         locations: dict[str, LocationDef] = {}
         locs_json: dict[str, Any] = json_obj.get("locations", {})
         if not isinstance(locs_json, dict): # type: ignore
             raise ValueError(f"{src}.locations is an invalid json object!")
         for name, loc_json in locs_json.items():
             locations[__class__._parse_location_names(name, src=f"{src}.locations")] = (
-                __class__._compile_lloc(loc_json, src=f"{src}.locations.{name}")
+                __class__._compile_lloc(loc_json, src=f"{src}.locations.{name}", rule_defs=rule_defs)
             )
 
         return LevelDef(src, access, base, locations)
@@ -250,7 +330,7 @@ class LevelRuleData:
         return res
 
     @staticmethod
-    def _toposort_presets(graph: dict[str, set[str]]) -> list[str]:
+    def _toposort_reqs(graph: dict[str, set[str]]) -> list[str]:
         res: list[str] = []
         visiting: set[str] = set()
         visited: set[str] = set()
@@ -288,7 +368,7 @@ class LevelRuleData:
             else:
                 raise ValueError(f"{src}.{pname} has malformed 'requires_presets' entry")
 
-        comp_order: list[str] = __class__._toposort_presets(preset_req_graph)
+        comp_order: list[str] = __class__._toposort_reqs(preset_req_graph)
 
         res: dict[str, RuleContainer] = {}
 
