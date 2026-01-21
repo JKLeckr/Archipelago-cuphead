@@ -256,25 +256,33 @@ class LevelRuleData:
         return RuleContainer(src, rules)
 
     @staticmethod
+    def _parse_inherit_mode(inherit_raw: str, *, src: str) -> InheritMode:
+        match inherit_raw:
+            case "and":
+                return InheritMode.AND
+            case "or":
+                return InheritMode.OR
+            case "none":
+                return InheritMode.NONE
+            case _:
+                raise ValueError(f"{src} needs to be one of: [and,or,none]")
+
+    @staticmethod
     def _compile_lloc(
         json_obj: dict[str, Any], *,
         src: str,
+        inherit_default: InheritMode = InheritMode.NONE,
         rule_defs: dict[str, RuleContainer] | None = None
     ) -> LocationDef:
         rules = __class__._build_rules(json_obj, src=src, rule_defs=rule_defs)
 
-        inherit_raw = json_obj.get("inherit", "and") # and is the default
-        if not isinstance(inherit_raw, str):
-            raise ValueError(f"{src}.inherit is not a valid string!")
-        match inherit_raw:
-            case "and":
-                inherit = InheritMode.AND
-            case "or":
-                inherit = InheritMode.OR
-            case "none":
-                inherit = InheritMode.NONE
-            case _:
-                raise ValueError(f"{src}.inherit needs to be one of: [and,or,none]")
+        inherit_raw = json_obj.get("inherit")
+        if inherit_raw is not None:
+            if not isinstance(inherit_raw, str):
+                raise ValueError(f"{src}.inherit is not a valid string!")
+            inherit = __class__._parse_inherit_mode(inherit_raw, src=f"{src}.inherit")
+        else:
+            inherit = inherit_default
 
         return LocationDef(src, rules, inherit)
 
@@ -304,6 +312,11 @@ class LevelRuleData:
             else None
         )
 
+        inherit_default = __class__._parse_inherit_mode(
+            json_obj.get("inherit_default", "and"), # and is the default
+            src=f"{src}.inherit_default"
+        )
+
         rule_defs = (
             __class__._populate_ruledefs(json_obj, src=src)
             if "rule_defs" in json_obj
@@ -316,7 +329,12 @@ class LevelRuleData:
             raise ValueError(f"{src}.locations is an invalid json object!")
         for name, loc_json in locs_json.items():
             locations[__class__._parse_location_names(name, src=f"{src}.locations")] = (
-                __class__._compile_lloc(loc_json, src=f"{src}.locations.{name}", rule_defs=rule_defs)
+                __class__._compile_lloc(
+                    loc_json,
+                    src=f"{src}.locations.{name}",
+                    rule_defs=rule_defs,
+                    inherit_default=inherit_default
+                )
             )
 
         return LevelDef(src, access, base, locations)
@@ -418,9 +436,19 @@ class LevelRuleData:
         data.unload_data("levelruledefs")
 
     @classmethod
+    def load_data(cls):
+        if cls._data:
+            raise Warning("levelrule data is already loaded. Reloading.")
+        cls._load_levelrule_data()
+
+    @classmethod
     def get_data(cls) -> LevelRules:
         if not cls._data:
             cls._load_levelrule_data()
-        if cls._data:
+        if cls._data is not None:
             return cls._data
         raise ValueError("Could not load levelrule data")
+
+#print("Loading levelrule data...")
+#LevelRuleData.load_data()
+#print("levelrule data loaded")
