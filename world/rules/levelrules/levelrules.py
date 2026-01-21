@@ -123,7 +123,6 @@ def lrule_bird(wconf: WorldConfig):
         return lrule_plane_gun(wconf)
     return lrule_and(lrule_plane_gun, lrule_plane_bombs)(wconf)
 
-@lrule
 def lrule_funhouse(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)
@@ -155,7 +154,6 @@ def lrule_sallystageplay_secret(wconf: WorldConfig) -> RegionRule:
         return lrule_and(lrule_parry, lrule_dlc_doublejump)(wconf)
     return lrule_parry(wconf)
 
-@lrule
 def lrule_harbour(wconf: WorldConfig) -> RegionRule:
     if not wconf.randomize_abilities:
         return lrule_none(wconf)

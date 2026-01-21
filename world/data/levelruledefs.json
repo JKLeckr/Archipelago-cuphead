@@ -12,6 +12,13 @@
       }
     },
     "level_boss_slime": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "duck_or_dash" }
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_slime": {},
         "loc_level_boss_slime_topgrade": {},
@@ -21,6 +28,13 @@
       }
     },
     "level_boss_frogs": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry_or_psugar" }
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_frogs": {},
         "loc_level_boss_frogs_topgrade": {},
@@ -39,6 +53,13 @@
       }
     },
     "level_boss_baroness": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry_or_psugar" }
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_baroness": {},
         "loc_level_boss_baroness_topgrade": {},
@@ -48,6 +69,13 @@
       }
     },
     "level_boss_clown": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "dash_or_parry" }
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_clown": {},
         "loc_level_boss_clown_topgrade": {},
@@ -103,16 +131,13 @@
     "level_boss_mouse": {
       "base": {
         "rules": [
+          { "requires": { "preset": "duck" } },
           {
-            "requires": {
-              "and": [{ "preset": "parry" }, { "preset": "duck" }]
-            },
+            "requires": { "preset": "parry" },
             "when": ["rando_abilities", "dlc_chalice_only"]
           },
           {
-            "requires": {
-              "and": [{ "preset": "parry_or_psugar" }, { "preset": "duck" }]
-            },
+            "requires": { "preset": "parry_or_psugar" },
             "when": ["rando_abilities", "!dlc_chalice_only"]
           }
         ]
@@ -126,6 +151,17 @@
       }
     },
     "level_boss_sallystageplay": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry" }
+          },
+          {
+            "requires": { "preset": "dlc_doublejump" },
+            "when": ["dlc_chalice_only"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_sallystageplay": {},
         "loc_level_boss_sallystageplay_topgrade": {},
@@ -136,6 +172,17 @@
       }
     },
     "level_boss_train": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry" }
+          },
+          {
+            "requires": { "preset": "dlc_doublejump" },
+            "when": ["dlc_chalice_only"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_train": {},
         "loc_level_boss_train_topgrade": {},
@@ -158,33 +205,25 @@
       },
       "base": {
         "rules": [
+          { "requires": { "preset": "plane" } },
           {
-            "requires": {
-              "and": [{ "preset": "dash_and_parry" }, { "preset": "plane" }]
-            },
-            "when": ["!dicepalace_sanity"]
+            "requires": { "preset": "dash_and_parry" },
+            "when": ["rando_abilities"]
           }
         ]
       },
       "locations": {
-        "loc_level_boss_kingdice": {
-          "rule": {}
-        },
-        "loc_level_boss_kingdice_topgrade": {
-          "rule": {}
-        },
-        "loc_level_boss_kingdice_event_agrade": {
-          "rule": {}
-        },
-        "loc_level_boss_kingdice_dlc_chaliced": {
-          "rule": {}
-        },
-        "loc_level_boss_kingdice_event_dlc_chaliced": {
-          "rule": {}
-        }
+        "loc_level_boss_kingdice": {},
+        "loc_level_boss_kingdice_topgrade": {},
+        "loc_level_boss_kingdice_event_agrade": {},
+        "loc_level_boss_kingdice_dlc_chaliced": {},
+        "loc_level_boss_kingdice_event_dlc_chaliced": {}
       }
     },
     "level_boss_plane_blimp": {
+      "access": {
+        "rules": [{ "requires": { "preset": "plane" } }]
+      },
       "locations": {
         "loc_level_boss_plane_blimp": {},
         "loc_level_boss_plane_blimp_topgrade": {},
@@ -194,16 +233,28 @@
       }
     },
     "level_boss_plane_genie": {
+      "access": {
+        "rules": [{ "requires": { "preset": "plane" } }]
+      },
       "locations": {
         "loc_level_boss_plane_genie": {},
         "loc_level_boss_plane_genie_topgrade": {},
-        "loc_level_boss_plane_genie_secret": {},
+        "loc_level_boss_plane_genie_secret": {
+          "rules": [
+            {
+              "requires": { "preset": "plane_shrink" }
+            }
+          ]
+        },
         "loc_level_boss_plane_genie_event_agrade": {},
         "loc_level_boss_plane_genie_dlc_chaliced": {},
         "loc_level_boss_plane_genie_event_dlc_chaliced": {}
       }
     },
     "level_boss_plane_bird": {
+      "access": {
+        "rules": [{ "requires": { "preset": "plane" } }]
+      },
       "base": {
         "rules": [
           {
@@ -211,11 +262,11 @@
             "when": ["hard_logic"]
           },
           {
-            "requires": {
-              "rule": {
-                "has": ["item_plane_gun", "item_plane_bombs"]
-              }
-            },
+            "requires": { "rule": { "has": ["item_plane_gun"] } },
+            "when": ["!hard_logic"]
+          },
+          {
+            "requires": { "rule": { "has": ["item_plane_bombs"] } },
             "when": ["!hard_logic"]
           }
         ]
@@ -229,6 +280,9 @@
       }
     },
     "level_boss_plane_mermaid": {
+      "access": {
+        "rules": [{ "requires": { "preset": "plane" } }]
+      },
       "locations": {
         "loc_level_boss_plane_mermaid": {},
         "loc_level_boss_plane_mermaid_topgrade": {},
@@ -238,6 +292,15 @@
       }
     },
     "level_boss_plane_robot": {
+      "access": {
+        "rules": [
+          { "requires": { "preset": "plane" } },
+          {
+            "requires": { "preset": "plane_parry" },
+            "when": ["rando_abilities"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_boss_plane_robot": {},
         "loc_level_boss_plane_robot_topgrade": {},
@@ -250,12 +313,10 @@
       "base": {
         "rules": [
           {
-            "requires": { "preset": "parry" },
-            "when": ["rando_abilities", "dlc_chalice_only"]
-          },
-          {
-            "requires": { "preset": "dash_and_parry" },
-            "when": ["rando_abilities", "!dlc_chalice_only"]
+            "requires": {
+              "rule": { "has": ["item_ability_parry", "item_ability_dash"] }
+            },
+            "when": ["rando_abilities"]
           }
         ]
       },
@@ -269,6 +330,16 @@
       }
     },
     "level_dlc_boss_oldman": {
+      "base": {
+        "rules": [
+          {
+            "requires": {
+              "and": [{ "preset": "dash" }, { "preset": "parry_or_psugar" }]
+            },
+            "when": ["rando_abilities"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_dlc_boss_oldman": {},
         "loc_level_dlc_boss_oldman_topgrade": {},
@@ -277,6 +348,13 @@
       }
     },
     "level_dlc_boss_rumrunners": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "duck_and_parry" }
+          }
+        ]
+      },
       "locations": {
         "loc_level_dlc_boss_rumrunners": {},
         "loc_level_dlc_boss_rumrunners_topgrade": {},
@@ -293,15 +371,65 @@
       }
     },
     "level_dlc_boss_airplane": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "duck_or_dash" },
+            "when": ["!dlc_chalice_only"]
+          },
+          {
+            "requires": { "preset": "duck_or_dash" },
+            "when": ["dlc_chalice_only", "hard_logic"]
+          },
+          {
+            "requires": {
+              "or": [
+                { "preset": "duck" },
+                {
+                  "and": [{ "preset": "dash" }, { "preset": "dlc_doublejump" }]
+                }
+              ]
+            },
+            "when": ["dlc_chalice_only", "!hard_logic"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_dlc_boss_airplane": {},
         "loc_level_dlc_boss_airplane_topgrade": {},
         "loc_level_dlc_boss_airplane_secret": {},
-        "loc_level_dlc_boss_airplane_dlc_chaliced": {},
+        "loc_level_dlc_boss_airplane_dlc_chaliced": {
+          "rules": [
+            {
+              "requires": { "preset": "dlc_cookie" }
+            },
+            {
+              "requires": { "preset": "duck_or_dash" },
+              "when": ["hard_logic"]
+            },
+            {
+              "requires": {
+                "or": [
+                  { "preset": "duck" },
+                  {
+                    "and": [
+                      { "preset": "dash" },
+                      { "preset": "dlc_doublejump" }
+                    ]
+                  }
+                ]
+              },
+              "when": ["!hard_logic"]
+            }
+          ]
+        },
         "loc_level_dlc_boss_airplane_event_dlc_chaliced": {}
       }
     },
     "level_dlc_boss_plane_cowboy": {
+      "access": {
+        "rules": [{ "requires": { "preset": "plane" } }]
+      },
       "locations": {
         "loc_level_dlc_boss_plane_cowboy": {},
         "loc_level_dlc_boss_plane_cowboy_topgrade": {},
@@ -310,6 +438,19 @@
       }
     },
     "level_dlc_boss_saltbaker": {
+      "access": {
+        "rules": [
+          { "requires": { "rule": { "has_selection": "dlc_ingredient_req" } } }
+        ]
+      },
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry" },
+            "when": ["rando_abilities"]
+          }
+        ]
+      },
       "locations": {
         "loc_level_dlc_boss_saltbaker": {},
         "loc_level_dlc_boss_saltbaker_topgrade": {},
@@ -374,45 +515,100 @@
       }
     },
     "level_rungun_forest": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "dash" }
+          }
+        ]
+      },
+      "inherit_default": "none",
       "locations": {
-        "loc_level_rungun_forest": {},
-        "loc_level_rungun_forest_agrade": {},
-        "loc_level_rungun_forest_pacifist": {},
+        "loc_level_rungun_forest": {
+          "inherit": "and"
+        },
+        "loc_level_rungun_forest_agrade": {
+          "inherit": "and"
+        },
+        "loc_level_rungun_forest_pacifist": {
+          "inherit": "and"
+        },
         "loc_level_rungun_forest_coin1": {},
         "loc_level_rungun_forest_coin2": {},
-        "loc_level_rungun_forest_coin3": {},
-        "loc_level_rungun_forest_coin4": {},
-        "loc_level_rungun_forest_coin5": {},
-        "loc_level_rungun_forest_dlc_chaliced": {},
-        "loc_level_rungun_forest_event_agrade": {},
-        "loc_level_rungun_forest_event_pacifist": {}
+        "loc_level_rungun_forest_coin3": {
+          "rules": [{ "requires": { "preset": "parry" } }]
+        },
+        "loc_level_rungun_forest_coin4": {
+          "rules": [{ "requires": { "preset": "dash" } }]
+        },
+        "loc_level_rungun_forest_coin5": {
+          "rules": [{ "requires": { "preset": "dash" } }]
+        },
+        "loc_level_rungun_forest_dlc_chaliced": {
+          "rules": [{ "requires": { "preset": "dlc_rungun_chaliced" } }],
+          "inherit": "and"
+        },
+        "loc_level_rungun_forest_event_agrade": {
+          "inherit": "and"
+        },
+        "loc_level_rungun_forest_event_pacifist": {
+          "inherit": "and"
+        }
       }
     },
     "level_rungun_tree": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "dash" }
+          }
+        ]
+      },
+      "inherit_default": "none",
       "locations": {
         "loc_level_rungun_tree": {},
         "loc_level_rungun_tree_agrade": {},
         "loc_level_rungun_tree_pacifist": {},
-        "loc_level_rungun_tree_coin1": {},
+        "loc_level_rungun_tree_coin1": {
+          "rules": [{ "requires": { "preset": "parry" } }]
+        },
         "loc_level_rungun_tree_coin2": {},
         "loc_level_rungun_tree_coin3": {},
-        "loc_level_rungun_tree_coin4": {},
-        "loc_level_rungun_tree_coin5": {},
+        "loc_level_rungun_tree_coin4": {
+          "rules": [{ "requires": { "preset": "dash" } }]
+        },
+        "loc_level_rungun_tree_coin5": {
+          "rules": [{ "requires": { "preset": "dash" } }]
+        },
         "loc_level_rungun_tree_dlc_chaliced": {},
         "loc_level_rungun_tree_event_agrade": {},
         "loc_level_rungun_tree_event_pacifist": {}
       }
     },
     "level_rungun_circus": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "parry_or_psugar" }
+          }
+        ]
+      },
+      "inherit_default": "none",
       "locations": {
         "loc_level_rungun_circus": {},
         "loc_level_rungun_circus_agrade": {},
         "loc_level_rungun_circus_pacifist": {},
         "loc_level_rungun_circus_coin1": {},
         "loc_level_rungun_circus_coin2": {},
-        "loc_level_rungun_circus_coin3": {},
-        "loc_level_rungun_circus_coin4": {},
-        "loc_level_rungun_circus_coin5": {},
+        "loc_level_rungun_circus_coin3": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
+        "loc_level_rungun_circus_coin4": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
+        "loc_level_rungun_circus_coin5": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
         "loc_level_rungun_circus_dlc_chaliced": {},
         "loc_level_rungun_circus_event_agrade": {},
         "loc_level_rungun_circus_event_pacifist": {}
@@ -427,117 +623,241 @@
           },
           {
             "requires": {
-              "preset": "parry_or_both_psugar_and_dash"
+              "or": [
+                { "preset": "parry" },
+                {
+                  "and": [
+                    { "rule": { "has": ["item_charm_psugar"] } },
+                    { "preset": "dash" }
+                  ]
+                }
+              ]
             },
             "when": ["rando_abilities", "!dlc_chalice_only"]
           }
         ]
       },
+      "inherit_default": "none",
       "locations": {
         "loc_level_rungun_funhouse": {},
         "loc_level_rungun_funhouse_agrade": {},
         "loc_level_rungun_funhouse_pacifist": {},
-        "loc_level_rungun_funhouse_coin1": {},
-        "loc_level_rungun_funhouse_coin2": {},
-        "loc_level_rungun_funhouse_coin3": {},
-        "loc_level_rungun_funhouse_coin4": {},
-        "loc_level_rungun_funhouse_coin5": {},
+        "loc_level_rungun_funhouse_coin1": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
+        "loc_level_rungun_funhouse_coin2": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
+        "loc_level_rungun_funhouse_coin3": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
+        "loc_level_rungun_funhouse_coin4": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
+        "loc_level_rungun_funhouse_coin5": {
+          "inherit": "none"
+        },
         "loc_level_rungun_funhouse_dlc_chaliced": {},
         "loc_level_rungun_funhouse_event_agrade": {},
         "loc_level_rungun_funhouse_event_pacifist": {}
       }
     },
     "level_rungun_harbour": {
+      "base": {
+        "rules": [{ "requires": { "preset": "dash_and_parry" } }]
+      },
+      "inherit_default": "none",
       "locations": {
         "loc_level_rungun_harbour": {},
         "loc_level_rungun_harbour_agrade": {},
         "loc_level_rungun_harbour_pacifist": {},
-        "loc_level_rungun_harbour_coin1": {},
+        "loc_level_rungun_harbour_coin1": {
+          "rules": [{ "requires": { "preset": "dash_parry_or_psugar" } }]
+        },
         "loc_level_rungun_harbour_coin2": {},
-        "loc_level_rungun_harbour_coin3": {},
+        "loc_level_rungun_harbour_coin3": {
+          "rules": [{ "requires": { "preset": "parry_or_psugar" } }]
+        },
         "loc_level_rungun_harbour_coin4": {},
-        "loc_level_rungun_harbour_coin5": {},
+        "loc_level_rungun_harbour_coin5": {
+          "inherit": "none",
+          "rules": [{ "requires": { "preset": "dash_and_parry" } }]
+        },
         "loc_level_rungun_harbour_dlc_chaliced": {},
         "loc_level_rungun_harbour_event_agrade": {},
         "loc_level_rungun_harbour_event_pacifist": {}
       }
     },
     "level_rungun_mountain": {
+      "base": {
+        "rules": [
+          {
+            "requires": { "preset": "dash" },
+            "when": ["!dlc_chalice"]
+          },
+          {
+            "requires": {
+              "or": [{ "preset": "dash" }, { "preset": "dlc_doublejump" }]
+            },
+            "when": ["dlc_chalice"]
+          }
+        ]
+      },
+      "inherit_default": "none",
       "locations": {
         "loc_level_rungun_mountain": {},
         "loc_level_rungun_mountain_agrade": {},
         "loc_level_rungun_mountain_pacifist": {},
         "loc_level_rungun_mountain_coin1": {},
-        "loc_level_rungun_mountain_coin2": {},
+        "loc_level_rungun_mountain_coin2": {
+          "rules": [
+            {
+              "requires": { "preset": "dash" },
+              "when": ["!dlc_chalice"]
+            },
+            {
+              "requires": {
+                "or": [{ "preset": "dash" }, { "preset": "dlc_doublejump" }]
+              },
+              "when": ["dlc_chalice"]
+            }
+          ]
+        },
         "loc_level_rungun_mountain_coin3": {},
         "loc_level_rungun_mountain_coin4": {},
-        "loc_level_rungun_mountain_coin5": {},
+        "loc_level_rungun_mountain_coin5": {
+          "rules": [
+            {
+              "requires": { "preset": "dash" },
+              "when": ["!dlc_chalice"]
+            },
+            {
+              "requires": {
+                "or": [{ "preset": "dash" }, { "preset": "dlc_doublejump" }]
+              },
+              "when": ["dlc_chalice"]
+            }
+          ]
+        },
         "loc_level_rungun_mountain_dlc_chaliced": {},
         "loc_level_rungun_mountain_event_agrade": {},
         "loc_level_rungun_mountain_event_pacifist": {}
       }
     },
     "level_mausoleum_i": {
-      "locations": {
-        "loc_level_mausoleum_i": {}
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
       }
     },
     "level_mausoleum_ii": {
-      "locations": {
-        "loc_level_mausoleum_ii": {}
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
       }
     },
     "level_mausoleum_iii": {
-      "locations": {
-        "loc_level_mausoleum_iii": {}
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
       }
     },
     "level_dlc_chesscastle_pawn": {
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
+      },
       "locations": {
-        "loc_level_dlc_chesscastle_pawn": {},
         "loc_level_dlc_chesscastle_pawn_dlc_chaliced": {}
       }
     },
     "level_dlc_chesscastle_knight": {
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
+      },
       "locations": {
-        "loc_level_dlc_chesscastle_knight": {},
         "loc_level_dlc_chesscastle_knight_dlc_chaliced": {}
       }
     },
     "level_dlc_chesscastle_bishop": {
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
+      },
       "locations": {
-        "loc_level_dlc_chesscastle_bishop": {},
         "loc_level_dlc_chesscastle_bishop_dlc_chaliced": {}
       }
     },
     "level_dlc_chesscastle_rook": {
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
+      },
       "locations": {
-        "loc_level_dlc_chesscastle_rook": {},
         "loc_level_dlc_chesscastle_rook_dlc_chaliced": {}
       }
     },
     "level_dlc_chesscastle_queen": {
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
+      },
       "locations": {
-        "loc_level_dlc_chesscastle_queen": {},
         "loc_level_dlc_chesscastle_queen_dlc_chaliced": {}
       }
     },
     "level_dlc_chesscastle_run": {
+      "access": {
+        "rules": [{ "requires": { "preset": "parry" } }]
+      },
       "locations": {
-        "loc_level_dlc_chesscastle_run": {},
         "loc_level_dlc_chesscastle_run_dlc_chaliced": {}
       }
     },
     "level_tutorial": {
-      "locations": {
-        "loc_level_tutorial": {},
-        "loc_level_tutorial_coin": {}
+      "access": {
+        "rules": [{ "requires": { "preset": "duck_dash_and_parry" } }]
       }
     },
     "level_dlc_tutorial": {
+      "access": {
+        "rules": [
+          {
+            "requires": { "preset": "dlc_cookie" }
+          }
+        ]
+      },
       "locations": {
-        "loc_level_dlc_tutorial": {},
-        "loc_level_dlc_tutorial_coin": {}
+        "loc_level_dlc_tutorial_coin": {
+          "rules": [
+            {
+              "requires": {
+                "and": [
+                  { "preset": "dash_and_parry" },
+                  { "preset": "dlc_doublejump" }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "level_dlc_graveyard": {
+      "access": {
+        "rules": [
+          {
+            "requires": {
+              "rule": { "has": ["item_charm_dlc_broken_relic"] }
+            }
+          }
+        ]
+      },
+      "locations": {
+        "loc_level_dlc_graveyard": {
+          "rules": [
+            {
+              "requires": {
+                "and": [
+                  { "preset": "dash_and_parry" },
+                  { "preset": "dlc_doublejump" }
+                ]
+              }
+            }
+          ]
+        }
       }
     }
   }

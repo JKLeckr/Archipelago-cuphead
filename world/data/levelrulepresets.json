@@ -50,14 +50,6 @@
         }
       ]
     },
-    "psugar": {
-      "rules": [
-        {
-          "requires": { "rule": { "has": ["item_charm_psugar"] } },
-          "when": ["rando_abilities"]
-        }
-      ]
-    },
     "plane_parry": {
       "rules": [
         {
@@ -108,7 +100,15 @@
               "has_any": true
             }
           },
-          "when": ["rando_abilities"]
+          "when": ["rando_abilities", "!dlc_chalice_only"]
+        },
+        {
+          "requires": {
+            "rule": {
+              "has": ["item_ability_parry", "item_ability_dash"]
+            }
+          },
+          "when": ["rando_abilities", "dlc_chalice_only"]
         }
       ]
     },
@@ -121,7 +121,15 @@
               "has_any": true
             }
           },
-          "when": ["rando_abilities"]
+          "when": ["rando_abilities", "!dlc_chalice_only"]
+        },
+        {
+          "requires": {
+            "rule": {
+              "has": ["item_ability_dash"]
+            }
+          },
+          "when": ["rando_abilities", "dlc_chalice_only"]
         }
       ]
     },
@@ -132,8 +140,7 @@
             "rule": {
               "has": ["item_ability_dash", "item_ability_parry"]
             }
-          },
-          "when": ["rando_abilities"]
+          }
         }
       ]
     },
@@ -150,7 +157,15 @@
               "has_any": true
             }
           },
-          "when": ["rando_abilities"]
+          "when": ["rando_abilities", "!dlc_chalice_only"]
+        },
+        {
+          "requires": {
+            "rule": {
+              "has": ["item_ability_dash"]
+            }
+          },
+          "when": ["rando_abilities", "dlc_chalice_only"]
         }
       ]
     },
@@ -163,6 +178,14 @@
             }
           },
           "when": ["rando_abilities"]
+        },
+        {
+          "requires": {
+            "rule": {
+              "has": ["item_ability_dash"]
+            }
+          },
+          "when": ["rando_abilities", "dlc_chalice_only"]
         }
       ]
     },
@@ -245,15 +268,29 @@
     "dlc_cookie": {
       "rules": [
         {
+          "requires": false,
+          "when": ["!dlc_chalice"]
+        },
+        {
           "requires": { "rule": { "has": ["item_charm_dlc_cookie"] } },
           "when": ["dlc_cookie"]
         }
       ]
     },
     "dlc_doublejump": {
+      "requires_presets": ["dlc_cookie"],
       "rules": [
         {
-          "requires": { "rule": { "has": ["item_ability_dlc_cdoublejump"] } },
+          "requires": false,
+          "when": ["!dlc_chalice"]
+        },
+        {
+          "requires": {
+            "and": [
+              { "preset": "dlc_cookie" },
+              { "rule": { "has": ["item_ability_dlc_cdoublejump"] } }
+            ]
+          },
           "when": ["rando_abilities"]
         }
       ]
