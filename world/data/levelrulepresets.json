@@ -256,14 +256,8 @@
       ]
     },
     "rungun_topgrade": {
-      "requires_presets": ["parry", "dash"],
-      "rules": [
-        { "requires": { "preset": "parry" } },
-        {
-          "requires": { "preset": "dash" },
-          "when": ["dlc_chalice_only"]
-        }
-      ]
+      "requires_presets": ["parry"],
+      "rules": [{ "requires": { "preset": "parry" } }]
     },
     "dlc_cookie": {
       "rules": [
@@ -336,12 +330,11 @@
       ]
     },
     "dlc_boss_chaliced_parry": {
-      "$comment": "This is the assumption parry is already required in a different rule",
-      "requires_presets": ["dlc_boss_chaliced", "dash"],
+      "requires_presets": ["dlc_boss_chaliced", "dash_and_parry"],
       "rules": [
         { "requires": { "preset": "dlc_boss_chaliced" } },
         {
-          "requires": { "preset": "dash" },
+          "requires": { "preset": "dash_and_parry" },
           "when": ["!dlc_chaliced_grade_required"]
         }
       ]
