@@ -1,6 +1,9 @@
 .idea
 .vscode
 
+/output/
+/tools/output/
+
 # Cursor
 .cursor/
 .cursorrules

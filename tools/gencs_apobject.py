@@ -1,0 +1,194 @@
+#!/use/bin/env python3
+
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
+"""
+gencs_apobject.py - Generate an APObject.cs file that contains all the location
+                    and item ids used by the client.
+"""
+
+import argparse
+import importlib.util
+import os
+import sys
+import typing
+
+if typing.TYPE_CHECKING:
+    from ..world.items.itembase import ItemData
+    from ..world.locations.locationbase import LocationData
+
+THIS_DIR = os.path.dirname(__file__)
+ROOT_DIR = os.path.abspath(os.path.join(THIS_DIR, "..", "..", ".."))
+
+WORLD_MOD = "world"
+LOCATIONS_MOD = ".locations"
+LOCATIONS_MOD_PATH = f"{WORLD_MOD}{LOCATIONS_MOD}"
+LOCATIONBASE_MOD = ".locationbase"
+LOCATIONBASE_MOD_PATH = f"{LOCATIONS_MOD_PATH}{LOCATIONBASE_MOD}"
+LOCATIONDEFS_MOD = ".locationdefs"
+LOCATIONDEFS_MOD_PATH = f"{LOCATIONS_MOD_PATH}{LOCATIONDEFS_MOD}"
+ITEMS_MOD = ".items"
+ITEMS_MOD_PATH = f"{WORLD_MOD}{ITEMS_MOD}"
+ITEMBASE_MOD = ".itembase"
+ITEMBASE_MOD_PATH = f"{ITEMS_MOD_PATH}{ITEMBASE_MOD}"
+ITEMDEFS_MOD = ".itemdefs"
+ITEMDEFS_MOD_PATH = f"{ITEMS_MOD_PATH}{ITEMDEFS_MOD}"
+NAMES_MOD = ".names"
+NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
+ITEM_NAMES_MOD = ".itemnames"
+ITEM_NAMES_MOD_PATH = f"{NAMES_MOD_PATH}{ITEM_NAMES_MOD}"
+LOCATION_NAMES_MOD = ".locationnames"
+LOCATION_NAMES_MOD_PATH = f"{NAMES_MOD_PATH}{LOCATION_NAMES_MOD}"
+
+WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
+OUTPUT_DIR = os.path.join(THIS_DIR, "output")
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "APObject.cs")
+
+def main():
+    _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
+        " This directory must be the Archipelago root directory!"
+        f" Files will be written to '{OUTPUT_FILE}'."
+    )
+
+    parser = argparse.ArgumentParser(
+        description="Generate an APObject.cs file that contains all the location and item ids used by the client."
+    )
+    parser.add_argument(
+        "--yes",
+        help=f"Accept {_fate_desc}",
+        action="store_true"
+    )
+
+    args = parser.parse_args()
+
+    if not args.yes:
+        print(f"Use --yes to accept {_fate_desc}")
+        exit(0)
+
+    sys.path.insert(0, ROOT_DIR)
+
+    _wspec = importlib.util.spec_from_file_location(WORLD_MOD, WORLD_MOD_PATH)
+    _world = _wspec.loader.load_module(WORLD_MOD) if _wspec and _wspec.loader else None
+
+    _ispec = importlib.util.find_spec(ITEMS_MOD, package=WORLD_MOD)
+    _items = _ispec.loader.load_module(ITEMS_MOD_PATH) if _ispec and _ispec.loader else None
+    _ibspec = importlib.util.find_spec(ITEMBASE_MOD, package=ITEMS_MOD_PATH)
+    _itembase = _ibspec.loader.load_module(ITEMBASE_MOD_PATH) if _ibspec and _ibspec.loader else None
+    _idspec = importlib.util.find_spec(ITEMDEFS_MOD, package=ITEMS_MOD_PATH)
+    _itemdefs = _idspec.loader.load_module(ITEMDEFS_MOD_PATH) if _idspec and _idspec.loader else None
+
+    _lspec = importlib.util.find_spec(LOCATIONS_MOD, package=WORLD_MOD)
+    _locations = _lspec.loader.load_module(LOCATIONS_MOD_PATH) if _lspec and _lspec.loader else None
+    _lbspec = importlib.util.find_spec(LOCATIONBASE_MOD, package=LOCATIONS_MOD_PATH)
+    _locationbase = _lbspec.loader.load_module(LOCATIONBASE_MOD_PATH) if _lbspec and _lbspec.loader else None
+    _ldspec = importlib.util.find_spec(LOCATIONDEFS_MOD, package=LOCATIONS_MOD_PATH)
+    _locationdefs = _ldspec.loader.load_module(LOCATIONDEFS_MOD_PATH) if _ldspec and _ldspec.loader else None
+
+    _nspec = importlib.util.find_spec(NAMES_MOD, package=WORLD_MOD)
+    _names = _nspec.loader.load_module(NAMES_MOD_PATH) if _nspec and _nspec.loader else None
+    _inspec = importlib.util.find_spec(ITEM_NAMES_MOD, package=NAMES_MOD_PATH)
+    _inames = _inspec.loader.load_module(ITEM_NAMES_MOD_PATH) if _inspec and _inspec.loader else None
+    _lnspec = importlib.util.find_spec(LOCATION_NAMES_MOD, package=NAMES_MOD_PATH)
+    _lnames = _lnspec.loader.load_module(LOCATION_NAMES_MOD_PATH) if _lnspec and _lnspec.loader else None
+
+    if (not _itembase or not _locationbase or
+        not _itemdefs or not _locationdefs or
+        not _inames or not _lnames
+    ):
+        raise ImportError("Could not import necessary modules.")
+
+    idefs = _itemdefs
+    ldefs = _locationdefs
+    itemnames = _inames
+    locationnames = _lnames
+
+    location_attrs_dir = [x for x in dir(locationnames) if not x.startswith("_")]
+    location_names_to_attrs = {getattr(locationnames,x): x for x in location_attrs_dir}
+
+    item_attrs_dir = [x for x in dir(itemnames) if not x.startswith("_") and not x=="LocationNames"]
+    item_names_to_attrs = {getattr(itemnames,x): x for x in item_attrs_dir}
+
+    item_var_dict: dict[str,tuple[str,ItemData]] = {
+        item_names_to_attrs[name]: (name,data) for name,data in idefs.items_all.items() if data.id
+    }
+    location_var_dict: dict[str,tuple[str,LocationData]] = {
+        location_names_to_attrs[name]: (name,data) for name,data in ldefs.locations_all.items() if data.id
+    }
+
+    def ind(i: int = 1) -> str: return "    "*i
+    res = [
+        "/// Generated by GenerateCS_APObject",
+        "",
+        "using System.Collections.Generic;",
+        "",
+        "namespace CupheadArchipelago.AP {",
+        ind(1)+"public abstract class APObject {",
+        ind(2)+"public readonly long id;",
+        "",
+        ind(2)+"public APObject(long id) { this.id = id; }",
+        "",
+        ind(2)+'public override string ToString() { return $"APObject {id}"; }',
+        "",
+        ind(2)+"public static implicit operator long(APObject a) => a.id;",
+        ind(1)+"}",
+        "",
+        ind(1)+"public class APItem : APObject {",
+        ind(2)+"private static readonly Dictionary<long,APItem> id_map = new();",
+        ind(2)+"public APItem(long id) : base(id) {}",
+        ind(2)+"private APItem(long id, bool register) : base(id) { if (register) id_map.Add(id, this); }",
+        "",
+    ] + [
+        ind(2)+f"public static readonly APItem {var.removeprefix('item_')} = new({data[1].id}, true);"
+        for var,data in sorted(item_var_dict.items(), key=lambda item: item[1][1])
+    ] + [
+        "",
+        ind(2)+"public static void Register(APItem item) => id_map.Add(item.id, item);",
+        ind(2)+"public static APItem FromId(long id) => id_map[id];",
+        ind(2)+"public static bool IdExists(long id) => id_map.ContainsKey(id);",
+        ind(2)+"public static IEnumerable<long> GetAllItemIds() => id_map.Keys;",
+        ind(2)+"public static IEnumerable<APItem> GetAllItems() => id_map.Values;",
+        "",
+        ind(2)+'public override string ToString() { return $"APItem {id}"; }',
+        "",
+        ind(2)+"public static explicit operator APItem(long a) {",
+        ind(3)+"if (IdExists(a)) return FromId(a);",
+        ind(3)+"else return new(a);",
+        ind(2)+"}",
+        ind(1)+"}",
+        "",
+        ind(1)+"public class APLocation : APObject {",
+        ind(2)+"private static readonly Dictionary<long,APLocation> id_map = new();",
+        ind(2)+"public APLocation(long id) : base(id) {}",
+        ind(2)+"public APLocation(long id, bool register) : base(id) { if (register) id_map.Add(id, this); }",
+        ""
+    ] + [
+        ind(2)+f"public static readonly APLocation {var.removeprefix('loc_')} = new({data[1].id}, true);"
+        for var,data in sorted(location_var_dict.items(), key=lambda loc: loc[1][1])
+    ] + [
+        "",
+        ind(2)+"public static void Register(APLocation loc) => id_map.Add(loc.id, loc);",
+        ind(2)+"public static APLocation FromId(long id) => id_map[id];",
+        ind(2)+"public static bool IdExists(long id) => id_map.ContainsKey(id);",
+        ind(2)+"public static IEnumerable<long> GetAllLocationIds() => id_map.Keys;",
+        ind(2)+"public static IEnumerable<APLocation> GetAllLocations() => id_map.Values;",
+        "",
+        ind(2)+'public override string ToString() { return $"APLocation {id}"; }',
+        "",
+        ind(2)+"public static explicit operator APLocation(long a) {",
+        ind(3)+"if (IdExists(a)) return FromId(a);",
+        ind(3)+"else return new(a);",
+        ind(2)+"}",
+        ind(1)+"}",
+        "}",
+        "",
+    ]
+
+    if not os.path.isdir(OUTPUT_DIR):
+        os.mkdir(OUTPUT_DIR, mode=0o755)
+
+    with open(OUTPUT_FILE, "w") as f:
+        [f.write(line + "\n") for line in res]
+
+if __name__ == "__main__":
+    main()

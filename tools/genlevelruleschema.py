@@ -3,6 +3,10 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+"""
+genlevelruleschema.py - generate levelrule json schemas with populated objects.
+"""
+
 import argparse
 import importlib.util
 import json

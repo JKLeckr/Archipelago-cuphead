@@ -3,6 +3,10 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+"""
+checklevelrulesjson.py - check levelrule and preset json files against the schemas.
+"""
+
 import argparse
 import importlib.util
 import json
