@@ -13,7 +13,6 @@ from .. import levels
 from ..levels import leveldefs as ldef
 from ..locations import CupheadLocation
 from ..names import locationnames
-from ..rules import rulebase as rb
 from . import regiondefs as rd
 from .regionbase import DefType, Target
 from .regiondefs import RegionData, RegionRule
@@ -102,18 +101,10 @@ def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
     return a
 
 def connect_target(world: CupheadWorld, region_name: str, target: Target, locset: set[str] | None = None):
-    wconfig = world.wconfig
     multiworld = world.multiworld
     player = world.player
-    if target.tgt_type == DefType.LEVEL:
-        _ruleb = target.rule
-        _level = levels.get_level(world, target.name)
-        _rulea = _level.rule(wconfig) if _level.rule else rb.rrule_none()
-    else:
-        _ruleb = None
-        _rulea = target.rule
     _target_name = target.name
-    _rule = get_rule_def(_rulea, _ruleb) if _rulea else None
+    _rule = target.rule
     src = multiworld.get_region(region_name, player)
     tgt = multiworld.get_region(_target_name, player)
     name = f"{region_name} -> {_target_name}"

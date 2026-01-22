@@ -436,19 +436,25 @@ class LevelRuleData:
         data.unload_data("levelruledefs")
 
     @classmethod
-    def load_data(cls):
+    def load_data(cls, *, debug: bool = False):
         if cls._data:
             raise Warning("levelrule data is already loaded. Reloading.")
+        if debug:
+            print("Loading levelrule data...")
         cls._load_levelrule_data()
+        if debug:
+            print("levelrule data loaded")
 
     @classmethod
-    def get_data(cls) -> LevelRules:
+    def get_data(cls, *, debug: bool = False) -> LevelRules:
         if not cls._data:
+            if debug:
+                print("Loading levelrule data...")
             cls._load_levelrule_data()
+            if debug:
+                print("levelrule data loaded")
         if cls._data is not None:
             return cls._data
         raise ValueError("Could not load levelrule data")
 
-#print("Loading levelrule data...")
 #LevelRuleData.load_data()
-#print("levelrule data loaded")

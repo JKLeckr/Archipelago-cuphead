@@ -9,12 +9,10 @@ from dataclasses import dataclass
 from enum import IntEnum
 
 from ..deps import Dep
-from ..rulebase import RegionRule # TODO: Remove
 
 if typing.TYPE_CHECKING:
     from ...wconf import WorldConfig
 
-LevelRule = Callable[["WorldConfig"], RegionRule] # TODO: Remove
 LRSelector = Callable[["WorldConfig"], Mapping[str, int]]
 
 ### Base intermediary representation data classes

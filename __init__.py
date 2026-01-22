@@ -18,6 +18,7 @@ from .world.enums import WeaponMode
 from .world.items import itemcreate, itemgroups, weapons
 from .world.items import itemdefs as idef
 from .world.items.itembase import ItemData
+from .world.levels.levelbase import LevelData
 from .world.levels.levelids import level_ids
 from .world.locations import locationdefs as ld
 from .world.locations.locationbase import LocationData
@@ -81,6 +82,7 @@ class CupheadWorld(World):
 
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
+    active_levels: dict[str, LevelData]
 
     level_map: dict[int, int]
 

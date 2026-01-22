@@ -32,7 +32,6 @@ def setup_levels(
         levels[lev] = LevelData(
             data.world_location,
             scrub_list(data.locations, active_locations.keys(), _debug_scrub),
-            data.rule
         )
     levels.update(ldef.level_mausoleum)
 
@@ -41,7 +40,6 @@ def setup_levels(
             levels[lev] = LevelData(
                 data.world_location,
                 scrub_list(data.locations, active_locations.keys(), _debug_scrub),
-                data.rule
             )
         levels.update(ldef.level_dlc_chesscastle_boss)
         levels.update(ldef.level_dlc_special)

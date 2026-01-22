@@ -41,8 +41,8 @@ class Target:
     def __str__(self) -> str:
         return self.name
 class LevelTarget(Target):
-    def __init__(self, name: str, add_rule: RegionRule | None = None, depends: Dep | None = None):
-        super().__init__(name, add_rule, depends, DefType.LEVEL)
+    def __init__(self, name: str, rule: RegionRule | None = None, depends: Dep | None = None):
+        super().__init__(name, rule, depends, DefType.LEVEL)
 class RegionData:
     name: str
     locations: list[str] | None
