@@ -117,6 +117,7 @@ class LocationDef(RuleContainer):
 class LevelDef:
     source_path: str
     access: RuleContainer | None
+    exit_location: str | None
     base: RuleContainer | None
     locations: dict[str, LocationDef]
 

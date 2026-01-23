@@ -142,7 +142,7 @@ def main():
         ]
 
         base["properties"]["levels"]["propertyNames"]["enum"] = level_names
-        base["$defs"]["level"]["properties"]["locations"]["propertyNames"]["enum"] = location_names
+        base["$defs"]["apLocRef"]["enum"] = location_names
         base["$defs"]["apItemRef"]["enum"] = item_names
 
     presets_base["properties"]["$comment"]["$ref"] = f"{GEN_RULES_SCHEMA_NAME}#/$defs/comment"

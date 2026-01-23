@@ -131,7 +131,15 @@ def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
         set_rule(entrance, rule)
+def set_region_exit_rules(world: CupheadWorld, region_name: str, rule: Rule):
+    region = get_region(world, region_name)
+    for entrance in region.exits:
+        set_rule(entrance, rule)
 def add_region_rule(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
     region = get_region(world, region_name)
     for entrance in region.entrances:
+        add_rule(entrance, rule, "and" if combine_and else "or")
+def add_region_exit_rule(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
+    region = get_region(world, region_name)
+    for entrance in region.exits:
         add_rule(entrance, rule, "and" if combine_and else "or")

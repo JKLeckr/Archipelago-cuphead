@@ -28,6 +28,10 @@
       "uniqueItems": true
     },
 
+    "apLocRef": {
+      "type": "string"
+    },
+
     "apItemRef": {
       "type": "string"
     },
@@ -178,11 +182,30 @@
       "items": { "$ref": "#/$defs/ruleFragment" }
     },
 
+    "ruleListExt": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/ruleFragment" },
+          { "$ref": "#/$defs/fromExpr" }
+        ]
+      }
+    },
+
     "ruleContainer": {
       "type": "object",
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
         "rules": { "$ref": "#/$defs/ruleList" }
+      },
+      "additionalProperties": false
+    },
+
+    "ruleContainerExt": {
+      "type": "object",
+      "properties": {
+        "$comment": { "$ref": "#/$defs/comment" },
+        "rules": { "$ref": "#/$defs/ruleListExt" }
       },
       "additionalProperties": false
     },
@@ -196,15 +219,7 @@
       "type": "object",
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
-        "rules": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              { "$ref": "#/$defs/ruleFragment" },
-              { "$ref": "#/$defs/fromExpr" }
-            ]
-          }
-        },
+        "rules": { "$ref": "#/$defs/ruleListExt" },
         "inherit": { "$ref": "#/$defs/inheritType" }
       },
       "additionalProperties": false
@@ -214,13 +229,14 @@
       "type": "object",
       "properties": {
         "$comment": { "$ref": "#/$defs/comment" },
-        "access": { "$ref": "#/$defs/ruleContainer" },
-        "base": { "$ref": "#/$defs/ruleContainer" },
-        "inherit_default": { "$ref": "#/$defs/inheritType" },
         "rule_defs": { "$ref": "#/$defs/ruleDefs" },
+        "access": { "$ref": "#/$defs/ruleContainerExt" },
+        "base": { "$ref": "#/$defs/ruleContainerExt" },
+        "exit_location": { "$ref": "#/$defs/apLocRef" },
+        "inherit_default": { "$ref": "#/$defs/inheritType" },
         "locations": {
           "type": "object",
-          "propertyNames": { "type": "string" },
+          "propertyNames": { "$ref": "#/$defs/apLocRef" },
           "additionalProperties": { "$ref": "#/$defs/location" }
         }
       },

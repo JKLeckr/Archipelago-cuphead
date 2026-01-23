@@ -197,8 +197,7 @@ def lint(data: Any, known_selectors: set[str], known_deps: set[str]):
                 known_rule_defs=local_rule_defs
             )
 
-def fix_ref_str(schema: Any) -> None:
-    prefix = "levelrules.schema.json"
+def fix_ref_str(schema: Any, prefix: str) -> None:
     pcomment = schema["properties"]["$comment"]
     ppresetscomment = schema["$defs"]["preset"]["properties"]["$comment"]
     ppresetsrules = schema["$defs"]["preset"]["properties"]["rules"]
@@ -275,6 +274,8 @@ def main():
         print(f"Schema file '{args.presets_schema}' does not exist!")
         exit(1)
 
+    schema_name = os.path.basename(args.schema)
+
     lrjson = json.load(open(args.file, "r", encoding="utf-8"))
     lrpjson = json.load(open(args.presets_file, "r", encoding="utf-8"))
     schema = json.load(open(args.schema, "r", encoding="utf-8"))
@@ -283,7 +284,7 @@ def main():
     # Mash
     schema["properties"]["presets"] = pschema["properties"]["presets"]
     schema["$defs"]["preset"] = pschema["$defs"]["preset"]
-    fix_ref_str(schema)
+    fix_ref_str(schema, schema_name)
 
     lrjson["presets"] = lrpjson["presets"]
 

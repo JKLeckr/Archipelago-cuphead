@@ -240,8 +240,13 @@ class LevelRuleData:
         return res
 
     @staticmethod
-    def _compile_rule_container(json_obj: dict[str, Any], *, src: str) -> RuleContainer:
-        rules = __class__._build_rules(json_obj, src=src)
+    def _compile_rule_container(
+        json_obj: dict[str, Any],
+        *,
+        src: str,
+        rule_defs: dict[str, RuleContainer] | None = None
+    ) -> RuleContainer:
+        rules = __class__._build_rules(json_obj, src=src, rule_defs=rule_defs)
         return RuleContainer(src, rules)
 
     @staticmethod
@@ -289,14 +294,24 @@ class LevelRuleData:
 
     @staticmethod
     def _compile_level(json_obj: dict[str, Any], *, src: str) -> LevelDef:
+        rule_defs = (
+            __class__._populate_ruledefs(json_obj, src=src)
+            if "rule_defs" in json_obj
+            else None
+        )
+
         access = (
-            __class__._compile_rule_container(json_obj["access"], src=f"{src}.access")
+            __class__._compile_rule_container(
+                json_obj["access"], src=f"{src}.access", rule_defs=rule_defs
+            )
             if "access" in json_obj
             else None
         )
 
         base = (
-            __class__._compile_rule_container(json_obj["base"], src=f"{src}.base")
+            __class__._compile_rule_container(
+                json_obj["base"], src=f"{src}.base", rule_defs=rule_defs
+            )
             if "base" in json_obj
             else None
         )
@@ -304,12 +319,6 @@ class LevelRuleData:
         inherit_default = __class__._parse_inherit_mode(
             json_obj.get("inherit_default", "and"), # and is the default
             src=f"{src}.inherit_default"
-        )
-
-        rule_defs = (
-            __class__._populate_ruledefs(json_obj, src=src)
-            if "rule_defs" in json_obj
-            else None
         )
 
         locations: dict[str, LocationDef] = {}
@@ -328,7 +337,13 @@ class LevelRuleData:
                 )
             )
 
-        return LevelDef(src, access, base, locations)
+        exit_location: str | None = json_obj.get("exit_location")
+        if exit_location and exit_location not in locations:
+            raise ValueError(
+                f"For {src}.exit_location: '{exit_location}' is not a location in this level!"
+            )
+
+        return LevelDef(src, access, exit_location, base, locations)
 
     @classmethod
     def _compile_preset(cls, json_obj: dict[str, Any], *, name: str, src: str) -> RuleContainer:

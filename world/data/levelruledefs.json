@@ -17,7 +17,8 @@
         "loc_level_boss_veggies_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_veggies"
     },
     "level_boss_slime": {
       "base": {
@@ -41,7 +42,8 @@
         "loc_level_boss_slime_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_slime"
     },
     "level_boss_frogs": {
       "base": {
@@ -65,7 +67,8 @@
         "loc_level_boss_frogs_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_frogs"
     },
     "level_boss_flower": {
       "locations": {
@@ -82,7 +85,8 @@
         "loc_level_boss_flower_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_flower"
     },
     "level_boss_baroness": {
       "base": {
@@ -106,7 +110,8 @@
         "loc_level_boss_baroness_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_baroness"
     },
     "level_boss_clown": {
       "base": {
@@ -130,7 +135,8 @@
         "loc_level_boss_clown_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_clown"
     },
     "level_boss_dragon": {
       "locations": {
@@ -147,7 +153,8 @@
         "loc_level_boss_dragon_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_dragon"
     },
     "level_boss_bee": {
       "locations": {
@@ -164,7 +171,8 @@
         "loc_level_boss_bee_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_bee"
     },
     "level_boss_pirate": {
       "base": {
@@ -198,7 +206,8 @@
         "loc_level_boss_pirate_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_pirate"
     },
     "level_boss_mouse": {
       "base": {
@@ -228,7 +237,8 @@
         "loc_level_boss_mouse_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_mouse"
     },
     "level_boss_sallystageplay": {
       "base": {
@@ -257,7 +267,8 @@
         "loc_level_boss_sallystageplay_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_sallystageplay"
     },
     "level_boss_train": {
       "base": {
@@ -285,7 +296,8 @@
         "loc_level_boss_train_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_train"
     },
     "level_boss_kingdice": {
       "access": {
@@ -322,7 +334,8 @@
         "loc_level_boss_kingdice_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_kingdice"
     },
     "level_boss_plane_blimp": {
       "access": {
@@ -342,7 +355,8 @@
         "loc_level_boss_plane_blimp_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_plane_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_plane_blimp"
     },
     "level_boss_plane_genie": {
       "access": {
@@ -369,7 +383,8 @@
         "loc_level_boss_plane_genie_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_plane_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_plane_genie"
     },
     "level_boss_plane_bird": {
       "access": {
@@ -405,7 +420,8 @@
         "loc_level_boss_plane_bird_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_plane_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_plane_bird"
     },
     "level_boss_plane_mermaid": {
       "access": {
@@ -425,7 +441,8 @@
         "loc_level_boss_plane_mermaid_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_plane_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_plane_mermaid"
     },
     "level_boss_plane_robot": {
       "access": {
@@ -451,7 +468,8 @@
         "loc_level_boss_plane_robot_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_plane_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_boss_plane_robot"
     },
     "level_boss_devil": {
       "base": {
@@ -505,7 +523,8 @@
         "loc_level_dlc_boss_oldman_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_dlc_boss_oldman"
     },
     "level_dlc_boss_rumrunners": {
       "base": {
@@ -526,7 +545,8 @@
         "loc_level_dlc_boss_rumrunners_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_chaliced_parry" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_dlc_boss_rumrunners"
     },
     "level_dlc_boss_snowcult": {
       "base": {
@@ -559,7 +579,8 @@
         "loc_level_dlc_boss_snowcult_event_dlc_chaliced": {
           "rules": [{ "from": "chaliced" }]
         }
-      }
+      },
+      "exit_location": "loc_level_dlc_boss_snowcult"
     },
     "level_dlc_boss_airplane": {
       "base": {
@@ -624,7 +645,8 @@
         "loc_level_dlc_boss_airplane_event_dlc_chaliced": {
           "rules": [{ "from": "chaliced" }]
         }
-      }
+      },
+      "exit_location": "loc_level_dlc_boss_airplane"
     },
     "level_dlc_boss_plane_cowboy": {
       "access": {
@@ -641,7 +663,8 @@
         "loc_level_dlc_boss_plane_cowboy_event_dlc_chaliced": {
           "rules": [{ "requires": { "preset": "dlc_boss_plane_chaliced" } }]
         }
-      }
+      },
+      "exit_location": "loc_level_dlc_boss_plane_cowboy"
     },
     "level_dlc_boss_saltbaker": {
       "access": {
@@ -820,7 +843,8 @@
         "loc_level_rungun_forest_event_pacifist": {
           "inherit": "and"
         }
-      }
+      },
+      "exit_location": "loc_level_rungun_forest"
     },
     "level_rungun_tree": {
       "base": {
@@ -864,7 +888,8 @@
         "loc_level_rungun_tree_event_pacifist": {
           "inherit": "and"
         }
-      }
+      },
+      "exit_location": "loc_level_rungun_tree"
     },
     "level_rungun_circus": {
       "base": {
@@ -917,7 +942,8 @@
         "loc_level_rungun_circus_event_pacifist": {
           "inherit": "and"
         }
-      }
+      },
+      "exit_location": "loc_level_rungun_circus"
     },
     "level_rungun_funhouse": {
       "base": {
@@ -980,7 +1006,8 @@
         "loc_level_rungun_funhouse_event_pacifist": {
           "inherit": "and"
         }
-      }
+      },
+      "exit_location": "loc_level_rungun_funhouse"
     },
     "level_rungun_harbour": {
       "base": {
@@ -1036,7 +1063,8 @@
         "loc_level_rungun_harbour_event_pacifist": {
           "inherit": "and"
         }
-      }
+      },
+      "exit_location": "loc_level_rungun_harbour"
     },
     "level_rungun_mountain": {
       "base": {
@@ -1093,7 +1121,8 @@
         "loc_level_rungun_mountain_event_pacifist": {
           "inherit": "and"
         }
-      }
+      },
+      "exit_location": "loc_level_rungun_mountain"
     },
     "level_mausoleum_i": {
       "access": {

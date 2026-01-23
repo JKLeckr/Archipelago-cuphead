@@ -127,17 +127,46 @@ class LevelRuleComp:
                     return rb.rrule_none()
         return self.compile_rule_expr(loc_rule) if loc_rule else rb.rrule_none()
 
+    def _compile_level_loc(self, rlname: str, ldef: lrb.LevelDef, locname: str, loc: lrb.LocationDef) -> None:
+        player = self._world.player
+        active_locations = self._world.active_locations
+
+        rlocname = namemap.get_location_name(locname)
+        if rlocname in active_locations:
+            _rule = rb.rrule_to_rule(self.compile_location(ldef, loc), player)
+            rb.add_loc_rule(
+                self._world,
+                rlocname,
+                _rule
+            )
+            if locname == ldef.exit_location:
+                rb.add_region_exit_rule(
+                    self._world,
+                    rlname,
+                    _rule
+                )
+        else:
+            if self._debug_on():
+                print(f"Skipping rules for {loc.source_path}")
+            if rlocname == ldef.exit_location:
+                raise Warning(
+                    f"{ldef.source_path}.exit_location: '{ldef.exit_location}' is skipped because location is inactive."
+                )
+
     def compile_levelrules(self) -> None:
         active_levels = self._world.active_levels
-        active_locations = self._world.active_locations
         player = self._world.player
+
         levelrule_data = LevelRuleData.get_data(debug=self._world.settings.is_debug_bit_on(64))
 
         for lname, ldef in levelrule_data.levels.items():
-            print(lname)
+            if self._debug_on():
+                print(lname)
             rlname = namemap.get_region_name(lname)
             #print(active_levels)
             if rlname in active_levels:
+                if ldef.exit_location and ldef.exit_location not in ldef.locations:
+                    raise ValueError(f"{ldef.source_path}.exit_location: '{ldef.exit_location}' is unknown.")
                 if ldef.access:
                     rb.add_region_rule(
                         self._world,
@@ -145,15 +174,7 @@ class LevelRuleComp:
                         rb.rrule_to_rule(self.compile_rule_container(ldef.access), player)
                     )
                 for locname, loc in ldef.locations.items():
-                    rlocname = namemap.get_location_name(locname)
-                    if rlocname in active_locations:
-                        rb.add_loc_rule(
-                            self._world,
-                            rlocname,
-                            rb.rrule_to_rule(self.compile_location(ldef, loc), player)
-                        )
-                    elif self._debug_on():
-                        print(f"Skipping rules for {loc.source_path}")
+                    self._compile_level_loc(rlname, ldef, locname, loc)
             elif self._debug_on():
                 print(f"Skipping rules for {ldef.source_path}")
 
