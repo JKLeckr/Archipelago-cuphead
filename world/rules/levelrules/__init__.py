@@ -11,4 +11,4 @@ if typing.TYPE_CHECKING:
     from .... import CupheadWorld
 
 def set_levelrules(world: CupheadWorld) -> None:
-    lrc.compile_levelrules(world)
+    lrc.LevelRuleComp(world).compile_levelrules()

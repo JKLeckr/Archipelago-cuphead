@@ -201,7 +201,7 @@ class LevelRuleData:
         elif isinstance(requires_json, dict): # type: ignore
             requires = __class__._compile_rule_expr(
                 requires_json,
-                src=f"${src}.requires"
+                src=f"{src}.requires"
             )
         else:
             raise ValueError(f"{src}.preset is an invalid type")

@@ -25,7 +25,7 @@ class RuleExpr:
 
 @dataclass(frozen=True)
 class RuleRef(RuleExpr):
-    item: RuleContainer | None
+    item: RuleContainer
     name: str
 
 @dataclass(frozen=True)
