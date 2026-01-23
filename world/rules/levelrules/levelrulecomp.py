@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import typing
 
+from ...names import namemap
 from .. import rulebase as rb
 from ..rulebase import RegionRule
 from . import levelrulebase as lrb
@@ -122,21 +123,25 @@ def compile_levelrules(world: CupheadWorld) -> None:
     levelrule_data = LevelRuleData.get_data(debug=world.settings.is_debug_bit_on(64))
 
     for lname, ldef in levelrule_data.levels.items():
-        if lname in active_levels:
+        print(lname)
+        rlname = namemap.get_region_name(lname)
+        #print(active_levels)
+        if rlname in active_levels:
             if ldef.access:
                 rb.add_region_rule(
                     world,
-                    lname,
+                    rlname,
                     rb.rrule_to_rule(compile_rule_container(wconf, ldef.access), player)
                 )
             for locname, loc in ldef.locations.items():
-                if locname in active_locations:
+                rlocname = namemap.get_location_name(locname)
+                if rlocname in active_locations:
                     rb.add_loc_rule(
                         world,
-                        locname,
+                        rlocname,
                         rb.rrule_to_rule(compile_location(wconf, ldef, loc), player)
                     )
                 elif world.settings.is_debug_bit_on(128):
-                    print(f"Skipping rule for {loc.source_path}")
+                    print(f"Skipping rules for {loc.source_path}")
         elif world.settings.is_debug_bit_on(128):
-            print(f"Skipping rule for {ldef.source_path}")
+            print(f"Skipping rules for {ldef.source_path}")

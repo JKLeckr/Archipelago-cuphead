@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import Any, ClassVar
 
 from ... import data
-from ...names import itemnames, locationnames
+from ...names import namemap
 from ..deps import DEPS
 from . import levelrulebase as lrb
 from .levelrulebase import (
@@ -54,21 +54,10 @@ class LevelRuleData:
                 raise ValueError(f"{src}{i_str} must be an integer!")
 
     @staticmethod
-    def _parse_item_names(fnames: list[str], src: str) -> list[str]:
-        res: list[str] = []
+    def _check_item_names(fnames: list[str], src: str):
         for fname in fnames:
-            iname = getattr(itemnames, fname)
-            if not iname or not isinstance(res, str):
-                raise ValueError(f"For {src}: {fname} is an unknown item")
-            res.append(iname)
-        return res
-
-    @staticmethod
-    def _parse_location_names(fname: str, src: str) -> str:
-        res = getattr(locationnames, fname)
-        if res and isinstance(res, str):
-            return res
-        raise ValueError(f"For {src}: {fname} is an unknown location")
+            if not namemap.item_name_exists(fname):
+                raise ValueError(f"For {src}: item '{fname}' is unknown!")
 
     @staticmethod
     def _compile_rule_combo(json_obj: dict[str, Any], *, src: str) -> RuleExpr:
@@ -98,8 +87,8 @@ class LevelRuleData:
             __class__._check_item_entries(
                 f"{src}.has", ls = has_list, i = has_count, i_str = " count"
             )
-            item_list = __class__._parse_item_names(has_list, src=f"{src}.has")
-            return ItemRuleHas(src, item_list, has_any, has_count)
+            __class__._check_item_names(has_list, src=f"{src}.has")
+            return ItemRuleHas(src, has_list, has_any, has_count)
         if "has_selection" in json_obj:
             has_any = bool(json_obj.get("has_any", False))
             return __class__._compile_itemrule_selector(
@@ -114,8 +103,8 @@ class LevelRuleData:
             __class__._check_item_entries(
                 f"{src}.has_from_list", ls = has_from_list, i = has_count, i_str = " count"
             )
-            item_hlist = __class__._parse_item_names(has_from_list, src=f"{src}.has_from_list")
-            return ItemRuleHasFromList(src, item_hlist, has_count, unique)
+            __class__._check_item_names(has_from_list, src=f"{src}.has_from_list")
+            return ItemRuleHasFromList(src, has_from_list, has_count, unique)
         if "has_group" in json_obj:
             has_group = json_obj["has_group"]
             has_count = json_obj.get("count", 1)
@@ -245,7 +234,7 @@ class LevelRuleData:
                 )
             else:
                 res.append(
-                    __class__._compile_rule_fragment(rule_json, src=f"{src}.rules['{i}']")
+                    __class__._compile_rule_fragment(rule_json, src=f"{src}.rules[{i}]")
                 )
 
         return res
@@ -328,7 +317,9 @@ class LevelRuleData:
         if not isinstance(locs_json, dict): # type: ignore
             raise ValueError(f"{src}.locations is an invalid json object!")
         for name, loc_json in locs_json.items():
-            locations[__class__._parse_location_names(name, src=f"{src}.locations")] = (
+            if not namemap.location_name_exists(name):
+                raise ValueError(f"For {src}.locations: location '{name}' is unknown!")
+            locations[name] = (
                 __class__._compile_lloc(
                     loc_json,
                     src=f"{src}.locations.{name}",

@@ -6,7 +6,7 @@ from __future__ import annotations
 from random import Random
 
 from ..enums import LevelShuffleMode
-from ..names import locationnames
+from ..names import regionnames
 from . import leveldefs as ldef
 from . import levelids as lmap
 
@@ -23,13 +23,13 @@ def get_level_shuffle_lists(
     if enabled:
         if separate_plane:
             level_lists += [
-                (list(ldef.level_boss_regular.keys()), [locationnames.level_boss_kingdice]),
+                (list(ldef.level_boss_regular.keys()), [regionnames.level_boss_kingdice]),
                 (list(ldef.level_boss_plane.keys()), []),
                 (list(ldef.level_rungun.keys()), []),
             ]
         else:
             level_lists += [
-                (list(ldef.level_boss.keys()), [locationnames.level_boss_kingdice]),
+                (list(ldef.level_boss.keys()), [regionnames.level_boss_kingdice]),
                 (list(ldef.level_rungun.keys()), []),
             ]
 
@@ -40,7 +40,7 @@ def get_level_shuffle_lists(
         level_lists[0][0].extend(ldef.level_dlc_boss_regular.keys() if separate_plane else ldef.level_dlc_boss.keys())
         if separate_plane:
             level_lists[1][0].extend(ldef.level_dlc_boss_plane.keys())
-        #level_lists.append((list(ldef.level_dlc_chesscastle_boss.keys()), [locationnames.level_dlc_chesscastle_run]))
+        #level_lists.append((list(ldef.level_dlc_chesscastle_boss.keys()), [regionnames.level_dlc_chesscastle_run]))
 
     return level_lists
 

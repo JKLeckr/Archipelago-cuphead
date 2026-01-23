@@ -2,6 +2,7 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from . import locationnames as ln
+from . import regionnames as rn
 
 ## Item Names
 
@@ -144,7 +145,7 @@ item_level_trap_screen = "Screen Trap"
 item_event_null = "null"
 item_event_boss_defeated = _item_event_ + "Boss Defeated"
 item_event_mausoleum = _item_event_ + "Mausoleum"
-item_event_isle1_secret_prereq = _item_event_ + ln.world_inkwell_1 + " Secret Coin Prerequisite"
+item_event_isle1_secret_prereq = _item_event_ + rn.world_inkwell_1 + " Secret Coin Prerequisite"
 item_event_isle2_shortcut = _item_event_ + ln.loc_event_isle2_shortcut + " Accessed"
 item_event_quest_4mel_4th = _item_event_ + ln.loc_event_quest_4mel_4th
 item_event_agrade = _item_event_ + "A Grade"

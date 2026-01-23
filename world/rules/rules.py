@@ -10,7 +10,7 @@ from worlds.generic.Rules import forbid_item, forbid_items_for_player, set_rule
 from ..enums import GameMode, ItemGroups
 from ..items import itemdefs as idef
 from ..locations import locationdefs as ld
-from ..names import itemnames, locationnames
+from ..names import itemnames, locationnames, regionnames
 from . import levelrules
 from . import rulebase as rb
 
@@ -23,8 +23,8 @@ def set_rules(world: CupheadWorld):
     use_dlc = w.use_dlc
     contract_reqs = wconfig.contract_requirements
 
-    rb.set_region_rules(w, locationnames.world_inkwell_2, rb.rule_has(w, itemnames.item_contract, contract_reqs[0]))
-    rb.set_region_rules(w, locationnames.world_inkwell_3, rb.rule_has(w, itemnames.item_contract, contract_reqs[1]))
+    rb.set_region_rules(w, regionnames.world_inkwell_2, rb.rule_has(w, itemnames.item_contract, contract_reqs[0]))
+    rb.set_region_rules(w, regionnames.world_inkwell_3, rb.rule_has(w, itemnames.item_contract, contract_reqs[1]))
 
     set_shop_rules(w)
 
@@ -46,7 +46,7 @@ def set_dlc_rules(world: CupheadWorld):
     set_dlc_boat_rules(w)
     rb.set_region_rules(
         w,
-        locationnames.level_dlc_boss_saltbaker,
+        regionnames.level_dlc_boss_saltbaker,
         rb.rule_has(w, itemnames.item_dlc_ingredient, ingredient_reqs)
     )
 
@@ -56,9 +56,9 @@ def set_dlc_boat_rules(world: CupheadWorld):
     randomize_boat = wconfig.dlc_randomize_boat
     require_mausoleum = wconfig.dlc_requires_mausoleum
     if require_mausoleum:
-        rb.add_region_rule(w, locationnames.reg_dlc_boat, rb.rule_has(w, itemnames.item_event_mausoleum))
+        rb.add_region_rule(w, regionnames.reg_dlc_boat, rb.rule_has(w, itemnames.item_event_mausoleum))
     if randomize_boat:
-        rb.add_region_rule(w, locationnames.reg_dlc_boat, rb.rule_has(w, itemnames.item_dlc_boat))
+        rb.add_region_rule(w, regionnames.reg_dlc_boat, rb.rule_has(w, itemnames.item_dlc_boat))
 
 def set_quest_rules(world: CupheadWorld):
     w = world
@@ -122,7 +122,7 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
     cost = 0
     for i in range(shop_index+1):
         cost += shop_costs[i]
-    region = rb.get_region(world, locationnames.shop_sets[shop_index])
+    region = rb.get_region(world, regionnames.shop_sets[shop_index])
     for entrance in region.entrances:
         set_rule(entrance, lambda state: state.has(itemnames.item_coin, player, cost))
 
@@ -133,7 +133,7 @@ def set_goal(world: CupheadWorld):
         rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements)
     ) if wconfig.mode == GameMode.COLLECT_CONTRACTS else (
         rb.rule_can_reach_all_regions(
-            w, locationnames.shop_sets if wconfig.use_dlc else locationnames.base_shop_sets
+            w, regionnames.shop_sets if wconfig.use_dlc else regionnames.base_shop_sets
         )
     ) if wconfig.mode == GameMode.BUY_OUT_SHOP else (
         rb.rule_has(w, itemnames.item_event_goal_dlc_saltbakerko)

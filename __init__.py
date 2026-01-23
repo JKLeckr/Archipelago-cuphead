@@ -22,7 +22,7 @@ from .world.levels.levelbase import LevelData
 from .world.levels.levelids import level_ids
 from .world.locations import locationdefs as ld
 from .world.locations.locationbase import LocationData
-from .world.names import itemnames, locationnames
+from .world.names import itemnames, regionnames
 from .world.options import CupheadOptions, presets
 from .world.options.optionsanitizer import OptionSanitizer
 from .world.rules import rules
@@ -175,7 +175,7 @@ class CupheadWorld(World):
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
-        #print(self.multiworld.get_region(locationnames.level_mausoleum_ii, self.player).locations)
+        #print(self.multiworld.get_region(regionnames.level_mausoleum_ii, self.player).locations)
 
     @override
     def create_item(self, name: str, force_classification: ItemClassification | None = None) -> Item:
@@ -202,7 +202,7 @@ class CupheadWorld(World):
         spoiler_handle.write(f"\n{self.player_name} Shop Items:\n\n")
         spoiler_handle.write("\n".join([
             f"{x}:\n{_gen_shop_list(y)}" for x, y in self.shop.shop_locations.items() \
-                if (x != locationnames.shop_set4 or self.use_dlc)
+                if (x != regionnames.shop_set4 or self.use_dlc)
         ]))
 
     @override
@@ -276,7 +276,7 @@ class CupheadWorld(World):
                         #else:
                         #    print(f"{loc} not valid for shuffle hint.")
         for shopl, locs in self.shop.shop_locations.items():
-            if shopl != locationnames.shop_set4 or self.use_dlc:
+            if shopl != regionnames.shop_set4 or self.use_dlc:
                 for loc in locs:
                     hint_dict[self.location_name_to_id[loc]] = shopl
         hint_data.update({self.player: hint_dict})

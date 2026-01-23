@@ -41,6 +41,9 @@ def validate_schema(data: Any, schema: Any):
         sys.exit(2)
 
 def walk_rule_expr(expr: Any, used_rules: set[str], used_presets: set[str]):
+    if isinstance(expr, bool):
+        return
+
     if "rule" in expr:
         # TODO: Analyze has rules with items
         pass
@@ -55,23 +58,30 @@ def walk_rule_expr(expr: Any, used_rules: set[str], used_presets: set[str]):
     elif "not" in expr:
         walk_rule_expr(expr["not"], used_rules, used_presets)
 
-def lint_rule_container(
+def lint_rule_container(  # noqa: C901
         container: Any,
         known_presets: set[str],
         known_selectors: set[str],
         known_deps: set[str],
-        context: str
+        context: str,
+        known_rule_defs: set[str] | None = None
     ):
     used_rules: set[str] = set()
     used_presets: set[str] = set()
 
     for frag in container.get("rules", []):
+        if "from" in frag:
+            if known_rule_defs is None or frag["from"] not in known_rule_defs:
+                raise ValueError(f"{context}: unknown rule_def '{frag['from']}'")
+            continue
+
         for dep in frag.get("when", []):
             name = dep[1:] if dep.startswith("!") else dep
             if name not in known_deps:
                 raise ValueError(f"{context}: unknown dep '{dep}'")
 
-        walk_rule_expr(frag["requires"], used_rules, used_presets)
+        if "requires" in frag:
+            walk_rule_expr(frag["requires"], used_rules, used_presets)
 
     for r in used_rules:
         if r not in known_selectors:
@@ -88,8 +98,14 @@ def build_preset_graph(presets: Any) -> dict[str, set[str]]:
         used_rules: set[str] = set()
         used_presets: set[str] = set()
 
+        # Add explicit requires_presets dependencies
+        if "requires_presets" in container:
+            for p in container["requires_presets"]:
+                used_presets.add(p)
+
         for frag in container.get("rules", []):
-            walk_rule_expr(frag["requires"], used_rules, used_presets)
+            if "requires" in frag:
+                walk_rule_expr(frag["requires"], used_rules, used_presets)
 
         graph[name] = used_presets
 
@@ -107,7 +123,9 @@ def detect_cycles(graph: dict[str, set[str]]):
 
         visiting.add(node)
         for dep in graph[node]:
-            _visit(dep)
+            # Check if dep exists in graph, otherwise it might be a missing preset
+            if dep in graph:
+                 _visit(dep)
         visiting.remove(node)
         visited.add(node)
 
@@ -115,10 +133,15 @@ def detect_cycles(graph: dict[str, set[str]]):
         _visit(node)
 
 def lint(data: Any, known_selectors: set[str], known_deps: set[str]):
-    known_presets: set[Any] = set(data.get("presets", {}))
+    known_presets: set[str] = set(data.get("presets", {}))
 
     # Presets
     for name, preset in data.get("presets", {}).items():
+        # Check requires_presets
+        for req_preset in preset.get("requires_presets", []):
+             if req_preset not in known_presets:
+                  raise ValueError(f"preset '{name}': unknown required preset '{req_preset}'")
+
         lint_rule_container(
             preset,
             known_presets,
@@ -132,23 +155,50 @@ def lint(data: Any, known_selectors: set[str], known_deps: set[str]):
 
     # Levels
     for lname, level in data["levels"].items():
-        if "access" in level:
-            lint_rule_container(level["access"], known_selectors, known_presets, known_deps, f"level '{lname}' access")
-        if "base" in level:
-            lint_rule_container(level["base"], known_selectors, known_presets, known_deps, f"level '{lname}' base")
-
-        for loc, locdef in level.get("locations", {}).items():
-            if "rule" in locdef:
+        local_rule_defs: set[str] = set()
+        if "rule_defs" in level:
+            for rdname, rdcontainer in level["rule_defs"].items():
+                local_rule_defs.add(rdname)
                 lint_rule_container(
-                    locdef["rule"],
-                    known_selectors,
+                    rdcontainer,
                     known_presets,
+                    known_selectors,
                     known_deps,
-                    f"location '{loc}'"
+                    f"level '{lname}' rule_def '{rdname}'"
                 )
 
+        if "access" in level:
+            lint_rule_container(
+                level["access"],
+                known_presets,
+                known_selectors,
+                known_deps,
+                f"level '{lname}' access",
+                known_rule_defs=local_rule_defs
+            )
+        if "base" in level:
+            lint_rule_container(
+                level["base"],
+                known_presets,
+                known_selectors,
+                known_deps,
+                f"level '{lname}' base",
+                known_rule_defs=local_rule_defs
+            )
+
+        for loc, locdef in level.get("locations", {}).items():
+            # In new schema, locdef is the container
+            lint_rule_container(
+                locdef,
+                known_presets,
+                known_selectors,
+                known_deps,
+                f"location '{loc}'",
+                known_rule_defs=local_rule_defs
+            )
+
 def fix_ref_str(schema: Any) -> None:
-    prefix = "levelrules.generated.schema.json"
+    prefix = "levelrules.schema.json"
     pcomment = schema["properties"]["$comment"]
     ppresetscomment = schema["$defs"]["preset"]["properties"]["$comment"]
     ppresetsrules = schema["$defs"]["preset"]["properties"]["rules"]
@@ -214,15 +264,15 @@ def main():
         exit(1)
 
     if not os.path.isfile(args.presets_file):
-        print(f"Schema file '{args.schema}' does not exist!")
+        print(f"File '{args.presets_file}' does not exist!")
         exit(1)
 
     if not os.path.isfile(args.schema):
-        print(f"File '{args.file}' does not exist!")
+        print(f"Schema file '{args.schema}' does not exist!")
         exit(1)
 
     if not os.path.isfile(args.presets_schema):
-        print(f"Schema file '{args.schema}' does not exist!")
+        print(f"Schema file '{args.presets_schema}' does not exist!")
         exit(1)
 
     lrjson = json.load(open(args.file, "r", encoding="utf-8"))
@@ -239,7 +289,12 @@ def main():
 
     validate_schema(lrjson, schema)
 
-    lint(lrjson, known_lrselectors, known_deps) # TODO: Fix
+    try:
+        lint(lrjson, known_lrselectors, known_deps)
+        print("Validation and Linting successful!")
+    except ValueError as e:
+        print(f"Linting error: {e}")
+        sys.exit(3)
 
 if __name__ == "__main__":
     main()

@@ -29,10 +29,8 @@ LEVELRULES_SELECTORS_MOD = ".levelruleselectors"
 LEVELRULES_SELECTORS_MOD_PATH = f"{LEVELRULES_MOD_PATH}{LEVELRULES_SELECTORS_MOD}"
 NAMES_MOD = ".names"
 NAMES_MOD_PATH = f"{WORLD_MOD}{NAMES_MOD}"
-ITEM_NAMES_MOD = ".itemnames"
-ITEM_NAMES_MOD_PATH = f"{NAMES_MOD_PATH}{ITEM_NAMES_MOD}"
-LOCATION_NAMES_MOD = ".locationnames"
-LOCATION_NAMES_MOD_PATH = f"{NAMES_MOD_PATH}{LOCATION_NAMES_MOD}"
+NAMES_MAP_MOD = ".namemap"
+NAMES_MAP_MOD_PATH = f"{NAMES_MOD_PATH}{NAMES_MAP_MOD}"
 
 DATA_PATH = os.path.join("world", "data")
 PRESET_DEFS_PATH = os.path.join(DATA_PATH, "levelrulepresets.json")
@@ -48,7 +46,7 @@ GEN_PRESETS_SCHEMA_NAME = "levelrulepresets.generated.schema.json"
 GEN_PRESETS_SCHEMA_DEST = os.path.join("schemas", GEN_PRESETS_SCHEMA_NAME)
 
 
-def main():  # noqa: C901
+def main():
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
         " This directory must be the Archipelago root directory!"
         f" Files will be written to '{GEN_RULES_SCHEMA_DEST}'."
@@ -101,17 +99,13 @@ def main():  # noqa: C901
     if args.include_lnames:
         _nspec = importlib.util.find_spec(NAMES_MOD, package=WORLD_MOD)
         _names = _nspec.loader.load_module(NAMES_MOD_PATH) if _nspec and _nspec.loader else None
-        _inspec = importlib.util.find_spec(ITEM_NAMES_MOD, package=NAMES_MOD_PATH)
-        _inames = _inspec.loader.load_module(ITEM_NAMES_MOD_PATH) if _inspec and _inspec.loader else None
-        _lnspec = importlib.util.find_spec(LOCATION_NAMES_MOD, package=NAMES_MOD_PATH)
-        _lnames = _lnspec.loader.load_module(LOCATION_NAMES_MOD_PATH) if _lnspec and _lnspec.loader else None
-        if not _names or not _inames or not _lnames:
+        _nmspec = importlib.util.find_spec(NAMES_MAP_MOD, package=NAMES_MOD_PATH)
+        _namemap = _nmspec.loader.load_module(NAMES_MAP_MOD_PATH) if _nmspec and _nmspec.loader else None
+        if not _names or not _namemap:
             raise ImportError("Could not import names modules.")
-        itemnames = _inames
-        locationnames = _lnames
+        namemap = _namemap
     else:
-        itemnames = None
-        locationnames = None
+        namemap = None
 
     base = json.load(open(BASE_RULES_SCHEMA_PATH))
     presets_base = json.load(open(BASE_PRESETS_SCHEMA_PATH))
@@ -133,19 +127,17 @@ def main():  # noqa: C901
 
     base["$defs"]["apItemSelectorRef"]["enum"] = lrselector_names
 
-    if itemnames and locationnames:
-        level_names: list[str] = []
-        location_names: list[str] = []
-        item_names: list[str] = []
-
-        for name in sorted(dir(locationnames)): # type: ignore
-            if name.startswith("loc_level_") or (name.startswith("loc_event_") and "goal" in name):
-                location_names.append(name)
-            elif name.startswith("level_"):
-                level_names.append(name)
-
-        item_names = [
-            name for name in sorted(dir(itemnames))
+    if namemap:
+        level_names: list[str] = [
+            lname for lname in sorted(namemap.get_region_fields())
+            if lname.startswith("level_")
+        ]
+        location_names: list[str] = [
+            locname for locname in sorted(namemap.get_location_fields())
+            if (locname.startswith("loc_level_") or "goal" in locname)
+        ]
+        item_names: list[str] = [
+            name for name in sorted(namemap.get_item_fields())
             if not name.startswith("_") and not name.endswith("_")
         ]
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import typing
 
-from ..names import locationnames
+from ..names import locationnames, regionnames
 
 if typing.TYPE_CHECKING:
     from ..wconf import WorldConfig
@@ -52,7 +52,7 @@ class ShopData:
                 shop_region += shop_charms[charm_index:(charm_index+ccount)]
                 weapon_index+=wcount
                 charm_index+=ccount
-            shop_locations[locationnames.shop_sets[i]] = shop_region
+            shop_locations[regionnames.shop_sets[i]] = shop_region
 
         self.shop_map = shop_map
         self.shop_locations = shop_locations
