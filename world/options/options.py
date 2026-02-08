@@ -46,7 +46,7 @@ class GameMode(ChoiceEx):
 
 class HardLogic(Toggle):
     """
-    -INCOMPLETE-
+    -WORKS, BUT INCOMPLETE-
     Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
     Examples include requiring jumping into pits to get across gaps and requiring avoiding King Dice bosses that
     requires certain abilities to beat King Dice in logic.
