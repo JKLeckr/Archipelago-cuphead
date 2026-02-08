@@ -65,8 +65,8 @@ class CupheadWorld(World):
     options: CupheadOptions # type: ignore
     origin_region_name: str = "Start"
 
-    required_client_version: tuple[int, int, int] = (0, 6, 5)
-    required_server_version: tuple[int, int, int] = (0, 6, 5)
+    required_client_version: tuple[int, int, int] = (0, 6, 7)
+    required_server_version: tuple[int, int, int] = (0, 6, 7)
 
     item_name_to_id: ClassVar[dict[str, int]] = idef.name_to_id
     location_name_to_id: ClassVar[dict[str, int]] = ld.name_to_id
