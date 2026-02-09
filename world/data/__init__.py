@@ -3,10 +3,11 @@
 
 from __future__ import annotations
 
-import json
 from enum import IntEnum
 from importlib import resources
 from typing import Any, Literal, NamedTuple
+
+import orjson
 
 if not __package__:
     raise ImportError("Package is None")
@@ -43,7 +44,7 @@ def load_data(dataname: DataName) -> None:
         if data_entry.data_type == DataType.STR:
             data = data.decode("utf-8")
         elif data_entry.data_type == DataType.JSON:
-            data = json.loads(data)
+            data = orjson.loads(data)
         _loaded_data[dataname] = data
     except OSError as e:
         raise OSError(f"Could not load resource '{dataname}': {e}") from e
