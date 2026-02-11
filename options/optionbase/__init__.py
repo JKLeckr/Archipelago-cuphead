@@ -1,3 +1,6 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
 from typing_extensions import override
 from typing import Any
 from collections.abc import Iterable

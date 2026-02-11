@@ -1,3 +1,6 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
 import unittest
 from typing import Any
 from collections import Counter
@@ -16,6 +19,7 @@ class TestOptionNames(unittest.TestCase):
                 assert field.name == field.type.name, f"{field.name} != {field.type.name}" # type: ignore
 
 # Borrowed from Hammerwatch (thx @Parcosmic)
+# https://github.com/Parcosmic/Hammerwatch-Archipelago
 class TestOptions(CupheadTestBase):
     option_dict: dict[str, dict[str, Any]] = {
         "Freemove": {

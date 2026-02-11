@@ -1,3 +1,6 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
 from __future__ import annotations
 from typing import TextIO, Any
 from typing_extensions import override
@@ -40,7 +43,7 @@ class CupheadWorld(World):
     """
 
     GAME_NAME: str = "Cuphead"
-    APWORLD_VERSION: str = "alpha02i"
+    APWORLD_VERSION: str = "alpha02j"
 
     SLOT_DATA_VERSION: int = 4
 

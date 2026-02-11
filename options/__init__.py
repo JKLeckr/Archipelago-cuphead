@@ -1,3 +1,6 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
 from dataclasses import dataclass
 from random import Random
 from Options import PerGameCommonOptions, OptionGroup

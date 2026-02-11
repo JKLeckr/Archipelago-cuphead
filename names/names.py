@@ -1,3 +1,7 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
+
 ############################################# LOCATION NAMES #############################################
 class LocationNames:
     # Prefixes

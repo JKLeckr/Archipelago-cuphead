@@ -1,3 +1,6 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
 import unittest
 from ..enums import WeaponMode
 from ..items import itemsetup, weapons, itemdefs as idefs

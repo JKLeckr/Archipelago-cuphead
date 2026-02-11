@@ -1,3 +1,7 @@
+<!--
+Copyright 2025-2026 JKLeckr
+SPDX-License-Identifier: MPL-2.0
+-->
 ## ScriptStash
 A place for discarded code that might be useful in the future
 

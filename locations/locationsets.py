@@ -1,3 +1,6 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
 from ..names import LocationNames
 
 s_plane_locations_lv: set[str] = {
