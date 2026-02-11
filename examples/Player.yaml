@@ -240,7 +240,7 @@ Cuphead:
   #
   # -DLC ONLY-
   # Set how the cursed and devine relic is handled.
-  # 
+  #
   # Modes:
   # - Off: Broken Relic is removed from the game
   # - Vanilla: Broken Relic is in pool. The graveyard and getting the devine relic is excluded from logic.
