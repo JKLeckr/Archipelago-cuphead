@@ -9,7 +9,6 @@ from typing_extensions import override
 
 from ..rules import deps
 from ..rules.deps import Dep
-from ..rules.rulebase import RegionRule
 
 
 class DefType(IntEnum):
@@ -23,26 +22,23 @@ class DefFlags(IntFlag):
 
 class Target:
     name: str
-    rule: RegionRule | None
     depends: Dep
     tgt_type: DefType
     def __init__(
             self,
             name: str,
-            rule: RegionRule | None = None,
             depends: Dep | None = None,
             tgt_type: DefType = DefType.SIMPLE
         ):
         self.name = name
-        self.rule = rule
         self.depends = depends if depends else deps.dep_none
         self.tgt_type = tgt_type
     @override
     def __str__(self) -> str:
         return self.name
 class LevelTarget(Target):
-    def __init__(self, name: str, rule: RegionRule | None = None, depends: Dep | None = None):
-        super().__init__(name, rule, depends, DefType.LEVEL)
+    def __init__(self, name: str, depends: Dep | None = None):
+        super().__init__(name, depends, DefType.LEVEL)
 class RegionData:
     name: str
     locations: list[str] | None

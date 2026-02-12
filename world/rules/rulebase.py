@@ -6,7 +6,7 @@ from __future__ import annotations
 import typing
 from collections.abc import Callable, Iterable, Mapping
 
-from BaseClasses import CollectionState, Entrance, Location, Region
+from BaseClasses import CollectionRule, CollectionState, Entrance, Location, Region
 from worlds.generic.Rules import add_rule, set_rule
 
 if typing.TYPE_CHECKING:
@@ -14,6 +14,7 @@ if typing.TYPE_CHECKING:
 
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
+RuleReg = dict[Location | Entrance, list[CollectionRule]]
 
 
 # Base Rule functions
@@ -114,7 +115,7 @@ def rrule_has_group_unique(item_group: str, count: int = 1) -> RegionRule:
 # Rule helper functions
 
 def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
-    return world.multiworld.get_entrance(exit+" -> "+entrance, world.player)
+    return world.multiworld.get_entrance(f"({exit})->({entrance})", world.player)
 def get_location(world: CupheadWorld, location: str) -> Location:
     return world.multiworld.get_location(location, world.player)
 def get_region(world: CupheadWorld, region: str) -> Region:

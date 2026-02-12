@@ -46,6 +46,11 @@ def set_dlc_rules(world: CupheadWorld):
     set_dlc_boat_rules(w)
     rb.set_region_rules(
         w,
+        regionnames.world_dlc_inkwell_4,
+        rb.rule_has(w, itemnames.item_event_dlc_boataccess)
+    )
+    rb.set_region_rules(
+        w,
         regionnames.level_dlc_boss_saltbaker,
         rb.rule_has(w, itemnames.item_dlc_ingredient, ingredient_reqs)
     )
@@ -129,23 +134,25 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
 def set_goal(world: CupheadWorld):
     w = world
     wconfig = w.wconfig
-    w.multiworld.completion_condition[w.player] = (
-        rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements)
-    ) if wconfig.mode == GameMode.COLLECT_CONTRACTS else (
-        rb.rule_can_reach_all_regions(
-            w, regionnames.shop_sets if wconfig.use_dlc else regionnames.base_shop_sets
-        )
-    ) if wconfig.mode == GameMode.BUY_OUT_SHOP else (
-        rb.rule_has(w, itemnames.item_event_goal_dlc_saltbakerko)
-    ) if wconfig.mode == GameMode.DLC_BEAT_SALTBAKER or wconfig.mode == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY else (
-        rb.rule_has_all(w, {itemnames.item_event_goal_devilko, itemnames.item_event_goal_dlc_saltbakerko})
-    ) if wconfig.mode == GameMode.DLC_BEAT_BOTH else (
-        rb.rule_has(w, itemnames.item_dlc_ingredient, wconfig.dlc_ingredient_goal_requirements)
-    ) if wconfig.mode == GameMode.DLC_COLLECT_INGREDIENTS else (
-        rb.rule_and(
-            rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements),
+    w.set_completion_rule(
+        (
+            rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements)
+        ) if wconfig.mode == GameMode.COLLECT_CONTRACTS else (
+            rb.rule_can_reach_all_regions(
+                w, regionnames.shop_sets if wconfig.use_dlc else regionnames.base_shop_sets
+            )
+        ) if wconfig.mode == GameMode.BUY_OUT_SHOP else (
+            rb.rule_has(w, itemnames.item_event_goal_dlc_saltbakerko)
+        ) if wconfig.mode == GameMode.DLC_BEAT_SALTBAKER or wconfig.mode == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY else (
+            rb.rule_has_all(w, {itemnames.item_event_goal_devilko, itemnames.item_event_goal_dlc_saltbakerko})
+        ) if wconfig.mode == GameMode.DLC_BEAT_BOTH else (
             rb.rule_has(w, itemnames.item_dlc_ingredient, wconfig.dlc_ingredient_goal_requirements)
+        ) if wconfig.mode == GameMode.DLC_COLLECT_INGREDIENTS else (
+            rb.rule_and(
+                rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements),
+                rb.rule_has(w, itemnames.item_dlc_ingredient, wconfig.dlc_ingredient_goal_requirements)
+            )
+        ) if wconfig.mode == GameMode.DLC_COLLECT_BOTH else (
+            rb.rule_has(w, itemnames.item_event_goal_devilko)
         )
-    ) if wconfig.mode == GameMode.DLC_COLLECT_BOTH else (
-        rb.rule_has(w, itemnames.item_event_goal_devilko)
     )

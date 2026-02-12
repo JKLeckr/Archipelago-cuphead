@@ -15,7 +15,7 @@ from ..locations import CupheadLocation
 from ..names import regionnames
 from . import regiondefs as rd
 from .regionbase import DefType, Target
-from .regiondefs import RegionData, RegionRule
+from .regiondefs import RegionData
 
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
@@ -95,25 +95,19 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
     if world.settings.is_debug_bit_on(2):
         debug.debug_print_regions(world)
 
-def get_rule_def(a: RegionRule, b: RegionRule | None = None) -> RegionRule:
-    if b:
-        return lambda s, p: a(s, p) and b(s, p)
-    return a
-
 def connect_target(world: CupheadWorld, region_name: str, target: Target, locset: set[str] | None = None):
     multiworld = world.multiworld
     player = world.player
-    _target_name = target.name
-    _rule = target.rule
+    target_name = target.name
     src = multiworld.get_region(region_name, player)
-    tgt = multiworld.get_region(_target_name, player)
-    name = f"{region_name} -> {_target_name}"
+    tgt = multiworld.get_region(target_name, player)
+    name = f"({region_name})->({target_name})"
     if locset:
         for loc in tgt.locations:
             if loc.name not in locset:
                 locset.add(loc.name)
-    src.connect(tgt, name, (lambda state, plyr=player, rule=_rule: rule(state, plyr)) if _rule else None)
-    #print(f"{name} | {regc.region_type} | {target.tgt_type} | Rule: {_rule}")
+    src.connect(tgt, name, None)
+    #print(f"{name} | {regc.region_type} | {target.tgt_type}")
 
 def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
     if not regc.connect_to:

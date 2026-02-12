@@ -3,18 +3,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
-
-from ..names import itemnames, locationnames, regionnames
+from ..names import locationnames, regionnames
 from ..rules import deps
-from ..rules.rulebase import RegionRule, rrule_has, rrule_has_all
 from .regionbase import DefFlags, LevelRegionData, LevelTarget, RegionData, Target, WorldRegionData
-
-
-def rule_has(item: str, count: int = 1) -> RegionRule:
-    return rrule_has(item, count)
-def rule_has_all(items: Iterable[str]) -> RegionRule:
-    return rrule_has_all(items)
 
 region_begin: RegionData = RegionData(
     "Start",
@@ -48,52 +39,52 @@ region_worlds: list[RegionData] = [
         locationnames.loc_coin_isle1_secret,
     ], [
         Target(regionnames.shop_set1),
-        Target(regionnames.reg_dlc_boat, None, deps.dep_and(deps.dep_dlc, deps.dep_freemove)),
-        Target(regionnames.world_dlc_inkwell_4, rule_has(itemnames.item_event_dlc_boataccess), deps.dep_dlc),
+        Target(regionnames.reg_dlc_boat, deps.dep_and(deps.dep_dlc, deps.dep_freemove)),
+        Target(regionnames.world_dlc_inkwell_4, deps.dep_dlc),
         LevelTarget(regionnames.level_boss_veggies),
         LevelTarget(regionnames.level_boss_slime),
         LevelTarget(regionnames.level_rungun_forest),
-        LevelTarget(regionnames.level_boss_flower, None, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
-        LevelTarget(regionnames.level_rungun_tree, None, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
-        Target(regionnames.world_inkwell_2, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_frogs, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_plane_blimp, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_mausoleum_i, None, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_flower, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
+        LevelTarget(regionnames.level_rungun_tree, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
+        Target(regionnames.world_inkwell_2, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_frogs, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_plane_blimp, deps.dep_freemove),
+        LevelTarget(regionnames.level_mausoleum_i, deps.dep_freemove),
     ]),
     WorldRegionData(regionnames.world_inkwell_2, [
         locationnames.loc_npc_canteen,
         locationnames.loc_quest_4mel,
     ], [
-        Target(regionnames.shop_set2, None, deps.dep_freemove),
+        Target(regionnames.shop_set2, deps.dep_freemove),
         LevelTarget(regionnames.level_boss_baroness),
         LevelTarget(regionnames.level_boss_clown),
         LevelTarget(regionnames.level_boss_plane_genie),
-        Target(regionnames.world_inkwell_3, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_plane_bird, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_dragon, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_rungun_circus, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_rungun_funhouse, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_mausoleum_ii, None, deps.dep_freemove),
-        Target(locationnames.loc_event_isle2_shortcut, None, deps.dep_freemove),
-        Target(regionnames.reg_dlc_boat, None, deps.dep_dlc),
+        Target(regionnames.world_inkwell_3, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_plane_bird, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_dragon, deps.dep_freemove),
+        LevelTarget(regionnames.level_rungun_circus, deps.dep_freemove),
+        LevelTarget(regionnames.level_rungun_funhouse, deps.dep_freemove),
+        LevelTarget(regionnames.level_mausoleum_ii, deps.dep_freemove),
+        Target(locationnames.loc_event_isle2_shortcut, deps.dep_freemove),
+        Target(regionnames.reg_dlc_boat, deps.dep_dlc),
     ]),
     WorldRegionData(regionnames.world_inkwell_3, None, [
-        Target(regionnames.shop_set3, None, deps.dep_freemove),
+        Target(regionnames.shop_set3, deps.dep_freemove),
         LevelTarget(regionnames.level_boss_bee),
         LevelTarget(regionnames.level_boss_pirate),
-        Target(regionnames.world_inkwell_hell, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_plane_robot, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_rungun_mountain, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_sallystageplay, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_mouse, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_train, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_boss_plane_mermaid, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_rungun_harbour, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_mausoleum_iii, None, deps.dep_freemove),
-        Target(locationnames.loc_quest_ludwig, None, deps.dep_and(deps.dep_freemove, deps.dep_music_quest)),
-        Target(locationnames.loc_quest_silverworth, None, deps.dep_and(deps.dep_freemove, deps.dep_agrade_quest)),
-        Target(locationnames.loc_quest_pacifist, None, deps.dep_and(deps.dep_freemove, deps.dep_pacifist_quest)),
-        Target(regionnames.reg_dlc_boat, None, deps.dep_and(deps.dep_dlc, deps.dep_not(deps.dep_freemove))),
+        Target(regionnames.world_inkwell_hell, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_plane_robot, deps.dep_freemove),
+        LevelTarget(regionnames.level_rungun_mountain, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_sallystageplay, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_mouse, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_train, deps.dep_freemove),
+        LevelTarget(regionnames.level_boss_plane_mermaid, deps.dep_freemove),
+        LevelTarget(regionnames.level_rungun_harbour, deps.dep_freemove),
+        LevelTarget(regionnames.level_mausoleum_iii, deps.dep_freemove),
+        Target(locationnames.loc_quest_ludwig, deps.dep_and(deps.dep_freemove, deps.dep_music_quest)),
+        Target(locationnames.loc_quest_silverworth, deps.dep_and(deps.dep_freemove, deps.dep_agrade_quest)),
+        Target(locationnames.loc_quest_pacifist, deps.dep_and(deps.dep_freemove, deps.dep_pacifist_quest)),
+        Target(regionnames.reg_dlc_boat, deps.dep_and(deps.dep_dlc, deps.dep_not(deps.dep_freemove))),
     ]),
     WorldRegionData(regionnames.world_inkwell_hell, [locationnames.loc_coin_isleh_secret], [
         Target(regionnames.level_boss_kingdice)
@@ -109,16 +100,16 @@ region_dlc_worlds = [
         Target(regionnames.shop_set4),
         Target(regionnames.level_dlc_chesscastle),
         Target(
-            locationnames.loc_dlc_quest_cactusgirl, None, deps.dep_and(deps.dep_freemove, deps.dep_dlc_cactusgirl_quest)
+            locationnames.loc_dlc_quest_cactusgirl, deps.dep_and(deps.dep_freemove, deps.dep_dlc_cactusgirl_quest)
         ),
-        LevelTarget(regionnames.level_dlc_tutorial, None, deps.dep_dlc_chalice),
+        LevelTarget(regionnames.level_dlc_tutorial, deps.dep_dlc_chalice),
         LevelTarget(regionnames.level_dlc_boss_oldman),
         LevelTarget(regionnames.level_dlc_boss_rumrunners),
-        LevelTarget(regionnames.level_dlc_boss_plane_cowboy, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_dlc_boss_snowcult, None, deps.dep_freemove),
-        LevelTarget(regionnames.level_dlc_boss_airplane, None, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
-        #LevelTarget(regionnames.level_dlc_graveyard, None, dep.dep_freemove),
-        LevelTarget(regionnames.level_dlc_boss_saltbaker, None)
+        LevelTarget(regionnames.level_dlc_boss_plane_cowboy, deps.dep_freemove),
+        LevelTarget(regionnames.level_dlc_boss_snowcult, deps.dep_freemove),
+        LevelTarget(regionnames.level_dlc_boss_airplane, deps.dep_or(deps.dep_shortcuts, deps.dep_freemove)),
+        #LevelTarget(regionnames.level_dlc_graveyard, dep.dep_freemove),
+        LevelTarget(regionnames.level_dlc_boss_saltbaker)
     ]),
 ]
 
@@ -130,15 +121,15 @@ region_isle1 =  [
     LevelRegionData(regionnames.level_boss_plane_blimp, [locationnames.loc_event_isle1_secret_prereq3],
         [LevelTarget(regionnames.level_boss_flower), LevelTarget(regionnames.level_rungun_tree)]),
     LevelRegionData(regionnames.level_boss_frogs, [locationnames.loc_event_isle1_secret_prereq4],
-        [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, None, deps.dep_dlc)]),
+        [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, deps.dep_dlc)]),
     LevelRegionData(regionnames.level_boss_flower, [locationnames.loc_event_isle1_secret_prereq5],
-        [Target(regionnames.world_inkwell_2, None, deps.dep_not(deps.dep_freemove))]),
+        [Target(regionnames.world_inkwell_2, deps.dep_not(deps.dep_freemove))]),
     LevelRegionData(regionnames.level_rungun_tree, None,
-        [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, None, deps.dep_dlc)]),
+        [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, deps.dep_dlc)]),
     LevelRegionData(regionnames.level_rungun_forest, None,
-        [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, None, deps.dep_dlc)]),
+        [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, deps.dep_dlc)]),
     LevelRegionData(regionnames.level_mausoleum_i, None,
-        [Target(locationnames.loc_event_mausoleum, None, deps.dep_dlc_boat_mausoleum)],
+        [Target(locationnames.loc_event_mausoleum, deps.dep_dlc_boat_mausoleum)],
         flags=DefFlags.TGT_IGNORE_FREEMOVE
     )
 ]
@@ -150,25 +141,25 @@ region_isle2: list[RegionData] = [
     ]),
     LevelRegionData(regionnames.level_boss_plane_genie, None, [
         LevelTarget(regionnames.level_mausoleum_ii),
-        Target(locationnames.loc_quest_lucien, None, deps.dep_lucien_quest),
+        Target(locationnames.loc_quest_lucien, deps.dep_lucien_quest),
         Target(regionnames.shop_set2),
     ]),
     LevelRegionData(regionnames.level_boss_clown, None, [
         LevelTarget(regionnames.level_boss_dragon),
         LevelTarget(regionnames.level_rungun_funhouse),
         Target(locationnames.loc_event_isle2_shortcut),
-        Target(regionnames.world_inkwell_3, None, deps.dep_not(deps.dep_freemove))
+        Target(regionnames.world_inkwell_3, deps.dep_not(deps.dep_freemove))
     ]),
     LevelRegionData(regionnames.level_boss_plane_bird, None, [
         LevelTarget(regionnames.level_mausoleum_ii),
-        Target(locationnames.loc_quest_lucien, None, deps.dep_lucien_quest),
+        Target(locationnames.loc_quest_lucien, deps.dep_lucien_quest),
         Target(regionnames.shop_set2),
     ]),
     LevelRegionData(regionnames.level_boss_dragon, [
         locationnames.loc_quest_buster,
     ], [
         LevelTarget(regionnames.level_mausoleum_ii),
-        Target(locationnames.loc_quest_lucien, None, deps.dep_lucien_quest),
+        Target(locationnames.loc_quest_lucien, deps.dep_lucien_quest),
         Target(regionnames.shop_set2),
     ]),
     LevelRegionData(regionnames.level_rungun_circus, [
@@ -176,17 +167,17 @@ region_isle2: list[RegionData] = [
         locationnames.loc_quest_ginger,
     ], [
         LevelTarget(regionnames.level_mausoleum_ii),
-        Target(locationnames.loc_quest_lucien, None, deps.dep_lucien_quest),
+        Target(locationnames.loc_quest_lucien, deps.dep_lucien_quest),
         Target(regionnames.shop_set2),
     ]),
     LevelRegionData(regionnames.level_rungun_funhouse, [locationnames.loc_coin_isle2_secret], [
         LevelTarget(regionnames.level_mausoleum_ii),
-        Target(locationnames.loc_quest_lucien, None, deps.dep_lucien_quest),
+        Target(locationnames.loc_quest_lucien, deps.dep_lucien_quest),
         Target(regionnames.shop_set2),
     ]),
     LevelRegionData(
         regionnames.level_mausoleum_ii, None,
-        [Target(locationnames.loc_event_mausoleum, None, deps.dep_dlc_boat_mausoleum)],
+        [Target(locationnames.loc_event_mausoleum, deps.dep_dlc_boat_mausoleum)],
         flags=DefFlags.TGT_IGNORE_FREEMOVE
     ),
     RegionData(locationnames.loc_quest_lucien, [locationnames.loc_quest_lucien], None, deps.dep_lucien_quest),
@@ -194,16 +185,16 @@ region_isle2: list[RegionData] = [
         locationnames.loc_event_isle2_shortcut
     ], [
         LevelTarget(
-            regionnames.level_boss_dragon, None, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
+            regionnames.level_boss_dragon, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
         ),
         LevelTarget(
-            regionnames.level_rungun_funhouse, None, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
+            regionnames.level_rungun_funhouse, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
         ),
         LevelTarget(
-            regionnames.level_boss_plane_bird, None, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
+            regionnames.level_boss_plane_bird, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
         ),
         LevelTarget(
-            regionnames.level_rungun_circus, None, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
+            regionnames.level_rungun_circus, deps.dep_and(deps.dep_shortcuts, deps.dep_not(deps.dep_freemove))
         ),
     ])
 ]
@@ -211,49 +202,49 @@ region_isle3: list[RegionData] = [
     LevelRegionData(regionnames.level_boss_bee, None, [
         LevelTarget(regionnames.level_boss_plane_robot),
         LevelTarget(regionnames.level_rungun_mountain),
-        Target(locationnames.loc_quest_ludwig, None, deps.dep_music_quest)
+        Target(locationnames.loc_quest_ludwig, deps.dep_music_quest)
     ]),
     LevelRegionData(regionnames.level_boss_pirate, None, [
         LevelTarget(regionnames.level_boss_plane_mermaid),
         LevelTarget(regionnames.level_rungun_harbour),
-        Target(locationnames.loc_quest_pacifist, None, deps.dep_pacifist_quest),
-        Target(regionnames.reg_dlc_boat, None, deps.dep_dlc),
+        Target(locationnames.loc_quest_pacifist, deps.dep_pacifist_quest),
+        Target(regionnames.reg_dlc_boat, deps.dep_dlc),
     ]),
     LevelRegionData(regionnames.level_boss_plane_robot, None, [
         LevelTarget(regionnames.level_boss_sallystageplay),
-        Target(locationnames.loc_quest_wolfgang, None, deps.dep_music_quest)
+        Target(locationnames.loc_quest_wolfgang, deps.dep_music_quest)
     ]),
     LevelRegionData(regionnames.level_boss_plane_mermaid, [locationnames.loc_coin_isle3_secret], [
         LevelTarget(regionnames.level_boss_sallystageplay),
-        Target(locationnames.loc_quest_wolfgang, None, deps.dep_music_quest)
+        Target(locationnames.loc_quest_wolfgang, deps.dep_music_quest)
     ]),
     LevelRegionData(regionnames.level_boss_sallystageplay, None, [
         LevelTarget(regionnames.level_boss_mouse),
         LevelTarget(regionnames.level_mausoleum_iii),
         LevelTarget(regionnames.level_boss_train),
         Target(regionnames.shop_set3),
-        Target(locationnames.loc_quest_silverworth, None, deps.dep_agrade_quest)
+        Target(locationnames.loc_quest_silverworth, deps.dep_agrade_quest)
     ]),
     LevelRegionData(regionnames.level_boss_mouse, None, [
         LevelTarget(regionnames.level_boss_sallystageplay),
-        Target(locationnames.loc_quest_wolfgang, None, deps.dep_music_quest)
+        Target(locationnames.loc_quest_wolfgang, deps.dep_music_quest)
     ]),
     LevelRegionData(regionnames.level_boss_train, None, [Target(regionnames.world_inkwell_hell)]),
     LevelRegionData(regionnames.level_rungun_harbour, None, [
         LevelTarget(regionnames.level_boss_mouse),
         LevelTarget(regionnames.level_mausoleum_iii),
         Target(regionnames.shop_set3),
-        Target(locationnames.loc_quest_silverworth, None, deps.dep_agrade_quest)
+        Target(locationnames.loc_quest_silverworth, deps.dep_agrade_quest)
     ]),
     LevelRegionData(regionnames.level_rungun_mountain, None, [
         LevelTarget(regionnames.level_boss_mouse),
         LevelTarget(regionnames.level_mausoleum_iii),
         Target(regionnames.shop_set3),
-        Target(locationnames.loc_quest_silverworth, None, deps.dep_agrade_quest)
+        Target(locationnames.loc_quest_silverworth, deps.dep_agrade_quest)
     ]),
     LevelRegionData(
         regionnames.level_mausoleum_iii, None,
-        [Target(locationnames.loc_event_mausoleum, None, deps.dep_dlc_boat_mausoleum)],
+        [Target(locationnames.loc_event_mausoleum, deps.dep_dlc_boat_mausoleum)],
         flags=DefFlags.TGT_IGNORE_FREEMOVE
     ),
     RegionData(locationnames.loc_quest_wolfgang, [
@@ -281,7 +272,7 @@ region_dlc_isle4: list[RegionData] = [
     LevelRegionData(regionnames.level_dlc_boss_oldman, None, [LevelTarget(regionnames.level_dlc_boss_snowcult)]),
     LevelRegionData(regionnames.level_dlc_boss_rumrunners, None, [
         LevelTarget(regionnames.level_dlc_boss_plane_cowboy),
-        Target(locationnames.loc_dlc_quest_cactusgirl, None, deps.dep_dlc_cactusgirl_quest),
+        Target(locationnames.loc_dlc_quest_cactusgirl, deps.dep_dlc_cactusgirl_quest),
     ]),
     LevelRegionData(regionnames.level_dlc_boss_plane_cowboy, None, [
         LevelTarget(regionnames.level_dlc_boss_airplane)
@@ -294,7 +285,7 @@ region_dlc_isle4: list[RegionData] = [
     LevelRegionData(regionnames.level_dlc_boss_airplane, None, [
         LevelTarget(regionnames.level_dlc_boss_snowcult),
         LevelTarget(regionnames.level_dlc_boss_plane_cowboy),
-        Target(locationnames.loc_dlc_quest_cactusgirl, None, deps.dep_dlc_cactusgirl_quest),
+        Target(locationnames.loc_dlc_quest_cactusgirl, deps.dep_dlc_cactusgirl_quest),
     ]),
     LevelRegionData(regionnames.level_dlc_boss_saltbaker, None, None),
     #LevelRegionData(regionnames.level_dlc_graveyard, None),
