@@ -8,8 +8,8 @@ from typing import Any, ClassVar
 from ... import data
 from ...names import namemap
 from ..deps import DEPS
-from . import levelrulebase as lrb
-from .levelrulebase import (
+from . import levelrulejsonbase as lrb
+from .levelrulejsonbase import (
     InheritMode,
     ItemRule,
     ItemRuleHas,

@@ -8,7 +8,7 @@ import typing
 from ...names import namemap
 from .. import rulebase as rb
 from ..rulebase import RegionRule
-from . import levelrulebase as lrb
+from . import levelrulejsonbase as lrb
 from .levelruledata import LevelRuleData
 
 if typing.TYPE_CHECKING:
