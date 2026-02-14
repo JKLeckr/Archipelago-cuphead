@@ -5,15 +5,15 @@ from __future__ import annotations
 
 import typing
 
-from ...names import namemap
-from .. import rulebase as rb
-from ..rulebase import RegionRule
+from ....names import namemap
+from ... import rulebase as rb
+from ...rulebase import RegionRule
 from . import levelrulejsonbase as lrb
 from .levelruledata import LevelRuleData
 
 if typing.TYPE_CHECKING:
-    from .... import CupheadWorld
-    from ...wconf import WorldConfig
+    from ..... import CupheadWorld
+    from ....wconf import WorldConfig
 
 class LevelRuleComp:
     _world: CupheadWorld
