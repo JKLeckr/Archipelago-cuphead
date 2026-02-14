@@ -1,0 +1,16 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
+from __future__ import annotations
+
+from collections.abc import Callable
+
+from ...wconf import WorldConfig
+
+Dep = Callable[[WorldConfig], bool]
+
+DEPS: dict[str, Dep] = {}
+def dep(fn: Callable[[WorldConfig], bool]) -> Dep:
+    _name = fn.__name__.removeprefix("dep_")
+    DEPS[_name] = fn
+    return fn

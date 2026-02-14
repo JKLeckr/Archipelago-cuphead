@@ -7,8 +7,7 @@ from enum import IntEnum, IntFlag
 
 from typing_extensions import override
 
-from ..rules import deps
-from ..rules.deps import Dep
+from ..rules.dep import Dep, deps
 
 
 class DefType(IntEnum):

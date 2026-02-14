@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from ..names import locationnames, regionnames
-from ..rules import deps
+from ..rules.dep import deps
 from .regionbase import DefFlags, LevelRegionData, LevelTarget, RegionData, Target, WorldRegionData
 
 region_begin: RegionData = RegionData(

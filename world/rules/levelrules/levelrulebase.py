@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 
 from rule_builder.rules import And, Filtered, Rule, True_
 
-from ..deps import Dep, dep_none
+from ..dep.depfilter import DepFilter, depf_none
 
 if typing.TYPE_CHECKING:
     from ...wconf import WorldConfig
@@ -19,11 +19,11 @@ LRSelector = Callable[["WorldConfig"], Mapping[str, int]]
 @dataclass(frozen=True)
 class RuleUnit:
     rule: Rule
-    when: Dep = dep_none
+    when: DepFilter = depf_none
 
 @dataclass(frozen=True)
 class RuleData:
-    rules: list[RuleUnit] = field(default_factory=list)
+    rules: list[RuleUnit] = field(default_factory=list[RuleUnit])
 
     def compile_rules(self, wconf: WorldConfig) -> Rule:
         """
@@ -33,7 +33,7 @@ class RuleData:
         """
         rulelist: list[Rule] = []
         for unit in self.rules:
-            if unit.when is dep_none:
+            if unit.when is depf_none:
                 rulelist.append(unit.rule)
             else:
                 rulelist.append(Filtered(unit.rule, options=(unit.when,)))
@@ -44,6 +44,6 @@ class RuleData:
             return rulelist[0]
         return And(*rulelist)
 
-def when(rule: Rule, dep: Dep) -> Rule:
-    """Wraps a rule with a dep condition, resolving to False if the condition is not met."""
-    return Filtered(rule, options=(dep,))
+def when(rule: Rule, depf: DepFilter) -> Rule:
+    """Wraps a rule with a dep filter condition, resolving to False if the condition is not met."""
+    return Filtered(rule, options=(depf,))

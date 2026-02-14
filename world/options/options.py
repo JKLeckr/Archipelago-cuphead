@@ -20,7 +20,7 @@ class Version(FreeText):
 
 class WConfig(WConfOption):
     """
-    Internal. Used for rule builder.
+    Internal. Set during generation. Used for rule builder.
     The world configuration constructed from options
     """
     name = "wconfig"

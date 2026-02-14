@@ -7,7 +7,7 @@ from typing import Any, ClassVar
 
 from ... import data
 from ...names import namemap
-from ..deps import DEPS
+from ..dep.deps import DEPS
 from . import levelrulejsonbase as lrb
 from .levelrulejsonbase import (
     InheritMode,

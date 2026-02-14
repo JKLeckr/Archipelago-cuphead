@@ -8,7 +8,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from enum import IntEnum
 
-from ..deps import Dep
+from ..dep import Dep
 
 if typing.TYPE_CHECKING:
     from ...wconf import WorldConfig

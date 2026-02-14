@@ -52,10 +52,6 @@ class TestAPWorldOptionsWConf(unittest.TestCase):
 
 class TestAPWorldItemSetup(unittest.TestCase):
     def test_setup_weapons(self):
-        _wconf = wconf.WorldConfig()
-        _wconf.use_dlc = True
-        _wconf.start_weapon = 0
-
         _start_weapon = itemnames.item_weapon_peashooter
 
         self.assertEqual(weapons.weapon_dict[0], _start_weapon)
@@ -76,5 +72,11 @@ class TestAPWorldItemSetup(unittest.TestCase):
 
         for mode in modes:
             with self.subTest(mode[0]):
-                _wconf.weapon_mode = mode[1]
+                _wconf = wconf.WorldConfig(
+                    with_attrs={
+                        "use_dlc": True,
+                        "start_weapon": 0,
+                        "weapon_mode": mode[1]
+                    }
+                )
                 itemsetup.setup_items(_wconf)

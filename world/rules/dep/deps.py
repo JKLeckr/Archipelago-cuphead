@@ -3,65 +3,24 @@
 
 from __future__ import annotations
 
-import dataclasses
-from collections.abc import Callable
-from typing import Any
-
-from typing_extensions import override
-
-from rule_builder.options import OptionFilter
-
-from ..enums import ChaliceCheckMode, ChaliceMode, WeaponMode
-from ..wconf import WorldConfig
-
-
-@dataclasses.dataclass(frozen=True, init=False)
-class Dep(OptionFilter):
-    fn: Callable[[WorldConfig], bool]
-    __name__: str
-
-    def __init__(self, fn: Callable[[WorldConfig], bool]):
-        super().__init__(None, None)  # type: ignore
-        object.__setattr__(self, "fn", fn)
-        object.__setattr__(self, "__name__", fn.__name__ if hasattr(fn, "__name__") else "anonymous_dep")
-
-    def __call__(self, c: WorldConfig) -> bool:
-        return self.fn(c)
-
-    @override
-    def check(self, options: Any) -> bool:
-        if isinstance(options.wconfig, WorldConfig):
-            return self.fn(options.wconfig)
-        raise ValueError("options.wconfig cannot be none!")
-
-    def __and__(self, other: Dep) -> Dep:
-        return dep_and(self, other)
-
-    def __or__(self, other: Dep) -> Dep:
-        return dep_or(self, other)
-
-    def __invert__(self) -> Dep:
-        return dep_not(self)
-
-
-DEPS: dict[str, Dep] = {}
-def dep(fn: Callable[[WorldConfig], bool]) -> Dep:
-    wrapped = Dep(fn)
-    _name = wrapped.__name__.removeprefix("dep_")
-    DEPS[_name] = wrapped
-    return wrapped
+from ...enums import ChaliceCheckMode, ChaliceMode, WeaponMode
+from ...wconf import WorldConfig
+from . import depbase
+from .depbase import Dep, dep
 
 # Deps define a dependency with specific configurations.
-def dep_and(*deps: Dep) -> Dep:
-    return Dep(lambda c: all(d(c) for d in deps))
-def dep_or(*deps: Dep) -> Dep:
-    return Dep(lambda c: any(d(c) for d in deps))
-def dep_not(d: Dep) -> Dep:
-    return Dep(lambda c: not d(c))
 
-def _dep_none(c: WorldConfig) -> bool:
+DEPS = depbase.DEPS
+
+def dep_none(c: WorldConfig) -> bool:
     return True
-dep_none = Dep(_dep_none)
+
+def dep_and(*deps: Dep) -> Dep:
+    return lambda c: all(d(c) for d in deps)
+def dep_or(*deps: Dep) -> Dep:
+    return lambda c: any(d(c) for d in deps)
+def dep_not(d: Dep) -> Dep:
+    return lambda c: not d(c)
 
 @dep
 def dep_dlc(c: WorldConfig) -> bool:
