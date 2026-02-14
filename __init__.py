@@ -114,16 +114,22 @@ class CupheadWorld(World):
                 else:
                     print(f"re_gen_setup: WARNING: {okey} is not registered!")
 
-            self.wconfig = WorldConfig(self.options)
+            bits: int = slot_data["gen_bits"] # TODO: TEST
 
-            bits: int = slot_data["gen_bits"]
-            self.wconfig.debitify(bits) # TODO: TEST
+            slot_data_attrs = ["shop_mode", "contract_requirements", "dlc_ingredient_requirements"]
+            attrs: dict[str, Any] = {}
+            for name in slot_data_attrs:
+                attrs[name] = slot_data[name]
+
+            self.wconfig = WorldConfig(
+                with_options=self.options,
+                with_bits=bits,
+                with_attrs=attrs
+            )
+            self.options.wconfig.value = self.wconfig
 
             self.level_map = slot_data["level_map"]
-            self.wconfig.shop_mode = slot_data["shop_mode"]
             self.shop = ShopData(slot_data["shop_map"])
-            self.wconfig.contract_requirements = slot_data["contract_requirements"]
-            self.wconfig.dlc_ingredient_requirements = slot_data["dlc_ingredient_requirements"]
 
 
     @override
@@ -143,7 +149,8 @@ class CupheadWorld(World):
             self.re_gen_setup()
         else:
             # World Config (See wconfig.py)
-            self.wconfig = WorldConfig(self.options)
+            self.wconfig = WorldConfig(with_options=self.options)
+            self.options.wconfig.value = self.wconfig
             #print(self.level_map)
             self.level_map = levels.setup_level_map(self.wconfig)
             self.shop = ShopData.create_from_wconf(self.wconfig)

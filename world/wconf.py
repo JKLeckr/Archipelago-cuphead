@@ -121,7 +121,7 @@ def _get_shop_map(options: CupheadOptions | None) -> list[tuple[int, int]]:
         return [(2,2), (2,2), (1,2), (3,2)] if not dlc else [(2,2), (2,2), (2,2), (2,2)]
 
 # These are settings stored and accessed by other classes
-@dataclass
+@dataclass(init=False, frozen=True, eq=True)
 class WorldConfig:
     boss_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.BossGradeChecks)
     boss_secret_checks: bool = create_field(bool, odefs.BossSecretChecks)
@@ -183,9 +183,26 @@ class WorldConfig:
                 if hasattr(options, oname):
                     value = getattr(options, oname).value
                     conv: Callable[[Any], Any] | None = meta.get("conv") or None
-                    setattr(self, f.name, conv(value) if conv else value)
+                    object.__setattr__(self, f.name, conv(value) if conv else value)
 
-    def __init__(self, options: CupheadOptions | None = None, debug_bit: int = 0) -> None:
+    def _debitify(self, bits: int) -> None:
+        shift = 0
+        for bit in _bitifiable_fields:
+            if (hasattr(self, bit)):
+                res = (bits << shift) & 1
+                object.__setattr__(self, bit, bool(res))
+            else:
+                raise KeyError(f"{bit} is not in wconf!")
+            shift += 1
+
+    def __init__(
+        self,
+        *,
+        with_options: CupheadOptions | None = None,
+        with_bits: int | None = None,
+        with_attrs: dict[str, Any] | None = None,
+        debug_bit: int = 0
+    ) -> None:
         for f in fields(self):
             try:
                 default = (
@@ -193,23 +210,29 @@ class WorldConfig:
                 )
             except ValueError as err:
                 raise ValueError(f"For field {f.name}: {err}") from err
-            setattr(self, f.name, default)
+            object.__setattr__(self, f.name, default)
 
-        if options:
-            self._apply_options(options)
+        if with_options:
+            self._apply_options(with_options)
 
-        self.coin_amounts = _get_coin_amounts(options)
-        self.contract_requirements = _get_contract_requirements(options)
-        self.dlc_chalice_items_separate = _get_separate_items_mode(options)
-        self.filler_item_weights = _get_filler_item_weights(options)
-        self.trap_item_weights = _get_trap_item_weights(options)
-        self.shop_map = _get_shop_map(options)
+        object.__setattr__(self, "coin_amounts", _get_coin_amounts(with_options))
+        object.__setattr__(self, "contract_requirements", _get_contract_requirements(with_options))
+        object.__setattr__(self, "dlc_chalice_items_separate", _get_separate_items_mode(with_options))
+        object.__setattr__(self, "filler_item_weights", _get_filler_item_weights(with_options))
+        object.__setattr__(self, "trap_item_weights", _get_trap_item_weights(with_options))
+        object.__setattr__(self, "shop_map", _get_shop_map(with_options))
 
-    @classmethod
-    def from_bits(cls, bits: int, options: CupheadOptions | None = None) -> WorldConfig:
-        res = WorldConfig(options)
-        res.debitify(bits)
-        return res
+        if with_bits:
+            self._debitify(with_bits)
+
+        if with_attrs:
+            for attr, value in with_attrs.items():
+                if not hasattr(self, attr):
+                    raise AttributeError(f"'{attr}' is not a valid attribute")
+                attrtype = type(getattr(self, attr))  # pyright: ignore[reportUnknownVariableType]
+                if not isinstance(value, attrtype):
+                    raise AttributeError(f"'{attr}' is not a valid type of '{attrtype}'")
+                object.__setattr__(self, attr, value)
 
     def bitify(self) -> int:
         res = 0
@@ -224,16 +247,6 @@ class WorldConfig:
             shift += 1
 
         return res
-
-    def debitify(self, bits: int) -> None:
-        shift = 0
-        for bit in _bitifiable_fields:
-            if (hasattr(self, bit)):
-                res = (bits << shift) & 1
-                setattr(self, bit, bool(res))
-            else:
-                raise KeyError(f"{bit} is not in wconf!")
-            shift += 1
 
     def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
         return (self.dlc_chalice_items_separate & item_group) > 0

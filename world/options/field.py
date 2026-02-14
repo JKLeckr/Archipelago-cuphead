@@ -26,3 +26,15 @@ def create_field(
         )
     except NameError as err:
         raise ValueError("option_def is not a valid Option Definition!") from err
+
+def create_special_field(
+    converter: Callable[[Any], T],
+    default: T
+):
+    try:
+        return field(
+            default_factory=lambda: converter(default),
+            metadata={"conv": converter,},
+        )
+    except NameError as err:
+        raise ValueError("cannot create special field") from err

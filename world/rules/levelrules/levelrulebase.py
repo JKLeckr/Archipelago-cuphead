@@ -5,13 +5,9 @@ from __future__ import annotations
 
 import typing
 from collections.abc import Callable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from typing_extensions import override
-
-from BaseClasses import CollectionState
-from NetUtils import JSONMessagePart
-from rule_builder.rules import And, False_, Has, HasAll, HasAllCounts, NestedRule, Rule, True_, TWorld
+from rule_builder.rules import And, Filtered, Rule, True_
 
 from ..deps import Dep, dep_none
 
@@ -23,20 +19,31 @@ LRSelector = Callable[["WorldConfig"], Mapping[str, int]]
 @dataclass(frozen=True)
 class RuleUnit:
     rule: Rule
-    when: Dep
+    when: Dep = dep_none
 
 @dataclass(frozen=True)
 class RuleData:
-    rules: list[RuleUnit]
+    rules: list[RuleUnit] = field(default_factory=list)
 
-    def compile_rules(self, wconf: WorldConfig) -> Rule | None:
+    def compile_rules(self, wconf: WorldConfig) -> Rule:
+        """
+        Compiles the rules into a single Rule using
+        rule_builder's native filtering (via Dep as OptionFilter).
+        Resolves to True_() if there are no rules.
+        """
         rulelist: list[Rule] = []
-        for rule in self.rules:
-            if rule.when(wconf):
-                rulelist.append(rule.rule)
+        for unit in self.rules:
+            if unit.when is dep_none:
+                rulelist.append(unit.rule)
+            else:
+                rulelist.append(Filtered(unit.rule, options=(unit.when,)))
         rllen = len(rulelist)
+        if rllen == 0:
+            return True_()
         if rllen == 1:
             return rulelist[0]
-        if rllen > 1:
-            return And(*rulelist)
-        return True_()
+        return And(*rulelist)
+
+def when(rule: Rule, dep: Dep) -> Rule:
+    """Wraps a rule with a dep condition, resolving to False if the condition is not met."""
+    return Filtered(rule, options=(dep,))

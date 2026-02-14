@@ -12,6 +12,7 @@ from . import options as odefs
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
     version: odefs.Version
+    wconfig: odefs.WConfig
     use_dlc: odefs.DeliciousLastCourse
     mode: odefs.GameMode
     expert_mode: odefs.ExpertMode

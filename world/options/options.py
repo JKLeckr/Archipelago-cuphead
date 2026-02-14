@@ -5,7 +5,7 @@ from typing import ClassVar
 
 from Options import Choice, DefaultOnToggle, FreeText, OptionSet, Range, Toggle, Visibility
 
-from .optionbase import ChoiceEx, LevelDict, Weight
+from .optionbase import ChoiceEx, LevelDict, WConfOption, Weight
 
 
 class Version(FreeText):
@@ -17,6 +17,16 @@ class Version(FreeText):
     display_name = "APWorld Version"
     visibility = Visibility.spoiler
     default = "MISSINGVER"
+
+class WConfig(WConfOption):
+    """
+    Internal. Used for rule builder.
+    The world configuration constructed from options
+    """
+    name = "wconfig"
+    display_name = "APWorld WorldConfig"
+    visibility = Visibility.none
+    default = None
 
 class DeliciousLastCourse(Toggle):
     """

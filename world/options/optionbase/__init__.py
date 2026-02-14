@@ -1,14 +1,20 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+from __future__ import annotations
+
+import typing
 from collections.abc import Iterable
 from typing import Any
 
 from typing_extensions import override
 
-from Options import Choice, OptionDict, OptionError, Range
+from Options import Choice, Option, OptionDict, OptionError, Range
 
 from . import _levelset
+
+if typing.TYPE_CHECKING:
+    from ...wconf import WorldConfig
 
 
 class ChoiceEx(Choice):
@@ -46,3 +52,44 @@ class LevelDict(OptionDict):
             else:
                 raise OptionError(f"Option {self.__class__.__name__} contains invalid levels. '{x}: {y}' is invalid")
         super().__init__(res)
+
+class WConfOption(Option["WorldConfig | None"]):
+    value: WorldConfig | None
+    default = None
+
+    supports_weighting = False
+
+    def __init__(self, value: WorldConfig | None = None):
+        from ...wconf import WorldConfig
+
+        assert isinstance(value, WorldConfig | None), "value of WConfOption must be a WorldConfig or None"
+        self.value = value
+
+    @property
+    @override
+    def current_key(self) -> str:
+        return str(hash(self.value))
+
+    @classmethod
+    @override
+    def from_any(cls, data: Any) -> WConfOption:
+        from ...wconf import WorldConfig
+
+        if isinstance(data, WorldConfig | None):
+            return cls(data)
+        raise ValueError("data is not a WorldConfig")
+
+    @classmethod
+    @override
+    def get_option_name(cls, value) -> str:  # pyright: ignore[reportMissingParameterType]
+        return str(hash(value))
+
+    @override
+    def __hash__(self):
+        return hash(self.value)
+
+    @override
+    def __eq__(self, other: Any):
+        if isinstance(other, self.__class__):
+            return other.value == self.value
+        raise TypeError(f"Can't compare {self.__class__.__name__} with {other.__class__.__name__}")
