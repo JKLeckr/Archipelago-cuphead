@@ -11,27 +11,27 @@ from Options import NumericOption, Option, Visibility
 
 T = TypeVar("T")
 
-class NonUserOption(Option[Any], Generic[T]):
+class ConstOption(Option[Any], Generic[T]):
     value: T
-    default: ClassVar[Any]
+    default: ClassVar[Any] = 0
     visibility = Visibility.none
 
     def __init__(self):
-        self.value = self.default
+        pass
 
     @classmethod
     @override
-    def from_any(cls, data: Any) -> NonUserOption[T]:
-        return NonUserOption[T]()
+    def from_any(cls, data: Any) -> ConstOption[T]:
+        return ConstOption[T]()
 
-class NonUserNumericOption(NumericOption):
+class ConstNumericOption(NumericOption):
     value: int
     visibility = Visibility.none
 
     def __init__(self):
-        self.value = self.default
+        pass
 
     @classmethod
     @override
-    def from_any(cls, data: Any) -> NonUserNumericOption:
-        return NonUserNumericOption()
+    def from_any(cls, data: Any) -> ConstNumericOption:
+        return ConstNumericOption()
