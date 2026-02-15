@@ -1,0 +1,48 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
+import typing
+
+if typing.TYPE_CHECKING:
+    from . import CupheadOptions
+
+_bitifiable_fields: list[str] = [
+    "boss_secret_checks",
+    "buster_quest",
+    "dlc_cactusgirl_quest",
+    "dlc_randomize_boat",
+    "dlc_requires_mausoleum",
+    "fourmel_quest",
+    "freemove_isles",
+    "ginger_quest",
+    "hard_logic",
+    "kingdice_bosssanity",
+    "music_quest",
+    "pacifist_quest",
+    "require_secret_shortcuts",
+    "silverworth_quest",
+]
+
+def debitify(options_ref: CupheadOptions, bits: int) -> None:
+    shift = 0
+    for bit in _bitifiable_fields:
+        if (hasattr(options_ref, bit)):
+            res = (bits << shift) & 1
+            setattr(options_ref, bit, bool(res))
+        else:
+            raise KeyError(f"{bit} is not in wconf!")
+        shift += 1
+
+def bitify(options: CupheadOptions) -> int:
+    res = 0
+
+    shift = 0
+    for bit in _bitifiable_fields:
+        if (hasattr(options, bit)):
+            _field = getattr(options, bit)
+            res |= ((1 if _field else 0) << shift) & 1
+        else:
+            raise KeyError(f"{bit} is not in wconf!")
+        shift += 1
+
+    return res

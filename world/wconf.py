@@ -126,7 +126,7 @@ class WorldConfig:
     boss_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.BossGradeChecks)
     boss_secret_checks: bool = create_field(bool, odefs.BossSecretChecks)
     buster_quest: bool = True
-    coin_amounts: tuple[int, int, int] = _get_coin_amounts(None)
+    coin_amounts: tuple[int, int, int] = _get_coin_amounts(None) ## TODO: Left off here with migration
     contract_goal_requirements: int = create_field(int, odefs.ContractGoalRequirements)
     contract_requirements: tuple[int, int, int] = _get_contract_requirements(None)
     dlc_boss_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcBossChaliceChecks)

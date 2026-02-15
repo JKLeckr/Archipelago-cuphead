@@ -2,18 +2,19 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from dataclasses import dataclass
-from random import Random
 
 from Options import OptionGroup, PerGameCommonOptions
 
+from . import constantoptions as codefs
+from . import internaloptions as iodefs
 from . import options as odefs
 
 
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
-    version: odefs.Version
-    wconfig: odefs.WConfig
+    version: iodefs.Version
     use_dlc: odefs.DeliciousLastCourse
+    buster_quest: codefs.BusterQuest
     mode: odefs.GameMode
     expert_mode: odefs.ExpertMode
     start_weapon: odefs.StartWeapon
@@ -132,20 +133,3 @@ cuphead_option_groups = [
         odefs.TrapWeightLoadout,
     ], True),
 ]
-
-def resolve_dependent_options(options: CupheadOptions) -> None:
-    if options.start_maxhealth_p2.value == 0:
-            options.start_maxhealth_p2.value = options.start_maxhealth.value
-
-def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
-    # Resolve Random
-    if options.mode.value == -1:
-        # TODO: Once modes can be combined, remove this and use randint
-        _mode_choices = [1, 2, 4] + ([8, 9, 16, 18] if options.use_dlc else [])
-        options.mode.value = rand.choice(_mode_choices)
-    if options.start_weapon.value == -1:
-        options.start_weapon.value = rand.randint(0,8 if options.use_dlc else 5)
-    if options.boss_grade_checks.value == -1:
-        options.boss_grade_checks.value = rand.randint(0,4 if options.use_dlc else 3)
-    if options.level_shuffle_seed.value == "":
-        options.level_shuffle_seed.value = "".join(rand.choices("0123456789", k=16))

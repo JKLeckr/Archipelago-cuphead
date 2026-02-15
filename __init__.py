@@ -24,6 +24,8 @@ from .world.locations import locationdefs as ld
 from .world.locations.locationbase import LocationData
 from .world.names import itemnames, regionnames
 from .world.options import CupheadOptions, presets
+from .world.options import optionbits as obits
+from .world.options import optionresolver as oresolver
 from .world.options.optionsanitizer import OptionSanitizer
 from .world.rules import rules
 from .world.settings import CupheadSettings
@@ -114,19 +116,13 @@ class CupheadWorld(World):
                 else:
                     print(f"re_gen_setup: WARNING: {okey} is not registered!")
 
-            bits: int = slot_data["gen_bits"] # TODO: TEST
+            bits: int = slot_data["gen_bits"]
 
-            slot_data_attrs = ["shop_mode", "contract_requirements", "dlc_ingredient_requirements"]
-            attrs: dict[str, Any] = {}
-            for name in slot_data_attrs:
-                attrs[name] = slot_data[name]
+            self.options.shop_mode = slot_data["shop_mode"] # TODO: Finish
+            self.options.contract_requirements = slot_data["contract_requirements"]
+            self.options.dlc_ingredient_requirements = slot_data["dlc_ingredient_requirements"]
 
-            self.wconfig = WorldConfig(
-                with_options=self.options,
-                with_bits=bits,
-                with_attrs=attrs
-            )
-            self.options.wconfig.value = self.wconfig
+            obits.debitify(self.options, bits) # TODO: TEST
 
             self.level_map = slot_data["level_map"]
             self.shop = ShopData(slot_data["shop_map"])
@@ -138,10 +134,10 @@ class CupheadWorld(World):
 
         self.options.version.value = self.APWORLD_VERSION
 
-        self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
+        oresolver.resolve_dependent_options(self.options)
+        oresolver.resolve_random_options(self.options, self.random)
 
-        options.resolve_dependent_options(self.options)
-        options.resolve_random_options(self.options, self.random)
+        self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
 
         self.option_sanitizer.sanitize_options()
 

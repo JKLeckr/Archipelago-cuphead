@@ -4,8 +4,10 @@
 from typing import Protocol
 
 
-class CupheadOption(Protocol):
+class NamedOption(Protocol):
     name: str
+
+class CupheadOption(NamedOption, Protocol):
     @property
     def current_key(self) -> str:
         return ""
