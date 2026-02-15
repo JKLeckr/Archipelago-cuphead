@@ -126,7 +126,7 @@ class WorldConfig:
     boss_grade_checks: e.GradeCheckMode = create_field(e.GradeCheckMode, odefs.BossGradeChecks)
     boss_secret_checks: bool = create_field(bool, odefs.BossSecretChecks)
     buster_quest: bool = True
-    coin_amounts: tuple[int, int, int] = _get_coin_amounts(None) ## TODO: Left off here with migration
+    coin_amounts: tuple[int, int, int] = _get_coin_amounts(None)
     contract_goal_requirements: int = create_field(int, odefs.ContractGoalRequirements)
     contract_requirements: tuple[int, int, int] = _get_contract_requirements(None)
     dlc_boss_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcBossChaliceChecks)
@@ -140,7 +140,7 @@ class WorldConfig:
     dlc_kingdice_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcDicePalaceChaliceChecks)
     dlc_kingsleap: e.ChessCastleMode = create_field(e.ChessCastleMode, odefs.DlcChessCastle)
     dlc_randomize_boat: bool = True
-    dlc_requires_mausoleum: bool = True
+    dlc_requires_mausoleum: bool = True ## TODO: Left off here with migration
     dlc_rungun_chalice_checks: e.ChaliceCheckMode = create_field(e.ChaliceCheckMode, odefs.DlcRunGunChaliceChecks)
     expert_mode: bool = create_field(bool, odefs.ExpertMode)
     filler_item_weights: list[tuple[str, int]] = field(default_factory=list[tuple[str, int]])

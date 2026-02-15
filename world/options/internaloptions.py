@@ -1,7 +1,7 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from Options import FreeText, NumericOption, Visibility
+from Options import FreeText, NumericOption, Option, Visibility
 
 from .protocols import NamedOption
 
@@ -19,26 +19,30 @@ class Version(FreeText, NamedOption):
     visibility = Visibility.spoiler
     default = "MISSINGVER"
 
-class Coin1Amount(NumericOption, NamedOption):
+
+class CoinAmounts(Option[tuple[int, int, int]], NamedOption):
     """
     Internal. Set during generation.
-    Amount of 1 coins
+    Amount of each type of coin
     """
-    name = "coin1_amount"
+    name = "coin_amounts"
+    visibility = Visibility.none
+    default = (0, 0, 0)
+
+
+class ContractRequirementsIsle2(NumericOption, NamedOption):
+    """
+    Internal. Set during generation.
+    Amount of contracts needed to access Inkwell Isle II
+    """
+    name = "contract_requirements_isle2"
     visibility = Visibility.none
 
-class Coin2Amount(NumericOption, NamedOption):
-    """
-    Internal. Set during generation.
-    Amount of 2 coins
-    """
-    name = "coin2_amount"
-    visibility = Visibility.none
 
-class Coin3Amount(NumericOption, NamedOption):
+class ContractRequirementsIsle3(NumericOption, NamedOption):
     """
     Internal. Set during generation.
-    Amount of 3 coins
+    Amount of contracts needed to access Inkwell Isle III
     """
-    name = "coin3_amount"
+    name = "contract_requirements_isle3"
     visibility = Visibility.none

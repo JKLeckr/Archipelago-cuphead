@@ -1,10 +1,13 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from typing import ClassVar
+from typing import Any, ClassVar
+
+from typing_extensions import override
 
 from Options import Choice, DefaultOnToggle, FreeText, OptionSet, Range, Toggle, Visibility
 
+from .. import enums
 from .optionbase import ChoiceEx, LevelDict, Weight
 from .protocols import NamedOption
 
@@ -24,6 +27,7 @@ class BossGradeChecks(ChoiceEx, NamedOption):
     option_s_grade = 4
     default = 1
 
+
 class BossSecretChecks(Toggle, NamedOption):
     """
     Also include beating the secret phases that certain bosses have as checks.
@@ -32,6 +36,7 @@ class BossSecretChecks(Toggle, NamedOption):
     """
     name = "boss_secret_checks"
     display_name = "Boss Secret Checks"
+
 
 class ContractGoalRequirements(Range, NamedOption):
     """
@@ -44,6 +49,7 @@ class ContractGoalRequirements(Range, NamedOption):
     range_end = 17
     default = 17
 
+
 class ContractRequirements(Range, NamedOption):
     """
     Set the amount of contracts needed to confront King Dice and, ultimately, the devil.
@@ -55,6 +61,7 @@ class ContractRequirements(Range, NamedOption):
     range_end = 17
     default = 17
 
+
 class DeathLink(Toggle, NamedOption):
     """
     Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
@@ -62,6 +69,7 @@ class DeathLink(Toggle, NamedOption):
     """
     name = "deathlink"
     display_name = "Death Link"
+
 
 class DeathLinkGraceCount(Range, NamedOption):
     """
@@ -73,6 +81,7 @@ class DeathLinkGraceCount(Range, NamedOption):
     range_start = 0
     range_end = 9
     default = 0
+
 
 class DeathLinkMode(Choice, NamedOption):
     """
@@ -91,12 +100,14 @@ class DeathLinkMode(Choice, NamedOption):
     option_per_player = 1
     default = 0
 
+
 class DeliciousLastCourse(Toggle, NamedOption):
     """
     Set whether or not to use Delicious Last Course content (Requires owning the DLC).
     """
     name = "use_dlc"
     display_name = "DLC"
+
 
 class DicePalaceBossSanity(Toggle, NamedOption):
     """
@@ -107,6 +118,7 @@ class DicePalaceBossSanity(Toggle, NamedOption):
     name = "kingdice_bosssanity"
     display_name = "King Dice BossSanity"
     visibility = Visibility.spoiler | Visibility.template
+
 
 class DlcBossChaliceChecks(Choice, NamedOption):
     """
@@ -125,6 +137,7 @@ class DlcBossChaliceChecks(Choice, NamedOption):
     option_separate_grade_required = 6
     default = 0
 
+
 class DlcCactusGirlQuest(Toggle, NamedOption):
     """
     -DLC ONLY-
@@ -135,6 +148,7 @@ class DlcCactusGirlQuest(Toggle, NamedOption):
     """
     name = "dlc_cactusgirl_quest"
     display_name = "[DLC] Cactus Girl Quest"
+
 
 class DlcChaliceCheckGrade(Choice, NamedOption):
     """
@@ -151,6 +165,7 @@ class DlcChaliceCheckGrade(Choice, NamedOption):
     option_a_plus_grade = 3
     option_use_grade_check = 64
     default = 0
+
 
 class DlcChaliceItemsSeparate(OptionSet, NamedOption):
     """
@@ -172,6 +187,45 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
     visibility = Visibility.spoiler
     valid_keys = frozenset({"core_items", "abilities"}) # TODO: Finish
     valid_keys_casefold = True
+    enum_value: enums.ItemGroups
+
+    _key_ebits: ClassVar[dict[str, enums.ItemGroups]] = {
+        "core_items": enums.ItemGroups.CORE_ITEMS,
+        #"weapon_ex": enums.ItemGroups.WEAPON_EX,
+        "abilities": enums.ItemGroups.ABILITIES
+    }
+
+    def _get_separate_items_mode(self) -> enums.ItemGroups:
+        _set = self.value
+        _val = enums.ItemGroups.NONE
+
+        for opt, item_group in self._key_ebits.items():
+            if opt in _set:
+                _val |= item_group
+
+        return _val
+
+    def _get_separate_items_set(self) -> set[str]:
+        _val = self.enum_value
+
+        _set: set[str] = {
+            opt
+            for opt, item_group in self._key_ebits.items()
+            if (_val & item_group) == item_group
+        }
+
+        return _set
+
+    @override
+    def __setattr__(self, name: str, value: Any, /) -> None:
+        super().__setattr__(name, value)
+        if name == "value":
+            self._value_set = True
+            self.enum_value = self._get_separate_items_mode()
+            self._value_set = False
+        elif name == "enum_value" and not self._value_set:
+            self.value = self._get_separate_items_set()
+
 
 class DlcChaliceMode(Choice, NamedOption):
     """
@@ -193,6 +247,7 @@ class DlcChaliceMode(Choice, NamedOption):
     #option_chalice_only = 4
     default = 3
 
+
 class DlcChessCastle(Choice, NamedOption):
     """
     -DLC ONLY-
@@ -205,6 +260,7 @@ class DlcChessCastle(Choice, NamedOption):
     option_exclude_gauntlet = 1
     option_include_all = 3
     default = 1
+
 
 class DlcChessChaliceChecks(Choice, NamedOption):
     """
@@ -221,6 +277,7 @@ class DlcChessChaliceChecks(Choice, NamedOption):
     option_enabled = 1
     option_separate = 2
     default = 0
+
 
 class DlcCurseMode(Choice, NamedOption):
     """
@@ -244,6 +301,7 @@ class DlcCurseMode(Choice, NamedOption):
     #option_always_on_4 = 8
     default = 0
 
+
 class DlcDicePalaceChaliceChecks(Choice, NamedOption):
     """
     --NOT YET IMPLEMENTED--
@@ -260,6 +318,7 @@ class DlcDicePalaceChaliceChecks(Choice, NamedOption):
     option_separate = 2
     default = 0
 
+
 class DlcIngredientGoalRequirements(Range, NamedOption):
     """
     -DLC ONLY-
@@ -272,6 +331,7 @@ class DlcIngredientGoalRequirements(Range, NamedOption):
     range_end = 5
     default = 5
 
+
 class DlcIngredientRequirements(Range, NamedOption):
     """
     -DLC ONLY-
@@ -282,6 +342,7 @@ class DlcIngredientRequirements(Range, NamedOption):
     range_start = 1
     range_end = 5
     default = 5
+
 
 class DlcRunGunChaliceChecks(Choice, NamedOption):
     """
@@ -300,6 +361,7 @@ class DlcRunGunChaliceChecks(Choice, NamedOption):
     option_separate_grade_required = 6
     default = 0
 
+
 class DuckLockPlatDrop(Toggle, NamedOption):
     """
     Allow the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
@@ -310,12 +372,14 @@ class DuckLockPlatDrop(Toggle, NamedOption):
     display_name = "DuckLock PlatDrop"
     visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
 
+
 class ExpertMode(Toggle, NamedOption):
     """
     Set the boss difficulty to expert.
     """
     name = "expert_mode"
     display_name = "Expert Mode"
+
 
 class ExtraCoins(Range, NamedOption):
     """
@@ -327,6 +391,7 @@ class ExtraCoins(Range, NamedOption):
     range_end = 10
     default = 0
 
+
 class FillerWeightExtraHealth(Weight, NamedOption):
     """
     Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
@@ -335,6 +400,7 @@ class FillerWeightExtraHealth(Weight, NamedOption):
     name = "filler_weight_extrahealth"
     display_name = "Extra Health Weight"
     default = 3
+
 
 class FillerWeightFastFire(Weight, NamedOption):
     """
@@ -346,6 +412,7 @@ class FillerWeightFastFire(Weight, NamedOption):
     visibility = Visibility.none
     default = 0
 
+
 class FillerWeightSuperRecharge(Weight, NamedOption):
     """
     Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
@@ -355,12 +422,14 @@ class FillerWeightSuperRecharge(Weight, NamedOption):
     display_name = "Super Recharge Weight"
     default = 3
 
+
 class FreeMoveIsles(Toggle, NamedOption):
     """
     Allow all the levels on each island to be freely accessible without completing a previous level first.
     """
     name = "freemove_isles"
     display_name = "Free Move Isles"
+
 
 class GameMode(ChoiceEx, NamedOption):
     """
@@ -381,6 +450,7 @@ class GameMode(ChoiceEx, NamedOption):
     #option_dlc_beat_saltbaker_isle4_only = 40
     default = 1
 
+
 class HardLogic(Toggle, NamedOption):
     """
     -WORKS, BUT INCOMPLETE-
@@ -392,6 +462,7 @@ class HardLogic(Toggle, NamedOption):
     display_name = "Hard Logic"
     visibility = Visibility.template | Visibility.spoiler
 
+
 class LevelPlacements(LevelDict, NamedOption):
     """
     Define which levels will be placed in which spots when shuffling the levels.
@@ -402,6 +473,7 @@ class LevelPlacements(LevelDict, NamedOption):
     display_name = "Level Placements"
     visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
     default: ClassVar[dict[str, str]] = {}
+
 
 class LevelShuffle(Choice, NamedOption):
     """
@@ -416,6 +488,7 @@ class LevelShuffle(Choice, NamedOption):
     option_plane_separate = 2
     default = 0
 
+
 class LevelShuffleDicePalace(DefaultOnToggle, NamedOption):
     """
     Shuffle the King Dice mini-bosses.
@@ -423,6 +496,7 @@ class LevelShuffleDicePalace(DefaultOnToggle, NamedOption):
     """
     name = "level_shuffle_kingdice"
     display_name = "Shuffle King Dice Bosses"
+
 
 class LevelShuffleSeed(FreeText, NamedOption):
     """
@@ -433,6 +507,7 @@ class LevelShuffleSeed(FreeText, NamedOption):
     display_name = "Level Shuffle Seed"
     visibility = Visibility.spoiler
     default = ""
+
 
 class MaxHealthUpgrades(Range, NamedOption):
     """
@@ -445,6 +520,7 @@ class MaxHealthUpgrades(Range, NamedOption):
     range_end = 3
     default = 0
 
+
 class MinimumFillerItems(Range, NamedOption):
     """
     Set the minimum amount of filler items that should exist in this world.
@@ -455,6 +531,7 @@ class MinimumFillerItems(Range, NamedOption):
     range_start = 0
     range_end = 10
     default = 0
+
 
 class MusicShuffle(Choice, NamedOption):
     """
@@ -472,6 +549,7 @@ class MusicShuffle(Choice, NamedOption):
     #option_all_music = 255
     default = 0
 
+
 class PacifistQuest(Toggle, NamedOption):
     """
     Enable the Pacifist Quest check.
@@ -480,12 +558,14 @@ class PacifistQuest(Toggle, NamedOption):
     name = "pacifist_quest"
     display_name = "Pacifist Quest"
 
+
 class RandomizeAbilities(DefaultOnToggle, NamedOption):
     """
     Randomize essential abilities like Duck, Parry, Dash, etc.
     """
     name = "randomize_abilities"
     display_name = "Randomize Abilities"
+
 
 class RandomizeAimAbilities(Toggle, NamedOption):
     """
@@ -496,6 +576,7 @@ class RandomizeAimAbilities(Toggle, NamedOption):
     name = "randomize_abilities_aim"
     display_name = "Randomize Aim Abilities"
     visibility = Visibility.none
+
 
 class RunGunGradeChecks(Choice, NamedOption):
     """
@@ -512,6 +593,7 @@ class RunGunGradeChecks(Choice, NamedOption):
     alias_pacifist = 5
     default = 1
 
+
 class ShopMode(Choice, NamedOption):
     """
     --NOT YET IMPLEMENTED--
@@ -526,6 +608,7 @@ class ShopMode(Choice, NamedOption):
     option_independent = 2
     default = 0
 
+
 class SilverworthQuest(DefaultOnToggle, NamedOption):
     """
     Enable the Silverworth Quest check.
@@ -533,6 +616,7 @@ class SilverworthQuest(DefaultOnToggle, NamedOption):
     """
     name = "silverworth_quest"
     display_name = "Silverworth Quest"
+
 
 class StartMaxHealth(Range, NamedOption):
     """
@@ -545,6 +629,7 @@ class StartMaxHealth(Range, NamedOption):
     range_end = 4
     default = 3
 
+
 class StartMaxHealthP2(Range, NamedOption):
     """
     Set starting max health for Player 2. Set to 0 to use Player 1's max health.
@@ -555,6 +640,7 @@ class StartMaxHealthP2(Range, NamedOption):
     range_start = 0
     range_end = 4
     default = 0
+
 
 class StartWeapon(ChoiceEx, NamedOption):
     """
@@ -574,6 +660,7 @@ class StartWeapon(ChoiceEx, NamedOption):
     option_dlc_twistup = 8
     default = "random"
 
+
 class TrapLoadoutAnyWeapon(Toggle, NamedOption):
     """
     For Loadout Mixup Trap:
@@ -582,6 +669,7 @@ class TrapLoadoutAnyWeapon(Toggle, NamedOption):
     name = "trap_loadout_anyweapon"
     display_name = "Loadout Mixup Any Item"
     visibility = Visibility.spoiler
+
 
 class TrapWeightFingerJam(Weight, NamedOption):
     """
@@ -593,6 +681,7 @@ class TrapWeightFingerJam(Weight, NamedOption):
     visibility = Visibility.none
     default = 5
 
+
 class TrapWeightLoadout(Weight, NamedOption):
     """
     Set Loadout Mixup Trap weight. Higher weight means it will more likely appear compared to other traps.
@@ -602,6 +691,7 @@ class TrapWeightLoadout(Weight, NamedOption):
     display_name = "Loadout Mixup Trap Weight"
     visibility = Visibility.none
     default = 5
+
 
 class TrapWeightScreen(Weight, NamedOption):
     """
@@ -613,6 +703,7 @@ class TrapWeightScreen(Weight, NamedOption):
     visibility = Visibility.none
     default = 3
 
+
 class TrapWeightSlowFire(Weight, NamedOption):
     """
     Set Slow Fire Trap weight. Higher weight means it will more likely appear compared to other traps.
@@ -623,6 +714,7 @@ class TrapWeightSlowFire(Weight, NamedOption):
     visibility = Visibility.none
     default = 5
 
+
 class TrapWeightSuperDrain(Weight, NamedOption):
     """
     Set Super Drain Trap weight. Higher weight means it will more likely appear compared to other traps.
@@ -632,6 +724,7 @@ class TrapWeightSuperDrain(Weight, NamedOption):
     display_name = "Super Drain Trap Weight"
     visibility = Visibility.none
     default = 5
+
 
 class Traps(Range, NamedOption):
     """
@@ -645,6 +738,7 @@ class Traps(Range, NamedOption):
     range_end = 100
     default = 0
 
+
 class WeaponGate(Toggle, NamedOption):
     """
     --NOT YET IMPLEMENTED--
@@ -653,6 +747,7 @@ class WeaponGate(Toggle, NamedOption):
     name = "weapon_gate"
     display_name = "Weapon Gate"
     visibility = Visibility.none
+
 
 class WeaponMode(Choice, NamedOption):
     """

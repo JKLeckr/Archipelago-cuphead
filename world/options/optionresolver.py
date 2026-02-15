@@ -13,23 +13,24 @@ from . import options as odefs
 if typing.TYPE_CHECKING:
     from . import CupheadOptions
 
-def _get_coin_amounts(options: CupheadOptions | None) -> tuple[int, int, int]:
-    use_dlc = options.use_dlc.value if options else odefs.DeliciousLastCourse.default
-    extra_coins = options.extra_coins.value if options else odefs.ExtraCoins.default
+def _set_coin_amounts(options_ref: CupheadOptions):
+    use_dlc = options_ref.use_dlc.value
+    extra_coins = options_ref.extra_coins.value
     total_single_coins = (40 if use_dlc else 37) + extra_coins
     total_double_coins = 5 if use_dlc else 0
     total_triple_coins = 2 if use_dlc else 1
 
-    return (total_single_coins, total_double_coins, total_triple_coins)
+    options_ref.coin_amounts.value = (total_single_coins, total_double_coins, total_triple_coins)
 
 
-def _get_contract_requirements(options: CupheadOptions | None) -> tuple[int, int, int]:
+def _set_contract_requirements(options_ref: CupheadOptions):
     max_contracts = (5, 10, 17)
-    total_req = options.contract_requirements.value if options else odefs.ContractRequirements.default
+    total_req = options_ref.contract_requirements.value
     die1 = min(total_req // 3, max_contracts[0])
     die2 = min((die1 + total_req) // 2, max_contracts[1])
 
-    return (die1, die2, total_req)
+    options_ref.contract_requirements_isle2.value = die1
+    options_ref.contract_requirements_isle3.value = die2
 
 
 def _get_filler_item_weights(options: CupheadOptions | None) -> list[tuple[str, int]]:
@@ -77,22 +78,6 @@ def _get_trap_item_weights(options: CupheadOptions | None) -> list[tuple[str, in
         (trap, weight) for trap, weight in zip(trap_items, trap_item_weights, strict=True) if weight > 0
     ]
 
-def _get_separate_items_mode(options: CupheadOptions | None) -> e.ItemGroups:
-    _set = (
-        options.dlc_chalice_items_separate.value if options else odefs.DlcChaliceItemsSeparate.default
-    )
-    _val = e.ItemGroups.NONE
-
-    def _get_bit(opt: str, item_group: e.ItemGroups) -> int:
-        return item_group if opt in _set else e.ItemGroups.NONE
-
-    _val |= _get_bit("core_items", e.ItemGroups.CORE_ITEMS)
-    _val |= _get_bit("weapon_ex", e.ItemGroups.WEAPON_EX)
-    _val |= _get_bit("abilities", e.ItemGroups.ABILITIES)
-
-    # TODO: Change this when this is implemented
-    return e.ItemGroups.NONE
-
 # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
 def _get_shop_map(options: CupheadOptions | None) -> list[tuple[int, int]]:
         dlc = options.use_dlc.value if options else odefs.DeliciousLastCourse.default
@@ -101,6 +86,8 @@ def _get_shop_map(options: CupheadOptions | None) -> list[tuple[int, int]]:
 def resolve_dependent_options(options: CupheadOptions) -> None:
     if options.start_maxhealth_p2.value == 0:
         options.start_maxhealth_p2.value = options.start_maxhealth.value
+    _set_coin_amounts(options)
+    _set_contract_requirements(options)
 
 def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
     # Resolve Random

@@ -14,3 +14,19 @@ class BusterQuest(ConstNumericOption, NamedOption):
     """
     name = "buster_quest"
     value = 1
+
+
+class DlcRandomizeBoat(ConstNumericOption, NamedOption):
+    """
+    -NOT SUPPORTED OPTION-
+    """
+    name = "randomize_boat"
+    value = 1
+
+
+class DlcRequiresMausoleum(ConstNumericOption, NamedOption):
+    """
+    -NOT SUPPORTED OPTION-
+    """
+    name = "dlc_requires_mausoleum"
+    value = 1

@@ -5,6 +5,8 @@ from dataclasses import dataclass
 
 from Options import OptionGroup, PerGameCommonOptions
 
+from .. import enums as e
+from ..names import locationnames
 from . import constantoptions as codefs
 from . import internaloptions as iodefs
 from . import options as odefs
@@ -12,9 +14,9 @@ from . import options as odefs
 
 @dataclass
 class CupheadOptions(PerGameCommonOptions):
+    # Options
     version: iodefs.Version
     use_dlc: odefs.DeliciousLastCourse
-    buster_quest: codefs.BusterQuest
     mode: odefs.GameMode
     expert_mode: odefs.ExpertMode
     start_weapon: odefs.StartWeapon
@@ -65,6 +67,34 @@ class CupheadOptions(PerGameCommonOptions):
     trap_weight_loadout: odefs.TrapWeightLoadout
     music_shuffle: odefs.MusicShuffle
     ducklock_platdrop: odefs.DuckLockPlatDrop
+
+    # Internally set options
+    coin_amounts: iodefs.CoinAmounts
+    contract_requirements_isle2 = iodefs.ContractRequirementsIsle2
+    contract_requirements_isle3 = iodefs.ContractRequirementsIsle3
+
+    # Constants (never change)
+    buster_quest: codefs.BusterQuest
+    randomize_boat: codefs.DlcRandomizeBoat
+    dlc_requires_mausoleum: codefs.DlcRequiresMausoleum
+
+    def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
+        return (self.dlc_chalice_items_separate.enum_value & item_group) > 0
+
+    def is_goal_used(self, goal: str) -> bool:
+        if goal == locationnames.loc_event_goal_devil:
+            return (
+                self.mode == e.GameMode.BEAT_DEVIL or
+                self.mode == e.GameMode.DLC_BEAT_BOTH or
+                self.mode == e.GameMode.DLC_BEAT_DEVIL_NO_ISLE4
+            )
+        if goal == locationnames.loc_event_dlc_goal_saltbaker:
+            return (
+                self.mode == e.GameMode.DLC_BEAT_SALTBAKER or
+                self.mode == e.GameMode.DLC_BEAT_BOTH or
+                self.mode == e.GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
+            )
+        return False
 
 cuphead_option_groups = [
     OptionGroup("Main", [
