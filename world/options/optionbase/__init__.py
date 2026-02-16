@@ -8,10 +8,18 @@ from typing import Any
 
 from typing_extensions import override
 
-from Options import Choice, OptionDict, OptionError, Range
+from Options import Choice, OptionDict, OptionError, Range, Toggle
 
 from . import _levelset
 
+
+class BToggle(Toggle):
+    @property
+    def bvalue(self) -> bool:
+        return bool(self.value)
+
+class BDefaultOnToggle(BToggle):
+    default = 1
 
 class ChoiceEx(Choice):
     random_value: int = -1
@@ -23,18 +31,6 @@ class ChoiceEx(Choice):
         if text == "random":
             return cls(cls.random_value)
         return super().from_text(text)
-
-class Weight(Range):
-    range_start = 0
-    range_end = 10
-    weight_max = 100
-
-    def __init__(self, value: int):
-        if value < 0:
-            raise OptionError(f"Option {self.__class__.__name__} cannot be negative!")
-        if value > self.weight_max:
-            raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
-        self.value = value
 
 class LevelDict(OptionDict):
     valid_keys: Iterable[str] = frozenset(_levelset.levels)
@@ -48,3 +44,15 @@ class LevelDict(OptionDict):
             else:
                 raise OptionError(f"Option {self.__class__.__name__} contains invalid levels. '{x}: {y}' is invalid")
         super().__init__(res)
+
+class Weight(Range):
+    range_start = 0
+    range_end = 10
+    weight_max = 100
+
+    def __init__(self, value: int):
+        if value < 0:
+            raise OptionError(f"Option {self.__class__.__name__} cannot be negative!")
+        if value > self.weight_max:
+            raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
+        self.value = value

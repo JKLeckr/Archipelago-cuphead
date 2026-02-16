@@ -30,7 +30,6 @@ from .world.options.optionsanitizer import OptionSanitizer
 from .world.rules import rules
 from .world.settings import CupheadSettings
 from .world.shop import ShopData
-from .world.wconf import WorldConfig
 
 
 class CupheadWebWorld(WebWorld):
@@ -80,8 +79,6 @@ class CupheadWorld(World):
 
     settings: CupheadSettings # type: ignore
 
-    wconfig: WorldConfig
-
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
     active_levels: dict[str, LevelData]
@@ -93,13 +90,13 @@ class CupheadWorld(World):
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
-        if self.wconfig.randomize_abilities:
+        if self.options.randomize_abilities.value:
             self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
             self.multiworld.early_items[self.player][itemnames.item_ability_dash] = 1
-        if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
-            _start_weapon = weapons.weapon_p_dict[self.start_weapon]
+        if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0:
+            _start_weapon = weapons.weapon_p_dict[self.options.start_weapon.value]
             self.multiworld.early_items[self.player][_start_weapon] = 1
-        if (self.wconfig.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+        if (self.options.weapon_mode.value & WeaponMode.EX_SEPARATE) > 0:
             _weapon = self.random.choice(weapons.weapon_ex_dict)
             self.multiworld.early_items[self.player][_weapon] = 1
 
@@ -112,15 +109,15 @@ class CupheadWorld(World):
             for okey in _slot_data_options:
                 opt: Option[Any] | None = getattr(self.options, okey, None)
                 if opt is not None:
-                    setattr(self.options, okey, opt.from_any(slot_data[okey]))
+                    opt.value = opt.from_any(slot_data[okey])
                 else:
                     print(f"re_gen_setup: WARNING: {okey} is not registered!")
 
             bits: int = slot_data["gen_bits"]
 
-            self.options.shop_mode = slot_data["shop_mode"] # TODO: Finish
-            self.options.contract_requirements = slot_data["contract_requirements"]
-            self.options.dlc_ingredient_requirements = slot_data["dlc_ingredient_requirements"]
+            self.options.shop_mode.value = slot_data["shop_mode"] # TODO: Finish
+            self.options.contract_requirements.value = slot_data["contract_requirements"]
+            self.options.dlc_ingredient_requirements.value = slot_data["dlc_ingredient_requirements"]
 
             obits.debitify(self.options, bits) # TODO: TEST
 
@@ -144,26 +141,23 @@ class CupheadWorld(World):
         if self.fake_gen:
             self.re_gen_setup()
         else:
-            # World Config (See wconfig.py)
-            self.wconfig = WorldConfig(with_options=self.options)
-            self.options.wconfig.value = self.wconfig
             #print(self.level_map)
-            self.level_map = levels.setup_level_map(self.wconfig)
-            self.shop = ShopData.create_from_wconf(self.wconfig)
+            self.level_map = levels.setup_level_map(self.options)
+            self.shop = ShopData.create_from_options(self.options)
 
-        self.gen_bits = self.wconfig.bitify()
+        self.gen_bits = obits.bitify(self.options)
 
-        self.topology_present = not self.wconfig.freemove_isles
+        self.topology_present = not self.options.freemove_isles.value
 
-        self.use_dlc = self.wconfig.use_dlc
-        self.start_weapon = self.wconfig.start_weapon
+        self.use_dlc = self.options.use_dlc.value
+        self.start_weapon = self.options.start_weapon.value
 
-        coin_amounts = self.wconfig.coin_amounts
+        coin_amounts = self.options.coin_amounts.value
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        self.active_items = items.setup_items(self.wconfig)
-        self.active_locations = locations.setup_locations(self.wconfig)
-        self.active_levels = levels.setup_levels(self.settings, self.wconfig,self.active_locations)
+        self.active_items = items.setup_items(self.options)
+        self.active_locations = locations.setup_locations(self.options)
+        self.active_levels = levels.setup_levels(self.settings, self.options, self.active_locations)
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
@@ -221,7 +215,7 @@ class CupheadWorld(World):
                 state.add_item(_name, self.player, amount)
                 return True
             return False
-        if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
@@ -245,7 +239,7 @@ class CupheadWorld(World):
                 state.remove_item(_name, self.player, amount)
                 return True
             return False
-        if (self.wconfig.weapon_mode & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
@@ -302,12 +296,6 @@ class CupheadWorld(World):
     def get_start_locations(self) -> list[str]:
         _region = self.multiworld.get_region("Start", self.player)
         return [s.name for s in _region.locations]
-
-    @override
-    def __getattr__(self, item: str) -> Any:
-        if item == "wconfig":
-            return WorldConfig()
-        return super().__getattr__(item)
 
     # For Universal Tracker
     @staticmethod

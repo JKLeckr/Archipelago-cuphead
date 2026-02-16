@@ -8,7 +8,7 @@ import typing
 from ..names import locationnames, regionnames
 
 if typing.TYPE_CHECKING:
-    from ..wconf import WorldConfig
+    from ..options import CupheadOptions
 
 
 shop_weapons = [
@@ -58,5 +58,5 @@ class ShopData:
         self.shop_locations = shop_locations
 
     @classmethod
-    def create_from_wconf(cls, wconf: WorldConfig) -> ShopData:
-        return ShopData(wconf.shop_map)
+    def create_from_options(cls, options: CupheadOptions) -> ShopData:
+        return ShopData(options.shop_map.value)

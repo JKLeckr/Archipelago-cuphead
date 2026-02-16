@@ -5,10 +5,10 @@ from typing import Any, ClassVar
 
 from typing_extensions import override
 
-from Options import Choice, DefaultOnToggle, FreeText, OptionSet, Range, Toggle, Visibility
+from Options import Choice, FreeText, OptionSet, Range, Visibility
 
-from .. import enums
-from .optionbase import ChoiceEx, LevelDict, Weight
+from .. import enums as e
+from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, LevelDict, Weight
 from .protocols import NamedOption
 
 ## Option classes
@@ -28,7 +28,7 @@ class BossGradeChecks(ChoiceEx, NamedOption):
     default = 1
 
 
-class BossSecretChecks(Toggle, NamedOption):
+class BossSecretChecks(BToggle, NamedOption):
     """
     Also include beating the secret phases that certain bosses have as checks.
     The boss levels include: Botanic Panic, Pyramid Peril, Dramatic Fanatic, and Doggone Dogfight (DLC).
@@ -62,7 +62,7 @@ class ContractRequirements(Range, NamedOption):
     default = 17
 
 
-class DeathLink(Toggle, NamedOption):
+class DeathLink(BToggle, NamedOption):
     """
     Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
     In Cuphead, this only applies while you are in a level.
@@ -101,7 +101,7 @@ class DeathLinkMode(Choice, NamedOption):
     default = 0
 
 
-class DeliciousLastCourse(Toggle, NamedOption):
+class DeliciousLastCourse(BToggle, NamedOption):
     """
     Set whether or not to use Delicious Last Course content (Requires owning the DLC).
     """
@@ -109,7 +109,7 @@ class DeliciousLastCourse(Toggle, NamedOption):
     display_name = "DLC"
 
 
-class DicePalaceBossSanity(Toggle, NamedOption):
+class DicePalaceBossSanity(BToggle, NamedOption):
     """
     ---NOT YET IMPLEMENTED---
     Enable checks for beating the King Dice mini-bosses.
@@ -138,7 +138,7 @@ class DlcBossChaliceChecks(Choice, NamedOption):
     default = 0
 
 
-class DlcCactusGirlQuest(Toggle, NamedOption):
+class DlcCactusGirlQuest(BToggle, NamedOption):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
@@ -187,17 +187,17 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
     visibility = Visibility.spoiler
     valid_keys = frozenset({"core_items", "abilities"}) # TODO: Finish
     valid_keys_casefold = True
-    enum_value: enums.ItemGroups
+    enum_value: e.ItemGroups
 
-    _key_ebits: ClassVar[dict[str, enums.ItemGroups]] = {
-        "core_items": enums.ItemGroups.CORE_ITEMS,
-        #"weapon_ex": enums.ItemGroups.WEAPON_EX,
-        "abilities": enums.ItemGroups.ABILITIES
+    _key_ebits: ClassVar[dict[str, e.ItemGroups]] = {
+        "core_items": e.ItemGroups.CORE_ITEMS,
+        #"weapon_ex": e.ItemGroups.WEAPON_EX,
+        "abilities": e.ItemGroups.ABILITIES
     }
 
-    def _get_separate_items_mode(self) -> enums.ItemGroups:
+    def _get_separate_items_mode(self) -> e.ItemGroups:
         _set = self.value
-        _val = enums.ItemGroups.NONE
+        _val = e.ItemGroups.NONE
 
         for opt, item_group in self._key_ebits.items():
             if opt in _set:
@@ -362,7 +362,7 @@ class DlcRunGunChaliceChecks(Choice, NamedOption):
     default = 0
 
 
-class DuckLockPlatDrop(Toggle, NamedOption):
+class DuckLockPlatDrop(BToggle, NamedOption):
     """
     Allow the dropping-down-platforms-without-duck-by-using-aim-lock exploit.
     This option re-enables that bug that the mod had before alpha02.
@@ -373,7 +373,7 @@ class DuckLockPlatDrop(Toggle, NamedOption):
     visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
 
 
-class ExpertMode(Toggle, NamedOption):
+class ExpertMode(BToggle, NamedOption):
     """
     Set the boss difficulty to expert.
     """
@@ -423,7 +423,7 @@ class FillerWeightSuperRecharge(Weight, NamedOption):
     default = 3
 
 
-class FreeMoveIsles(Toggle, NamedOption):
+class FreeMoveIsles(BToggle, NamedOption):
     """
     Allow all the levels on each island to be freely accessible without completing a previous level first.
     """
@@ -451,7 +451,7 @@ class GameMode(ChoiceEx, NamedOption):
     default = 1
 
 
-class HardLogic(Toggle, NamedOption):
+class HardLogic(BToggle, NamedOption):
     """
     -WORKS, BUT INCOMPLETE-
     Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
@@ -489,7 +489,7 @@ class LevelShuffle(Choice, NamedOption):
     default = 0
 
 
-class LevelShuffleDicePalace(DefaultOnToggle, NamedOption):
+class LevelShuffleDicePalace(BDefaultOnToggle, NamedOption):
     """
     Shuffle the King Dice mini-bosses.
     This option is independent of Level Shuffle.
@@ -550,7 +550,7 @@ class MusicShuffle(Choice, NamedOption):
     default = 0
 
 
-class PacifistQuest(Toggle, NamedOption):
+class PacifistQuest(BToggle, NamedOption):
     """
     Enable the Pacifist Quest check.
     This means that you will have to beat all 6 Run n' Gun levels without beating any enemies (not easy).
@@ -559,23 +559,12 @@ class PacifistQuest(Toggle, NamedOption):
     display_name = "Pacifist Quest"
 
 
-class RandomizeAbilities(DefaultOnToggle, NamedOption):
+class RandomizeAbilities(BDefaultOnToggle, NamedOption):
     """
     Randomize essential abilities like Duck, Parry, Dash, etc.
     """
     name = "randomize_abilities"
     display_name = "Randomize Abilities"
-
-
-class RandomizeAimAbilities(Toggle, NamedOption):
-    """
-    --NOT IMPLEMENTED--
-    Randomize aiming abilities.
-    You will start with only top-right.
-    """
-    name = "randomize_abilities_aim"
-    display_name = "Randomize Aim Abilities"
-    visibility = Visibility.none
 
 
 class RunGunGradeChecks(Choice, NamedOption):
@@ -594,22 +583,7 @@ class RunGunGradeChecks(Choice, NamedOption):
     default = 1
 
 
-class ShopMode(Choice, NamedOption):
-    """
-    --NOT YET IMPLEMENTED--
-    Set shop mode.
-    You get access to higher tiers the more shops you have access to.
-    """
-    name = "shop_mode"
-    display_name = "Shop Mode"
-    visibility = Visibility.spoiler
-    option_tiers = 0
-    #option_strict_tiers = 1
-    option_independent = 2
-    default = 0
-
-
-class SilverworthQuest(DefaultOnToggle, NamedOption):
+class SilverworthQuest(BDefaultOnToggle, NamedOption):
     """
     Enable the Silverworth Quest check.
     This means that you will have to beat 15 levels with at least an A- Grade in order to get this check.
@@ -661,7 +635,7 @@ class StartWeapon(ChoiceEx, NamedOption):
     default = "random"
 
 
-class TrapLoadoutAnyWeapon(Toggle, NamedOption):
+class TrapLoadoutAnyWeapon(BToggle, NamedOption):
     """
     For Loadout Mixup Trap:
     Allow Loadout Mixup to use any item including ones you do not currently have.
@@ -737,16 +711,6 @@ class Traps(Range, NamedOption):
     range_start = 0
     range_end = 100
     default = 0
-
-
-class WeaponGate(Toggle, NamedOption):
-    """
-    --NOT YET IMPLEMENTED--
-    Add a weapon gate which only allows specific weapons for each fight.
-    """
-    name = "weapon_gate"
-    display_name = "Weapon Gate"
-    visibility = Visibility.none
 
 
 class WeaponMode(Choice, NamedOption):

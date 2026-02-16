@@ -32,12 +32,9 @@ class CupheadOptions(PerGameCommonOptions):
     level_shuffle_seed: odefs.LevelShuffleSeed
     level_placements: odefs.LevelPlacements
     freemove_isles: odefs.FreeMoveIsles
-    #shop_mode: odefs.ShopMode
     deathlink: odefs.DeathLink
     deathlink_grace_count: odefs.DeathLinkGraceCount
-    #weapon_gate: odefs.WeaponGate
     randomize_abilities: odefs.RandomizeAbilities
-    #randomize_abilities_aim: odefs.RandomizeAimAbilities
     boss_secret_checks: odefs.BossSecretChecks
     boss_grade_checks: odefs.BossGradeChecks
     rungun_grade_checks: odefs.RunGunGradeChecks
@@ -72,11 +69,20 @@ class CupheadOptions(PerGameCommonOptions):
     coin_amounts: iodefs.CoinAmounts
     contract_requirements_isle2 = iodefs.ContractRequirementsIsle2
     contract_requirements_isle3 = iodefs.ContractRequirementsIsle3
+    filler_item_weights = iodefs.FillerItemWeights
+    shop_map = iodefs.ShopMap
+    trap_item_weights = iodefs.TrapItemWeights
 
     # Constants (never change)
     buster_quest: codefs.BusterQuest
     randomize_boat: codefs.DlcRandomizeBoat
     dlc_requires_mausoleum: codefs.DlcRequiresMausoleum
+    fourmel_quest: codefs.FourMelQuest
+    ginger_quest: codefs.GingerQuest
+    lucien_quest: codefs.LucienQuest
+    randomize_abilities_aim: codefs.RandomizeAimAbilities
+    shop_mode: codefs.ShopMode # TODO: Finish
+    weapon_gate: codefs.WeaponGate
 
     def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
         return (self.dlc_chalice_items_separate.enum_value & item_group) > 0

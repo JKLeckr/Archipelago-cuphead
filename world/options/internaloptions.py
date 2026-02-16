@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+from typing import ClassVar
+
 from Options import FreeText, NumericOption, Option, Visibility
 
 from .protocols import NamedOption
@@ -46,3 +48,33 @@ class ContractRequirementsIsle3(NumericOption, NamedOption):
     """
     name = "contract_requirements_isle3"
     visibility = Visibility.none
+
+
+class FillerItemWeights(Option[dict[str, int]], NamedOption):
+    """
+    Internal. Set during generation.
+    The formatted result of all the item weights set in options
+    """
+    name = "filler_item_weights"
+    visibility = Visibility.none
+    default: ClassVar[dict[str, int]] = {}
+
+
+class ShopMap(Option[list[tuple[int, int]]], NamedOption):
+    """
+    Internal. Set during generation.
+    The mapping of the item distribution in the shop
+    """
+    name = "shop_map"
+    visibility = Visibility.none
+    default: ClassVar[list[tuple[int, int]]] = []
+
+
+class TrapItemWeights(Option[dict[str, int]], NamedOption):
+    """
+    Internal. Set during generation.
+    The formatted result of all the trap weights set in options
+    """
+    name = "trap_item_weights"
+    visibility = Visibility.none
+    default: ClassVar[dict[str, int]] = {}

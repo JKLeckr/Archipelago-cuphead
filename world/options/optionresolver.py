@@ -6,9 +6,7 @@ from __future__ import annotations
 import typing
 from random import Random
 
-from .. import enums as e
 from ..names import itemnames
-from . import options as odefs
 
 if typing.TYPE_CHECKING:
     from . import CupheadOptions
@@ -33,27 +31,25 @@ def _set_contract_requirements(options_ref: CupheadOptions):
     options_ref.contract_requirements_isle3.value = die2
 
 
-def _get_filler_item_weights(options: CupheadOptions | None) -> list[tuple[str, int]]:
+def _set_filler_item_weights(options_ref: CupheadOptions):
     filler_items: list[str] = [
         itemnames.item_level_extrahealth,
         itemnames.item_level_supercharge,
         itemnames.item_level_fastfire,
     ]
     filler_item_weights: list[int] = [
-        options.filler_weight_extrahealth.value,
-        options.filler_weight_supercharge.value,
-        options.filler_weight_fastfire.value,
-    ] if options else [
-        odefs.FillerWeightExtraHealth.default,
-        odefs.FillerWeightSuperRecharge.default,
-        odefs.FillerWeightFastFire.default,
+        options_ref.filler_weight_extrahealth.value,
+        options_ref.filler_weight_supercharge.value,
+        options_ref.filler_weight_fastfire.value,
     ]
-    return [
-        (item, weight) for item, weight in zip(filler_items, filler_item_weights, strict=True) if weight > 0
-    ]
+    options_ref.filler_item_weights.value = {
+        item: weight
+        for item, weight in zip(filler_items, filler_item_weights, strict=True)
+        if weight > 0
+    }
 
 
-def _get_trap_item_weights(options: CupheadOptions | None) -> list[tuple[str, int]]:
+def _set_trap_item_weights(options_ref: CupheadOptions):
     trap_items: list[str] = [
         itemnames.item_level_trap_fingerjam,
         itemnames.item_level_trap_slowfire,
@@ -62,32 +58,33 @@ def _get_trap_item_weights(options: CupheadOptions | None) -> list[tuple[str, in
         itemnames.item_level_trap_screen,
     ]
     trap_item_weights: list[int] = [
-        options.trap_weight_fingerjam.value,
-        options.trap_weight_slowfire.value,
-        options.trap_weight_superdrain.value,
-        options.trap_weight_loadout.value,
-        0,
-    ] if options else [
-        odefs.TrapWeightFingerJam.default,
-        odefs.TrapWeightSlowFire.default,
-        odefs.TrapWeightSuperDrain.default,
-        odefs.TrapWeightLoadout.default,
+        options_ref.trap_weight_fingerjam.value,
+        options_ref.trap_weight_slowfire.value,
+        options_ref.trap_weight_superdrain.value,
+        options_ref.trap_weight_loadout.value,
         0,
     ]
-    return [
-        (trap, weight) for trap, weight in zip(trap_items, trap_item_weights, strict=True) if weight > 0
-    ]
+    options_ref.trap_item_weights.value = {
+        trap: weight
+        for trap, weight in zip(trap_items, trap_item_weights, strict=True)
+        if weight > 0
+    }
 
 # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
-def _get_shop_map(options: CupheadOptions | None) -> list[tuple[int, int]]:
-        dlc = options.use_dlc.value if options else odefs.DeliciousLastCourse.default
-        return [(2,2), (2,2), (1,2), (3,2)] if not dlc else [(2,2), (2,2), (2,2), (2,2)]
+def _set_shop_map(options_ref: CupheadOptions):
+    dlc = options_ref.use_dlc.value
+    options_ref.shop_map.value = (
+        [(2,2), (2,2), (1,2), (3,2)] if not dlc else [(2,2), (2,2), (2,2), (2,2)]
+    )
 
 def resolve_dependent_options(options: CupheadOptions) -> None:
     if options.start_maxhealth_p2.value == 0:
         options.start_maxhealth_p2.value = options.start_maxhealth.value
     _set_coin_amounts(options)
     _set_contract_requirements(options)
+    _set_filler_item_weights(options)
+    _set_trap_item_weights(options)
+    _set_shop_map(options)
 
 def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
     # Resolve Random

@@ -3,6 +3,8 @@
 
 import typing
 
+from Options import Option
+
 if typing.TYPE_CHECKING:
     from . import CupheadOptions
 
@@ -28,7 +30,8 @@ def debitify(options_ref: CupheadOptions, bits: int) -> None:
     for bit in _bitifiable_fields:
         if (hasattr(options_ref, bit)):
             res = (bits << shift) & 1
-            setattr(options_ref, bit, bool(res))
+            _field: Option[typing.Any] = getattr(options_ref, bit)
+            _field.value = bool(res)
         else:
             raise KeyError(f"{bit} is not in wconf!")
         shift += 1
@@ -39,8 +42,8 @@ def bitify(options: CupheadOptions) -> int:
     shift = 0
     for bit in _bitifiable_fields:
         if (hasattr(options, bit)):
-            _field = getattr(options, bit)
-            res |= ((1 if _field else 0) << shift) & 1
+            _field: Option[typing.Any] = getattr(options, bit)
+            res |= ((1 if _field.value else 0) << shift) & 1
         else:
             raise KeyError(f"{bit} is not in wconf!")
         shift += 1

@@ -9,7 +9,7 @@ from random import Random
 from ..auxiliary import scrub_list
 from ..locations.locationbase import LocationData
 from ..names import regionnames
-from ..wconf import WorldConfig
+from ..options import CupheadOptions
 from . import leveldefs as ldef
 from . import levelids, levelshuffle
 from .levelbase import LevelData
@@ -19,10 +19,10 @@ if typing.TYPE_CHECKING:
 
 def setup_levels(
         settings: CupheadSettings,
-        wconf: WorldConfig,
+        options: CupheadOptions,
         active_locations: dict[str,LocationData]
     ) -> dict[str,LevelData]:
-    use_dlc = wconf.use_dlc
+    use_dlc = options.use_dlc.bvalue
     levels: dict[str,LevelData] = {}
 
     _debug_scrub = settings.is_debug_bit_on(32)
@@ -46,15 +46,20 @@ def setup_levels(
 
     return levels
 
-def setup_level_map(wconf: WorldConfig) -> dict[int,int]:
-    rand = Random(wconf.level_shuffle_seed)
+def setup_level_map(options: CupheadOptions) -> dict[int,int]:
+    rand = Random(options.level_shuffle_seed.value)
     level_map: dict[int,int] = {}
 
     level_map.update(
-        levelshuffle.get_level_shuffle_map(rand, wconf.use_dlc, wconf.level_shuffle, wconf.level_shuffle_kingdice)
+        levelshuffle.get_level_shuffle_map(
+            rand,
+            options.use_dlc.bvalue,
+            options.level_shuffle.value,
+            options.level_shuffle_kingdice.value
+        )
     )
 
-    for k,v in wconf.level_placements.items():
+    for k,v in options.level_placements.value.items():
         level_map[levelids.level_to_id[k]] = levelids.level_to_id[v]
 
     return level_map
