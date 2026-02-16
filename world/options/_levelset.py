@@ -1,7 +1,7 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from ...names import regionnames
+from ..names import regionnames
 
 levels: set[str] = {
     regionnames.level_boss_veggies,
