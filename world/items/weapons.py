@@ -3,7 +3,7 @@
 
 from ..enums import WeaponMode
 from ..names import itemnames
-from ..wconf import WorldConfig
+from ..options import CupheadOptions
 
 weapon_dict: dict[int,str] = {
     0: itemnames.item_weapon_peashooter,
@@ -40,7 +40,9 @@ weapon_p_dict: dict[int,str] = {
 }
 weapon_to_index: dict[str, int] = {y:x for x,y in weapon_dict.items()}
 
-def get_weapon_dict(wconf: WorldConfig, dlc_weapons: bool = True) -> dict[int,str]:
-    orig_weapon_dict: dict[int,str] = weapon_p_dict if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0 else weapon_dict
-    nweapon_dict: dict[int,str] = {k:v for k,v in orig_weapon_dict.items() if k<6 or dlc_weapons}
+def get_weapon_dict(options: CupheadOptions, dlc_weapons: bool = True) -> dict[int,str]:
+    orig_weapon_dict: dict[int,str] = (
+        weapon_p_dict if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 else weapon_dict
+    )
+    nweapon_dict: dict[int,str] = {k: v for k, v in orig_weapon_dict.items() if k < 6 or dlc_weapons}
     return nweapon_dict

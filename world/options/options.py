@@ -1,25 +1,27 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from typing import Any, ClassVar
+from collections.abc import Mapping
+from typing import Any
 
 from typing_extensions import override
 
 from Options import Choice, FreeText, OptionSet, Range, Visibility
 
 from .. import enums as e
-from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, LevelDict, Weight
+from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, LevelDict, Weight
 from .protocols import NamedOption
 
 ## Option classes
 
-class BossGradeChecks(ChoiceEx, NamedOption):
+class BossGradeChecks(EnumOption[e.GradeCheckMode], ChoiceEx, NamedOption):
     """
     Enable grade checks for Boss Levels.
     NOTE: S Grade option will be treated as A+ Grade if Expert Mode is disabled.
     """
     name = "boss_grade_checks"
     display_name = "Boss Grade Checks"
+    enum_type = e.GradeCheckMode
     option_disabled = 0
     option_a_minus_grade = 1
     option_a_grade = 2
@@ -120,7 +122,7 @@ class DicePalaceBossSanity(BToggle, NamedOption):
     visibility = Visibility.spoiler | Visibility.template
 
 
-class DlcBossChaliceChecks(Choice, NamedOption):
+class DlcBossChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
@@ -130,6 +132,7 @@ class DlcBossChaliceChecks(Choice, NamedOption):
     """
     name = "dlc_boss_chalice_checks"
     display_name = "[DLC] Boss Chalice Checks"
+    enum_type = e.ChaliceCheckMode
     option_disabled = 0
     option_enabled = 1
     option_separate = 2
@@ -187,9 +190,9 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
     visibility = Visibility.spoiler
     valid_keys = frozenset({"core_items", "abilities"}) # TODO: Finish
     valid_keys_casefold = True
-    enum_value: e.ItemGroups
+    evalue: e.ItemGroups
 
-    _key_ebits: ClassVar[dict[str, e.ItemGroups]] = {
+    _key_ebits: Mapping[str, e.ItemGroups] = {
         "core_items": e.ItemGroups.CORE_ITEMS,
         #"weapon_ex": e.ItemGroups.WEAPON_EX,
         "abilities": e.ItemGroups.ABILITIES
@@ -206,7 +209,7 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
         return _val
 
     def _get_separate_items_set(self) -> set[str]:
-        _val = self.enum_value
+        _val = self.evalue
 
         _set: set[str] = {
             opt
@@ -221,13 +224,13 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
         super().__setattr__(name, value)
         if name == "value":
             self._value_set = True
-            self.enum_value = self._get_separate_items_mode()
+            self.evalue = self._get_separate_items_mode()
             self._value_set = False
-        elif name == "enum_value" and not self._value_set:
+        elif name == "evalue" and not self._value_set:
             self.value = self._get_separate_items_set()
 
 
-class DlcChaliceMode(Choice, NamedOption):
+class DlcChaliceMode(EnumOption[e.ChaliceMode], Choice, NamedOption):
     """
     -DLC ONLY-
     Enable Ms. Chalice and the Astral Cookie.
@@ -239,6 +242,7 @@ class DlcChaliceMode(Choice, NamedOption):
     """
     name = "dlc_chalice"
     display_name = "[DLC] Ms. Chalice"
+    enum_type = e.ChaliceMode
     option_disabled = 0
     option_start = 1
     option_vanilla = 2
@@ -248,7 +252,7 @@ class DlcChaliceMode(Choice, NamedOption):
     default = 3
 
 
-class DlcChessCastle(Choice, NamedOption):
+class DlcChessCastle(EnumOption[e.ChessCastleMode], Choice, NamedOption):
     """
     -DLC ONLY-
     Choose how to handle the locations of The King's Leap.
@@ -256,13 +260,14 @@ class DlcChessCastle(Choice, NamedOption):
     """
     name = "dlc_kingsleap"
     display_name = "[DLC] The King's Leap"
+    enum_type = e.ChessCastleMode
     option_exclude = 0
     option_exclude_gauntlet = 1
     option_include_all = 3
     default = 1
 
 
-class DlcChessChaliceChecks(Choice, NamedOption):
+class DlcChessChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
@@ -272,6 +277,7 @@ class DlcChessChaliceChecks(Choice, NamedOption):
     """
     name = "dlc_chess_chalice_checks"
     display_name = "[DLC] Chess Chalice Checks"
+    enum_type = e.ChaliceCheckMode
     visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
     option_enabled = 1
@@ -279,7 +285,7 @@ class DlcChessChaliceChecks(Choice, NamedOption):
     default = 0
 
 
-class DlcCurseMode(Choice, NamedOption):
+class DlcCurseMode(EnumOption[e.CurseMode], Choice, NamedOption):
     """
     -DLC ONLY-
     Set how the cursed and devine relic is handled.
@@ -290,6 +296,7 @@ class DlcCurseMode(Choice, NamedOption):
     """
     name = "dlc_curse_mode"
     display_name = "[DLC] Curse Mode"
+    enum_type = e.CurseMode
     option_off = 0
     option_vanilla = 1
     #option_reverse = 2
@@ -302,7 +309,7 @@ class DlcCurseMode(Choice, NamedOption):
     default = 0
 
 
-class DlcDicePalaceChaliceChecks(Choice, NamedOption):
+class DlcDicePalaceChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
@@ -312,6 +319,7 @@ class DlcDicePalaceChaliceChecks(Choice, NamedOption):
     """
     name = "dlc_kingdice_chalice_checks"
     display_name = "[DLC] King Dice Chalice Checks"
+    enum_type = e.ChaliceCheckMode
     visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
     option_enabled = 1
@@ -344,7 +352,7 @@ class DlcIngredientRequirements(Range, NamedOption):
     default = 5
 
 
-class DlcRunGunChaliceChecks(Choice, NamedOption):
+class DlcRunGunChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
@@ -354,6 +362,7 @@ class DlcRunGunChaliceChecks(Choice, NamedOption):
     """
     name = "dlc_rungun_chalice_checks"
     display_name = "[DLC] Run n' Gun Chalice Checks"
+    enum_type = e.ChaliceCheckMode
     option_disabled = 0
     option_enabled = 1
     option_separate = 2
@@ -431,13 +440,14 @@ class FreeMoveIsles(BToggle, NamedOption):
     display_name = "Free Move Isles"
 
 
-class GameMode(ChoiceEx, NamedOption):
+class GameMode(EnumOption[e.GameMode], ChoiceEx, NamedOption):
     """
     Set the mode of the randomizer which includes goal.
     NOTE: If DLC is not enabled, picking DLC modes will pick a random mode from the base game instead.
     """
     name = "mode"
     display_name = "Mode"
+    enum_type = e.GameMode
     _isle_4_bit = 32
     option_beat_devil = 1
     option_collect_contracts = 2
@@ -472,10 +482,10 @@ class LevelPlacements(LevelDict, NamedOption):
     name = "level_placements"
     display_name = "Level Placements"
     visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
-    default: ClassVar[dict[str, str]] = {}
+    default: Mapping[str, str] = {}
 
 
-class LevelShuffle(Choice, NamedOption):
+class LevelShuffle(EnumOption[e.LevelShuffleMode], Choice, NamedOption):
     """
     Shuffle the Boss and Run n' Gun levels.
     Bosses and Run n' Guns are shuffled within their own group.
@@ -483,6 +493,7 @@ class LevelShuffle(Choice, NamedOption):
     """
     name = "level_shuffle"
     display_name = "Level Shuffle"
+    enum_type = e.LevelShuffleMode
     option_disabled = 0
     option_enabled = 1
     option_plane_separate = 2
@@ -567,13 +578,14 @@ class RandomizeAbilities(BDefaultOnToggle, NamedOption):
     display_name = "Randomize Abilities"
 
 
-class RunGunGradeChecks(Choice, NamedOption):
+class RunGunGradeChecks(EnumOption[e.GradeCheckMode], Choice, NamedOption):
     """
     Enable grade checks for Run n' Gun levels.
     Pacifist: Beat the level without killing any monsters (not easy).
     """
     name = "rungun_grade_checks"
     display_name = "Run n' Gun Grade Checks"
+    enum_type = e.GradeCheckMode
     option_disabled = 0
     option_a_minus_grade = 1
     option_a_grade = 2
@@ -713,7 +725,7 @@ class Traps(Range, NamedOption):
     default = 0
 
 
-class WeaponMode(Choice, NamedOption):
+class WeaponMode(EnumOption[e.WeaponMode], Choice, NamedOption):
     """
     Set how the weapons are shuffled in the pool.
     Options:
@@ -727,6 +739,7 @@ class WeaponMode(Choice, NamedOption):
     """
     name = "weapon_mode"
     display_name = "Weapon Mode"
+    enum_type = e.WeaponMode
     option_normal = 0
     option_progressive = 1
     option_progressive_except_start = 5

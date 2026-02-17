@@ -54,8 +54,8 @@ def setup_level_map(options: CupheadOptions) -> dict[int,int]:
         levelshuffle.get_level_shuffle_map(
             rand,
             options.use_dlc.bvalue,
-            options.level_shuffle.value,
-            options.level_shuffle_kingdice.value
+            options.level_shuffle.evalue,
+            options.level_shuffle_kingdice.bvalue
         )
     )
 

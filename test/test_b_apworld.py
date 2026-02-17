@@ -7,11 +7,9 @@ from typing import ClassVar
 
 from Options import PerGameCommonOptions
 
-from .. import options
-from ..world import wconf
 from ..world.enums import WeaponMode
 from ..world.items import itemdefs as idefs
-from ..world.items import itemsetup, weapons
+from ..world.items import weapons
 from ..world.names import itemnames
 
 
@@ -44,12 +42,6 @@ class TestAPWorldOptionsWConf(unittest.TestCase):
 
         return True
 
-    def test_world_options_in_wconf(self):
-        wconf_fields = {x.name for x in fields(wconf.WorldConfig)}
-        for f in fields(options.CupheadOptions):
-            if self._check_option_name_is_valid(f.name):
-                self.assertIn(f.name, wconf_fields)
-
 class TestAPWorldItemSetup(unittest.TestCase):
     def test_setup_weapons(self):
         _start_weapon = itemnames.item_weapon_peashooter
@@ -72,11 +64,12 @@ class TestAPWorldItemSetup(unittest.TestCase):
 
         for mode in modes:
             with self.subTest(mode[0]):
-                _wconf = wconf.WorldConfig(
+                """_wconf = wconf.WorldConfig(
                     with_attrs={
                         "use_dlc": True,
                         "start_weapon": 0,
                         "weapon_mode": mode[1]
                     }
                 )
-                itemsetup.setup_items(_wconf)
+                itemsetup.setup_items(_wconf)"""
+                self.assertTrue(False) # TODO: Fix the test

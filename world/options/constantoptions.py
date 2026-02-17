@@ -1,14 +1,15 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from .optionbase import ConstNumericOption
+from .. import enums as e
+from .optionbase import BoolOption, ConstNumericOption, EnumOption
 from .protocols import NamedOption
 
 ## Option classes that are used internally and are constant value.
 ## They can never be set by the user. If set by the user, it will be
 ## ignored.
 
-class BusterQuest(ConstNumericOption, NamedOption):
+class BusterQuest(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -16,7 +17,7 @@ class BusterQuest(ConstNumericOption, NamedOption):
     value = 1
 
 
-class DlcRandomizeBoat(ConstNumericOption, NamedOption):
+class DlcRandomizeBoat(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -24,7 +25,7 @@ class DlcRandomizeBoat(ConstNumericOption, NamedOption):
     value = 1
 
 
-class DlcRequiresMausoleum(ConstNumericOption, NamedOption):
+class DlcRequiresMausoleum(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -32,7 +33,7 @@ class DlcRequiresMausoleum(ConstNumericOption, NamedOption):
     value = 1
 
 
-class FourMelQuest(ConstNumericOption, NamedOption):
+class FourMelQuest(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -40,7 +41,7 @@ class FourMelQuest(ConstNumericOption, NamedOption):
     value = 1
 
 
-class GingerQuest(ConstNumericOption, NamedOption):
+class GingerQuest(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -48,7 +49,7 @@ class GingerQuest(ConstNumericOption, NamedOption):
     value = 1
 
 
-class LucienQuest(ConstNumericOption, NamedOption):
+class LucienQuest(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -56,7 +57,23 @@ class LucienQuest(ConstNumericOption, NamedOption):
     value = 0
 
 
-class RandomizeAimAbilities(ConstNumericOption, NamedOption):
+class MusicQuest(BoolOption, ConstNumericOption, NamedOption):
+    """
+    --NOT SUPPORTED OPTION--
+    """
+    name = "music_quest"
+    value = 0
+
+
+class RequireSecretShortcuts(BoolOption, ConstNumericOption, NamedOption):
+    """
+    --NOT SUPPORTED OPTION--
+    """
+    name = "require_secret_shortcuts"
+    value = 1
+
+
+class RandomizeAimAbilities(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     --NOT IMPLEMENTED--
@@ -67,7 +84,8 @@ class RandomizeAimAbilities(ConstNumericOption, NamedOption):
     display_name = "Randomize Aim Abilities"
     value = 0
 
-class ShopMode(ConstNumericOption, NamedOption):
+
+class ShopMode(EnumOption[e.ShopMode], ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     --NOT YET IMPLEMENTED--
@@ -76,6 +94,7 @@ class ShopMode(ConstNumericOption, NamedOption):
     """
     name = "shop_mode"
     display_name = "Shop Mode"
+    enum_type = e.ShopMode
     #visibility = Visibility.spoiler
     option_tiers = 0
     #option_strict_tiers = 1
@@ -84,7 +103,7 @@ class ShopMode(ConstNumericOption, NamedOption):
     value = 0
 
 
-class WeaponGate(ConstNumericOption, NamedOption):
+class WeaponGate(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     --NOT YET IMPLEMENTED--

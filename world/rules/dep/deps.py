@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from ...enums import ChaliceCheckMode, ChaliceMode, WeaponMode
-from ...wconf import WorldConfig
+from ...options import CupheadOptions
 from . import depbase
 from .depbase import Dep, dep
 
@@ -12,7 +12,7 @@ from .depbase import Dep, dep
 
 DEPS = depbase.DEPS
 
-def dep_none(c: WorldConfig) -> bool:
+def dep_none(c: CupheadOptions) -> bool:
     return True
 
 def dep_and(*deps: Dep) -> Dep:
@@ -23,59 +23,65 @@ def dep_not(d: Dep) -> Dep:
     return lambda c: not d(c)
 
 @dep
-def dep_dlc(c: WorldConfig) -> bool:
-    return c.use_dlc
+def dep_dlc(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue
 @dep
-def dep_freemove(c: WorldConfig) -> bool:
-    return c.freemove_isles
+def dep_freemove(c: CupheadOptions) -> bool:
+    return c.freemove_isles.bvalue
 @dep
-def dep_shortcuts(c: WorldConfig) -> bool:
-    return c.require_secret_shortcuts
+def dep_shortcuts(c: CupheadOptions) -> bool:
+    return c.require_secret_shortcuts.bvalue
 @dep
-def dep_agrade_quest(c: WorldConfig) -> bool:
-    return c.silverworth_quest
+def dep_agrade_quest(c: CupheadOptions) -> bool:
+    return c.silverworth_quest.bvalue
 @dep
-def dep_pacifist_quest(c: WorldConfig) -> bool:
-    return c.pacifist_quest
+def dep_pacifist_quest(c: CupheadOptions) -> bool:
+    return c.pacifist_quest.bvalue
 @dep
-def dep_lucien_quest(c: WorldConfig) -> bool:
-    return c.lucien_quest
+def dep_lucien_quest(c: CupheadOptions) -> bool:
+    return c.lucien_quest.bvalue
 @dep
-def dep_music_quest(c: WorldConfig) -> bool:
-    return c.music_quest
+def dep_music_quest(c: CupheadOptions) -> bool:
+    return c.music_quest.bvalue
 @dep
-def dep_dicepalace_sanity(c: WorldConfig) -> bool:
-    return c.kingdice_bosssanity
+def dep_dicepalace_sanity(c: CupheadOptions) -> bool:
+    return c.kingdice_bosssanity.bvalue
 @dep
-def dep_hard_logic(c: WorldConfig) -> bool:
-    return c.hard_logic
+def dep_hard_logic(c: CupheadOptions) -> bool:
+    return c.hard_logic.bvalue
 @dep
-def dep_rando_abilities(c: WorldConfig) -> bool:
-    return c.randomize_abilities
+def dep_rando_abilities(c: CupheadOptions) -> bool:
+    return c.randomize_abilities.bvalue
 @dep
-def dep_weapon_ex_rando(c: WorldConfig) -> bool:
-    return c.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0
+def dep_weapon_ex_rando(c: CupheadOptions) -> bool:
+    return c.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0
 @dep
-def dep_dlc_chalice(c: WorldConfig) -> bool:
-    return c.use_dlc and c.dlc_chalice > 0
+def dep_dlc_chalice(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and c.dlc_chalice.value > 0
 @dep
-def dep_dlc_chalice_only(c: WorldConfig) -> bool:
-    return c.use_dlc and c.dlc_chalice == ChaliceMode.CHALICE_ONLY
+def dep_dlc_chalice_only(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and c.dlc_chalice.evalue == ChaliceMode.CHALICE_ONLY
 @dep
-def dep_dlc_cookie(c: WorldConfig) -> bool:
-    return c.use_dlc and (c.dlc_chalice == ChaliceMode.VANILLA or c.dlc_chalice == ChaliceMode.RANDOMIZED)
+def dep_dlc_cookie(c: CupheadOptions) -> bool:
+    return (
+        c.use_dlc.bvalue and
+        (
+            c.dlc_chalice.evalue == ChaliceMode.VANILLA or
+            c.dlc_chalice.evalue == ChaliceMode.RANDOMIZED
+        )
+    )
 @dep
-def dep_dlc_chaliced_grade_required(c: WorldConfig) -> bool:
-    return c.use_dlc and (c.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+def dep_dlc_chaliced_grade_required(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and (c.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
-def dep_dlc_rungun_chaliced_grade_required(c: WorldConfig) -> bool:
-    return c.use_dlc and (c.dlc_rungun_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+def dep_dlc_rungun_chaliced_grade_required(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and (c.dlc_rungun_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
-def dep_dlc_boatitem(c: WorldConfig) -> bool:
-    return c.use_dlc and c.dlc_randomize_boat
+def dep_dlc_boatitem(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and c.dlc_randomize_boat.bvalue
 @dep
-def dep_dlc_boat_mausoleum(c: WorldConfig) -> bool:
-    return c.use_dlc and c.dlc_requires_mausoleum
+def dep_dlc_boat_mausoleum(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and c.dlc_requires_mausoleum.bvalue
 @dep
-def dep_dlc_cactusgirl_quest(c: WorldConfig) -> bool:
-    return c.use_dlc and c.dlc_cactusgirl_quest
+def dep_dlc_cactusgirl_quest(c: CupheadOptions) -> bool:
+    return c.use_dlc.bvalue and c.dlc_cactusgirl_quest.bvalue

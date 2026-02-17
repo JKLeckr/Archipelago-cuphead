@@ -25,7 +25,7 @@ if typing.TYPE_CHECKING:
 
 def get_regions(world: CupheadWorld) -> list[RegionData]:
     shop_locations = world.shop.shop_locations
-    using_dlc = world.wconfig.use_dlc
+    using_dlc = world.options.use_dlc.bvalue
 
     region_shops: list[RegionData] = []
     region_dlc_shops: list[RegionData] = []
@@ -52,7 +52,7 @@ def get_region_locations(world: CupheadWorld, regc: RegionData) -> list[str]:
         locations = _level.locations
         if regc.locations:
             locations = locations + regc.locations
-        if (regc.flags & 2)>0 and world.wconfig.kingdice_bosssanity:
+        if (regc.flags & 2)>0 and world.options.kingdice_bosssanity.bvalue:
             for ldata in ldef.level_dicepalace_boss.values():
                 locations = locations + ldata.locations
     elif regc.locations:
@@ -112,10 +112,9 @@ def connect_target(world: CupheadWorld, region_name: str, target: Target, locset
 def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
     if not regc.connect_to:
         raise ValueError(f"For {regc.name}: connect_to cannot be None!")
-    wconfig = world.wconfig
     for target in regc.connect_to:
         if target:
-            if target.depends(wconfig):
+            if target.depends(world.options):
                 connect_target(world, regc.name, target, locset)
             elif world.settings.is_debug_bit_on(1):
                 print(f"Skipping Target {target.name}")
@@ -129,7 +128,7 @@ def create_regions(world: CupheadWorld) -> None:
     # Create Regions
     for regc in compile_regions:
         if regc:
-            if regc.depends(world.wconfig):
+            if regc.depends(world.options):
                 create_region(world, regc)
             elif world.settings.is_debug_bit_on(1):
                 print("Skipping Region "+regc.name)
@@ -137,9 +136,9 @@ def create_regions(world: CupheadWorld) -> None:
             print(f"WARNING: For '{compile_regions}': region is None!")
 
     # Connect Region Targets
-    freemove_isles = world.wconfig.freemove_isles
+    freemove_isles = world.options.freemove_isles.bvalue
     for regc in compile_regions:
-        if regc and regc.depends(world.wconfig) and regc.connect_to:
+        if regc and regc.depends(world.options) and regc.connect_to:
             if not freemove_isles or (regc.flags & 1)>0: # If flags contains TGT_IGNORE_FREEMOVE
                 connect_region_targets(world, regc)
 

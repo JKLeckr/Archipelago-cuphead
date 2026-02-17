@@ -4,32 +4,29 @@
 from __future__ import annotations
 
 import dataclasses
-from collections.abc import Callable
 from typing import Any, Self
 
 from typing_extensions import override
 
 from rule_builder.options import OptionFilter
 
-from ...wconf import WorldConfig
+from ...options import CupheadOptions
 from . import deps
-from .depbase import DEPS
+from .depbase import DEPS, Dep
 
 # DepFilters integrate Deps into rule_builder.
 
-Dep = Callable[[WorldConfig], bool]
-
 @dataclasses.dataclass(frozen=True, init=False)
 class DepFilter(OptionFilter):
-    fn: Callable[[WorldConfig], bool]
+    fn: Dep
     __name__: str
 
-    def __init__(self, fn: Callable[[WorldConfig], bool]):
+    def __init__(self, fn: Dep):
         super().__init__(None, None)  # pyright: ignore[reportArgumentType]
         object.__setattr__(self, "fn", fn)
         object.__setattr__(self, "__name__", fn.__name__ if hasattr(fn, "__name__") else "anonymous_dep")
 
-    def __call__(self, c: WorldConfig) -> bool:
+    def __call__(self, c: CupheadOptions) -> bool:
         return self.fn(c)
 
     @override
@@ -51,9 +48,9 @@ class DepFilter(OptionFilter):
     @override
     def check(self, options: Any) -> bool:
         """Tests the given options dataclass to see if it passes this Dep"""
-        if isinstance(options.wconfig, WorldConfig):
-            return self.fn(options.wconfig)
-        raise ValueError("options.wconfig cannot be none!")
+        if isinstance(options, CupheadOptions):
+            return self.fn(options)
+        raise ValueError("options is invalid!")
 
     def __and__(self, other: DepFilter) -> DepFilter:
         return depf_and(self, other)
@@ -76,7 +73,7 @@ def depf_not(d: DepFilter) -> DepFilter:
 
 depf_none = DepFilter(deps.dep_none)
 
-def _make_composite(fn: Callable[[WorldConfig], bool], expr: str) -> DepFilter:
+def _make_composite(fn: Dep, expr: str) -> DepFilter:
     wrapped = DepFilter(fn)
     object.__setattr__(wrapped, "__name__", expr)
     return wrapped

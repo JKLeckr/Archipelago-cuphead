@@ -5,9 +5,10 @@ from __future__ import annotations
 
 from typing import Any, ClassVar
 
-from ... import data
-from ...names import namemap
-from ..dep.deps import DEPS
+from .... import data
+from ....names import namemap
+from ...dep.deps import DEPS
+from ..levelruleselectors import LRSELECTORS
 from . import levelrulejsonbase as lrb
 from .levelrulejsonbase import (
     InheritMode,
@@ -26,7 +27,6 @@ from .levelrulejsonbase import (
     RuleFragment,
     RuleRef,
 )
-from .levelruleselectors import LRSELECTORS
 
 
 class LevelRuleData:

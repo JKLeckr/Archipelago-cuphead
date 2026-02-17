@@ -5,7 +5,7 @@ import unittest
 
 from ..world.levels import levelids
 from ..world.options.optionbase import _levelset
-from ..world.rules.levelrules.levelruledata import LevelRuleData
+from ..world.rules.levelrules.legacy.levelruledata import LevelRuleData
 
 
 class TestCode(unittest.TestCase):

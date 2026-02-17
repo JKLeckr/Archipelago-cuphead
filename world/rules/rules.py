@@ -19,12 +19,19 @@ if typing.TYPE_CHECKING:
 
 def set_rules(world: CupheadWorld):
     w = world
-    wconfig = w.wconfig
+    options = w.options
     use_dlc = w.use_dlc
-    contract_reqs = wconfig.contract_requirements
 
-    rb.set_region_rules(w, regionnames.world_inkwell_2, rb.rule_has(w, itemnames.item_contract, contract_reqs[0]))
-    rb.set_region_rules(w, regionnames.world_inkwell_3, rb.rule_has(w, itemnames.item_contract, contract_reqs[1]))
+    rb.set_region_rules(
+        w,
+        regionnames.world_inkwell_2,
+        rb.rule_has(w, itemnames.item_contract, options.contract_requirements_isle2.value)
+    )
+    rb.set_region_rules(
+        w,
+        regionnames.world_inkwell_3,
+        rb.rule_has(w, itemnames.item_contract, options.contract_requirements_isle3.value)
+    )
 
     set_shop_rules(w)
 
@@ -41,8 +48,8 @@ def set_rules(world: CupheadWorld):
 
 def set_dlc_rules(world: CupheadWorld):
     w = world
-    wconfig = w.wconfig
-    ingredient_reqs = wconfig.dlc_ingredient_requirements
+    options = w.options
+    ingredient_reqs = options.dlc_ingredient_requirements.value
     set_dlc_boat_rules(w)
     rb.set_region_rules(
         w,
@@ -57,9 +64,9 @@ def set_dlc_rules(world: CupheadWorld):
 
 def set_dlc_boat_rules(world: CupheadWorld):
     w = world
-    wconfig = w.wconfig
-    randomize_boat = wconfig.dlc_randomize_boat
-    require_mausoleum = wconfig.dlc_requires_mausoleum
+    options = w.options
+    randomize_boat = options.dlc_randomize_boat.bvalue
+    require_mausoleum = options.dlc_requires_mausoleum.bvalue
     if require_mausoleum:
         rb.add_region_rule(w, regionnames.reg_dlc_boat, rb.rule_has(w, itemnames.item_event_mausoleum))
     if randomize_boat:
@@ -67,23 +74,23 @@ def set_dlc_boat_rules(world: CupheadWorld):
 
 def set_quest_rules(world: CupheadWorld):
     w = world
-    wconfig = w.wconfig
-    if wconfig.fourmel_quest:
+    options = w.options
+    if options.fourmel_quest.bvalue:
         rb.set_item_rule(w, locationnames.loc_quest_4mel, itemnames.item_event_quest_4mel_4th)
-    if wconfig.ginger_quest:
+    if options.ginger_quest.bvalue:
         rb.set_item_rule(w, locationnames.loc_quest_ginger, itemnames.item_event_isle2_shortcut)
-    if wconfig.buster_quest and wconfig.randomize_abilities:
+    if options.buster_quest.bvalue and options.randomize_abilities:
         rb.set_item_rule(w, locationnames.loc_quest_buster, itemnames.item_ability_parry)
-        if wconfig.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+        if options.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
             rb.add_loc_rule(w, locationnames.loc_quest_buster, rb.rule_has_all(w, {
                 itemnames.item_ability_dlc_cdash,
                 itemnames.item_ability_dlc_cparry,
             }), False)
-    if wconfig.silverworth_quest:
+    if options.silverworth_quest.bvalue:
         rb.set_item_rule(w, locationnames.loc_quest_silverworth, itemnames.item_event_agrade, 15)
-    if wconfig.pacifist_quest:
+    if options.pacifist_quest.bvalue:
         rb.set_item_rule(w, locationnames.loc_quest_pacifist, itemnames.item_event_pacifist, 6)
-    if wconfig.music_quest:
+    if options.music_quest.bvalue:
         rb.set_item_rule(w, locationnames.loc_quest_music, itemnames.item_event_ludwig)
 
 def set_level_rules(world: CupheadWorld):
@@ -133,26 +140,29 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
 
 def set_goal(world: CupheadWorld):
     w = world
-    wconfig = w.wconfig
+    options = w.options
     w.set_completion_rule(
         (
-            rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements)
-        ) if wconfig.mode == GameMode.COLLECT_CONTRACTS else (
+            rb.rule_has(w, itemnames.item_contract, options.contract_goal_requirements.value)
+        ) if options.mode.evalue == GameMode.COLLECT_CONTRACTS else (
             rb.rule_can_reach_all_regions(
-                w, regionnames.shop_sets if wconfig.use_dlc else regionnames.base_shop_sets
+                w, regionnames.shop_sets if options.use_dlc else regionnames.base_shop_sets
             )
-        ) if wconfig.mode == GameMode.BUY_OUT_SHOP else (
+        ) if options.mode.evalue == GameMode.BUY_OUT_SHOP else (
             rb.rule_has(w, itemnames.item_event_goal_dlc_saltbakerko)
-        ) if wconfig.mode == GameMode.DLC_BEAT_SALTBAKER or wconfig.mode == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY else (
+        ) if (
+            options.mode.evalue == GameMode.DLC_BEAT_SALTBAKER or
+            options.mode.evalue == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
+        ) else (
             rb.rule_has_all(w, {itemnames.item_event_goal_devilko, itemnames.item_event_goal_dlc_saltbakerko})
-        ) if wconfig.mode == GameMode.DLC_BEAT_BOTH else (
-            rb.rule_has(w, itemnames.item_dlc_ingredient, wconfig.dlc_ingredient_goal_requirements)
-        ) if wconfig.mode == GameMode.DLC_COLLECT_INGREDIENTS else (
+        ) if options.mode.evalue == GameMode.DLC_BEAT_BOTH else (
+            rb.rule_has(w, itemnames.item_dlc_ingredient, options.dlc_ingredient_goal_requirements.value)
+        ) if options.mode.evalue == GameMode.DLC_COLLECT_INGREDIENTS else (
             rb.rule_and(
-                rb.rule_has(w, itemnames.item_contract, wconfig.contract_goal_requirements),
-                rb.rule_has(w, itemnames.item_dlc_ingredient, wconfig.dlc_ingredient_goal_requirements)
+                rb.rule_has(w, itemnames.item_contract, options.contract_goal_requirements.value),
+                rb.rule_has(w, itemnames.item_dlc_ingredient, options.dlc_ingredient_goal_requirements.value)
             )
-        ) if wconfig.mode == GameMode.DLC_COLLECT_BOTH else (
+        ) if options.mode.evalue == GameMode.DLC_COLLECT_BOTH else (
             rb.rule_has(w, itemnames.item_event_goal_devilko)
         )
     )

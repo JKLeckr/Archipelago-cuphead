@@ -147,9 +147,9 @@ class CupheadWorld(World):
 
         self.gen_bits = obits.bitify(self.options)
 
-        self.topology_present = not self.options.freemove_isles.value
+        self.topology_present = not self.options.freemove_isles.bvalue
 
-        self.use_dlc = self.options.use_dlc.value
+        self.use_dlc = self.options.use_dlc.bvalue
         self.start_weapon = self.options.start_weapon.value
 
         coin_amounts = self.options.coin_amounts.value
@@ -215,7 +215,7 @@ class CupheadWorld(World):
                 state.add_item(_name, self.player, amount)
                 return True
             return False
-        if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if (self.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
@@ -239,7 +239,7 @@ class CupheadWorld(World):
                 state.remove_item(_name, self.player, amount)
                 return True
             return False
-        if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if (self.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
             _name = self.collect_item(
                 state,
                 itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),

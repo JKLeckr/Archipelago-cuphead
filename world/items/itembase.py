@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import typing
+from collections.abc import Mapping
 from random import Random
 from typing import NamedTuple
 
@@ -27,11 +28,12 @@ class ItemData(NamedTuple):
     def with_quantity(self, quantity: int) -> ItemData:
         return ItemData(self.id, self.item_type, quantity, self.event, self.category)
 
-def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> str:
+def weighted_item_choice(item_weights: Mapping[str, int], rand: Random) -> str:
     if len(item_weights)<1:
         raise ValueError("item_weights must not be empty!")
 
-    active_items, active_weights = zip(*item_weights, strict=True)
+    active_items = list(item_weights.keys())
+    active_weights = list(item_weights.values())
 
     total_weight = sum(active_weights)
 
@@ -48,4 +50,4 @@ def weighted_item_choice(item_weights: list[tuple[str, int]], rand: Random) -> s
     raise ValueError("Failed to choose an item from weighted_item_choice!")
 
 def get_filler_item_name(world: CupheadWorld) -> str:
-    return weighted_item_choice(world.wconfig.filler_item_weights, world.random)
+    return weighted_item_choice(world.options.filler_item_weights.value, world.random)

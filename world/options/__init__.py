@@ -32,6 +32,7 @@ class CupheadOptions(PerGameCommonOptions):
     level_shuffle_seed: odefs.LevelShuffleSeed
     level_placements: odefs.LevelPlacements
     freemove_isles: odefs.FreeMoveIsles
+    hard_logic: odefs.HardLogic
     deathlink: odefs.DeathLink
     deathlink_grace_count: odefs.DeathLinkGraceCount
     randomize_abilities: odefs.RandomizeAbilities
@@ -67,38 +68,41 @@ class CupheadOptions(PerGameCommonOptions):
 
     # Internally set options
     coin_amounts: iodefs.CoinAmounts
-    contract_requirements_isle2 = iodefs.ContractRequirementsIsle2
-    contract_requirements_isle3 = iodefs.ContractRequirementsIsle3
-    filler_item_weights = iodefs.FillerItemWeights
-    shop_map = iodefs.ShopMap
-    trap_item_weights = iodefs.TrapItemWeights
+    contract_requirements_isle2: iodefs.ContractRequirementsIsle2
+    contract_requirements_isle3: iodefs.ContractRequirementsIsle3
+    filler_item_weights: iodefs.FillerItemWeights
+    shop_map: iodefs.ShopMap
+    trap_item_weights: iodefs.TrapItemWeights
 
     # Constants (never change)
     buster_quest: codefs.BusterQuest
     randomize_boat: codefs.DlcRandomizeBoat
+    dlc_randomize_boat: codefs.DlcRandomizeBoat
     dlc_requires_mausoleum: codefs.DlcRequiresMausoleum
     fourmel_quest: codefs.FourMelQuest
     ginger_quest: codefs.GingerQuest
     lucien_quest: codefs.LucienQuest
+    music_quest: codefs.MusicQuest
+    require_secret_shortcuts: codefs.RequireSecretShortcuts
     randomize_abilities_aim: codefs.RandomizeAimAbilities
     shop_mode: codefs.ShopMode # TODO: Finish
     weapon_gate: codefs.WeaponGate
 
     def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
-        return (self.dlc_chalice_items_separate.enum_value & item_group) > 0
+        return (self.dlc_chalice_items_separate.evalue & item_group) > 0
 
     def is_goal_used(self, goal: str) -> bool:
         if goal == locationnames.loc_event_goal_devil:
             return (
-                self.mode == e.GameMode.BEAT_DEVIL or
-                self.mode == e.GameMode.DLC_BEAT_BOTH or
-                self.mode == e.GameMode.DLC_BEAT_DEVIL_NO_ISLE4
+                self.mode.evalue == e.GameMode.BEAT_DEVIL or
+                self.mode.evalue == e.GameMode.DLC_BEAT_BOTH or
+                self.mode.evalue == e.GameMode.DLC_BEAT_DEVIL_NO_ISLE4
             )
         if goal == locationnames.loc_event_dlc_goal_saltbaker:
             return (
-                self.mode == e.GameMode.DLC_BEAT_SALTBAKER or
-                self.mode == e.GameMode.DLC_BEAT_BOTH or
-                self.mode == e.GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
+                self.mode.evalue == e.GameMode.DLC_BEAT_SALTBAKER or
+                self.mode.evalue == e.GameMode.DLC_BEAT_BOTH or
+                self.mode.evalue == e.GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
             )
         return False
 
@@ -118,6 +122,7 @@ cuphead_option_groups = [
         odefs.LevelShuffleSeed,
         odefs.LevelPlacements,
         odefs.FreeMoveIsles,
+        odefs.HardLogic,
         #odefs.ShopMode,
         #odefs.WeaponGate,
         odefs.RandomizeAbilities,

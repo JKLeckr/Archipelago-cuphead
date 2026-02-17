@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from enum import IntEnum, IntFlag
 from typing import Any, Generic, TypeVar
 
 from typing_extensions import override
@@ -13,11 +14,31 @@ from Options import Choice, NumericOption, Option, OptionDict, OptionError, Rang
 from . import _levelset
 
 T = TypeVar("T")
+TEnum = TypeVar("TEnum", bound=IntEnum)
+TFlag = TypeVar("TFlag", bound=IntFlag)
 
-class BToggle(Toggle):
+class EnumOption(Generic[TEnum]):
+    value: int
+    enum_type: type[TEnum]
+
+    @property
+    def evalue(self) -> TEnum:
+        """enum value"""
+        return self.enum_type(self.value)
+
+    @evalue.setter
+    def evalue(self, value: TEnum | int) -> None:
+        self.value = int(value)
+
+class BoolOption:
+    value: int
+
     @property
     def bvalue(self) -> bool:
+        """bool value"""
         return bool(self.value)
+
+class BToggle(BoolOption, Toggle): ...
 
 class BDefaultOnToggle(BToggle):
     default = 1
@@ -25,11 +46,12 @@ class BDefaultOnToggle(BToggle):
 class ChoiceEx(Choice):
     random_value: int = -1
 
-    @override
     @classmethod
+    @override
     def from_text(cls, text: str) -> Choice:
         text = text.lower()
         if text == "random":
+            cls.name_lookup[cls.random_value] = "RandomInt"
             return cls(cls.random_value)
         return super().from_text(text)
 
@@ -39,14 +61,15 @@ class ConstOption(Option[Any], Generic[T]):
     visibility = Visibility.none
 
     def __init__(self):
-        if not self.value:
-            raise ValueError(f"{self.__class__.__name__} value is not set.")
+        self.value = getattr(self.__class__, "value", self.default)
         self.default = self.value
 
     @classmethod
     @override
     def from_any(cls, data: Any) -> ConstOption[T]:
-        return ConstOption[T]()
+        res = cls()
+        cls.name_lookup[res.value] = str(res.value)
+        return res
 
 class ConstNumericOption(NumericOption):
     value: int
@@ -54,15 +77,15 @@ class ConstNumericOption(NumericOption):
     visibility = Visibility.none
 
     def __init__(self):
-        if not self.value:
-            self.value = self.default
-            raise Warning(f"{self.__class__.__name__} value is not set. Using default value of {self.default}")
+        self.value = int(getattr(self.__class__, "value", self.default))
         self.default = self.value
 
     @classmethod
     @override
     def from_any(cls, data: Any) -> ConstNumericOption:
-        return ConstNumericOption()
+        res = cls()
+        cls.name_lookup[res.value] = str(res.value)
+        return res
 
 class LevelDict(OptionDict):
     valid_keys: Iterable[str] = frozenset(_levelset.levels)

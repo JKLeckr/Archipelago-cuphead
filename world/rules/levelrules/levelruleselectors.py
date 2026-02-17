@@ -12,7 +12,7 @@ from ...names import itemnames
 from .levelrulebase import LRSelector
 
 if typing.TYPE_CHECKING:
-    from ...wconf import WorldConfig
+    from ...options import CupheadOptions
 
 LRSELECTORS: dict[str, LRSelector] = {}
 def selector(fn: LRSelector) -> LRSelector:
@@ -21,15 +21,15 @@ def selector(fn: LRSelector) -> LRSelector:
     return fn
 
 @selector
-def lrs_all_weapon_ex(wconf: WorldConfig) -> Mapping[str, int]:
-    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+def lrs_all_weapon_ex(options: CupheadOptions) -> Mapping[str, int]:
+    if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
         return dict.fromkeys(weapons.weapon_p_dict.values(), 2)
     return dict.fromkeys(weapons.weapon_ex_dict.values(), 1)
 
 @selector
-def lrs_contract_req(wconf: WorldConfig) -> Mapping[str, int]:
-    return {itemnames.item_contract: wconf.contract_requirements[2]}
+def lrs_contract_req(options: CupheadOptions) -> Mapping[str, int]:
+    return {itemnames.item_contract: options.contract_requirements.value}
 
 @selector
-def lrs_dlc_ingredient_req(wconf: WorldConfig) -> Mapping[str, int]:
-    return {itemnames.item_dlc_ingredient: wconf.dlc_ingredient_requirements}
+def lrs_dlc_ingredient_req(options: CupheadOptions) -> Mapping[str, int]:
+    return {itemnames.item_dlc_ingredient: options.dlc_ingredient_requirements.value}

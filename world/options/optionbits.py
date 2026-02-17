@@ -5,8 +5,7 @@ import typing
 
 from Options import Option
 
-if typing.TYPE_CHECKING:
-    from . import CupheadOptions
+from . import CupheadOptions
 
 _bitifiable_fields: list[str] = [
     "boss_secret_checks",

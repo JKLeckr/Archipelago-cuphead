@@ -11,9 +11,9 @@ from enum import IntEnum
 from ...dep import Dep
 
 if typing.TYPE_CHECKING:
-    from ...wconf import WorldConfig
+    from ....options import CupheadOptions
 
-LRSelector = Callable[["WorldConfig"], Mapping[str, int]]
+LRSelector = Callable[["CupheadOptions"], Mapping[str, int]]
 
 ### Base intermediary representation data classes
 
@@ -82,8 +82,8 @@ class RuleDep:
     negated: bool
     name: str
 
-    def eval(self, wconf: WorldConfig) -> bool:
-        res = self.ref(wconf)
+    def eval(self, options: CupheadOptions) -> bool:
+        res = self.ref(options)
         return not res if self.negated else res
 
 

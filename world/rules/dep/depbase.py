@@ -5,12 +5,12 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from ...wconf import WorldConfig
+from ...options import CupheadOptions
 
-Dep = Callable[[WorldConfig], bool]
+Dep = Callable[[CupheadOptions], bool]
 
 DEPS: dict[str, Dep] = {}
-def dep(fn: Callable[[WorldConfig], bool]) -> Dep:
+def dep(fn: Callable[[CupheadOptions], bool]) -> Dep:
     _name = fn.__name__.removeprefix("dep_")
     DEPS[_name] = fn
     return fn

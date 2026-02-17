@@ -13,11 +13,11 @@ from .levelruledata import LevelRuleData
 
 if typing.TYPE_CHECKING:
     from ..... import CupheadWorld
-    from ....wconf import WorldConfig
+    from ....options import CupheadOptions
 
 class LevelRuleComp:
     _world: CupheadWorld
-    _wconf: WorldConfig
+    _options: CupheadOptions
 
     def _debug_on(self) -> bool:
         return self._world.settings.is_debug_bit_on(128)
@@ -41,7 +41,7 @@ class LevelRuleComp:
                     return rb.rrule_has_any_count(dict.fromkeys(irule.items, count))
                 return rb.rrule_has_all_counts(dict.fromkeys(irule.items, count))
             case lrb.ItemRuleHasSelection():
-                selection = irule.selector(self._wconf)
+                selection = irule.selector(self._options)
                 if irule.has_any:
                     return rb.rrule_has_any_count(selection)
                 return rb.rrule_has_all_counts(selection)
@@ -86,7 +86,7 @@ class LevelRuleComp:
     def construct_rule_expr(self, rulec: lrb.RuleContainer) -> lrb.RuleExpr | None:
         root_src = rulec.source_path
         active_rules: list[lrb.RuleExpr] = [
-            rulef.requires for rulef in rulec.rules if all(dep.eval(self._wconf) for dep in rulef.when)
+            rulef.requires for rulef in rulec.rules if all(dep.eval(self._options) for dep in rulef.when)
         ]
 
         if not active_rules:
@@ -180,4 +180,4 @@ class LevelRuleComp:
 
     def __init__(self, world: CupheadWorld):
         self._world = world
-        self._wconf = world.wconfig
+        self._options = world.options

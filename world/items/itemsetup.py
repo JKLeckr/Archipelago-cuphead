@@ -7,7 +7,7 @@ from BaseClasses import ItemClassification
 
 from ..enums import ChaliceCheckMode, ChaliceMode, GradeCheckMode, ItemGroups, WeaponMode
 from ..names import itemnames
-from ..wconf import WorldConfig
+from ..options import CupheadOptions
 from . import itemdefs as idef
 from . import weapons
 from .itembase import ItemData
@@ -22,34 +22,34 @@ def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemC
 def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int):
     items_ref[item] = items_ref[item].with_quantity(quantity)
 
-def setup_dlc_items(items_ref: dict[str, ItemData], wconf: WorldConfig):
+def setup_dlc_items(items_ref: dict[str, ItemData], options: CupheadOptions):
     items_ref.update(idef.items_dlc)
-    if wconf.dlc_chalice == ChaliceMode.VANILLA or wconf.dlc_chalice == ChaliceMode.RANDOMIZED:
+    if options.dlc_chalice.evalue == ChaliceMode.VANILLA or options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED:
         add_item(items_ref, itemnames.item_charm_dlc_cookie)
-        if wconf.dlc_boss_chalice_checks or wconf.dlc_cactusgirl_quest:
+        if options.dlc_boss_chalice_checks.value or options.dlc_cactusgirl_quest.value:
             change_item_type(items_ref, itemnames.item_charm_dlc_cookie, ItemClassification.progression)
-    if wconf.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
+    if options.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
         items_ref.update(idef.item_dlc_chalice_essential)
-    if wconf.is_dlc_chalice_items_separate(ItemGroups.SUPER):
+    if options.is_dlc_chalice_items_separate(ItemGroups.SUPER):
         items_ref.update(idef.item_dlc_chalice_super)
     if (
-        (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0 and
-        wconf.is_dlc_chalice_items_separate(ItemGroups.WEAPON_EX)
+        (options.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0 and
+        options.is_dlc_chalice_items_separate(ItemGroups.WEAPON_EX)
     ):
         change_item_quantity(items_ref, itemnames.item_dlc_cplane_ex, 1)
 
-def setup_abilities(items_ref: dict[str, ItemData], wconf: WorldConfig):
+def setup_abilities(items_ref: dict[str, ItemData], options: CupheadOptions):
     items_ref.update(idef.item_abilities)
-    if wconf.use_dlc:
-        if wconf.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+    if options.use_dlc.value:
+        if options.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
             items_ref.update(idef.item_dlc_chalice_abilities)
         else:
             add_item(items_ref, itemnames.item_ability_dlc_cdoublejump)
     change_item_type(items_ref, itemnames.item_charm_psugar, ItemClassification.progression)
-    if wconf.boss_secret_checks:
+    if options.boss_secret_checks.value:
         change_item_type(items_ref, itemnames.item_ability_plane_shrink, ItemClassification.progression)
 
-def setup_weapon_gate(items_ref: dict[str, ItemData], wconf: WorldConfig):
+def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
     weapon_keys = {
         **idef.item_weapons,
         **idef.item_dlc_weapons,
@@ -58,46 +58,46 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], wconf: WorldConfig):
         if w in items_ref.keys():
             change_item_type(items_ref, w, ItemClassification.progression)
 
-def setup_weapons(items_ref: dict[str, ItemData], wconf: WorldConfig):
-    _weapon_dict = weapons.get_weapon_dict(wconf, wconf.use_dlc)
+def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
+    _weapon_dict = weapons.get_weapon_dict(options, options.use_dlc.bvalue)
     _grade_checks_required = (
-        wconf.boss_grade_checks != GradeCheckMode.DISABLED or
-        wconf.rungun_grade_checks != GradeCheckMode.DISABLED or
-        (wconf.dlc_boss_chalice_checks & ChaliceCheckMode.GRADE_REQUIRED) > 0
+        options.boss_grade_checks.evalue != GradeCheckMode.DISABLED or
+        options.rungun_grade_checks.evalue != GradeCheckMode.DISABLED or
+        (options.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
     )
     for weapon in _weapon_dict.values():
         items_ref[weapon] = idef.items_all[weapon]
-    if (wconf.weapon_mode & WeaponMode.PROGRESSIVE) > 0:
+    if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
         if _grade_checks_required:
             [
                 change_item_type(items_ref, x, ItemClassification.progression)
                 for i,x in _weapon_dict.items() if i in weapons.weapon_p_dict.keys()
             ]
-    if (wconf.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+    if (options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
         items_ref.update({x: idef.items_all[x] for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()})
         if _grade_checks_required:
             [
                 change_item_type(items_ref, x, ItemClassification.progression)
                 for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()
             ]
-    if (wconf.weapon_mode & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
+    if (options.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, itemnames.item_plane_ex, 1)
         if _grade_checks_required:
             [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
 
-def setup_items(wconf: WorldConfig) -> dict[str, ItemData]:
+def setup_items(options: CupheadOptions) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}
-    setup_weapons(items, wconf)
-    if wconf.use_dlc:
-        setup_dlc_items(items, wconf)
-    if wconf.weapon_gate:
-        setup_weapon_gate(items, wconf)
-    if wconf.randomize_abilities:
-        setup_abilities(items, wconf)
-    if wconf.randomize_abilities_aim:
+    setup_weapons(items, options)
+    if options.use_dlc.bvalue:
+        setup_dlc_items(items, options)
+    if options.weapon_gate.bvalue:
+        setup_weapon_gate(items, options)
+    if options.randomize_abilities.bvalue:
+        setup_abilities(items, options)
+    if options.randomize_abilities_aim.bvalue:
         items.update(idef.item_abilities_aim)
-        if wconf.use_dlc and wconf.is_dlc_chalice_items_separate(ItemGroups.AIM_ABILITIES):
+        if options.use_dlc.bvalue and options.is_dlc_chalice_items_separate(ItemGroups.AIM_ABILITIES):
             items.update(idef.item_dlc_chalice_abilities_aim)
-    if wconf.traps>0:
+    if options.traps.value > 0:
         items.update(idef.item_trap)
     return items

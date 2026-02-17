@@ -12,9 +12,9 @@ from rule_builder.rules import And, Filtered, Rule, True_
 from ..dep.depfilter import DepFilter, depf_none
 
 if typing.TYPE_CHECKING:
-    from ...wconf import WorldConfig
+    from ...options import CupheadOptions
 
-LRSelector = Callable[["WorldConfig"], Mapping[str, int]]
+LRSelector = Callable[["CupheadOptions"], Mapping[str, int]]
 
 @dataclass(frozen=True)
 class RuleUnit:
@@ -25,7 +25,7 @@ class RuleUnit:
 class RuleData:
     rules: list[RuleUnit] = field(default_factory=list[RuleUnit])
 
-    def compile_rules(self, wconf: WorldConfig) -> Rule:
+    def compile_rules(self, options: CupheadOptions) -> Rule:
         """
         Compiles the rules into a single Rule using
         rule_builder's native filtering (via Dep as OptionFilter).
