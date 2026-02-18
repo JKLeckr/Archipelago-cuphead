@@ -8,157 +8,151 @@ from BaseClasses import ItemClassification
 from ..names import itemnames
 from .itembase import ItemData
 
-base_id = 12905168
-base_dlc_id = 12909264
-
-def iid(i: int): return base_id+i
-def dlc_iid(i: int): return base_dlc_id+i
-
 # Items
-# Next ids: 67, 26
+# Next ids: 22005, 10016001
 item_generic: dict[str, ItemData] = {
-    itemnames.item_level_generic: ItemData(iid(0), ItemClassification.filler, 0),
+    itemnames.item_level_generic: ItemData(1000, ItemClassification.filler, 0),
 }
 item_filler: dict[str, ItemData] = {
-    itemnames.item_level_extrahealth: ItemData(iid(1), ItemClassification.filler, 0),
-    itemnames.item_level_supercharge: ItemData(iid(2), ItemClassification.filler, 0),
-    itemnames.item_level_fastfire: ItemData(iid(3), ItemClassification.filler, 0),
-    #itemnames.item_level_4: ItemData(iid(4), ItemClassification.filler, 0),
+    itemnames.item_level_extrahealth: ItemData(2000, ItemClassification.filler, 0),
+    itemnames.item_level_supercharge: ItemData(2001, ItemClassification.filler, 0),
+    itemnames.item_level_fastfire: ItemData(2002, ItemClassification.filler, 0),
+    #itemnames.item_level_4: ItemData(2003, ItemClassification.filler, 0),
 }
 
 item_essential: dict[str, ItemData] = {
-    itemnames.item_coin: ItemData(iid(5), ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_coin2: ItemData(iid(6), ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_coin3: ItemData(iid(7), ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_contract: ItemData(iid(8), ItemClassification.progression_skip_balancing, 17),
-    itemnames.item_plane_gun: ItemData(iid(9), ItemClassification.progression),
-    itemnames.item_plane_ex: ItemData(iid(10), ItemClassification.progression, 0),
-    itemnames.item_plane_bombs: ItemData(iid(11), ItemClassification.progression),
-    itemnames.item_healthupgrade: ItemData(iid(12), ItemClassification.useful, 0)
+    itemnames.item_coin: ItemData(4000, ItemClassification.progression_skip_balancing, 0),
+    itemnames.item_coin2: ItemData(4001, ItemClassification.progression_skip_balancing, 0),
+    itemnames.item_coin3: ItemData(4002, ItemClassification.progression_skip_balancing, 0),
+    itemnames.item_contract: ItemData(4003, ItemClassification.progression_skip_balancing, 17),
+    itemnames.item_plane_gun: ItemData(4004, ItemClassification.progression),
+    itemnames.item_plane_ex: ItemData(4005, ItemClassification.progression, 0),
+    itemnames.item_plane_bombs: ItemData(4006, ItemClassification.progression),
+    itemnames.item_healthupgrade: ItemData(4007, ItemClassification.useful, 0)
 }
 item_dlc_essential: dict[str, ItemData] = {
-    itemnames.item_dlc_boat: ItemData(dlc_iid(0), ItemClassification.progression),
-    itemnames.item_dlc_ingredient: ItemData(dlc_iid(1), ItemClassification.progression_skip_balancing, 5),
+    itemnames.item_dlc_boat: ItemData(10000000, ItemClassification.progression),
+    itemnames.item_dlc_ingredient: ItemData(10000001, ItemClassification.progression_skip_balancing, 5),
 }
 item_dlc_chalice_essential: dict[str, ItemData] = {
-    itemnames.item_dlc_cplane_gun: ItemData(dlc_iid(2), ItemClassification.progression),
-    itemnames.item_dlc_cplane_ex: ItemData(dlc_iid(3), ItemClassification.progression, 0),
-    itemnames.item_dlc_cplane_bombs: ItemData(dlc_iid(4), ItemClassification.progression),
+    itemnames.item_dlc_cplane_gun: ItemData(10002000, ItemClassification.progression),
+    itemnames.item_dlc_cplane_ex: ItemData(10002001, ItemClassification.progression, 0),
+    itemnames.item_dlc_cplane_bombs: ItemData(10002002, ItemClassification.progression),
 }
 
 item_weapons: dict[str, ItemData] = {
-    itemnames.item_weapon_peashooter: ItemData(iid(13), ItemClassification.useful),
-    itemnames.item_weapon_spread: ItemData(iid(16), ItemClassification.useful),
-    itemnames.item_weapon_chaser: ItemData(iid(19), ItemClassification.useful),
-    itemnames.item_weapon_lobber: ItemData(iid(22), ItemClassification.useful),
-    itemnames.item_weapon_charge: ItemData(iid(25), ItemClassification.useful),
-    itemnames.item_weapon_roundabout: ItemData(iid(28), ItemClassification.useful),
+    itemnames.item_weapon_peashooter: ItemData(6000, ItemClassification.useful),
+    itemnames.item_weapon_spread: ItemData(6001, ItemClassification.useful),
+    itemnames.item_weapon_chaser: ItemData(6002, ItemClassification.useful),
+    itemnames.item_weapon_lobber: ItemData(6003, ItemClassification.useful),
+    itemnames.item_weapon_charge: ItemData(6004, ItemClassification.useful),
+    itemnames.item_weapon_roundabout: ItemData(6005, ItemClassification.useful),
 }
 item_dlc_weapons: dict[str, ItemData] = {
-    itemnames.item_weapon_dlc_crackshot: ItemData(dlc_iid(5), ItemClassification.useful),
-    itemnames.item_weapon_dlc_converge: ItemData(dlc_iid(8), ItemClassification.useful),
-    itemnames.item_weapon_dlc_twistup: ItemData(dlc_iid(11), ItemClassification.useful),
+    itemnames.item_weapon_dlc_crackshot: ItemData(10004000, ItemClassification.useful),
+    itemnames.item_weapon_dlc_converge: ItemData(10004001, ItemClassification.useful),
+    itemnames.item_weapon_dlc_twistup: ItemData(10004002, ItemClassification.useful),
 }
 item_all_weapons: dict[str, ItemData] = {**item_weapons, **item_dlc_weapons}
 
 item_weapon_ex: dict[str, ItemData] = {
-    itemnames.item_weapon_peashooter_ex: ItemData(iid(14), ItemClassification.useful),
-    itemnames.item_weapon_spread_ex: ItemData(iid(17), ItemClassification.useful),
-    itemnames.item_weapon_chaser_ex: ItemData(iid(20), ItemClassification.useful),
-    itemnames.item_weapon_lobber_ex: ItemData(iid(23), ItemClassification.useful),
-    itemnames.item_weapon_charge_ex: ItemData(iid(26), ItemClassification.useful),
-    itemnames.item_weapon_roundabout_ex: ItemData(iid(29), ItemClassification.useful),
+    itemnames.item_weapon_peashooter_ex: ItemData(8000, ItemClassification.useful),
+    itemnames.item_weapon_spread_ex: ItemData(8001, ItemClassification.useful),
+    itemnames.item_weapon_chaser_ex: ItemData(8002, ItemClassification.useful),
+    itemnames.item_weapon_lobber_ex: ItemData(8003, ItemClassification.useful),
+    itemnames.item_weapon_charge_ex: ItemData(8004, ItemClassification.useful),
+    itemnames.item_weapon_roundabout_ex: ItemData(8005, ItemClassification.useful),
 }
 item_dlc_weapon_ex: dict[str, ItemData] = {
-    itemnames.item_weapon_dlc_crackshot_ex: ItemData(dlc_iid(6), ItemClassification.useful),
-    itemnames.item_weapon_dlc_converge_ex: ItemData(dlc_iid(9), ItemClassification.useful),
-    itemnames.item_weapon_dlc_twistup_ex: ItemData(dlc_iid(12), ItemClassification.useful),
+    itemnames.item_weapon_dlc_crackshot_ex: ItemData(10006000, ItemClassification.useful),
+    itemnames.item_weapon_dlc_converge_ex: ItemData(10006001, ItemClassification.useful),
+    itemnames.item_weapon_dlc_twistup_ex: ItemData(10006002, ItemClassification.useful),
 }
 item_all_weapon_ex: dict[str, ItemData] = {**item_weapon_ex, **item_dlc_weapon_ex}
 
 item_p_weapons: dict[str, ItemData] = {
-    itemnames.item_p_weapon_peashooter: ItemData(iid(15), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_spread: ItemData(iid(18), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_chaser: ItemData(iid(21), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_lobber: ItemData(iid(24), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_charge: ItemData(iid(27), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_roundabout: ItemData(iid(30), ItemClassification.useful, 2),
+    itemnames.item_p_weapon_peashooter: ItemData(10000, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_spread: ItemData(10001, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_chaser: ItemData(10002, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_lobber: ItemData(10003, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_charge: ItemData(10004, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_roundabout: ItemData(10005, ItemClassification.useful, 2),
 }
 item_dlc_p_weapons: dict[str, ItemData] = {
-    itemnames.item_p_weapon_dlc_crackshot: ItemData(dlc_iid(7), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_dlc_converge: ItemData(dlc_iid(10), ItemClassification.useful, 2),
-    itemnames.item_p_weapon_dlc_twistup: ItemData(dlc_iid(13), ItemClassification.useful, 2),
+    itemnames.item_p_weapon_dlc_crackshot: ItemData(10008000, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_dlc_converge: ItemData(10008001, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_dlc_twistup: ItemData(10008002, ItemClassification.useful, 2),
 }
 item_all_p_weapons: dict[str, ItemData] = {**item_p_weapons, **item_dlc_p_weapons}
 
 item_charms: dict[str, ItemData] = {
-    itemnames.item_charm_heart: ItemData(iid(31), ItemClassification.useful),
-    itemnames.item_charm_smokebomb: ItemData(iid(32), ItemClassification.useful),
-    itemnames.item_charm_psugar: ItemData(iid(33), ItemClassification.useful),
-    itemnames.item_charm_coffee: ItemData(iid(34), ItemClassification.useful),
-    itemnames.item_charm_twinheart: ItemData(iid(35), ItemClassification.useful),
-    itemnames.item_charm_whetstone: ItemData(iid(36), ItemClassification.useful),
+    itemnames.item_charm_heart: ItemData(12000, ItemClassification.useful),
+    itemnames.item_charm_smokebomb: ItemData(12001, ItemClassification.useful),
+    itemnames.item_charm_psugar: ItemData(12002, ItemClassification.useful),
+    itemnames.item_charm_coffee: ItemData(12003, ItemClassification.useful),
+    itemnames.item_charm_twinheart: ItemData(12004, ItemClassification.useful),
+    itemnames.item_charm_whetstone: ItemData(12005, ItemClassification.useful),
 }
 item_dlc_charms: dict[str, ItemData] = {
-    itemnames.item_charm_dlc_heartring: ItemData(dlc_iid(14), ItemClassification.useful),
-    itemnames.item_charm_dlc_broken_relic: ItemData(dlc_iid(15), ItemClassification.useful, 0), # Sequence will not be in logic  # noqa: E501
+    itemnames.item_charm_dlc_heartring: ItemData(10010000, ItemClassification.useful),
+    itemnames.item_charm_dlc_broken_relic: ItemData(10010001, ItemClassification.useful, 0), # Sequence will not be in logic  # noqa: E501
 }
 item_all_charms: dict[str, ItemData] = {**item_charms, **item_dlc_charms}
 
 item_super: dict[str, ItemData] = {
-    itemnames.item_super_i: ItemData(iid(37), ItemClassification.useful),
-    itemnames.item_super_ii: ItemData(iid(38), ItemClassification.useful),
-    itemnames.item_super_iii: ItemData(iid(39), ItemClassification.useful),
-    itemnames.item_plane_super: ItemData(iid(40), ItemClassification.useful),
+    itemnames.item_super_i: ItemData(14000, ItemClassification.useful),
+    itemnames.item_super_ii: ItemData(14001, ItemClassification.useful),
+    itemnames.item_super_iii: ItemData(14002, ItemClassification.useful),
+    itemnames.item_plane_super: ItemData(14003, ItemClassification.useful),
 }
 item_dlc_chalice_super: dict[str, ItemData] = {
-    itemnames.item_super_dlc_c_i: ItemData(dlc_iid(16), ItemClassification.useful),
-    itemnames.item_super_dlc_c_ii: ItemData(dlc_iid(17), ItemClassification.useful),
-    itemnames.item_super_dlc_c_iii: ItemData(dlc_iid(18), ItemClassification.useful),
-    itemnames.item_dlc_cplane_super: ItemData(dlc_iid(19), ItemClassification.useful),
+    itemnames.item_super_dlc_c_i: ItemData(10012000, ItemClassification.useful),
+    itemnames.item_super_dlc_c_ii: ItemData(10012001, ItemClassification.useful),
+    itemnames.item_super_dlc_c_iii: ItemData(10012002, ItemClassification.useful),
+    itemnames.item_dlc_cplane_super: ItemData(10012003, ItemClassification.useful),
 }
 
 item_abilities: dict[str, ItemData] = {
-    itemnames.item_ability_duck: ItemData(iid(41), ItemClassification.progression),
-    itemnames.item_ability_dash: ItemData(iid(42), ItemClassification.progression),
-    itemnames.item_ability_parry: ItemData(iid(43), ItemClassification.progression),
-    itemnames.item_ability_plane_parry: ItemData(iid(44), ItemClassification.progression),
-    itemnames.item_ability_plane_shrink: ItemData(iid(45), ItemClassification.useful),
+    itemnames.item_ability_duck: ItemData(16000, ItemClassification.progression),
+    itemnames.item_ability_dash: ItemData(16001, ItemClassification.progression),
+    itemnames.item_ability_parry: ItemData(16002, ItemClassification.progression),
+    itemnames.item_ability_plane_parry: ItemData(16003, ItemClassification.progression),
+    itemnames.item_ability_plane_shrink: ItemData(16004, ItemClassification.useful),
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
-    itemnames.item_ability_dlc_cduck: ItemData(dlc_iid(20), ItemClassification.progression),
-    itemnames.item_ability_dlc_p_cdash: ItemData(dlc_iid(21), ItemClassification.progression, 2),
-    itemnames.item_ability_dlc_cdoublejump: ItemData(dlc_iid(22), ItemClassification.progression),
-    itemnames.item_ability_dlc_cplane_parry: ItemData(dlc_iid(23), ItemClassification.progression),
-    itemnames.item_ability_dlc_cplane_shrink: ItemData(dlc_iid(24), ItemClassification.useful),
+    itemnames.item_ability_dlc_cduck: ItemData(10014000, ItemClassification.progression),
+    itemnames.item_ability_dlc_p_cdash: ItemData(10014001, ItemClassification.progression, 2),
+    itemnames.item_ability_dlc_cdoublejump: ItemData(10014002, ItemClassification.progression),
+    itemnames.item_ability_dlc_cplane_parry: ItemData(10014003, ItemClassification.progression),
+    itemnames.item_ability_dlc_cplane_shrink: ItemData(10014004, ItemClassification.useful),
 }
 item_abilities_aim: dict[str, ItemData] = {
-    itemnames.item_ability_aim_left: ItemData(iid(46), ItemClassification.progression),
-    itemnames.item_ability_aim_right: ItemData(iid(47), ItemClassification.progression),
-    itemnames.item_ability_aim_up: ItemData(iid(48), ItemClassification.progression),
-    itemnames.item_ability_aim_down: ItemData(iid(49), ItemClassification.progression),
-    itemnames.item_ability_aim_upleft: ItemData(iid(50), ItemClassification.progression),
-    itemnames.item_ability_aim_upright: ItemData(iid(51), ItemClassification.progression),
-    itemnames.item_ability_aim_downleft: ItemData(iid(52), ItemClassification.progression),
-    itemnames.item_ability_aim_downright: ItemData(iid(53), ItemClassification.progression),
+    itemnames.item_ability_aim_left: ItemData(18000, ItemClassification.progression),
+    itemnames.item_ability_aim_right: ItemData(18001, ItemClassification.progression),
+    itemnames.item_ability_aim_up: ItemData(18002, ItemClassification.progression),
+    itemnames.item_ability_aim_down: ItemData(18003, ItemClassification.progression),
+    itemnames.item_ability_aim_upleft: ItemData(18004, ItemClassification.progression),
+    itemnames.item_ability_aim_upright: ItemData(18005, ItemClassification.progression),
+    itemnames.item_ability_aim_downleft: ItemData(18006, ItemClassification.progression),
+    itemnames.item_ability_aim_downright: ItemData(18007, ItemClassification.progression),
 }
 item_dlc_chalice_abilities_aim: dict[str, ItemData] = {
-    itemnames.item_ability_dlc_c_aim_left: ItemData(iid(54), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_right: ItemData(iid(55), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_up: ItemData(iid(56), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_down: ItemData(iid(57), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_upleft: ItemData(iid(58), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_upright: ItemData(iid(59), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_downleft: ItemData(iid(60), ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_downright: ItemData(iid(61), ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_left: ItemData(20000, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_right: ItemData(20001, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_up: ItemData(20002, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_down: ItemData(20003, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_upleft: ItemData(20004, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_upright: ItemData(20005, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_downleft: ItemData(20006, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_downright: ItemData(20007, ItemClassification.progression),
 }
 
 item_trap: dict[str, ItemData] = {
-    itemnames.item_level_trap_fingerjam: ItemData(iid(62), ItemClassification.trap, 0),
-    itemnames.item_level_trap_slowfire: ItemData(iid(63), ItemClassification.trap, 0),
-    itemnames.item_level_trap_superdrain: ItemData(iid(64), ItemClassification.trap, 0),
-    itemnames.item_level_trap_loadout: ItemData(iid(65), ItemClassification.trap, 0),
-    itemnames.item_level_trap_screen: ItemData(iid(66), ItemClassification.trap, 0),
+    itemnames.item_level_trap_fingerjam: ItemData(22000, ItemClassification.trap, 0),
+    itemnames.item_level_trap_slowfire: ItemData(22001, ItemClassification.trap, 0),
+    itemnames.item_level_trap_superdrain: ItemData(22002, ItemClassification.trap, 0),
+    itemnames.item_level_trap_loadout: ItemData(22003, ItemClassification.trap, 0),
+    itemnames.item_level_trap_screen: ItemData(22004, ItemClassification.trap, 0),
 }
 
 item_special: dict[str, ItemData] = {
@@ -173,7 +167,7 @@ item_special: dict[str, ItemData] = {
     #itemnames.item_event_music: ItemData(None, ItemClassification.progression, 0),
 }
 item_dlc_special: dict[str, ItemData] = {
-    itemnames.item_charm_dlc_cookie: ItemData(dlc_iid(25), ItemClassification.useful, 0),
+    itemnames.item_charm_dlc_cookie: ItemData(10016000, ItemClassification.useful, 0),
     itemnames.item_event_mausoleum: ItemData(None, ItemClassification.progression, 0),
     itemnames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     itemnames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
