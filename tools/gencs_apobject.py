@@ -123,10 +123,8 @@ def main():
         "using System.Collections.Generic;",
         "",
         "namespace CupheadArchipelago.AP {",
-        ind(1)+"public abstract class APObject {",
-        ind(2)+"public readonly long id;",
-        "",
-        ind(2)+"public APObject(long id) { this.id = id; }",
+        ind(1)+"public abstract class APObject(long id) {",
+        ind(2)+"public readonly long id = id;",
         "",
         ind(2)+'public override string ToString() { return $"APObject {id}"; }',
         "",
@@ -134,7 +132,7 @@ def main():
         ind(1)+"}",
         "",
         ind(1)+"public class APItem : APObject {",
-        ind(2)+"private static readonly Dictionary<long,APItem> id_map = new();",
+        ind(2)+"private static readonly Dictionary<long,APItem> id_map = [];",
         ind(2)+"public APItem(long id) : base(id) {}",
         ind(2)+"private APItem(long id, bool register) : base(id) { if (register) id_map.Add(id, this); }",
         "",
@@ -158,7 +156,7 @@ def main():
         ind(1)+"}",
         "",
         ind(1)+"public class APLocation : APObject {",
-        ind(2)+"private static readonly Dictionary<long,APLocation> id_map = new();",
+        ind(2)+"private static readonly Dictionary<long,APLocation> id_map = [];",
         ind(2)+"public APLocation(long id) : base(id) {}",
         ind(2)+"public APLocation(long id, bool register) : base(id) { if (register) id_map.Add(id, this); }",
         ""
@@ -181,7 +179,6 @@ def main():
         ind(2)+"}",
         ind(1)+"}",
         "}",
-        "",
     ]
 
     if not os.path.isdir(OUTPUT_DIR):
