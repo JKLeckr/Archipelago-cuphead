@@ -6,14 +6,14 @@ from __future__ import annotations
 from ..names import locationnames
 from .locationbase import LocationData
 
-base_id = 12905168
-base_dlc_id = 12909264
+base_id = 1
+base_dlc_id = 10000001
 
 def lid(i: int): return base_id+i
 def dlc_lid(i: int): return base_dlc_id+i
 
 # Locations
-# Next ids: 128, 78
+# Next lids: 128, 78
 # Level Locations
 location_level_tutorial: dict[str, LocationData] = {
     locationnames.loc_level_tutorial: LocationData(lid(0)),
@@ -90,6 +90,7 @@ location_level_boss_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_boss_plane_mermaid_dlc_chaliced: LocationData(dlc_lid(18)),
     locationnames.loc_level_boss_plane_robot_dlc_chaliced: LocationData(dlc_lid(19)),
 }
+location_level_boss_phases: dict[str, LocationData] = {}
 location_level_boss_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_event_agrade: LocationData(None),
     locationnames.loc_level_boss_slime_event_agrade: LocationData(None),
@@ -136,6 +137,7 @@ location_level_boss_final_topgrade: dict[str, LocationData] = {
 location_level_boss_final_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_boss_devil_dlc_chaliced: LocationData(dlc_lid(20))
 }
+location_level_boss_final_phases: dict[str, LocationData] = {}
 location_level_boss_final_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_devil_event_agrade: LocationData(None)
 }
@@ -168,6 +170,7 @@ location_level_dlc_boss_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_airplane_dlc_chaliced: LocationData(dlc_lid(32)),
     locationnames.loc_level_dlc_boss_plane_cowboy_dlc_chaliced: LocationData(dlc_lid(35)),
 }
+location_level_dlc_boss_phases: dict[str, LocationData] = {}
 location_level_dlc_boss_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_oldman_event_agrade: LocationData(None),
     locationnames.loc_level_dlc_boss_rumrunners_event_agrade: LocationData(None),
@@ -185,9 +188,10 @@ location_level_dlc_boss_event_dlc_chaliced: dict[str, LocationData] = {
 location_level_dlc_boss_final_topgrade: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_saltbaker_topgrade: LocationData(dlc_lid(37)),
 }
-location_level_dlc_boss_final_dlc_chaliced= {
+location_level_dlc_boss_final_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_saltbaker_dlc_chaliced: LocationData(dlc_lid(38)),
 }
+location_level_dlc_boss_final_phases: dict[str, LocationData] = {}
 location_level_dlc_boss_final_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_saltbaker_event_agrade: LocationData(None),
 }
@@ -324,6 +328,7 @@ location_level_dlc_chesscastle_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_dlc_chesscastle_queen_dlc_chaliced: LocationData(dlc_lid(64)),
     locationnames.loc_level_dlc_chesscastle_run_dlc_chaliced: LocationData(dlc_lid(65)),
 }
+location_level_dlc_chesscastle_phases: dict[str, LocationData] = {}
 
 location_level_dlc_special: dict[str, LocationData] = {
     #locationnames.loc_level_dlc_graveyard: LocationData(dlc_lid(66)),
@@ -458,6 +463,12 @@ locations_dlc_boss_chaliced: dict[str, LocationData] = {
     **location_level_dlc_boss_dlc_chaliced,
     #**location_level_dlc_boss_final_dlc_chaliced,
 }
+locations_boss_phases: dict[str, LocationData] = {
+    **location_level_boss_phases,
+    #**location_level_boss_final_phases,
+    **location_level_dlc_boss_phases,
+    #**location_level_dlc_boss_final_phases,
+}
 locations_dlc_topgrade: dict[str, LocationData] = {
     **location_level_dlc_boss_topgrade,
     #**location_level_dlc_boss_final_topgrade,
@@ -477,6 +488,7 @@ locations_all: dict[str, LocationData] = {
     **location_level_boss_secret,
     **locations_topgrade,
     **location_level_boss_final_topgrade,  # Final
+    **location_level_boss_final_phases, # Final
     **locations_event_agrade,
     **location_level_rungun_event_pacifist,
     **location_world_quest,
@@ -488,6 +500,7 @@ locations_all: dict[str, LocationData] = {
     **location_level_dlc_boss_secret,
     **locations_dlc_topgrade,
     **location_level_dlc_boss_final_topgrade, # Final
+    **location_level_dlc_boss_final_phases, # Final
     **locations_dlc_boss_chaliced,
     **location_level_rungun_dlc_chaliced,
     **location_level_boss_final_dlc_chaliced, # Final

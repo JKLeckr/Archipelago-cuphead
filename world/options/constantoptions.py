@@ -9,6 +9,18 @@ from .protocols import NamedOption
 ## They can never be set by the user. If set by the user, it will be
 ## ignored.
 
+class BossPhaseChecks(EnumOption[e.BossPhaseCheckMode], ConstNumericOption, NamedOption):
+    """
+    --NOT SUPPORTED OPTION--
+    Enable phase checks for Boss Levels.
+    Completing the phases in the fight will be a check.
+    This excludes the final phase.
+    """
+    name = "boss_phase_checks"
+    display_name = "Boss Phase Checks"
+    value = 0
+
+
 class BusterQuest(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
@@ -76,7 +88,6 @@ class RequireSecretShortcuts(BoolOption, ConstNumericOption, NamedOption):
 class RandomizeAimAbilities(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
-    --NOT IMPLEMENTED--
     Randomize aiming abilities.
     You will start with only top-right.
     """
@@ -106,7 +117,6 @@ class ShopMode(EnumOption[e.ShopMode], ConstNumericOption, NamedOption):
 class WeaponGate(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
-    --NOT YET IMPLEMENTED--
     Add a weapon gate which only allows specific weapons for each fight.
     """
     name = "weapon_gate"

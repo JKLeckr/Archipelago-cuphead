@@ -75,6 +75,7 @@ class CupheadOptions(PerGameCommonOptions):
     trap_item_weights: iodefs.TrapItemWeights
 
     # Constants (never change)
+    boss_phase_checks: codefs.BossPhaseChecks
     buster_quest: codefs.BusterQuest
     randomize_boat: codefs.DlcRandomizeBoat
     dlc_randomize_boat: codefs.DlcRandomizeBoat
