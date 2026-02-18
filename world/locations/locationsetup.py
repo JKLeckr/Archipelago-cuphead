@@ -32,6 +32,9 @@ def setup_grade_check_locations(locations_ref: dict[str,LocationData], options: 
         elif rungun_grade_checks==GradeCheckMode.PACIFIST:
             locations_ref.update(ld.location_level_rungun_pacifist)
 
+def setup_boss_phase_check_locations(locations_ref: dict[str, LocationData], options: CupheadOptions):
+    pass # TODO: Finish
+
 def setup_quest_locations(locations_ref: dict[str,LocationData], options: CupheadOptions):
     def _add_location(name: str):
         add_location(locations_ref, name)
@@ -144,6 +147,7 @@ def setup_locations(options: CupheadOptions) -> dict[str,LocationData]:
             locations.update(ld.location_level_dlc_boss_secret)
 
     setup_quest_locations(locations, options)
+    setup_boss_phase_check_locations(locations, options)
 
     if use_dlc:
         setup_dlc_locations(locations, options)
