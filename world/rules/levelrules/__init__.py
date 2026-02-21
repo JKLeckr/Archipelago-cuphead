@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import typing
 
-from .legacy import levelrulecomp as lrc
+from . import levelrulecomp as lrc
 
 if typing.TYPE_CHECKING:
     from .... import CupheadWorld

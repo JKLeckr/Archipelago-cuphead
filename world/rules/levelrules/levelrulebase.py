@@ -3,47 +3,106 @@
 
 from __future__ import annotations
 
-import typing
-from collections.abc import Callable, Mapping
-from dataclasses import dataclass, field
+from collections.abc import Callable, Iterable, Mapping
+from dataclasses import dataclass
+from enum import IntEnum
 
-from rule_builder.rules import And, Filtered, Rule, True_
+from rule_builder.options import OptionFilter
+from rule_builder.rules import Rule
 
-from ..dep.depfilter import DepFilter, depf_none
+from ...options import CupheadOptions
+from ..dep import Dep
 
-if typing.TYPE_CHECKING:
-    from ...options import CupheadOptions
+LRPreset = Callable[[], "RuleContainer"]
+
+LRPRESETS: dict[str, LRPreset] = {}
+def lrpreset(fn: LRPreset) -> LRPreset:
+    _name = fn.__name__.removeprefix("lrp_")
+    LRPRESETS[_name] = fn
+    return fn
 
 LRSelector = Callable[["CupheadOptions"], Mapping[str, int]]
 
+### Base intermediary representation data classes
+
+## Rule Expressions
+
 @dataclass(frozen=True)
-class RuleUnit:
+class RuleExpr: ...
+
+@dataclass(frozen=True)
+class RBRule(RuleExpr):
     rule: Rule
-    when: DepFilter = depf_none
+
+@dataclass(frozen=True, init=False)
+class RulePreset(RuleExpr):
+    rule: RuleContainer
+    _preset_name: str
+
+    @property
+    def preset_name(self) -> str:
+        return self._preset_name
+
+    def __init__(self, preset: LRPreset):
+        object.__setattr__(self, "_preset_name", preset.__name__)
+        object.__setattr__(self, "rule", preset())
 
 @dataclass(frozen=True)
-class RuleData:
-    rules: list[RuleUnit] = field(default_factory=list[RuleUnit])
+class RuleBool(RuleExpr):
+    value: bool
 
-    def compile_rules(self, options: CupheadOptions) -> Rule:
-        """
-        Compiles the rules into a single Rule using
-        rule_builder's native filtering (via Dep as OptionFilter).
-        Resolves to True_() if there are no rules.
-        """
-        rulelist: list[Rule] = []
-        for unit in self.rules:
-            if unit.when is depf_none:
-                rulelist.append(unit.rule)
-            else:
-                rulelist.append(Filtered(unit.rule, options=(unit.when,)))
-        rllen = len(rulelist)
-        if rllen == 0:
-            return True_()
-        if rllen == 1:
-            return rulelist[0]
-        return And(*rulelist)
+@dataclass(frozen=True)
+class And(RuleExpr):
+    items: list[RuleExpr]
 
-def when(rule: Rule, depf: DepFilter) -> Rule:
-    """Wraps a rule with a dep filter condition, resolving to False if the condition is not met."""
-    return Filtered(rule, options=(depf,))
+@dataclass(frozen=True)
+class Or(RuleExpr):
+    items: list[RuleExpr]
+
+## Deps
+
+@dataclass(frozen=True)
+class RuleDep:
+    ref: Dep
+    negated: bool
+    name: str
+
+    def eval(self, options: CupheadOptions) -> bool:
+        res = self.ref(options)
+        return not res if self.negated else res
+
+
+## Rule Containers
+
+@dataclass(frozen=True)
+class RuleList:
+    rules: list[RuleExpr]
+
+@dataclass(frozen=True)
+class RuleContainer(RuleList):
+    rules: list[RuleExpr]
+    options: Iterable[OptionFilter] = ()
+
+
+## Data Structure
+
+class InheritMode(IntEnum):
+    NONE = 0
+    AND = 1
+    OR = 2
+
+@dataclass(frozen=True)
+class LocationDef(RuleList):
+    inherit: InheritMode
+
+@dataclass(frozen=True)
+class LevelDef:
+    access: RuleContainer | None
+    exit_location: str | None
+    base: RuleContainer | None
+    locations: dict[str, LocationDef]
+
+@dataclass(frozen=True)
+class LevelRules:
+    levels: dict[str, LevelDef]
+    presets: dict[str, RuleContainer]
