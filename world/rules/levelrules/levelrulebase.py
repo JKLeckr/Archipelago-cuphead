@@ -17,7 +17,7 @@ from rule_builder.rules import HasAllCounts, HasAnyCount, Rule, True_
 from ...options import CupheadOptions
 from ..dep import Dep
 
-LRPreset = Callable[[], "RuleContainer"]
+LRPreset = Callable[[], "RuleList"]
 
 LRPRESETS: dict[str, LRPreset] = {}
 def lrpreset(fn: LRPreset) -> LRPreset:
@@ -58,7 +58,8 @@ class SelectRule(RuleExpr, Evalable):
 
 @dataclass(frozen=True, init=False)
 class RulePreset(RuleExpr, Evalable):
-    rule: RuleContainer
+    rule: RuleList
+    options: Iterable[OptionFilter]
     _preset_name: str
     _cache: ClassVar[dict[str, Rule]] = {}
 
@@ -66,15 +67,16 @@ class RulePreset(RuleExpr, Evalable):
     def preset_name(self) -> str:
         return self._preset_name
 
-    def __init__(self, preset: LRPreset):
+    def __init__(self, preset: LRPreset, options: Iterable[OptionFilter] = ()):
         object.__setattr__(self, "_preset_name", preset.__name__)
         object.__setattr__(self, "rule", preset())
+        object.__setattr__(self, "options", options)
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
         res = self.__class__._cache.get(self._preset_name)
         if res is None:
-            res = compile_rule_list(self.rule.rules, self.rule.options)
+            res = compile_rule_list(self.rule.rules, self.options)
             self.__class__._cache[self._preset_name] = res
         return res
 
@@ -105,11 +107,6 @@ class RuleDep:
 class RuleList:
     rules: list[RuleExpr]
 
-@dataclass(frozen=True)
-class RuleContainer(RuleList):
-    rules: list[RuleExpr]
-    options: Iterable[OptionFilter] = ()
-
 
 ## Data Structure
 
@@ -124,12 +121,12 @@ class LocationDef(RuleList):
 
 @dataclass(frozen=True)
 class LevelDef:
-    access: RuleContainer | None
+    access: RuleList | None
     exit_location: str | None
-    base: RuleContainer | None
+    base: RuleList | None
     locations: dict[str, LocationDef]
 
 @dataclass(frozen=True)
 class LevelRules:
     levels: dict[str, LevelDef]
-    presets: dict[str, RuleContainer]
+    presets: dict[str, RuleList]
