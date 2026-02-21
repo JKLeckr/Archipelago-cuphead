@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import ClassVar, Protocol
+from typing import ClassVar, Literal
 
 from typing_extensions import override
 
@@ -29,24 +29,30 @@ LRSelector = Callable[["CupheadOptions"], dict[str, int]]
 
 ### Base intermediary representation data classes
 
-class Evalable(Protocol):
-    @abstractmethod
-    def eval(self, options: CupheadOptions) -> Rule: ...
-
-def compile_rule_list(rules: list[RuleExpr], options: Iterable[OptionFilter] = ()) -> Rule:
+def compile_rule_list(
+    rules: list[RuleExpr],
+    op: Literal["and", "or"],
+    options: Iterable[OptionFilter] = ()
+) -> Rule:
     return True_() # TODO Finish
 
 ## Rule Expressions
 
 @dataclass(frozen=True)
-class RuleExpr: ...
+class RuleExpr(ABC):
+    @abstractmethod
+    def eval(self, options: CupheadOptions) -> Rule: ...
 
 @dataclass(frozen=True)
 class RBRule(RuleExpr):
     rule: Rule
 
+    @override
+    def eval(self, options: CupheadOptions) -> Rule:
+        return self.rule
+
 @dataclass(frozen=True)
-class SelectRule(RuleExpr, Evalable):
+class SelectRule(RuleExpr):
     select: LRSelector
     any: bool
     options: Iterable[OptionFilter] = ()
@@ -57,7 +63,7 @@ class SelectRule(RuleExpr, Evalable):
         return HasAnyCount(select) if self.any else HasAllCounts(select)
 
 @dataclass(frozen=True, init=False)
-class RulePreset(RuleExpr, Evalable):
+class RulePreset(RuleExpr):
     rule: RuleList
     options: Iterable[OptionFilter]
     _preset_name: str
@@ -76,17 +82,27 @@ class RulePreset(RuleExpr, Evalable):
     def eval(self, options: CupheadOptions) -> Rule:
         res = self.__class__._cache.get(self._preset_name)
         if res is None:
-            res = compile_rule_list(self.rule.rules, self.options)
+            res = compile_rule_list(self.rule.rules, "and", self.options)
             self.__class__._cache[self._preset_name] = res
         return res
 
 @dataclass(frozen=True)
 class And(RuleExpr):
     items: list[RuleExpr]
+    options: Iterable[OptionFilter] = ()
+
+    @override
+    def eval(self, options: CupheadOptions) -> Rule:
+        return compile_rule_list(self.items, "and", self.options)
 
 @dataclass(frozen=True)
 class Or(RuleExpr):
     items: list[RuleExpr]
+    options: Iterable[OptionFilter] = ()
+
+    @override
+    def eval(self, options: CupheadOptions) -> Rule:
+        return compile_rule_list(self.items, "or", self.options)
 
 ## Deps
 
