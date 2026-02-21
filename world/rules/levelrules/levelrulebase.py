@@ -3,12 +3,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from enum import IntEnum
 
 from rule_builder.options import OptionFilter
-from rule_builder.rules import Rule
+from rule_builder.rules import HasAllCounts, HasAnyCount, Rule
 
 from ...options import CupheadOptions
 from ..dep import Dep
@@ -21,7 +21,7 @@ def lrpreset(fn: LRPreset) -> LRPreset:
     LRPRESETS[_name] = fn
     return fn
 
-LRSelector = Callable[["CupheadOptions"], Mapping[str, int]]
+LRSelector = Callable[["CupheadOptions"], dict[str, int]]
 
 ### Base intermediary representation data classes
 
@@ -33,6 +33,16 @@ class RuleExpr: ...
 @dataclass(frozen=True)
 class RBRule(RuleExpr):
     rule: Rule
+
+@dataclass(frozen=True)
+class SelectRule(RuleExpr):
+    select: LRSelector
+    any: bool
+    options: Iterable[OptionFilter] = ()
+
+    def eval(self, options: CupheadOptions) -> Rule:
+        select = self.select(options)
+        return HasAnyCount(select) if self.any else HasAllCounts(select)
 
 @dataclass(frozen=True, init=False)
 class RulePreset(RuleExpr):
@@ -46,10 +56,6 @@ class RulePreset(RuleExpr):
     def __init__(self, preset: LRPreset):
         object.__setattr__(self, "_preset_name", preset.__name__)
         object.__setattr__(self, "rule", preset())
-
-@dataclass(frozen=True)
-class RuleBool(RuleExpr):
-    value: bool
 
 @dataclass(frozen=True)
 class And(RuleExpr):

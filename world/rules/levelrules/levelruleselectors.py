@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import typing
-from collections.abc import Mapping
 
 from ...enums import WeaponMode
 from ...items import weapons
@@ -21,15 +20,15 @@ def selector(fn: LRSelector) -> LRSelector:
     return fn
 
 @selector
-def lrs_all_weapon_ex(options: CupheadOptions) -> Mapping[str, int]:
+def lrs_all_weapon_ex(options: CupheadOptions) -> dict[str, int]:
     if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
         return dict.fromkeys(weapons.weapon_p_dict.values(), 2)
     return dict.fromkeys(weapons.weapon_ex_dict.values(), 1)
 
 @selector
-def lrs_contract_req(options: CupheadOptions) -> Mapping[str, int]:
+def lrs_contract_req(options: CupheadOptions) -> dict[str, int]:
     return {itemnames.item_contract: options.contract_requirements.value}
 
 @selector
-def lrs_dlc_ingredient_req(options: CupheadOptions) -> Mapping[str, int]:
+def lrs_dlc_ingredient_req(options: CupheadOptions) -> dict[str, int]:
     return {itemnames.item_dlc_ingredient: options.dlc_ingredient_requirements.value}
