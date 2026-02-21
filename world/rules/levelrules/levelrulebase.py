@@ -3,12 +3,16 @@
 
 from __future__ import annotations
 
+from abc import abstractmethod
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from enum import IntEnum
+from typing import ClassVar, Protocol
+
+from typing_extensions import override
 
 from rule_builder.options import OptionFilter
-from rule_builder.rules import HasAllCounts, HasAnyCount, Rule
+from rule_builder.rules import HasAllCounts, HasAnyCount, Rule, True_
 
 from ...options import CupheadOptions
 from ..dep import Dep
@@ -25,6 +29,13 @@ LRSelector = Callable[["CupheadOptions"], dict[str, int]]
 
 ### Base intermediary representation data classes
 
+class Evalable(Protocol):
+    @abstractmethod
+    def eval(self, options: CupheadOptions) -> Rule: ...
+
+def compile_rule_list(rules: list[RuleExpr], options: Iterable[OptionFilter] = ()) -> Rule:
+    return True_() # TODO Finish
+
 ## Rule Expressions
 
 @dataclass(frozen=True)
@@ -35,19 +46,21 @@ class RBRule(RuleExpr):
     rule: Rule
 
 @dataclass(frozen=True)
-class SelectRule(RuleExpr):
+class SelectRule(RuleExpr, Evalable):
     select: LRSelector
     any: bool
     options: Iterable[OptionFilter] = ()
 
+    @override
     def eval(self, options: CupheadOptions) -> Rule:
         select = self.select(options)
         return HasAnyCount(select) if self.any else HasAllCounts(select)
 
 @dataclass(frozen=True, init=False)
-class RulePreset(RuleExpr):
+class RulePreset(RuleExpr, Evalable):
     rule: RuleContainer
     _preset_name: str
+    _cache: ClassVar[dict[str, Rule]] = {}
 
     @property
     def preset_name(self) -> str:
@@ -56,6 +69,14 @@ class RulePreset(RuleExpr):
     def __init__(self, preset: LRPreset):
         object.__setattr__(self, "_preset_name", preset.__name__)
         object.__setattr__(self, "rule", preset())
+
+    @override
+    def eval(self, options: CupheadOptions) -> Rule:
+        res = self.__class__._cache.get(self._preset_name)
+        if res is None:
+            res = compile_rule_list(self.rule.rules, self.rule.options)
+            self.__class__._cache[self._preset_name] = res
+        return res
 
 @dataclass(frozen=True)
 class And(RuleExpr):
