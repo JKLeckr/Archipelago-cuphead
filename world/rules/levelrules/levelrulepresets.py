@@ -9,7 +9,7 @@ from ...names import itemnames as i
 from ..dep import deps
 from ..dep.depfilter import DepFilter
 from . import levelruleselectors as lrs
-from .levelrulebase import RBRule, RuleList, RulePreset, SelectRule, lrpreset
+from .levelrulebase import And, Or, RBRule, RuleList, RulePreset, SelectRule, lrpreset
 
 
 @lrpreset
@@ -250,16 +250,18 @@ def lrp_weapon_ex() -> RuleList:
 @lrpreset
 def lrp_topgrade() -> RuleList:
     return RuleList([
-        RulePreset(lrp_parry)
-        # TODO: Missing preset dependency: preset 'parry'.
-        # TODO: Missing OR branch over presets 'any_super' and 'weapon_ex' when weapon_ex_rando is active.
+        RulePreset(lrp_parry),
+        Or(
+            [RulePreset(lrp_any_super), RulePreset(lrp_weapon_ex)],
+            options=[DepFilter(deps.dep_weapon_ex_rando)]
+        )
     ])
 
 
 @lrpreset
 def lrp_plane_topgrade() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'plane_parry'.
+        RulePreset(lrp_plane_parry),
         RBRule(
             HasAny(
                 i.item_plane_ex,
@@ -275,7 +277,7 @@ def lrp_plane_topgrade() -> RuleList:
 @lrpreset
 def lrp_rungun_topgrade() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'parry'.
+        RulePreset(lrp_parry)
     ])
 
 
@@ -297,10 +299,10 @@ def lrp_dlc_doublejump() -> RuleList:
         RBRule(
             False_(options=[DepFilter(deps.dep_dlc_chalice, False)])
         ),
-        # TODO: Missing AND with preset 'dlc_cookie'.
-        RBRule(
-            Has(i.item_ability_dlc_cdoublejump, options=[DepFilter(deps.dep_rando_abilities)])
-        )
+        And([
+            RulePreset(lrp_dlc_cookie),
+            RBRule(Has(i.item_ability_dlc_cdoublejump))
+        ], options=[DepFilter(deps.dep_rando_abilities)])
     ])
 
 
@@ -323,42 +325,54 @@ def lrp_dash_or_dlc_doublejump() -> RuleList:
 @lrpreset
 def lrp_dlc_boss_chaliced() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'dlc_cookie'.
-        # TODO: Missing preset dependency: preset 'topgrade' when dep_dlc_chaliced_grade_required.
-        # TODO: Missing preset dependency: preset 'dash' when dep_dlc_chaliced_grade_required and !dep_dlc_chalice_only.
+        RulePreset(lrp_dlc_cookie),
+        RulePreset(lrp_topgrade, options=[DepFilter(deps.dep_dlc_chaliced_grade_required)]),
+        RulePreset(
+            lrp_dash,
+            options=[
+                DepFilter(deps.dep_dlc_chaliced_grade_required),
+                DepFilter(deps.dep_dlc_chalice_only, False)
+            ]
+        )
     ])
 
 
 @lrpreset
 def lrp_dlc_boss_plane_chaliced() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'dlc_cookie'.
-        # TODO: Missing preset dependency: preset 'plane_topgrade' when dep_dlc_chaliced_grade_required.
+        RulePreset(lrp_dlc_cookie),
+        RulePreset(lrp_plane_topgrade, options=[DepFilter(deps.dep_dlc_chaliced_grade_required)])
     ])
 
 
 @lrpreset
 def lrp_dlc_boss_chaliced_parry() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'dlc_boss_chaliced'.
-        # TODO: Missing preset dependency: preset 'dash_and_parry' when !dep_dlc_chaliced_grade_required.
+        RulePreset(lrp_dlc_boss_chaliced),
+        RulePreset(lrp_dash_and_parry, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, False)])
     ])
 
 
 @lrpreset
 def lrp_dlc_rungun_chaliced() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'dlc_cookie'.
-        # TODO: Missing preset dependency: preset 'rungun_topgrade' when dep_dlc_rungun_chaliced_grade_required.
-        # TODO: Missing preset dependency: preset 'dash' when dep_dlc_rungun_chaliced_grade_required and !dep_dlc_chalice_only.
+        RulePreset(lrp_dlc_cookie),
+        RulePreset(lrp_rungun_topgrade, options=[DepFilter(deps.dep_dlc_rungun_chaliced_grade_required)]),
+        RulePreset(
+            lrp_dash,
+            options=[
+                DepFilter(deps.dep_dlc_rungun_chaliced_grade_required),
+                DepFilter(deps.dep_dlc_chalice_only, False)
+            ]
+        )
     ])
 
 
 @lrpreset
 def lrp_dlc_rungun_chaliced_parry() -> RuleList:
     return RuleList([
-        # TODO: Missing preset dependency: preset 'dlc_rungun_chaliced'.
-        # TODO: Missing preset dependency: preset 'dash' when !dep_dlc_chaliced_grade_required.
+        RulePreset(lrp_dlc_rungun_chaliced),
+        RulePreset(lrp_dash, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, False)])
     ])
 
 
