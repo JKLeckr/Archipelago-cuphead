@@ -252,7 +252,8 @@ def lrp_topgrade() -> RuleList:
     return RuleList([
         RulePreset(lrp_parry),
         Or(
-            [RulePreset(lrp_any_super), RulePreset(lrp_weapon_ex)],
+            RulePreset(lrp_any_super),
+            RulePreset(lrp_weapon_ex),
             options=[DepFilter(deps.dep_weapon_ex_rando)]
         )
     ])
@@ -299,10 +300,11 @@ def lrp_dlc_doublejump() -> RuleList:
         RBRule(
             False_(options=[DepFilter(deps.dep_dlc_chalice, False)])
         ),
-        And([
+        And(
             RulePreset(lrp_dlc_cookie),
-            RBRule(Has(i.item_ability_dlc_cdoublejump))
-        ], options=[DepFilter(deps.dep_rando_abilities)])
+            RBRule(Has(i.item_ability_dlc_cdoublejump)),
+            options=[DepFilter(deps.dep_rando_abilities)]
+        )
     ])
 
 

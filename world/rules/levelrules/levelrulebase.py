@@ -12,7 +12,9 @@ from typing import ClassVar
 from typing_extensions import override
 
 from rule_builder.options import OptionFilter
+from rule_builder.rules import And as RBAnd
 from rule_builder.rules import HasAllCounts, HasAnyCount, Rule, True_
+from rule_builder.rules import Or as RBOr
 
 from ...options import CupheadOptions
 
@@ -29,11 +31,27 @@ LRSelector = Callable[["CupheadOptions"], dict[str, int]]
 ### Base intermediary representation data classes
 
 def compile_rule_list(
-    rules: list[RuleExpr],
+    rules: Iterable[RuleExpr],
+    options: CupheadOptions,
     op_and: bool = True, # or if false
-    options: Iterable[OptionFilter] = ()
+    filters: Iterable[OptionFilter] = ()
 ) -> Rule:
-    return True_() # TODO Finish
+    def _check_filter(opt: OptionFilter) -> bool:
+        res = opt.check(options)
+        # DepFilter stores negation in `value`.
+        value = getattr(opt, "value", True)
+        return res if value else not res
+
+    # If the parent expression options fail, this expression is inactive.
+    if not all(_check_filter(opt) for opt in filters):
+        return True_()
+
+    _rules = [rule.eval(options) for rule in rules]
+    if not _rules:
+        return True_()
+    if len(_rules) == 1:
+        return _rules[0]
+    return RBAnd(*_rules) if op_and else RBOr(*_rules)
 
 ## Rule Expressions
 
@@ -66,10 +84,10 @@ class SelectRule(RuleExpr):
 
 @dataclass(frozen=True)
 class RuleRef(RuleExpr):
-    rule: RuleList
+    rules: RuleList
     options: Iterable[OptionFilter]
     _ref_name: str
-    __cache: ClassVar[dict[str, Rule]] = {}
+    __cache: ClassVar[dict[tuple[int, str, tuple[str, ...]], Rule]] = {}
 
     @property
     def ref_name(self) -> str:
@@ -84,15 +102,17 @@ class RuleRef(RuleExpr):
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        res = self.__class__.__cache.get(self._ref_name)
+        opt_key = tuple(str(opt) for opt in self.options)
+        cache_key = (id(self.rules), self._ref_name, opt_key)
+        res = self.__class__.__cache.get(cache_key)
         if res is None:
-            res = compile_rule_list(self.rule.rules, True, self.options)
-            self.__class__.__cache[self._ref_name] = res
+            res = compile_rule_list(self.rules, options, True, self.options)
+            self.__class__.__cache[cache_key] = res
         return res
 
 @dataclass(frozen=True, init=False)
 class RulePreset(RuleRef):
-    __cache: ClassVar[dict[str, Rule]] = {}
+    __cache: ClassVar[dict[tuple[str, tuple[str, ...]], Rule]] = {}
 
     @property
     def preset_name(self) -> str:
@@ -105,37 +125,44 @@ class RulePreset(RuleRef):
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        res = self.__class__.__cache.get(self._ref_name)
+        opt_key = tuple(str(opt) for opt in self.options)
+        cache_key = (self._ref_name, opt_key)
+        res = self.__class__.__cache.get(cache_key)
         if res is None:
-            res = compile_rule_list(self.rule.rules, True, self.options)
-            self.__class__.__cache[self._ref_name] = res
+            res = compile_rule_list(self.rules, options, True, self.options)
+            self.__class__.__cache[cache_key] = res
         return res
 
 @dataclass(frozen=True)
 class And(RuleExpr):
-    items: list[RuleExpr]
+    items: Iterable[RuleExpr]
     options: Iterable[OptionFilter] = ()
+
+    def __init__(self, *items: RuleExpr, options: Iterable[OptionFilter] = ()):
+        object.__setattr__(self, "items", items)
+        object.__setattr__(self, "options", options)
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        return compile_rule_list(self.items, True, self.options)
+        return compile_rule_list(self.items, options, True, self.options)
 
 @dataclass(frozen=True)
 class Or(RuleExpr):
-    items: list[RuleExpr]
-    options: Iterable[OptionFilter] = ()
+    items: Iterable[RuleExpr]
+    options: Iterable[OptionFilter]
+
+    def __init__(self, *items: RuleExpr, options: Iterable[OptionFilter] = ()):
+        object.__setattr__(self, "items", items)
+        object.__setattr__(self, "options", options)
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        return compile_rule_list(self.items, False, self.options)
+        return compile_rule_list(self.items, options, False, self.options)
 
 
 ## Rule Containers
 
-@dataclass(frozen=True)
-class RuleList:
-    rules: list[RuleExpr]
-
+RuleList = list[RuleExpr]
 
 ## Data Structure
 
@@ -146,13 +173,14 @@ class InheritMode(IntEnum):
 
 @dataclass(frozen=True)
 class LocationDef(RuleList):
+    rules: RuleList
     inherit: InheritMode = InheritMode.AND
 
 @dataclass(frozen=True)
 class LevelDef:
     exit_location: str
-    access: RuleList | None
-    base: RuleList | None
+    access: RuleList
+    base: RuleList
     ruledefs: dict[str, RuleList]
     locations: dict[str, LocationDef]
 
