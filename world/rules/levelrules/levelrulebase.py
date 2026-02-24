@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import ClassVar, Literal
+from typing import ClassVar
 
 from typing_extensions import override
 
@@ -30,7 +30,7 @@ LRSelector = Callable[["CupheadOptions"], dict[str, int]]
 
 def compile_rule_list(
     rules: list[RuleExpr],
-    op: Literal["and", "or"],
+    op_and: bool = True, # or if false
     options: Iterable[OptionFilter] = ()
 ) -> Rule:
     return True_() # TODO Finish
@@ -86,7 +86,7 @@ class RuleRef(RuleExpr):
     def eval(self, options: CupheadOptions) -> Rule:
         res = self.__class__.__cache.get(self._ref_name)
         if res is None:
-            res = compile_rule_list(self.rule.rules, "and", self.options)
+            res = compile_rule_list(self.rule.rules, True, self.options)
             self.__class__.__cache[self._ref_name] = res
         return res
 
@@ -107,7 +107,7 @@ class RulePreset(RuleRef):
     def eval(self, options: CupheadOptions) -> Rule:
         res = self.__class__.__cache.get(self._ref_name)
         if res is None:
-            res = compile_rule_list(self.rule.rules, "and", self.options)
+            res = compile_rule_list(self.rule.rules, True, self.options)
             self.__class__.__cache[self._ref_name] = res
         return res
 
@@ -118,7 +118,7 @@ class And(RuleExpr):
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        return compile_rule_list(self.items, "and", self.options)
+        return compile_rule_list(self.items, True, self.options)
 
 @dataclass(frozen=True)
 class Or(RuleExpr):
@@ -127,7 +127,7 @@ class Or(RuleExpr):
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        return compile_rule_list(self.items, "or", self.options)
+        return compile_rule_list(self.items, False, self.options)
 
 
 ## Rule Containers

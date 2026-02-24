@@ -28,6 +28,7 @@ from .world.options import optionbits as obits
 from .world.options import optionresolver as oresolver
 from .world.options.optionsanitizer import OptionSanitizer
 from .world.rules import rules
+from .world.rules.rulereg import RuleReg
 from .world.settings import CupheadSettings
 from .world.shop import ShopData
 
@@ -84,6 +85,8 @@ class CupheadWorld(World):
     active_levels: dict[str, LevelData]
 
     level_map: dict[int, int]
+
+    rulereg: RuleReg
 
     fake_gen: bool = False
     ut_can_gen_without_yaml: ClassVar[bool] = True
@@ -158,6 +161,8 @@ class CupheadWorld(World):
         self.active_items = items.setup_items(self.options)
         self.active_locations = locations.setup_locations(self.options)
         self.active_levels = levels.setup_levels(self.settings, self.options, self.active_locations)
+
+        self.rulereg = RuleReg(self)
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:

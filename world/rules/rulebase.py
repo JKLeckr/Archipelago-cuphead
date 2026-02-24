@@ -84,33 +84,13 @@ def rule_can_reach_any_entrance(entrances: Iterable[str]) -> Rule:
 
 # Rule helper functions
 
+def get_entrance_name(exit: str, entrance: str) -> str:
+    return f"({exit})->({entrance})"
+def get_entrance_by_name(world: CupheadWorld, entrance_name: str) -> Entrance:
+    return world.multiworld.get_entrance(entrance_name, world.player)
 def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
-    return world.multiworld.get_entrance(f"({exit})->({entrance})", world.player)
+    return get_entrance_by_name(world, get_entrance_name(exit, entrance))
 def get_location(world: CupheadWorld, location: str) -> Location:
     return world.multiworld.get_location(location, world.player)
 def get_region(world: CupheadWorld, region: str) -> Region:
     return world.multiworld.get_region(region, world.player)
-def set_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1) -> None:
-    set_loc_rule(world, loc, rule_has(world, item, count))
-def add_item_rule(world: CupheadWorld, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
-    add_loc_rule(world, loc, rule_has(world, item, count), combine_and)
-def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
-    set_rule(get_location(world, loc), rule)
-def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule, combine_and: bool = True) -> None:
-    add_rule(get_location(world, loc), rule, "and" if combine_and else "or")
-def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
-    region = get_region(world, region_name)
-    for entrance in region.entrances:
-        set_rule(entrance, rule)
-def set_region_exit_rules(world: CupheadWorld, region_name: str, rule: Rule):
-    region = get_region(world, region_name)
-    for entrance in region.exits:
-        set_rule(entrance, rule)
-def add_region_rule(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
-    region = get_region(world, region_name)
-    for entrance in region.entrances:
-        add_rule(entrance, rule, "and" if combine_and else "or")
-def add_region_exit_rule(world: CupheadWorld, region_name: str, rule: Rule, combine_and: bool = True):
-    region = get_region(world, region_name)
-    for entrance in region.exits:
-        add_rule(entrance, rule, "and" if combine_and else "or")
