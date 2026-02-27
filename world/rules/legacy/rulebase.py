@@ -10,7 +10,7 @@ from BaseClasses import CollectionRule, CollectionState, Entrance, Location, Reg
 from worlds.generic.Rules import add_rule, set_rule
 
 if typing.TYPE_CHECKING:
-    from ... import CupheadWorld
+    from .... import CupheadWorld
 
 Rule = Callable[[CollectionState], bool]
 RegionRule = Callable[[CollectionState, int], bool]
@@ -80,6 +80,9 @@ def rrule_and(*rules: RegionRule) -> RegionRule:
     return lambda state, player: all(((rule)(state, player)) for rule in rules)
 def rrule_or(*rules: RegionRule) -> RegionRule:
     return lambda state, player: any(((rule)(state, player)) for rule in rules)
+
+def rrule_not(rrule: RegionRule) -> RegionRule:
+    return lambda state, player: not (rrule)(state, player)
 
 def rrule_none() -> RegionRule:
     return rrule_true()

@@ -173,16 +173,16 @@ class InheritMode(IntEnum):
 
 @dataclass(frozen=True)
 class LocationDef(RuleList):
-    rules: RuleList = field(default_factory=list)
+    rules: RuleList = field(default_factory=RuleList)
     inherit: InheritMode = InheritMode.AND
 
 @dataclass(frozen=True)
 class LevelDef:
     locations: dict[str, LocationDef]
     exit_location: str
-    access: RuleList = field(default_factory=list)
-    base: RuleList = field(default_factory=list)
-    ruledefs: dict[str, RuleList] = field(default_factory=dict)
+    access: RuleList = field(default_factory=RuleList)
+    base: RuleList = field(default_factory=RuleList)
+    ruledefs: dict[str, RuleList] = field(default_factory=dict[str, RuleList])
 
 @dataclass(frozen=True)
 class LevelRules:

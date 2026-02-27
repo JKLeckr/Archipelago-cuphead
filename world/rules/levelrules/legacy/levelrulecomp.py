@@ -6,8 +6,8 @@ from __future__ import annotations
 import typing
 
 from ....names import namemap
-from ... import rulebase as rb
-from ...rulebase import RegionRule
+from ...legacy import rulebase as rb
+from ...legacy.rulebase import RegionRule
 from . import levelrulejsonbase as lrb
 from .levelruledata import LevelRuleData
 
