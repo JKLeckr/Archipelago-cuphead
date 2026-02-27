@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import ClassVar
 
@@ -173,16 +173,16 @@ class InheritMode(IntEnum):
 
 @dataclass(frozen=True)
 class LocationDef(RuleList):
-    rules: RuleList
+    rules: RuleList = field(default_factory=list)
     inherit: InheritMode = InheritMode.AND
 
 @dataclass(frozen=True)
 class LevelDef:
-    exit_location: str
-    access: RuleList
-    base: RuleList
-    ruledefs: dict[str, RuleList]
     locations: dict[str, LocationDef]
+    exit_location: str
+    access: RuleList = field(default_factory=list)
+    base: RuleList = field(default_factory=list)
+    ruledefs: dict[str, RuleList] = field(default_factory=dict)
 
 @dataclass(frozen=True)
 class LevelRules:

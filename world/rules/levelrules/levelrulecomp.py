@@ -11,7 +11,7 @@ from rule_builder.rules import Rule, True_
 
 from ...names import namemap
 from . import levelrulebase as lrb
-from .levelruledefs import LEVEL_RULES
+from .levelruledefs import levelrules
 
 if typing.TYPE_CHECKING:
     from .... import CupheadWorld
@@ -62,7 +62,7 @@ class LevelRuleComp:
     def compile_levelrules(self) -> None:
         active_levels = self._world.active_levels
 
-        for lname, ldef in LEVEL_RULES.levels.items():
+        for lname, ldef in levelrules.levels.items():
             if self._debug_on():
                 print(lname)
 
