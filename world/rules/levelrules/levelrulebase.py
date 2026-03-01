@@ -88,7 +88,7 @@ class RuleRef(RuleExpr):
     options: Iterable[OptionFilter]
 
     def __init__(self, ref: str, options: Iterable[OptionFilter] = ()):
-        object.__setattr__(self, "_ref_name", ref)
+        object.__setattr__(self, "ref_name", ref)
         object.__setattr__(self, "options", options)
 
     @override
@@ -108,7 +108,7 @@ class RulePreset(RuleExpr):
 
     def __init__(self, preset: LRPreset, options: Iterable[OptionFilter] = ()):
         object.__setattr__(self, "_ref_name", preset.__name__)
-        object.__setattr__(self, "rulee", preset())
+        object.__setattr__(self, "rules", preset())
         object.__setattr__(self, "options", options)
 
     @override

@@ -30,6 +30,19 @@ class EnumOption(Generic[TEnum]):
     def evalue(self, value: TEnum | int) -> None:
         self.value = int(value)
 
+class FlagOption(Generic[TFlag]):
+    value: int
+    flag_type: type[TFlag]
+
+    @property
+    def fvalue(self) -> TFlag:
+        """flag value"""
+        return self.flag_type(self.value)
+
+    @fvalue.setter
+    def fvalue(self, value: TFlag | int) -> None:
+        self.value = int(value)
+
 class BoolOption:
     value: int
 

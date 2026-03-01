@@ -90,7 +90,7 @@ class CupheadOptions(PerGameCommonOptions):
     weapon_gate: codefs.WeaponGate
 
     def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
-        return (self.dlc_chalice_items_separate.evalue & item_group) > 0
+        return (self.dlc_chalice_items_separate.fvalue & item_group) > 0
 
     def is_goal_used(self, goal: str) -> bool:
         if goal == locationnames.loc_event_goal_devil:

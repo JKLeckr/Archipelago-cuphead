@@ -190,13 +190,22 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
     visibility = Visibility.spoiler
     valid_keys = frozenset({"core_items", "abilities"}) # TODO: Finish
     valid_keys_casefold = True
-    evalue: e.ItemGroups
+    _fvalue: int
 
     _key_ebits: Mapping[str, e.ItemGroups] = {
         "core_items": e.ItemGroups.CORE_ITEMS,
         #"weapon_ex": e.ItemGroups.WEAPON_EX,
         "abilities": e.ItemGroups.ABILITIES
     }
+
+    @property
+    def fvalue(self) -> e.ItemGroups:
+        """flag value"""
+        return e.ItemGroups(self._fvalue)
+
+    @fvalue.setter
+    def fvalue(self, value: e.ItemGroups | int) -> None:
+        self._fvalue = int(value)
 
     def _get_separate_items_mode(self) -> e.ItemGroups:
         _set = self.value
@@ -209,7 +218,7 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
         return _val
 
     def _get_separate_items_set(self) -> set[str]:
-        _val = self.evalue
+        _val = self.fvalue
 
         _set: set[str] = {
             opt
@@ -224,7 +233,7 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
         super().__setattr__(name, value)
         if name == "value":
             self._value_set = True
-            self.evalue = self._get_separate_items_mode()
+            self.fvalue = self._get_separate_items_mode()
             self._value_set = False
         elif name == "evalue" and not self._value_set:
             self.value = self._get_separate_items_set()

@@ -12,6 +12,7 @@
 
   "pythonVersion": "3.11",
   "pythonPlatform": "Windows",
+  "stubPath": "./typings",
 
   "executionEnvironments": [
     {

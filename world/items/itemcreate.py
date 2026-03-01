@@ -248,7 +248,7 @@ def setup_ability_pool(world: CupheadWorld, precollected_item_names: list[str]) 
     _precollected = precollected_item_names
     abilities = list(idef.item_abilities.keys())
     # FIXME: Is this needed? If they are not active, they won't be added anyways
-    if world.options.dlc_chalice_items_separate.evalue & ItemGroups.ABILITIES:
+    if world.options.dlc_chalice_items_separate.fvalue & ItemGroups.ABILITIES:
         abilities.extend(idef.item_dlc_chalice_abilities.keys())
     else:
         abilities.append(itemnames.item_ability_dlc_cdoublejump)
