@@ -9,7 +9,6 @@ from rule_builder.rules import And as RBAnd
 from rule_builder.rules import Or as RBOr
 from rule_builder.rules import Rule, True_
 
-from ...names import namemap
 from . import levelrulebase as lrb
 from .levelruledefs import levelrules
 
@@ -25,17 +24,26 @@ class LevelRuleComp:
     def _debug_on(self) -> bool:
         return self._world.settings.is_debug_bit_on(128)
 
-    def _eval_rule_list(self, rule_list: lrb.RuleList | None) -> Rule:
+    def _eval_rule_list(
+        self,
+        rule_list: lrb.RuleList | None,
+        scope: lrb.RuleEvalScope
+    ) -> Rule:
         if not rule_list:
             return True_()
-        return lrb.compile_rule_list(rule_list, self._options, True)
+        return lrb.compile_rule_list(rule_list, self._options, True, scope=scope)
 
-    def _compile_location_rule(self, level: lrb.LevelDef, loc: lrb.LocationDef) -> Rule:
-        loc_rule = self._eval_rule_list(loc)
+    def _compile_location_rule(
+        self,
+        level: lrb.LevelDef,
+        loc: lrb.LocationDef,
+        scope: lrb.RuleEvalScope
+    ) -> Rule:
+        loc_rule = self._eval_rule_list(loc.rules, scope)
         if not level.base:
             return loc_rule
 
-        base_rule = self._eval_rule_list(level.base)
+        base_rule = self._eval_rule_list(level.base, scope)
         match loc.inherit:
             case lrb.InheritMode.AND:
                 return RBAnd(base_rule, loc_rule)
@@ -44,11 +52,17 @@ class LevelRuleComp:
             case lrb.InheritMode.NONE:
                 return loc_rule
 
-    def _compile_level_loc(self, rlname: str, ldef: lrb.LevelDef, locname: str, loc: lrb.LocationDef) -> None:
-        rlocname = namemap.get_location_name(locname)
-        if rlocname in self._world.active_locations:
-            _rule = self._compile_location_rule(ldef, loc)
-            self._world.rulereg.add_loc_rule(rlocname, _rule)
+    def _compile_level_loc(
+        self,
+        rlname: str,
+        ldef: lrb.LevelDef,
+        locname: str,
+        loc: lrb.LocationDef,
+        scope: lrb.RuleEvalScope
+    ) -> None:
+        if locname in self._world.active_locations:
+            _rule = self._compile_location_rule(ldef, loc, scope)
+            self._world.rulereg.add_loc_rule(locname, _rule)
             if locname == ldef.exit_location:
                 self._world.rulereg.add_region_exit_rule(rlname, _rule)
         else:
@@ -66,16 +80,16 @@ class LevelRuleComp:
             if self._debug_on():
                 print(lname)
 
-            rlname = namemap.get_region_name(lname)
-            if rlname in active_levels:
+            if lname in active_levels:
                 if ldef.exit_location and ldef.exit_location not in ldef.locations:
                     raise ValueError(f"'{lname}'.exit_location: '{ldef.exit_location}' is unknown.")
+                scope = lrb.RuleEvalScope(lname, ldef.ruledefs)
 
-                if not ldef.access:
-                    self._world.rulereg.add_region_rule(rlname, self._eval_rule_list(ldef.access))
+                if ldef.access:
+                    self._world.rulereg.add_region_rule(lname, self._eval_rule_list(ldef.access, scope))
 
                 for locname, loc in ldef.locations.items():
-                    self._compile_level_loc(rlname, ldef, locname, loc)
+                    self._compile_level_loc(lname, ldef, locname, loc, scope)
             elif self._debug_on():
                 print(f"Skipping rules for level '{lname}'")
 
