@@ -55,8 +55,8 @@ class LevelRuleComp:
             if self._debug_on():
                 print(f"Skipping rules for location '{locname}'")
             if locname == ldef.exit_location:
-                raise Warning(
-                    f"level '{rlname}' exit_location '{ldef.exit_location}' is skipped because location is inactive."
+                raise ValueError(
+                    f"level '{rlname}' exit_location '{ldef.exit_location}' is an inactive location."
                 )
 
     def compile_levelrules(self) -> None:

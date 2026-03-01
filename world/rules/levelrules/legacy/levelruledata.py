@@ -444,7 +444,7 @@ class LevelRuleData:
     @classmethod
     def load_data(cls, *, debug: bool = False):
         if cls._data:
-            raise Warning("levelrule data is already loaded. Reloading.")
+            print("levelrule data is already loaded. Reloading.")
         if debug:
             print("Loading levelrule data...")
         cls._load_levelrule_data()

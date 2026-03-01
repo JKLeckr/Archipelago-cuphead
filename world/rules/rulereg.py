@@ -40,7 +40,7 @@ class RuleReg:
         spot = Spot(spot_name, spot_type)
         self._reg[spot] = [RuleData(rule)]
         if spot in self._reg:
-            raise Warning(f"Overwriting rule for {spot_name}")
+            raise ValueError(f"Cannot add rule '{rule}': Rule for {spot_name} already exists")
 
     def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule, combine_and: bool):
         spot = Spot(spot_name, spot_type)
