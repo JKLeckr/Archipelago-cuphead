@@ -84,34 +84,22 @@ class SelectRule(RuleExpr):
 
 @dataclass(frozen=True)
 class RuleRef(RuleExpr):
-    rules: RuleList
+    ref_name: str
     options: Iterable[OptionFilter]
-    _ref_name: str
-    __cache: ClassVar[dict[tuple[int, str, tuple[str, ...]], Rule]] = {}
 
-    @property
-    def ref_name(self) -> str:
-        return self._ref_name
-
-    def __init__(self, rule_defs: dict[str, RuleList], ref: str, options: Iterable[OptionFilter] = ()):
-        if ref not in rule_defs:
-            raise ValueError(f"{ref} not in level rule_defs")
+    def __init__(self, ref: str, options: Iterable[OptionFilter] = ()):
         object.__setattr__(self, "_ref_name", ref)
-        object.__setattr__(self, "rule", rule_defs[ref])
         object.__setattr__(self, "options", options)
 
     @override
     def eval(self, options: CupheadOptions) -> Rule:
-        opt_key = tuple(str(opt) for opt in self.options)
-        cache_key = (id(self.rules), self._ref_name, opt_key)
-        res = self.__class__.__cache.get(cache_key)
-        if res is None:
-            res = compile_rule_list(self.rules, options, True, self.options)
-            self.__class__.__cache[cache_key] = res
-        return res
+        raise NotImplementedError("RuleRefs cannot be evaled directly")
 
 @dataclass(frozen=True, init=False)
-class RulePreset(RuleRef):
+class RulePreset(RuleExpr):
+    rules: RuleList
+    options: Iterable[OptionFilter]
+    _ref_name: str
     __cache: ClassVar[dict[tuple[str, tuple[str, ...]], Rule]] = {}
 
     @property
@@ -120,7 +108,7 @@ class RulePreset(RuleRef):
 
     def __init__(self, preset: LRPreset, options: Iterable[OptionFilter] = ()):
         object.__setattr__(self, "_ref_name", preset.__name__)
-        object.__setattr__(self, "rule", preset())
+        object.__setattr__(self, "rulee", preset())
         object.__setattr__(self, "options", options)
 
     @override
@@ -183,6 +171,20 @@ class LevelDef:
     access: RuleList = field(default_factory=RuleList)
     base: RuleList = field(default_factory=RuleList)
     ruledefs: dict[str, RuleList] = field(default_factory=dict[str, RuleList])
+
+    def __init__(
+        self,
+        locations: dict[str, LocationDef],
+        exit_location: str | None = None,
+        access: RuleList | None = None,
+        base: RuleList | None = None,
+        ruledefs: dict[str, RuleList] | None = None
+    ):
+        object.__setattr__(self, "locations", locations)
+        object.__setattr__(self, "exit_location", exit_location if exit_location else "")
+        object.__setattr__(self, "access", access if access else [])
+        object.__setattr__(self, "base", base if base else [])
+        object.__setattr__(self, "ruledefs", ruledefs if ruledefs else {})
 
 @dataclass(frozen=True)
 class LevelRules:
