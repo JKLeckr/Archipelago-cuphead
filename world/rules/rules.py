@@ -23,12 +23,12 @@ def set_rules(world: CupheadWorld):
     options = w.options
     use_dlc = w.use_dlc
 
-    rr.set_region_rules(
-        regionnames.world_inkwell_2,
+    rr.add_region_rule(
+        regionnames.level_diehouse1,
         rb.rule_has(itemnames.item_contract, options.contract_requirements_isle2.value)
     )
-    rr.set_region_rules(
-        regionnames.world_inkwell_3,
+    rr.add_region_rule(
+        regionnames.level_diehouse2,
         rb.rule_has(itemnames.item_contract, options.contract_requirements_isle3.value)
     )
 
@@ -36,7 +36,7 @@ def set_rules(world: CupheadWorld):
 
     set_level_rules(w)
 
-    rr.set_item_rule(locationnames.loc_coin_isle1_secret, itemnames.item_event_isle1_secret_prereq, 5)
+    rr.add_item_rule(locationnames.loc_coin_isle1_secret, itemnames.item_event_isle1_secret_prereq, 5)
 
     set_quest_rules(w)
 
@@ -53,11 +53,11 @@ def set_dlc_rules(world: CupheadWorld):
     options = w.options
     ingredient_reqs = options.dlc_ingredient_requirements.value
     set_dlc_boat_rules(w)
-    rr.set_region_rules(
+    rr.add_region_rule(
         regionnames.world_dlc_inkwell_4,
         rb.rule_has(itemnames.item_event_dlc_boataccess)
     )
-    rr.set_region_rules(
+    rr.add_region_rule(
         regionnames.level_dlc_boss_saltbaker,
         rb.rule_has(itemnames.item_dlc_ingredient, ingredient_reqs)
     )
@@ -78,22 +78,22 @@ def set_quest_rules(world: CupheadWorld):
     rr = w.rulereg
     options = w.options
     if options.fourmel_quest.bvalue:
-        rr.set_item_rule(locationnames.loc_quest_4mel, itemnames.item_event_quest_4mel_4th)
+        rr.add_item_rule(locationnames.loc_quest_4mel, itemnames.item_event_quest_4mel_4th)
     if options.ginger_quest.bvalue:
-        rr.set_item_rule(locationnames.loc_quest_ginger, itemnames.item_event_isle2_shortcut)
+        rr.add_item_rule(locationnames.loc_quest_ginger, itemnames.item_event_isle2_shortcut)
     if options.buster_quest.bvalue and options.randomize_abilities:
-        rr.set_item_rule(locationnames.loc_quest_buster, itemnames.item_ability_parry)
+        rr.add_item_rule(locationnames.loc_quest_buster, itemnames.item_ability_parry)
         if options.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
             rr.add_loc_rule(locationnames.loc_quest_buster, rb.rule_has_all({
                 itemnames.item_ability_dlc_cdash,
                 itemnames.item_ability_dlc_cparry,
             }), False)
     if options.silverworth_quest.bvalue:
-        rr.set_item_rule(locationnames.loc_quest_silverworth, itemnames.item_event_agrade, 15)
+        rr.add_item_rule(locationnames.loc_quest_silverworth, itemnames.item_event_agrade, 15)
     if options.pacifist_quest.bvalue:
-        rr.set_item_rule(locationnames.loc_quest_pacifist, itemnames.item_event_pacifist, 6)
+        rr.add_item_rule(locationnames.loc_quest_pacifist, itemnames.item_event_pacifist, 6)
     if options.music_quest.bvalue:
-        rr.set_item_rule(locationnames.loc_quest_music, itemnames.item_event_ludwig)
+        rr.add_item_rule(locationnames.loc_quest_music, itemnames.item_event_ludwig)
 
 def set_level_rules(world: CupheadWorld):
     w = world
@@ -137,7 +137,7 @@ def set_shop_cost_rule(world: CupheadWorld, shop_index: int, shop_costs: list[in
     for i in range(shop_index+1):
         cost += shop_costs[i]
     region = rb.get_region(world, regionnames.shop_sets[shop_index])
-    rr.set_region_rules(region.name, rb.rule_has(itemnames.item_coin, cost))
+    rr.add_region_rule(region.name, rb.rule_has(itemnames.item_coin, cost))
 
 def set_goal(world: CupheadWorld):
     w = world

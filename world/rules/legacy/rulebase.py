@@ -127,11 +127,11 @@ def set_loc_rule(world: CupheadWorld, loc: str, rule: Rule) -> None:
     set_rule(get_location(world, loc), rule)
 def add_loc_rule(world: CupheadWorld, loc: str, rule: Rule, combine_and: bool = True) -> None:
     add_rule(get_location(world, loc), rule, "and" if combine_and else "or")
-def set_region_rules(world: CupheadWorld, region_name: str, rule: Rule):
+def set_region_rule(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.entrances:
         set_rule(entrance, rule)
-def set_region_exit_rules(world: CupheadWorld, region_name: str, rule: Rule):
+def set_region_exit_rule(world: CupheadWorld, region_name: str, rule: Rule):
     region = get_region(world, region_name)
     for entrance in region.exits:
         set_rule(entrance, rule)

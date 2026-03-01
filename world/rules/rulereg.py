@@ -36,11 +36,8 @@ class RuleReg:
         self._reg = {}
         self._world = world
 
-    def set_rule(self, spot_name: str, spot_type: SpotType, rule: Rule):
-        spot = Spot(spot_name, spot_type)
-        self._reg[spot] = [RuleData(rule)]
-        if spot in self._reg:
-            raise ValueError(f"Cannot add rule '{rule}': Rule for {spot_name} already exists")
+    def clear_rules(self):
+        self._reg.clear()
 
     def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule, combine_and: bool):
         spot = Spot(spot_name, spot_type)
@@ -49,30 +46,29 @@ class RuleReg:
         else:
             self._reg[spot].append(RuleData(rule, combine_and))
 
-    def set_item_rule(self, loc: str, item: str, count: int = 1) -> None:
-        self.set_loc_rule(loc, rb.rule_has(item, count))
+    def pop_rule(self, spot_name: str, spot_type: SpotType) -> list[RuleData] | None:
+        spot = Spot(spot_name, spot_type)
+        if spot not in self._reg:
+            return None
+        return self._reg.pop(spot)
+
     def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
         self.add_loc_rule(loc, rb.rule_has(item, count), combine_and)
-    def set_loc_rule(self, loc: str, rule: Rule) -> None:
-        self.set_rule(loc, SpotType.LOCATION, rule)
     def add_loc_rule(self, loc: str, rule: Rule, combine_and: bool = True) -> None:
         self.add_rule(loc, SpotType.LOCATION, rule, combine_and)
-    def set_region_rules(self, region_name: str, rule: Rule):
-        region = rb.get_region(self._world, region_name)
-        for entrance in region.entrances:
-            self.set_rule(entrance.name, SpotType.ENTRANCE, rule)
     def add_region_rule(self, region_name: str, rule: Rule, combine_and: bool = True):
         region = rb.get_region(self._world, region_name)
         for entrance in region.entrances:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
-    def set_region_exit_rules(self, region_name: str, rule: Rule):
-        region = rb.get_region(self._world, region_name)
-        for entrance in region.exits:
-            self.set_rule(entrance.name, SpotType.ENTRANCE, rule)
     def add_region_exit_rule(self, region_name: str, rule: Rule, combine_and: bool = True):
         region = rb.get_region(self._world, region_name)
         for entrance in region.exits:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
+
+    def pop_loc_rule(self, loc: str) -> list[RuleData] | None:
+        self.pop_rule(loc, SpotType.LOCATION)
+    def pop_entrance_rule(self, entrance_name: str) -> dict[str, list[RuleData]] | None:
+        self.pop_rule(entrance_name, SpotType.ENTRANCE)
 
     def compile_rules(self):
         # This will iterate through the rules for each type and set the rule for
