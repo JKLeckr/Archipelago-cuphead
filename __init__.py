@@ -178,6 +178,7 @@ class CupheadWorld(World):
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
         #print(self.multiworld.get_region(regionnames.level_mausoleum_ii, self.player).locations)
+        dbg.debug_visualize_regions(self, True)
 
     @override
     def create_item(self, name: str, force_classification: ItemClassification | None = None) -> Item:

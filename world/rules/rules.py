@@ -24,11 +24,11 @@ def set_rules(world: CupheadWorld):
     use_dlc = w.use_dlc
 
     rr.add_region_rule(
-        regionnames.level_diehouse1,
+        regionnames.world_inkwell_2,
         rb.rule_has(itemnames.item_contract, options.contract_requirements_isle2.value)
     )
     rr.add_region_rule(
-        regionnames.level_diehouse2,
+        regionnames.world_inkwell_3,
         rb.rule_has(itemnames.item_contract, options.contract_requirements_isle3.value)
     )
 
