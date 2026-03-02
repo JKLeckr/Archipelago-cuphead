@@ -90,6 +90,12 @@ class TestOptions(CupheadTestBase):
             "boss_grade_checks": "disabled",
             "rungun_grade_checks": "disabled",
         },
+        "No Grade Checks Full Accessibility Silverworth": {
+            "accessibility": "full",
+            "boss_grade_checks": "disabled",
+            "rungun_grade_checks": "disabled",
+            "silverworth_quest": True,
+        },
         "DLC No Grade Checks": {
             "use_dlc": True,
             "boss_grade_checks": "disabled",
