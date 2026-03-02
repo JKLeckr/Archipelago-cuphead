@@ -33,7 +33,7 @@ class DlcRandomizeBoat(BoolOption, ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
-    name = "randomize_boat"
+    name = "dlc_randomize_boat"
     value = 1
 
 

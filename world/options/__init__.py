@@ -77,7 +77,6 @@ class CupheadOptions(PerGameCommonOptions):
     # Constants (never change)
     boss_phase_checks: codefs.BossPhaseChecks
     buster_quest: codefs.BusterQuest
-    randomize_boat: codefs.DlcRandomizeBoat
     dlc_randomize_boat: codefs.DlcRandomizeBoat
     dlc_requires_mausoleum: codefs.DlcRequiresMausoleum
     fourmel_quest: codefs.FourMelQuest
