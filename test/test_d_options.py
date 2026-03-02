@@ -5,12 +5,16 @@
 
 import unittest
 from collections import Counter
+from contextlib import redirect_stdout
 from dataclasses import fields
+from io import StringIO
 from typing import Any
 
 from Options import PerGameCommonOptions
 
 from .. import options
+from ..world import enums as e
+from ..world.options import CupheadOptions
 from . import CupheadTestBase
 
 
@@ -172,3 +176,51 @@ class TestOptions(CupheadTestBase):
                 test_world.test_empty_state_can_reach_something()
                 test_world.world_setup()
                 test_world.test_all_state_can_reach_everything()
+
+
+class TestOptionSanitizer(CupheadTestBase):
+    def test_dlc_off_sanitizes_dlc_options(self):
+        test_world = TestOptionSanitizer()
+        test_world.options = {
+            "use_dlc": False,
+            "mode": "dlc_collect_both",
+            "start_weapon": "dlc_converge",
+            "dlc_chalice": "randomized",
+            "dlc_curse_mode": "vanilla",
+            "dlc_kingsleap": "include_all",
+            "dlc_boss_chalice_checks": "separate_grade_required",
+            "dlc_rungun_chalice_checks": "separate_grade_required",
+            "dlc_kingdice_chalice_checks": "separate",
+            "dlc_chess_chalice_checks": "separate",
+            "dlc_cactusgirl_quest": True,
+        }
+        test_world.world_setup()
+        world_options = test_world.world.options
+        assert isinstance(world_options, CupheadOptions)
+
+        self.assertEqual(world_options.dlc_chalice.value, int(e.ChaliceMode.DISABLED))
+        self.assertEqual(world_options.dlc_curse_mode.value, int(e.CurseMode.OFF))
+        self.assertEqual(world_options.dlc_kingsleap.value, int(e.ChessCastleMode.EXCLUDE))
+        self.assertEqual(world_options.dlc_boss_chalice_checks.value, int(e.ChaliceCheckMode.DISABLED))
+        self.assertEqual(world_options.dlc_rungun_chalice_checks.value, int(e.ChaliceCheckMode.DISABLED))
+        self.assertEqual(world_options.dlc_kingdice_chalice_checks.value, int(e.ChaliceCheckMode.DISABLED))
+        self.assertEqual(world_options.dlc_chess_chalice_checks.value, int(e.ChaliceCheckMode.DISABLED))
+        self.assertFalse(world_options.dlc_cactusgirl_quest.value)
+
+    def test_minimal_accessibility_warns_on_risky_combo(self):
+        test_world = TestOptionSanitizer()
+        test_world.options = {
+            "accessibility": "minimal",
+            "weapon_mode": "progressive",
+            "randomize_abilities": True,
+            "boss_grade_checks": "a_grade",
+            "pacifist_quest": True,
+            "silverworth_quest": True,
+        }
+
+        out = StringIO()
+        with redirect_stdout(out):
+            test_world.world_setup()
+
+        output = out.getvalue()
+        assert "Accessibility is set to 'minimal' with high-risk options enabled" in output

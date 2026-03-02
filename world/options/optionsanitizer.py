@@ -7,7 +7,7 @@ from collections.abc import Iterable
 from random import Random
 
 from ..auxiliary import format_list
-from ..enums import ChaliceCheckMode, ChaliceMode, LevelShuffleMode, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LevelShuffleMode, WeaponMode
 from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 from .protocols import CupheadNumericOption, CupheadOptionSet
@@ -28,6 +28,10 @@ class OptionSanitizer:
         self.log_overrides = log_overrides
         self.strict_goal_options = sanitize_goal_options
 
+    def print_warning(self, message: str) -> None:
+        if self.log_overrides:
+            print(f"Warning: For player {self.player}: {message}")
+
     def override_num_option(
             self,
             option: CupheadNumericOption,
@@ -44,7 +48,7 @@ class OptionSanitizer:
         if self.log_overrides and not quiet:
             msg = f'Option "{option.name}" was overridden from "{_old_value_key}" to "{option.current_key}".'
             msg_reason = f"Reason: {reason}."
-            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+            self.print_warning(f"{msg} {msg_reason}")
 
     def override_option_set(
             self,
@@ -63,7 +67,7 @@ class OptionSanitizer:
         if self.log_overrides and not quiet:
             msg = f"Option '{option.name}' was overridden with '{values_str}' {mode_str} set."
             msg_reason = f"Reason: {reason}."
-            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+            self.print_warning(f"{msg} {msg_reason}")
         if add_mode:
             option.value.update(values)
         else:
@@ -82,7 +86,7 @@ class OptionSanitizer:
         if self.log_overrides and not quiet:
             msg = f"Option '{option.name}' was overridden with set cleared."
             msg_reason = f"Reason: {reason}."
-            print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+            self.print_warning(f"{msg} {msg_reason}")
         option.value.clear()
 
     def _sanitize_dlc_chalice_item_options(self, quiet: bool = False) -> None:
@@ -139,11 +143,28 @@ class OptionSanitizer:
         self._sanitize_dlc_chalice_item_options(quiet)
         self._sanitize_dlc_chalice_checks(quiet)
 
-    def _sanitize_dlc_options(self) -> None:
+    def _sanitize_dlc_options(self) -> None:  # noqa: C901
         _options = self.options
         use_dlc = _options.use_dlc.value
         if not use_dlc:
             dlc_reason = "DLC Off"
+            _ccm_disable = int(ChaliceCheckMode.DISABLED)
+            if _options.dlc_chalice.value != int(ChaliceMode.DISABLED):
+                self.override_num_option(_options.dlc_chalice, int(ChaliceMode.DISABLED), dlc_reason, True)
+            if _options.dlc_curse_mode.value != int(CurseMode.OFF):
+                self.override_num_option(_options.dlc_curse_mode, int(CurseMode.OFF), dlc_reason, True)
+            if _options.dlc_kingsleap.value != int(ChessCastleMode.EXCLUDE):
+                self.override_num_option(_options.dlc_kingsleap, int(ChessCastleMode.EXCLUDE), dlc_reason, True)
+            if _options.dlc_boss_chalice_checks.value != _ccm_disable:
+                self.override_num_option(_options.dlc_boss_chalice_checks, _ccm_disable, dlc_reason, True)
+            if _options.dlc_rungun_chalice_checks.value != _ccm_disable:
+                self.override_num_option(_options.dlc_rungun_chalice_checks, _ccm_disable, dlc_reason, True)
+            if _options.dlc_kingdice_chalice_checks.value != _ccm_disable:
+                self.override_num_option(_options.dlc_kingdice_chalice_checks, _ccm_disable, dlc_reason, True)
+            if _options.dlc_chess_chalice_checks.value != _ccm_disable:
+                self.override_num_option(_options.dlc_chess_chalice_checks, _ccm_disable, dlc_reason, True)
+            if _options.dlc_cactusgirl_quest.value:
+                self.override_num_option(_options.dlc_cactusgirl_quest, 0, dlc_reason, True)
             # Sanitize mode
             if _options.mode.value > 4:
                 # TODO: Once modes can be combined, remove this and use randint
@@ -211,10 +232,63 @@ class OptionSanitizer:
                 if self.log_overrides:
                     msg = f"Option 'level_placements' was overridden with '{k}: {v}' removed from dict."
                     msg_reason = f"Reason: {drop_reason}."
-                    print(f"Warning: For player {self.player}: {msg} {msg_reason}")
+                    self.print_warning(f"{msg} {msg_reason}")
             else:
                 nlpvalue[k] = v
         options.level_placements.value = nlpvalue
+
+    def _is_minimal_accessibility(self) -> bool:
+        accessibility = getattr(self.options, "accessibility", None)
+        if accessibility is None:
+            return False
+        current_key = getattr(accessibility, "current_key", "")
+        if isinstance(current_key, str) and current_key.lower() == "minimal":
+            return True
+        value = getattr(accessibility, "value", None)
+        return isinstance(value, str) and value.lower() == "minimal"
+
+    def _populate_accessibility_risks(self, risks_ref: list[str]):  # noqa: C901
+        options = self.options
+
+        if options.randomize_abilities.value:
+            risks_ref.append("randomize_abilities")
+        if options.weapon_mode.value != int(WeaponMode.NORMAL):
+            risks_ref.append("weapon_mode != normal")
+        if options.boss_grade_checks.value > 0:
+            risks_ref.append("boss_grade_checks")
+        if options.rungun_grade_checks.value > 0:
+            risks_ref.append("rungun_grade_checks")
+        if options.silverworth_quest.value:
+            risks_ref.append("silverworth_quest")
+        if options.pacifist_quest.value:
+            risks_ref.append("pacifist_quest")
+        if options.dlc_boss_chalice_checks.value > 0:
+            risks_ref.append("dlc_boss_chalice_checks")
+        if options.dlc_rungun_chalice_checks.value > 0:
+            risks_ref.append("dlc_rungun_chalice_checks")
+        if options.dlc_kingdice_chalice_checks.value > 0:
+            risks_ref.append("dlc_kingdice_chalice_checks")
+        if options.dlc_chess_chalice_checks.value > 0:
+            risks_ref.append("dlc_chess_chalice_checks")
+        if options.dlc_cactusgirl_quest.value:
+            risks_ref.append("dlc_cactusgirl_quest")
+
+    def _warn_accessibility_risks(self) -> None:
+        if not self._is_minimal_accessibility():
+            return
+
+        risks: list[str] = []
+
+        self._populate_accessibility_risks(risks)
+
+        if len(risks) < 1:
+            return
+
+        risk_str = format_list(risks, enc_start="'", enc_end="'")
+        self.print_warning(
+            "Accessibility is set to 'minimal' with high-risk options enabled "
+            f"({risk_str}). This combination is known to increase generation failure chance."
+        )
 
     def sanitize_options(self) -> None:
         _options = self.options
@@ -232,3 +306,5 @@ class OptionSanitizer:
         # Sanitize grade checks
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_num_option(_options.boss_grade_checks, 3, "Expert Off")
+
+        self._warn_accessibility_risks()

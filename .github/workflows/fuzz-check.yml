@@ -1,0 +1,72 @@
+### Copyright 2025-2026 JKLeckr
+### SPDX-License-Identifier: MPL-2.0
+
+name: FuzzCheck
+
+on:
+  pull_request:
+    paths:
+      - "**.py"
+      - '!examples/**'
+      - '!extras/**'
+      - '!tools/**'
+      - ".github/workflows/fuzz-check.yml"
+      - ".github/fuzz/cuphead-fuzz-meta.yaml"
+  push:
+    paths:
+      - "**.py"
+      - '!examples/**'
+      - '!extras/**'
+      - '!tools/**'
+      - ".github/workflows/fuzz-check.yml"
+      - ".github/fuzz/cuphead-fuzz-meta.yaml"
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    env:
+      fuzzer_ver: "0.5.1"
+    defaults:
+      run:
+        working-directory: Archipelago/
+
+    steps:
+      - name: Checkout Archipelago
+        uses: actions/checkout@v4
+        with:
+          repository: JKLeckr/Archipelago
+          path: Archipelago
+          ref: ${{ vars.AP_BRANCH }}
+
+      - name: Checkout Cuphead
+        uses: actions/checkout@v4
+        with:
+          path: Archipelago/worlds/cuphead
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: "Install dependencies"
+        run: |
+          python -m pip install --upgrade pip pyright==1.1.408
+          python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
+          python Launcher.py --update_settings  # make sure host.yaml exists for tests
+          wget "https://raw.githubusercontent.com/Eijebong/Archipelago-fuzzer/refs/tags/$fuzzer_ver/fuzz.py"
+
+      - name: "Set Cuphead to debug levelrules system in host.yaml"
+        run: |
+          sed -i -E '/^cuphead_options:/,/^[^[:space:]]/ s/^([[:space:]]*debug:).*/\1 128/' host.yaml
+
+      - name: "Run fuzzer"
+        run: python ./fuzz.py -g cuphead -j 8 -r 1000 -n 1-4 -m ./worlds/cuphead/.github/fuzz/cuphead-fuzz-meta.yaml
+
+      - name: "Upload fuzz output"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-output
+          path: |
+            Archipelago/fuzz_output/report.json
+            Archipelago/fuzz_output/error
+          if-no-files-found: ignore

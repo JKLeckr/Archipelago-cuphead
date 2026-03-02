@@ -1,0 +1,27 @@
+Cuphead:
+  fuzz_constraints:
+    - option: accessibility
+      if_value: minimal
+      then:
+        randomize_abilities: "false"
+        weapon_mode: normal
+        boss_grade_checks: disabled
+        rungun_grade_checks: disabled
+        silverworth_quest: "false"
+        pacifist_quest: "false"
+        dlc_boss_chalice_checks: disabled
+        dlc_rungun_chalice_checks: disabled
+        dlc_kingdice_chalice_checks: disabled
+        dlc_chess_chalice_checks: disabled
+        dlc_cactusgirl_quest: "false"
+    - option: use_dlc
+      if_value: "false"
+      then:
+        dlc_chalice: disabled
+        dlc_curse_mode: "off"
+        dlc_kingsleap: exclude
+        dlc_boss_chalice_checks: disabled
+        dlc_rungun_chalice_checks: disabled
+        dlc_kingdice_chalice_checks: disabled
+        dlc_chess_chalice_checks: disabled
+        dlc_cactusgirl_quest: "false"
