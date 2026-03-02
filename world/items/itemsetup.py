@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from BaseClasses import ItemClassification
 
-from ..enums import ChaliceCheckMode, ChaliceMode, GradeCheckMode, ItemGroups, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, GameMode, GradeCheckMode, ItemGroups, WeaponMode
 from ..names import itemnames
 from ..options import CupheadOptions
 from . import itemdefs as idef
@@ -26,7 +26,11 @@ def setup_dlc_items(items_ref: dict[str, ItemData], options: CupheadOptions):
     items_ref.update(idef.items_dlc)
     if options.dlc_chalice.evalue == ChaliceMode.VANILLA or options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED:
         add_item(items_ref, itemnames.item_charm_dlc_cookie)
-        if options.dlc_boss_chalice_checks.value or options.dlc_cactusgirl_quest.value:
+        if (
+            options.dlc_boss_chalice_checks.value or
+            options.dlc_cactusgirl_quest.value or
+            (options.mode.evalue & GameMode.DLC_NO_ISLE4) == 0
+        ):
             change_item_type(items_ref, itemnames.item_charm_dlc_cookie, ItemClassification.progression)
     if options.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
         items_ref.update(idef.item_dlc_chalice_essential)

@@ -457,7 +457,8 @@ class GameMode(EnumOption[e.GameMode], ChoiceEx, NamedOption):
     name = "mode"
     display_name = "Mode"
     enum_type = e.GameMode
-    _isle_4_bit = 32
+    _no_isle_4 = 32
+    _isle_4_only = 64
     option_beat_devil = 1
     option_collect_contracts = 2
     option_buy_out_shop = 4
@@ -465,8 +466,12 @@ class GameMode(EnumOption[e.GameMode], ChoiceEx, NamedOption):
     option_dlc_beat_both = 9
     option_dlc_collect_ingredients = 16
     option_dlc_collect_both = 18
-    #option_dlc_beat_devil_no_isle4 = 33 # TODO: Modularize Goal
-    #option_dlc_beat_saltbaker_isle4_only = 40
+    #option_dlc_beat_devil_no_isle4 = 33
+    #option_dlc_collect_contracts_no_isle4 = 34
+    #option_dlc_buy_out_shop_no_isle4 = 36
+    #option_dlc_collect_ingredients_no_isle4 = 48
+    #option_dlc_beat_saltbaker_isle4_only = 72
+    #option_dlc_collect_ingredients_isle4_only = 80
     default = 1
 
 
