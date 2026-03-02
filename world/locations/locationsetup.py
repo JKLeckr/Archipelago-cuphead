@@ -72,8 +72,6 @@ def setup_boss_final_locations(
         locations_ref.update(dlc_final)
 
 def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], options: CupheadOptions):
-    if (options.mode.evalue & GameMode.DLC_NO_ISLE4) == 0:
-        locations_ref.update(ld.location_level_dlc_tutorial)
     if options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED:
         add_location(locations_ref, locationnames.loc_dlc_cookie)
     elif options.dlc_chalice.evalue == ChaliceMode.VANILLA:
@@ -109,6 +107,8 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], options: CupheadO
     if options.dlc_requires_mausoleum.bvalue:
         add_location(locations_ref, locationnames.loc_event_mausoleum)
     if options.dlc_chalice.value > 0:
+        if (options.mode.evalue & GameMode.DLC_NO_ISLE4) == 0:
+            locations_ref.update(ld.location_level_dlc_tutorial)
         setup_dlc_chalice_locations(locations_ref, options)
     if options.dlc_kingsleap.evalue != ChessCastleMode.INCLUDE_ALL:
         _kingsleap_locs = [x for x in [

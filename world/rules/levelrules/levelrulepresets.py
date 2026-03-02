@@ -166,7 +166,11 @@ def lrp_dash_or_parry() -> RuleList:
 def lrp_dash_and_parry() -> RuleList:
     return RuleList([
         RBRule(
-            HasAll(i.item_ability_dash, i.item_ability_parry)
+            HasAll(
+                i.item_ability_dash,
+                i.item_ability_parry,
+                options=[DepFilter(deps.dep_rando_abilities)]
+            )
         )
     ])
 
@@ -312,13 +316,16 @@ def lrp_dlc_doublejump() -> RuleList:
 def lrp_dash_or_dlc_doublejump() -> RuleList:
     return RuleList([
         RBRule(
-            Has(i.item_ability_dash, options=[DepFilter(deps.dep_dlc_chalice, False)])
+            Has(
+                i.item_ability_dash,
+                options=[DepFilter(deps.dep_dlc_chalice, False), DepFilter(deps.dep_rando_abilities)]
+            )
         ),
         RBRule(
             HasAll(
                 i.item_ability_dash,
                 i.item_ability_dlc_cdoublejump,
-                options=[DepFilter(deps.dep_dlc_chalice)]
+                options=[DepFilter(deps.dep_dlc_chalice), DepFilter(deps.dep_rando_abilities)]
             )
         )
     ])

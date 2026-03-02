@@ -3,13 +3,14 @@
 
 import unittest
 from dataclasses import fields
+from types import SimpleNamespace
 from typing import ClassVar
 
 from Options import PerGameCommonOptions
 
 from ..world.enums import WeaponMode
 from ..world.items import itemdefs as idefs
-from ..world.items import weapons
+from ..world.items import itemsetup, weapons
 from ..world.names import itemnames
 
 
@@ -43,33 +44,49 @@ class TestAPWorldOptionsWConf(unittest.TestCase):
         return True
 
 class TestAPWorldItemSetup(unittest.TestCase):
+    @staticmethod
+    def _options_for_weapon_mode(mode: WeaponMode):
+        return SimpleNamespace(
+            weapon_mode=SimpleNamespace(evalue=mode),
+            use_dlc=SimpleNamespace(bvalue=True),
+            boss_grade_checks=SimpleNamespace(evalue=0),
+            rungun_grade_checks=SimpleNamespace(evalue=0),
+            dlc_boss_chalice_checks=SimpleNamespace(evalue=0),
+        )
+
     def test_setup_weapons(self):
         _start_weapon = itemnames.item_weapon_peashooter
 
         self.assertEqual(weapons.weapon_dict[0], _start_weapon)
 
-        item_weapons = set(idefs.item_all_weapons.keys())
-        item_weapon_ex = set(idefs.item_all_weapon_ex.keys())
-        item_p_weapons = set(idefs.item_all_p_weapons.keys())
-        item_weapon_ex_nostart = {x for x in idefs.item_all_weapon_ex.keys() if x != _start_weapon}
-        item_p_weapons_nostart = {x for x in idefs.item_all_p_weapons.keys() if x != _start_weapon}
-
-        modes: list[tuple[str, WeaponMode, set[str]]] = [
-            ("Normal", WeaponMode.NORMAL, item_weapons),
-            ("Progressive", WeaponMode.PROGRESSIVE, item_p_weapons),
-            ("Progressive Except Start", WeaponMode.PROGRESSIVE_EXCEPT_START, item_p_weapons_nostart),
-            ("Ex Separate", WeaponMode.EX_SEPARATE, item_weapon_ex),
-            ("Ex Separate Except Start", WeaponMode.EX_SEPARATE_EXCEPT_START, item_weapon_ex_nostart),
+        modes: list[tuple[str, WeaponMode]] = [
+            ("Normal", WeaponMode.NORMAL),
+            ("Progressive", WeaponMode.PROGRESSIVE),
+            ("Progressive Except Start", WeaponMode.PROGRESSIVE_EXCEPT_START),
+            ("Ex Separate", WeaponMode.EX_SEPARATE),
+            ("Ex Separate Except Start", WeaponMode.EX_SEPARATE_EXCEPT_START),
         ]
 
-        for mode in modes:
-            with self.subTest(mode[0]):
-                """_wconf = wconf.WorldConfig(
-                    with_attrs={
-                        "use_dlc": True,
-                        "start_weapon": 0,
-                        "weapon_mode": mode[1]
+        for mode_name, mode_value in modes:
+            with self.subTest(mode_name):
+                options = self._options_for_weapon_mode(mode_value)
+                items = {**idefs.items_base}
+                itemsetup.setup_weapons(items, options)  # type: ignore[arg-type]
+
+                expected_weapons = set(weapons.get_weapon_dict(options, True).values())  # type: ignore[arg-type]
+                self.assertTrue(expected_weapons.issubset(items.keys()))
+
+                if (mode_value & WeaponMode.EX_SEPARATE) > 0:
+                    expected_ex = {
+                        x
+                        for i, x in weapons.weapon_ex_dict.items()
+                        if i in weapons.get_weapon_dict(options, True)  # type: ignore[arg-type]
                     }
-                )
-                itemsetup.setup_items(_wconf)"""
-                self.assertTrue(False) # TODO: Fix the test
+                    self.assertTrue(expected_ex.issubset(items.keys()))
+                else:
+                    self.assertTrue(set(idefs.item_all_weapon_ex.keys()).isdisjoint(items.keys()))
+
+                if (mode_value & WeaponMode.PROGRESSIVE) > 0 or (mode_value & WeaponMode.EX_SEPARATE) > 0:
+                    self.assertEqual(items[itemnames.item_plane_ex].quantity, 1)
+                else:
+                    self.assertEqual(items[itemnames.item_plane_ex].quantity, 0)
