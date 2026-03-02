@@ -72,7 +72,8 @@ def setup_boss_final_locations(
         locations_ref.update(dlc_final)
 
 def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], options: CupheadOptions):
-    locations_ref.update(ld.location_level_dlc_tutorial)
+    if (options.mode.evalue & GameMode.DLC_NO_ISLE4) == 0:
+        locations_ref.update(ld.location_level_dlc_tutorial)
     if options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED:
         add_location(locations_ref, locationnames.loc_dlc_cookie)
     elif options.dlc_chalice.evalue == ChaliceMode.VANILLA:
