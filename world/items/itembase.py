@@ -3,15 +3,12 @@
 
 from __future__ import annotations
 
-import typing
 from collections.abc import Mapping
 from random import Random
 from typing import NamedTuple
 
 from BaseClasses import Item, ItemClassification
 
-if typing.TYPE_CHECKING:
-    from ... import CupheadWorld
 
 class CupheadItem(Item):
     game: str = "Cuphead"
@@ -48,6 +45,3 @@ def weighted_item_choice(item_weights: Mapping[str, int], rand: Random) -> str:
         if choice <= culum_sum:
             return active_items[i]
     raise ValueError("Failed to choose an item from weighted_item_choice!")
-
-def get_filler_item_name(world: CupheadWorld) -> str:
-    return weighted_item_choice(world.options.filler_item_weights.value, world.random)

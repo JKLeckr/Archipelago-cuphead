@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from . import itembase, itemcreate, itemsetup
+from . import filler, itembase, itemcreate, itemsetup
 
 CupheadItem = itembase.CupheadItem
 
@@ -13,4 +13,4 @@ create_item = itemcreate.create_item
 
 create_items = itemcreate.create_items
 
-get_filler_item_name = itembase.get_filler_item_name
+get_filler_item_name = filler.get_filler_item_name

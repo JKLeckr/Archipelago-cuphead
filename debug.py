@@ -90,7 +90,7 @@ def visualize_regions(root_region: Region, highlight_regions: set[Region] | None
     )
 
 def debug_visualize_regions(world: CupheadWorld, highlight_reachable: bool = False, output_name: str | None = None):
-    state = world.multiworld.get_all_state(False)
+    state = world.multiworld.get_all_state(False, True)
     output_name = f"_{output_name}" if output_name else ""
     visualize_regions(
         world.multiworld.get_region("Start", world.player),

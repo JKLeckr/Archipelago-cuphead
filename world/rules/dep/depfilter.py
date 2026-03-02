@@ -43,7 +43,7 @@ class DepFilter(OptionFilter):
     def check(self, options: CommonOptions) -> bool:
         """Tests the given options dataclass to see if it passes this Dep"""
         if isinstance(options, CupheadOptions):
-            return self.fn(options)
+            return self.fn(options) == self.value
         raise ValueError("options is invalid!")
 
     @classmethod

@@ -4,10 +4,13 @@
 from __future__ import annotations
 
 import typing
+from collections.abc import Iterable
+from dataclasses import dataclass, field
 
+from rule_builder.options import OptionFilter
 from rule_builder.rules import And as RBAnd
+from rule_builder.rules import HasAllCounts, HasAnyCount, Rule, True_
 from rule_builder.rules import Or as RBOr
-from rule_builder.rules import Rule, True_
 
 from . import levelrulebase as lrb
 from .levelruledefs import levelrules
@@ -17,6 +20,14 @@ if typing.TYPE_CHECKING:
     from ...options import CupheadOptions
 
 
+@dataclass(slots=True)
+class _RuleEvalCtx:
+    level_name: str
+    options: CupheadOptions
+    ruledefs: dict[str, lrb.RuleList]
+    compiled_ruledefs: dict[str, Rule] = field(default_factory=dict[str, Rule])
+
+
 class LevelRuleComp:
     _world: CupheadWorld
     _options: CupheadOptions
@@ -24,26 +35,97 @@ class LevelRuleComp:
     def _debug_on(self) -> bool:
         return self._world.settings.is_debug_bit_on(128)
 
+    def _check_filters(self, filters: Iterable[OptionFilter]) -> bool:
+        return all(opt.check(self._options) for opt in filters)
+
+    def _contains_rule_ref(self, rule: lrb.RuleExpr) -> bool:
+        match rule:
+            case lrb.RuleRef():
+                return True
+            case lrb.And() | lrb.Or():
+                return any(self._contains_rule_ref(item) for item in rule.items)
+            case lrb.RulePreset():
+                return any(self._contains_rule_ref(item) for item in rule.rules)
+            case _:
+                return False
+
+    def _set_filtered_resolution(self, rule: Rule) -> Rule:
+        rule.filtered_resolution = True
+        children = getattr(rule, "children", None)
+        if children:
+            for child in children:
+                self._set_filtered_resolution(child)
+        return rule
+
+    def _eval_rule_expr(self, expr: lrb.RuleExpr, ctx: _RuleEvalCtx) -> Rule:
+        match expr:
+            case lrb.RBRule():
+                return self._set_filtered_resolution(expr.rule)
+            case lrb.SelectRule():
+                selected = expr.select(self._options)
+                _rule = HasAnyCount(selected) if expr.any else HasAllCounts(selected)
+                return self._set_filtered_resolution(_rule)
+            case lrb.RulePreset():
+                return self._eval_rule_list(expr.rules, ctx, True, expr.options)
+            case lrb.And():
+                return self._eval_rule_list(expr.items, ctx, True, expr.options)
+            case lrb.Or():
+                return self._eval_rule_list(expr.items, ctx, False, expr.options)
+            case lrb.RuleRef():
+                if not self._check_filters(expr.options):
+                    # Inactive RuleRef compiles to no-op and does not trigger ruledef compilation.
+                    return True_()
+
+                cached = ctx.compiled_ruledefs.get(expr.ref_name)
+                if cached is not None:
+                    return cached
+
+                ruledef = ctx.ruledefs.get(expr.ref_name)
+                if ruledef is None:
+                    raise ValueError(f"Unknown RuleRef '{expr.ref_name}' in level '{ctx.level_name}'.")
+
+                compiled = self._eval_rule_list(ruledef, ctx)
+                ctx.compiled_ruledefs[expr.ref_name] = compiled
+                return compiled
+            case _:
+                raise TypeError(f"Unsupported rule expression type: {type(expr)!r}")
+
     def _eval_rule_list(
         self,
-        rule_list: lrb.RuleList | None,
-        scope: lrb.RuleEvalScope
+        rule_list: Iterable[lrb.RuleExpr] | None,
+        ctx: _RuleEvalCtx,
+        op_and: bool = True,
+        filters: Iterable[OptionFilter] = (),
     ) -> Rule:
+        if not self._check_filters(filters):
+            return True_()
+
         if not rule_list:
             return True_()
-        return lrb.compile_rule_list(rule_list, self._options, True, scope=scope)
+
+        rules = [self._eval_rule_expr(rule, ctx) for rule in rule_list]
+        if len(rules) == 1:
+            return rules[0]
+        return self._set_filtered_resolution(RBAnd(*rules) if op_and else RBOr(*rules))
+
+    def _validate_ruledefs(self, ctx: _RuleEvalCtx) -> None:
+        for def_name, rule_list in ctx.ruledefs.items():
+            if any(self._contains_rule_ref(rule) for rule in rule_list):
+                raise ValueError(
+                    f"Level '{ctx.level_name}' ruledef '{def_name}' cannot contain RuleRef."
+                )
 
     def _compile_location_rule(
         self,
         level: lrb.LevelDef,
         loc: lrb.LocationDef,
-        scope: lrb.RuleEvalScope
+        ctx: _RuleEvalCtx
     ) -> Rule:
-        loc_rule = self._eval_rule_list(loc.rules, scope)
+        loc_rule = self._eval_rule_list(loc.rules, ctx)
         if not level.base:
             return loc_rule
 
-        base_rule = self._eval_rule_list(level.base, scope)
+        base_rule = self._eval_rule_list(level.base, ctx)
         match loc.inherit:
             case lrb.InheritMode.AND:
                 return RBAnd(base_rule, loc_rule)
@@ -58,10 +140,10 @@ class LevelRuleComp:
         ldef: lrb.LevelDef,
         locname: str,
         loc: lrb.LocationDef,
-        scope: lrb.RuleEvalScope
+        ctx: _RuleEvalCtx
     ) -> None:
         if locname in self._world.active_locations:
-            _rule = self._compile_location_rule(ldef, loc, scope)
+            _rule = self._compile_location_rule(ldef, loc, ctx)
             self._world.rulereg.add_loc_rule(locname, _rule)
             if locname == ldef.exit_location:
                 self._world.rulereg.add_region_exit_rule(rlname, _rule)
@@ -83,13 +165,14 @@ class LevelRuleComp:
             if lname in active_levels:
                 if ldef.exit_location and ldef.exit_location not in ldef.locations:
                     raise ValueError(f"'{lname}'.exit_location: '{ldef.exit_location}' is unknown.")
-                scope = lrb.RuleEvalScope(lname, ldef.ruledefs)
+                ctx = _RuleEvalCtx(lname, self._options, ldef.ruledefs)
+                self._validate_ruledefs(ctx)
 
                 if ldef.access:
-                    self._world.rulereg.add_region_rule(lname, self._eval_rule_list(ldef.access, scope))
+                    self._world.rulereg.add_region_rule(lname, self._eval_rule_list(ldef.access, ctx))
 
                 for locname, loc in ldef.locations.items():
-                    self._compile_level_loc(lname, ldef, locname, loc, scope)
+                    self._compile_level_loc(lname, ldef, locname, loc, ctx)
             elif self._debug_on():
                 print(f"Skipping rules for level '{lname}'")
 

@@ -16,7 +16,8 @@ from ..locations import locationdefs as ldef
 from ..names import itemnames, locationnames
 from . import itemdefs as idef
 from . import weapons
-from .itembase import CupheadItem, ItemData, get_filler_item_name, weighted_item_choice
+from .filler import get_filler_item_name
+from .itembase import CupheadItem, ItemData, weighted_item_choice
 
 if typing.TYPE_CHECKING:
     from ... import CupheadWorld
