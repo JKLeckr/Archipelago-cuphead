@@ -123,7 +123,7 @@ region_isle1 =  [
     LevelRegionData(regionnames.level_boss_frogs, [locationnames.loc_event_isle1_secret_prereq4],
         [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, deps.dep_dlc)]),
     LevelRegionData(regionnames.level_boss_flower, [locationnames.loc_event_isle1_secret_prereq5],
-        [Target(regionnames.world_inkwell_3, deps.dep_not(deps.dep_freemove))]),
+        [Target(regionnames.world_inkwell_2, deps.dep_not(deps.dep_freemove))]),
     LevelRegionData(regionnames.level_rungun_tree, None,
         [LevelTarget(regionnames.level_mausoleum_i), Target(regionnames.reg_dlc_boat, deps.dep_dlc)]),
     LevelRegionData(regionnames.level_rungun_forest, None,
