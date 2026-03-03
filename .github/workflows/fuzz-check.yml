@@ -65,7 +65,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fuzz-output
+          name: github-fuzz_output
           path: |
             Archipelago/fuzz_output/report.json
             Archipelago/fuzz_output/error
