@@ -541,9 +541,6 @@ location_dlc_world: dict[str, LocationData] = {
     locationnames.loc_dlc_npc_newscat: LocationData(10038000),
     locationnames.loc_dlc_coin_isle4_secret: LocationData(10038001),
 }
-location_dlc_world_event: dict[str, LocationData] = {
-    locationnames.loc_event_dlc_boatarrival: LocationData(None),
-}
 location_dlc_world_quest: dict[str, LocationData] = {
     locationnames.loc_dlc_quest_cactusgirl: LocationData(10040000),
 }
@@ -603,7 +600,6 @@ locations_dlc: dict[str, LocationData] = {
     **location_shop_dlc,
     #**location_shop_dlc_event,
     **location_dlc_world,
-    **location_dlc_world_event,
 }
 locations_dlc_boss_chaliced: dict[str, LocationData] = {
     **location_level_boss_dlc_chaliced,

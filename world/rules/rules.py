@@ -54,10 +54,6 @@ def set_dlc_rules(world: CupheadWorld):
     ingredient_reqs = options.dlc_ingredient_requirements.value
     set_dlc_boat_rules(w)
     rr.add_region_rule(
-        regionnames.world_dlc_inkwell_4,
-        rb.rule_has(itemnames.item_event_dlc_boataccess)
-    )
-    rr.add_region_rule(
         regionnames.level_dlc_boss_saltbaker,
         rb.rule_has(itemnames.item_dlc_ingredient, ingredient_reqs)
     )

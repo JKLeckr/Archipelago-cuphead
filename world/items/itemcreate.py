@@ -119,8 +119,8 @@ def create_locked_items_at(
             print(f"Skipped {name} for {loc}")
 
 def create_dlc_locked_items(world: CupheadWorld):
-    create_locked_item(world, itemnames.item_event_mausoleum, locationnames.loc_event_mausoleum)
-    create_locked_item(world, itemnames.item_event_dlc_boataccess, locationnames.loc_event_dlc_boatarrival)
+    if world.options.dlc_requires_mausoleum.bvalue:
+        create_locked_item(world, itemnames.item_event_mausoleum, locationnames.loc_event_mausoleum)
     if world.options.dlc_chalice.evalue == ChaliceMode.VANILLA:
         create_locked_item(world, itemnames.item_charm_dlc_cookie, locationnames.loc_event_dlc_cookie)
     if locationnames.loc_event_dlc_goal_saltbaker in world.active_locations:

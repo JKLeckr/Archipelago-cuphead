@@ -27,7 +27,7 @@ region_dlc_start: list[RegionData] = [
         locationnames.loc_event_mausoleum, [locationnames.loc_event_mausoleum], None, deps.dep_dlc_boat_mausoleum
     ),
     RegionData(
-        regionnames.reg_dlc_boat, [locationnames.loc_event_dlc_boatarrival], None, flags=DefFlags.TGT_IGNORE_FREEMOVE
+        regionnames.reg_dlc_boat, None, [Target(regionnames.world_dlc_inkwell_4)], flags=DefFlags.TGT_IGNORE_FREEMOVE
     ),
 ]
 
@@ -49,7 +49,6 @@ region_worlds: list[RegionData] = [
         LevelTarget(regionnames.level_mausoleum_i, deps.dep_freemove),
         Target(regionnames.world_inkwell_2, deps.dep_freemove),
         Target(regionnames.reg_dlc_boat, deps.dep_and(deps.dep_dlc, deps.dep_freemove)),
-        Target(regionnames.world_dlc_inkwell_4, deps.dep_dlc),
     ]),
     WorldRegionData(regionnames.world_inkwell_2, [
         locationnames.loc_npc_canteen,
