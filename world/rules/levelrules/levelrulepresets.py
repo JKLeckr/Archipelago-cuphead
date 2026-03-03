@@ -16,7 +16,7 @@ from .levelrulebase import And, Or, RBRule, RuleList, RulePreset, SelectRule, lr
 def lrp_plane() -> RuleList:
     return RuleList([
         RBRule(
-            Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, False)])
+            Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, value=False)])
         ),
         RBRule(
             HasAny(i.item_plane_gun, i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic)])
@@ -50,7 +50,7 @@ def lrp_parry() -> RuleList:
                 i.item_ability_parry,
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             )
         ),
@@ -120,7 +120,7 @@ def lrp_parry_or_psugar() -> RuleList:
                 i.item_charm_psugar,
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             )
         ),
@@ -146,7 +146,7 @@ def lrp_dash_or_parry() -> RuleList:
                 i.item_ability_parry,
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             )
         ),
@@ -185,7 +185,7 @@ def lrp_dash_parry_or_psugar() -> RuleList:
                 i.item_charm_psugar,
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             )
         ),
@@ -290,7 +290,7 @@ def lrp_rungun_topgrade() -> RuleList:
 def lrp_dlc_cookie() -> RuleList:
     return RuleList([
         RBRule(
-            False_(options=[DepFilter(deps.dep_dlc_chalice, False)])
+            False_(options=[DepFilter(deps.dep_dlc_chalice, value=False)])
         ),
         RBRule(
             Has(i.item_charm_dlc_cookie, options=[DepFilter(deps.dep_dlc_cookie)])
@@ -302,7 +302,7 @@ def lrp_dlc_cookie() -> RuleList:
 def lrp_dlc_doublejump() -> RuleList:
     return RuleList([
         RBRule(
-            False_(options=[DepFilter(deps.dep_dlc_chalice, False)])
+            False_(options=[DepFilter(deps.dep_dlc_chalice, value=False)])
         ),
         And(
             RulePreset(lrp_dlc_cookie),
@@ -318,7 +318,7 @@ def lrp_dash_or_dlc_doublejump() -> RuleList:
         RBRule(
             Has(
                 i.item_ability_dash,
-                options=[DepFilter(deps.dep_dlc_chalice, False), DepFilter(deps.dep_rando_abilities)]
+                options=[DepFilter(deps.dep_dlc_chalice, value=False), DepFilter(deps.dep_rando_abilities)]
             )
         ),
         RBRule(
@@ -340,7 +340,7 @@ def lrp_dlc_boss_chaliced() -> RuleList:
             lrp_dash,
             options=[
                 DepFilter(deps.dep_dlc_chaliced_grade_required),
-                DepFilter(deps.dep_dlc_chalice_only, False)
+                DepFilter(deps.dep_dlc_chalice_only, value=False)
             ]
         )
     ])
@@ -358,7 +358,7 @@ def lrp_dlc_boss_plane_chaliced() -> RuleList:
 def lrp_dlc_boss_chaliced_parry() -> RuleList:
     return RuleList([
         RulePreset(lrp_dlc_boss_chaliced),
-        RulePreset(lrp_dash_and_parry, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, False)])
+        RulePreset(lrp_dash_and_parry, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, value=False)])
     ])
 
 
@@ -371,7 +371,7 @@ def lrp_dlc_rungun_chaliced() -> RuleList:
             lrp_dash,
             options=[
                 DepFilter(deps.dep_dlc_rungun_chaliced_grade_required),
-                DepFilter(deps.dep_dlc_chalice_only, False)
+                DepFilter(deps.dep_dlc_chalice_only, value=False)
             ]
         )
     ])
@@ -381,7 +381,7 @@ def lrp_dlc_rungun_chaliced() -> RuleList:
 def lrp_dlc_rungun_chaliced_parry() -> RuleList:
     return RuleList([
         RulePreset(lrp_dlc_rungun_chaliced),
-        RulePreset(lrp_dash, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, False)])
+        RulePreset(lrp_dash, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, value=False)])
     ])
 
 
@@ -392,3 +392,4 @@ def lrp_dlc_relic() -> RuleList:
             Has(i.item_charm_dlc_broken_relic)
         )
     ])
+

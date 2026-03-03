@@ -58,9 +58,20 @@ def dep_weapon_ex_rando(c: CupheadOptions) -> bool:
 @dep
 def dep_dlc_chalice(c: CupheadOptions) -> bool:
     return c.use_dlc.bvalue and c.dlc_chalice.value > 0
+
 @dep
 def dep_dlc_chalice_only(c: CupheadOptions) -> bool:
     return c.use_dlc.bvalue and c.dlc_chalice.evalue == ChaliceMode.CHALICE_ONLY
+
+@dep
+def dep_dlc_chalice_not_separate(c: CupheadOptions) -> bool:
+    return (
+        dep_dlc_chalice(c) and (
+            (c.dlc_boss_chalice_checks & ChaliceCheckMode.SEPARATE) == 0 or
+            c.dlc_chalice.evalue == ChaliceMode.CHALICE_ONLY
+        )
+    )
+
 @dep
 def dep_dlc_cookie(c: CupheadOptions) -> bool:
     return (

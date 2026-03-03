@@ -264,7 +264,7 @@ levelrules = LevelRules({
                 ),
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             ),
         ],
@@ -307,7 +307,7 @@ levelrules = LevelRules({
                 lrp.lrp_parry_or_psugar,
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             ),
         ],
@@ -499,8 +499,8 @@ levelrules = LevelRules({
         ],
         base=[
             RBRule(Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic)])),
-            RBRule(Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, False)])),
-            RBRule(Has(i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic, False)])),
+            RBRule(Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, value=False)])),
+            RBRule(Has(i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic, value=False)])),
         ],
         locations={
             l.loc_level_boss_plane_bird: LocationDef(),
@@ -588,18 +588,24 @@ levelrules = LevelRules({
     lv.level_boss_devil: LevelDef(
         exit_location=None,
         base=[
-            RulePreset(
-                lrp.lrp_parry,
+            Or(
+                RulePreset(lrp.lrp_dlc_doublejump),
+                RulePreset(lrp.lrp_dash_and_parry),
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only)
+                    DepFilter(deps.dep_dlc_chalice_not_separate),
+                    DepFilter(deps.dep_hard_logic)
                 ]
             ),
             RulePreset(
                 lrp.lrp_dash_and_parry,
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(
+                        (deps.dep_dlc_chalice_not_separate, deps.dep_hard_logic),
+                        value=False,
+                        any=True,
+                    )
                 ]
             ),
         ],
@@ -687,14 +693,14 @@ levelrules = LevelRules({
                 lrp.lrp_dlc_doublejump,
                 options=[
                     DepFilter(deps.dep_dlc_chalice_only),
-                    DepFilter(deps.dep_hard_logic, False)
+                    DepFilter(deps.dep_hard_logic, value=False)
                 ]
             ),
         ],
         ruledefs={
             "chaliced": [
                 RulePreset(lrp.lrp_dlc_boss_chaliced),
-                RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_hard_logic, False)]),
+                RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_hard_logic, value=False)]),
             ],
         },
         locations={
@@ -713,7 +719,7 @@ levelrules = LevelRules({
     lv.level_dlc_boss_airplane: LevelDef(
         exit_location=l.loc_level_dlc_boss_airplane,
         base=[
-            RulePreset(lrp.lrp_duck_or_dash, options=[DepFilter(deps.dep_dlc_chalice_only, False)]),
+            RulePreset(lrp.lrp_duck_or_dash, options=[DepFilter(deps.dep_dlc_chalice_only, value=False)]),
             RulePreset(
                 lrp.lrp_duck_or_dash,
                 options=[
@@ -728,7 +734,7 @@ levelrules = LevelRules({
                 ),
                 options=[
                     DepFilter(deps.dep_dlc_chalice_only),
-                    DepFilter(deps.dep_hard_logic, False)
+                    DepFilter(deps.dep_hard_logic, value=False)
                 ]
             ),
         ],
@@ -742,7 +748,7 @@ levelrules = LevelRules({
                         RulePreset(lrp.lrp_dash),
                         RulePreset(lrp.lrp_dlc_doublejump)
                     ),
-                    options=[DepFilter(deps.dep_hard_logic, False)
+                    options=[DepFilter(deps.dep_hard_logic, value=False)
                     ]
                 ),
             ],
@@ -1034,7 +1040,7 @@ levelrules = LevelRules({
             l.loc_level_rungun_circus: LocationDef(),
             l.loc_level_rungun_circus_agrade: LocationDef(
                 rules=[
-                    RulePreset(lrp.lrp_rungun_topgrade, options=[DepFilter(deps.dep_hard_logic, False)]),
+                    RulePreset(lrp.lrp_rungun_topgrade, options=[DepFilter(deps.dep_hard_logic, value=False)]),
                 ],
             ),
             l.loc_level_rungun_circus_pacifist: LocationDef(),
@@ -1072,7 +1078,7 @@ levelrules = LevelRules({
                 rules=[
                     RulePreset(
                         lrp.lrp_rungun_topgrade,
-                        options=[DepFilter(deps.dep_hard_logic, False)]
+                        options=[DepFilter(deps.dep_hard_logic, value=False)]
                     ),
                 ],
             ),
@@ -1094,7 +1100,7 @@ levelrules = LevelRules({
                 And(RBRule(Has(i.item_charm_psugar)), RulePreset(lrp.lrp_dash)),
                 options=[
                     DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, False)
+                    DepFilter(deps.dep_dlc_chalice_only, value=False)
                 ]
             ),
         ],
@@ -1195,7 +1201,7 @@ levelrules = LevelRules({
     lv.level_rungun_mountain: LevelDef(
         exit_location=l.loc_level_rungun_mountain,
         base=[
-            RulePreset(lrp.lrp_dash, options=[DepFilter(deps.dep_dlc_chalice, False)]),
+            RulePreset(lrp.lrp_dash, options=[DepFilter(deps.dep_dlc_chalice, value=False)]),
             Or(RulePreset(lrp.lrp_dash), RulePreset(lrp.lrp_dlc_doublejump), options=[DepFilter(deps.dep_dlc_chalice)]),
         ],
         locations={
