@@ -64,11 +64,12 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
 
 def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
     _weapon_dict = weapons.get_weapon_dict(options, options.use_dlc.bvalue)
+    silverworth_quest = getattr(getattr(options, "silverworth_quest", None), "bvalue", False)
     _grade_checks_required = (
         options.boss_grade_checks.evalue != GradeCheckMode.DISABLED or
         options.rungun_grade_checks.evalue != GradeCheckMode.DISABLED or
         (options.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0 or
-        options.silverworth_quest.bvalue
+        silverworth_quest
     )
     for weapon in _weapon_dict.values():
         items_ref[weapon] = idef.items_all[weapon]
