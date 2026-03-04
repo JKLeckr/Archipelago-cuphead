@@ -17,8 +17,6 @@ _slot_data_options: list[str] = [
     "boss_grade_checks",
     "boss_phase_checks",
     "contract_goal_requirements",
-    "deathlink",
-    "deathlink_grace_count",
     "dlc_boss_chalice_checks",
     "dlc_chalice",
     "dlc_curse_mode",
@@ -54,6 +52,8 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
         "shop_map": world.shop.shop_map,
         "contract_requirements": world.options.contract_requirements.value,
         "dlc_ingredient_requirements": world.options.dlc_ingredient_requirements.value,
+        "deathlink": world.options.deathlink_mode.value if world.options.deathlink.bvalue else 0,
+        "deathlink_grace_count": world.options.deathlink_grace_count.value,
     }
     for option in _slot_data_options:
         slot_data.update(world.options.as_dict(option))

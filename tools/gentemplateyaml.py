@@ -21,13 +21,13 @@ DEFAULT_OUTPUT_FILE: str = "Player.yaml"
 DEFAULT_HEADER: str = "Template YAML generated with gentemplateyaml"
 
 
-def parse_valid_option_classes(init_path: str, dataclass_name: str = "GameOptions") -> set[str]:
+def parse_valid_option_classes(init_path: str, dataclass_name: str = "GameOptions") -> list[str]:
     """
     Parse the __init__.py file and return the set of option class names
     """
     with open(init_path, "r", encoding="utf-8") as f:
         tree = ast.parse(f.read(), filename=init_path)
-    res: set[str] = set()
+    res: list[str] = []
     for node in tree.body:
         if isinstance(node, ast.ClassDef) and node.name == dataclass_name:
             for stmt in node.body:
@@ -35,10 +35,10 @@ def parse_valid_option_classes(init_path: str, dataclass_name: str = "GameOption
                     annotation = stmt.annotation
                     # odefs.Version
                     if isinstance(annotation, ast.Attribute):
-                        res.add(annotation.attr)
+                        res.append(annotation.attr)
                     # Version (unlikely but safe)
                     elif isinstance(annotation, ast.Name):
-                        res.add(annotation.id)
+                        res.append(annotation.id)
     return res
 
 def parse_optiondefs(path: str) -> list[ast.ClassDef]:
@@ -122,11 +122,11 @@ def generate_comments(
     if doc and isinstance(option_dname, str):
         lines.extend(get_doc_lines(option_dname, doc))
 
-    if "Toggle" in base_names:
-        _option_names: list[str] = ["false", "true"]
-        _default = "true" if default else "false"
-    elif "DefaultOnToggle" in base_names:
+    if "BDefaultOnToggle" in base_names or "DefaultOnToggle" in base_names:
         _option_names: list[str] = ["true", "false"]
+        _default = "true" if default else "false"
+    elif "BToggle" in base_names or "Toggle" in base_names:
+        _option_names: list[str] = ["false", "true"]
         _default = "true" if default else "false"
     else:
         _option_names: list[str] = list(option_names) if option_names else []
@@ -154,11 +154,11 @@ def generate_comments(
 def get_default_option(attrs: dict[str, typing.Any], base_names: list[str], options: dict[str, int]) -> typing.Any:
     default = attrs.get("default", None)
     if default is None:
-        if "DefaultOnToggle" in base_names:
+        if "BDefaultOnToggle" in base_names or "DefaultOnToggle" in base_names:
             return True
-        if "Toggle" in base_names:
+        if "BToggle" in base_names or "Toggle" in base_names:
             return False
-        if "NumericOption" in base_names:
+        if "NumericOption" in base_names or "Range" in base_names:
             default = 0
         else:
             return ""
@@ -175,7 +175,7 @@ def should_skip_visibility(visibility_value: str):
     return any(flag in vis_str for flag in VISIBILITY_SKIP_KEYWORDS)
 
 
-def generate_yaml_data(classes: Iterable[ast.ClassDef], allowed_classes: set[str]) -> dict[str, typing.Any]:
+def generate_yaml_data(classes: Iterable[ast.ClassDef], allowed_classes: list[str]) -> dict[str, typing.Any]:
     """Build structured data for YAML output."""
     yaml_data: dict[str, typing.Any] = {
         "name": "Player",
@@ -183,8 +183,12 @@ def generate_yaml_data(classes: Iterable[ast.ClassDef], allowed_classes: set[str
         "Cuphead": {},
     }
 
-    for node in classes:
-        if node.name not in allowed_classes:
+    by_name: dict[str, ast.ClassDef] = {node.name: node for node in classes}
+
+    for cls_name in allowed_classes:
+        node = by_name.get(cls_name)
+        # Only include option classes explicitly listed in CupheadOptions and defined in options.py
+        if node is None:
             continue
 
         attrs = get_class_attrs(node)

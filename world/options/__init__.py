@@ -34,6 +34,7 @@ class CupheadOptions(PerGameCommonOptions):
     freemove_isles: odefs.FreeMoveIsles
     hard_logic: odefs.HardLogic
     deathlink: odefs.DeathLink
+    deathlink_mode: odefs.DeathLinkMode
     deathlink_grace_count: odefs.DeathLinkGraceCount
     randomize_abilities: odefs.RandomizeAbilities
     boss_secret_checks: odefs.BossSecretChecks

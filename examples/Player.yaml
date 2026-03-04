@@ -1,5 +1,5 @@
 # Template YAML generated with gentemplateyaml
-# alpha02i
+# alpha03a
 
 name: Player
 game: Cuphead
@@ -57,6 +57,24 @@ Cuphead:
   # Values: normal, progressive, ex_separate, progressive_except_start, ex_separate_except_start
   # Default: normal
   weapon_mode: normal
+
+  ## Starting Max Health
+  #
+  # Set starting max health.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  #
+  # Range: 1-4
+  # Default: 3
+  start_maxhealth: '3'
+
+  ## Starting Max Health
+  #
+  # Set starting max health for Player 2. Set to 0 to use Player 1's max health.
+  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
+  #
+  # Range: 0-4
+  # Default: 0
+  start_maxhealth_p2: '0'
 
   ## Contract Requirements
   #
@@ -121,6 +139,39 @@ Cuphead:
   # Values: false, true
   # Default: false
   freemove_isles: 'false'
+
+  ## Death Link
+  #
+  # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
+  # In Cuphead, this only applies while you are in a level.
+  #
+  # Values: false, true
+  # Default: false
+  deathlink: 'false'
+
+  ## Death Link Mode
+  #
+  # -REQUIRES DEATHLINK-
+  # Set DeathLink Mode.
+  #
+  # Modes:
+  # - Lose: Both players dying triggers DeathLink. Same in reverse.
+  # - Per Player: Each player's death will trigger DeathLink. Receiving a DeathLink will kill a random player.
+  #
+  # NOTE: Per Player will behave like Lose if playing singleplayer.
+  #
+  # Values: lose, per_player
+  # Default: lose
+  deathlink_mode: lose
+
+  ## Death Link Grace Count
+  #
+  # -REQUIRES DEATHLINK-
+  # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
+  #
+  # Range: 0-9
+  # Default: 0
+  deathlink_grace_count: '0'
 
   ## Randomize Abilities
   #
@@ -257,24 +308,6 @@ Cuphead:
   # Default: 0
   extra_coins: '0'
 
-  ## Starting Max Health
-  #
-  # Set starting max health.
-  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
-  #
-  # Range: 1-4
-  # Default: 3
-  start_maxhealth: '3'
-
-  ## Starting Max Health
-  #
-  # Set starting max health for Player 2. Set to 0 to use Player 1's max health.
-  # NOTE: Health cannot be any higher than 9, so health charms would be less useful at higher health amounts.
-  #
-  # Range: 0-4
-  # Default: 0
-  start_maxhealth_p2: '0'
-
   ## Max Health Upgrades
   #
   # Set number of max health upgrades in the pool.
@@ -308,36 +341,3 @@ Cuphead:
   #
   # Default: 3
   filler_weight_supercharge: '3'
-
-  ## Death Link
-  #
-  # Enable DeathLink. When you die, everyone dies. Of course the reverse is true too.
-  # In Cuphead, this only applies while you are in a level.
-  #
-  # Values: false, true
-  # Default: false
-  deathlink: 'false'
-
-  ## Death Link Mode
-  #
-  # -REQUIRES DEATHLINK-
-  # Set DeathLink Mode.
-  # 
-  # Modes:
-  # - Lose: Both players dying triggers DeathLink. Same in reverse.
-  # - Per Player: Each player's death will trigger DeathLink. Receiving a DeathLink will kill a random player.
-  # 
-  # NOTE: Per Player will behave like Lose if playing singleplayer.
-  #
-  # Values: lose, per_player
-  # Default: lose
-  deathlink_mode: lose
-
-  ## Death Link Grace Count
-  #
-  # -REQUIRES DEATHLINK-
-  # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
-  #
-  # Range: 0-9
-  # Default: 0
-  deathlink_grace_count: '0'

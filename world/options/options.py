@@ -71,6 +71,7 @@ class DeathLink(BToggle, NamedOption):
     """
     name = "deathlink"
     display_name = "Death Link"
+    rich_text_doc = True
 
 
 class DeathLinkGraceCount(Range, NamedOption):
@@ -98,9 +99,9 @@ class DeathLinkMode(Choice, NamedOption):
     """
     name = "deathlink_mode"
     display_name = "Death Link Mode"
-    option_lose = 0
-    option_per_player = 1
-    default = 0
+    option_lose = 1
+    option_per_player = 2
+    default = 1
 
 
 class DeliciousLastCourse(BToggle, NamedOption):
