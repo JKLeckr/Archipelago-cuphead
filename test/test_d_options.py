@@ -130,6 +130,24 @@ class TestOptions(CupheadTestBase):
             "use_dlc": True,
             "level_shuffle": "plane_separate"
         },
+        "Hard Logic": {
+            "hard_logic": True
+        },
+        "Hard Logic Freemove": {
+            "hard_logic": True,
+            "freemove_isles": True
+        },
+        "DLC Hard Logic": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "hard_logic": True
+        },
+        "DLC Hard Logic Freemove": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "hard_logic": True,
+            "freemove_isles": True
+        }
     }
 
     def _check_all_items_are_active(self, option_set_name: str):
