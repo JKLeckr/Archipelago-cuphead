@@ -5,10 +5,9 @@ from __future__ import annotations
 
 import typing
 
-from worlds.generic.Rules import forbid_item, forbid_items_for_player
+from worlds.generic.Rules import forbid_item
 
 from ..enums import GameMode, ItemGroups
-from ..items import itemdefs as idef
 from ..locations import locationdefs as ld
 from ..names import itemnames, locationnames, regionnames
 from . import levelrules
@@ -110,8 +109,6 @@ def set_shop_rules(world: CupheadWorld):
         _loc = rb.get_location(w, shop_item)
         # Prevent putting money in the shop
         [forbid_item(_loc, x, player) for x in coins]
-        # Prevent putting local filler items in the shop
-        forbid_items_for_player(_loc, set(idef.item_filler.keys()), player)
 
     # Set coin requirements for the shops
     shop_costs: list[int] = [0, 0, 0, 0]
