@@ -9,10 +9,10 @@ gentemplateyaml.py - generate the Player.yaml file.
 
 import argparse
 import ast
-from pathlib import Path
 import textwrap
 import typing
 from collections.abc import Iterable
+from pathlib import Path
 
 # --- CONFIG ---
 INCLUDE_VISIBILITIES: set[str] = set()

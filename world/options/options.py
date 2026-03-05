@@ -9,7 +9,7 @@ from typing_extensions import override
 from Options import Choice, FreeText, OptionSet, Range, Visibility
 
 from .. import enums as e
-from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, LevelDict, LaxRange
+from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, LaxRange, LevelDict
 from .protocols import NamedOption
 
 ## Option classes
