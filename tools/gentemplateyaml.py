@@ -9,6 +9,7 @@ gentemplateyaml.py - generate the Player.yaml file.
 
 import argparse
 import ast
+from pathlib import Path
 import textwrap
 import typing
 from collections.abc import Iterable
@@ -46,6 +47,55 @@ def parse_optiondefs(path: str) -> list[ast.ClassDef]:
     with open(path, "r", encoding="utf-8") as f:
         tree = ast.parse(f.read(), filename=path)
     return [node for node in tree.body if isinstance(node, ast.ClassDef)]
+
+def format_apworld_version(sem_ver: tuple[int, int, int, int]) -> str:
+    """Format APWORLD_SEM_VERSION into the APWORLD_VERSION display string."""
+    if sem_ver[0] == 0:
+        branch = {
+            1: "preview",
+            2: "alpha",
+            3: "beta",
+            4: "rc",
+        }.get(sem_ver[1], "unknown")
+    else:
+        branch = "v"
+
+    baseline = sem_ver[2] + 1
+    revision = sem_ver[3]
+    if revision < 0:
+        raise ValueError("revision must be non-negative")
+
+    res: list[str] = []
+    while revision >= 0:
+        revision, rem = divmod(revision, 26)
+        res.append(chr(rem + ord("a")))
+        revision -= 1
+
+    revision_letter = "".join(res)
+    return f"{branch}{baseline:02d}{revision_letter}"
+
+def parse_apworld_version(world_init_path: str, world_class_name: str = "CupheadWorld") -> str | None:
+    """Read APWORLD_SEM_VERSION from world __init__.py and format it to APWORLD_VERSION."""
+    with open(world_init_path, "r", encoding="utf-8") as f:
+        tree = ast.parse(f.read(), filename=world_init_path)
+
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == world_class_name:
+            for stmt in node.body:
+                if not isinstance(stmt, ast.AnnAssign):
+                    continue
+                if not isinstance(stmt.target, ast.Name) or stmt.target.id != "APWORLD_SEM_VERSION":
+                    continue
+                if not isinstance(stmt.value, ast.Tuple) or len(stmt.value.elts) != 4:
+                    return None
+                values: list[int] = []
+                for elt in stmt.value.elts:
+                    if isinstance(elt, ast.Constant) and isinstance(elt.value, int):
+                        values.append(elt.value)
+                    else:
+                        return None
+                return format_apworld_version(tuple(values))  # pyright: ignore[reportArgumentType]
+    return None
 
 
 def get_docstring(node: ast.ClassDef) -> str:
@@ -88,10 +138,19 @@ def get_option_fields(node: ast.ClassDef) -> dict[str, int]:
                     opt_val_to_name[opt_name] = val_node.value
     return dict(sorted(opt_val_to_name.items(), key=lambda item: item[1]))
 
-def get_option_range(attrs: dict[str, typing.Any]) -> tuple[int, int] | None:
+def get_option_range(
+        attrs: dict[str, typing.Any],
+        base_names: list[str]
+    ) -> tuple[int, int, int, int] | tuple[int, int] | None:
     """Get the range of the range-type option"""
-    if "weight_max" in attrs:
-        return None
+    # LaxRange provides defaults that some concrete options inherit without overriding.
+    if "LaxRange" in base_names:
+        hard_min = attrs.get("hard_min", 0)
+        hard_max = attrs.get("hard_max", 100)
+        rec_min = attrs.get("range_start", 0)
+        rec_max = attrs.get("range_end", 10)
+        return (hard_min, hard_max, rec_min, rec_max)
+
     range_start = attrs.get("range_start", None)
     range_end = attrs.get("range_end", None)
     if range_start is not None and range_end is not None:
@@ -102,10 +161,10 @@ def get_doc_lines(option_dname: str, doc: str) -> list[str]:
     doc_lines: list[str] = []
     if option_dname:
         doc_lines.extend([f"## {option_dname}", "#"])
-    doc_lines.extend([f"# {line}" for line in doc.strip().splitlines()])
+    doc_lines.extend([f"# {line}".rstrip() for line in doc.strip().splitlines()])
     return doc_lines
 
-def generate_comments(
+def generate_comments(  # noqa: C901
         node: ast.ClassDef,
         attrs: dict[str, typing.Any],
         base_names: list[str],
@@ -115,7 +174,7 @@ def generate_comments(
     lines: list[str] = []
 
     doc = get_docstring(node)
-    ranges = get_option_range(attrs)
+    ranges = get_option_range(attrs, base_names)
 
     option_dname = attrs.get("display_name", "")
 
@@ -123,10 +182,10 @@ def generate_comments(
         lines.extend(get_doc_lines(option_dname, doc))
 
     if "BDefaultOnToggle" in base_names or "DefaultOnToggle" in base_names:
-        _option_names: list[str] = ["true", "false"]
+        _option_names: list[str] = ["true", "false"]  # pyright: ignore[reportRedeclaration]
         _default = "true" if default else "false"
     elif "BToggle" in base_names or "Toggle" in base_names:
-        _option_names: list[str] = ["false", "true"]
+        _option_names: list[str] = ["false", "true"]  # pyright: ignore[reportRedeclaration]
         _default = "true" if default else "false"
     else:
         _option_names: list[str] = list(option_names) if option_names else []
@@ -143,6 +202,8 @@ def generate_comments(
             lines.append("#")
             _spaced = True
         lines.append(f"# Range: {ranges[0]}-{ranges[1]}")
+        if len(ranges) > 3:
+            lines.append(f"# Recommended Range: {ranges[2]}-{ranges[3]}")
     if _default is not None:
         if lines and not _spaced:
             lines.append("#")
@@ -225,21 +286,31 @@ def get_value_string(value: typing.Any) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description="generate the Player.yaml file")
-    parser.add_argument("file", help="Path to the options __init__ py")
-    parser.add_argument("ofile", help="Path to the options definitions py")
+    parser.add_argument("world_init", help="Path to world __init__ py")
+    parser.add_argument("-O", "--options", default="", help="Path to the options __init__ py")
+    parser.add_argument("-D", "--odefs", help="Path to the options definitions py")
     parser.add_argument("-o", "--output", default="", help="Output file")
     parser.add_argument("-c", "--comment", default=DEFAULT_HEADER, help="Add comment to header")
 
     args = parser.parse_args()
 
-    valid_option_classes = parse_valid_option_classes(args.file, "CupheadOptions")
-    classes = parse_optiondefs(args.ofile)
+    world_root = Path(args.world_init).resolve().parent
+    odefs = args.odefs or str(world_root / "world" / "options" / "options.py")
+    options_init_path = args.options or str(world_root / "world" / "options" / "__init__.py")
+
+    valid_option_classes = parse_valid_option_classes(options_init_path, "CupheadOptions")
+    classes = parse_optiondefs(odefs)
     yaml_dict = generate_yaml_data(classes, valid_option_classes)
+    apworld_version = parse_apworld_version(args.world_init)
 
     header = args.comment if args.comment else DEFAULT_HEADER
 
     # --- Generate formatted YAML ---
-    lines: list[str] = [f"# {header}", ""] if header else []
+    lines: list[str] = [f"# {header}"] if header else []
+    if apworld_version:
+        lines.append(f"# {apworld_version}")
+    if lines:
+        lines.append("")
     lines.extend([
         f"name: {yaml_dict['name']}",
         f"game: {yaml_dict['game']}",

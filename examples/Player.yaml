@@ -169,7 +169,8 @@ Cuphead:
   # -REQUIRES DEATHLINK-
   # Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
   #
-  # Range: 0-9
+  # Range: 0-1000
+  # Recommended Range: 0-25
   # Default: 0
   deathlink_grace_count: '0'
 
@@ -304,7 +305,8 @@ Cuphead:
   #
   # Set extra coins in the item pool.
   #
-  # Range: 0-10
+  # Range: 0-20
+  # Recommended Range: 0-10
   # Default: 0
   extra_coins: '0'
 
@@ -331,6 +333,8 @@ Cuphead:
   # Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
   #
+  # Range: 0-100
+  # Recommended Range: 0-10
   # Default: 3
   filler_weight_extrahealth: '3'
 
@@ -339,5 +343,7 @@ Cuphead:
   # Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
   # Set to 0 to disable this item.
   #
+  # Range: 0-100
+  # Recommended Range: 0-10
   # Default: 3
   filler_weight_supercharge: '3'

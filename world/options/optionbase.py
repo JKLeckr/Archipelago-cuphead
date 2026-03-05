@@ -113,14 +113,15 @@ class LevelDict(OptionDict):
                 raise OptionError(f"Option {self.__class__.__name__} contains invalid levels. '{x}: {y}' is invalid")
         super().__init__(res)
 
-class Weight(Range):
+class LaxRange(Range):
     range_start = 0
     range_end = 10
-    weight_max = 100
+    hard_min = 0
+    hard_max = 100
 
     def __init__(self, value: int):
-        if value < 0:
-            raise OptionError(f"Option {self.__class__.__name__} cannot be negative!")
-        if value > self.weight_max:
-            raise OptionError(f"Option {self.__class__.__name__} cannot be larger than {self.weight_max}!")
+        if value < self.hard_min:
+            raise OptionError(f"Option {self.__class__.__name__} cannot be less than {self.hard_min}!")
+        if value > self.hard_max:
+            raise OptionError(f"Option {self.__class__.__name__} cannot be greater than {self.hard_max}!")
         self.value = value

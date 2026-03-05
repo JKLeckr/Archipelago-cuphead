@@ -9,7 +9,7 @@ from typing_extensions import override
 from Options import Choice, FreeText, OptionSet, Range, Visibility
 
 from .. import enums as e
-from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, LevelDict, Weight
+from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, LevelDict, LaxRange
 from .protocols import NamedOption
 
 ## Option classes
@@ -74,7 +74,7 @@ class DeathLink(BToggle, NamedOption):
     rich_text_doc = True
 
 
-class DeathLinkGraceCount(Range, NamedOption):
+class DeathLinkGraceCount(LaxRange, NamedOption):
     """
     -REQUIRES DEATHLINK-
     Set DeathLink Grace Count. Each "Grace" grants you a free Death without triggering DeathLink.
@@ -82,7 +82,8 @@ class DeathLinkGraceCount(Range, NamedOption):
     name = "deathlink_grace_count"
     display_name = "Death Link Grace Count"
     range_start = 0
-    range_end = 9
+    range_end = 25
+    hard_max = 1000
     default = 0
 
 
@@ -400,7 +401,7 @@ class ExpertMode(BToggle, NamedOption):
     display_name = "Expert Mode"
 
 
-class ExtraCoins(Range, NamedOption):
+class ExtraCoins(LaxRange, NamedOption):
     """
     Set extra coins in the item pool.
     """
@@ -408,10 +409,11 @@ class ExtraCoins(Range, NamedOption):
     display_name = "Extra Coins"
     range_start = 0
     range_end = 10
+    hard_max = 20
     default = 0
 
 
-class FillerWeightExtraHealth(Weight, NamedOption):
+class FillerWeightExtraHealth(LaxRange, NamedOption):
     """
     Set Extra Health weight. Higher weight means it will more likely appear compared to other filler items.
     Set to 0 to disable this item.
@@ -421,7 +423,7 @@ class FillerWeightExtraHealth(Weight, NamedOption):
     default = 3
 
 
-class FillerWeightFastFire(Weight, NamedOption):
+class FillerWeightFastFire(LaxRange, NamedOption):
     """
     Set Fast Fire weight. Higher weight means it will more likely appear compared to other filler items.
     Set to 0 to disable this item.
@@ -432,7 +434,7 @@ class FillerWeightFastFire(Weight, NamedOption):
     default = 0
 
 
-class FillerWeightSuperRecharge(Weight, NamedOption):
+class FillerWeightSuperRecharge(LaxRange, NamedOption):
     """
     Set Super Recharge weight. Higher weight means it will more likely appear compared to other filler items.
     Set to 0 to disable this item.
@@ -672,7 +674,7 @@ class TrapLoadoutAnyWeapon(BToggle, NamedOption):
     visibility = Visibility.spoiler
 
 
-class TrapWeightFingerJam(Weight, NamedOption):
+class TrapWeightFingerJam(LaxRange, NamedOption):
     """
     Set Finger Jam Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
@@ -683,7 +685,7 @@ class TrapWeightFingerJam(Weight, NamedOption):
     default = 5
 
 
-class TrapWeightLoadout(Weight, NamedOption):
+class TrapWeightLoadout(LaxRange, NamedOption):
     """
     Set Loadout Mixup Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
@@ -694,7 +696,7 @@ class TrapWeightLoadout(Weight, NamedOption):
     default = 5
 
 
-class TrapWeightScreen(Weight, NamedOption):
+class TrapWeightScreen(LaxRange, NamedOption):
     """
     Set Screen Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
@@ -705,7 +707,7 @@ class TrapWeightScreen(Weight, NamedOption):
     default = 3
 
 
-class TrapWeightSlowFire(Weight, NamedOption):
+class TrapWeightSlowFire(LaxRange, NamedOption):
     """
     Set Slow Fire Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
@@ -716,7 +718,7 @@ class TrapWeightSlowFire(Weight, NamedOption):
     default = 5
 
 
-class TrapWeightSuperDrain(Weight, NamedOption):
+class TrapWeightSuperDrain(LaxRange, NamedOption):
     """
     Set Super Drain Trap weight. Higher weight means it will more likely appear compared to other traps.
     Set to 0 to disable this trap.
