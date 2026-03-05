@@ -149,21 +149,6 @@ Cuphead:
   # Default: false
   deathlink: 'false'
 
-  ## Death Link Mode
-  #
-  # -REQUIRES DEATHLINK-
-  # Set DeathLink Mode.
-  #
-  # Modes:
-  # - Lose: Both players dying triggers DeathLink. Same in reverse.
-  # - Per Player: Each player's death will trigger DeathLink. Receiving a DeathLink will kill a random player.
-  #
-  # NOTE: Per Player will behave like Lose if playing singleplayer.
-  #
-  # Values: lose, per_player
-  # Default: lose
-  deathlink_mode: lose
-
   ## Death Link Grace Count
   #
   # -REQUIRES DEATHLINK-

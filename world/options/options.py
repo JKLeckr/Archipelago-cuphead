@@ -97,9 +97,12 @@ class DeathLinkMode(Choice, NamedOption):
     - Per Player: Each player's death will trigger DeathLink. Receiving a DeathLink will kill a random player.
 
     NOTE: Per Player will behave like Lose if playing singleplayer.
+
+    This option is ignored on older clients that don't support this feature
     """
     name = "deathlink_mode"
     display_name = "Death Link Mode"
+    visibility = Visibility.spoiler
     option_lose = 1
     option_per_player = 2
     default = 1
