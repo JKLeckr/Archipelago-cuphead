@@ -187,8 +187,10 @@ class OptionSanitizer:
                 _options.contract_requirements.value,
                 f"Contract {_goal_reason}"
             )
-        if (_options.use_dlc and \
-            _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value):
+        if (
+            _options.use_dlc and
+            _options.dlc_ingredient_goal_requirements.value < _options.dlc_ingredient_requirements.value
+        ):
             self.override_num_option(
                 _options.dlc_ingredient_goal_requirements,
                 _options.dlc_ingredient_requirements.value,

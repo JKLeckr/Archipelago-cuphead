@@ -3,7 +3,7 @@
 
 from dataclasses import dataclass
 
-from Options import OptionGroup, PerGameCommonOptions
+from Options import NumericOption, OptionGroup, PerGameCommonOptions
 
 from .. import enums as e
 from ..names import locationnames
@@ -94,18 +94,26 @@ class CupheadOptions(PerGameCommonOptions):
 
     def is_goal_used(self, goal: str) -> bool:
         if goal == locationnames.loc_event_goal_devil:
-            return (
-                self.mode.evalue == e.GameMode.BEAT_DEVIL or
-                self.mode.evalue == e.GameMode.DLC_BEAT_BOTH or
-                self.mode.evalue == e.GameMode.DLC_BEAT_DEVIL_NO_ISLE4
-            )
+            return (self.mode.evalue & e.GameMode.BEAT_DEVIL) > 0
         if goal == locationnames.loc_event_dlc_goal_saltbaker:
-            return (
-                self.mode.evalue == e.GameMode.DLC_BEAT_SALTBAKER or
-                self.mode.evalue == e.GameMode.DLC_BEAT_BOTH or
-                self.mode.evalue == e.GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
-            )
+            return (self.mode.evalue & e.GameMode.DLC_BEAT_SALTBAKER) > 0
         return False
+
+    @classmethod
+    def are_bits_satisfied(
+        cls,
+        option: NumericOption,
+        on_bits: int,
+        off_bits: int = 0,
+        on_any: bool = False,
+        off_any: bool = True
+    ) -> bool:
+        on_res = option.value & on_bits
+        off_res = option.value & off_bits
+        return (
+            (on_res > 0 if on_any else on_res == on_bits) and
+            not (off_res > 0 if off_any else off_res == off_bits)
+        )
 
 cuphead_option_groups = [
     OptionGroup("Main", [

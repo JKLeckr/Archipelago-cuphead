@@ -32,13 +32,14 @@ location_level_boss: dict[str, LocationData] = {
     locationnames.loc_level_boss_mouse: LocationData(2009),
     locationnames.loc_level_boss_sallystageplay: LocationData(2010),
     locationnames.loc_level_boss_train: LocationData(2011),
-    locationnames.loc_level_boss_kingdice: LocationData(2012),
-
     locationnames.loc_level_boss_plane_blimp: LocationData(2013),
     locationnames.loc_level_boss_plane_genie: LocationData(2014),
     locationnames.loc_level_boss_plane_bird: LocationData(2015),
     locationnames.loc_level_boss_plane_mermaid: LocationData(2016),
     locationnames.loc_level_boss_plane_robot: LocationData(2017),
+}
+location_level_boss_kingdice: dict[str, LocationData] = {
+    locationnames.loc_level_boss_kingdice: LocationData(2012),
 }
 location_level_boss_final: dict[str, LocationData] = {
     locationnames.loc_level_boss_devil: LocationData(4000),
@@ -56,13 +57,14 @@ location_level_boss_topgrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_mouse_topgrade: LocationData(6009),
     locationnames.loc_level_boss_sallystageplay_topgrade: LocationData(6010),
     locationnames.loc_level_boss_train_topgrade: LocationData(6011),
-    locationnames.loc_level_boss_kingdice_topgrade: LocationData(6012),
-
     locationnames.loc_level_boss_plane_blimp_topgrade: LocationData(6013),
     locationnames.loc_level_boss_plane_genie_topgrade: LocationData(6014),
     locationnames.loc_level_boss_plane_bird_topgrade: LocationData(6015),
     locationnames.loc_level_boss_plane_mermaid_topgrade: LocationData(6016),
     locationnames.loc_level_boss_plane_robot_topgrade: LocationData(6017),
+}
+location_level_boss_kingdice_topgrade: dict[str, LocationData] = {
+    locationnames.loc_level_boss_kingdice_topgrade: LocationData(6012),
 }
 location_level_boss_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_dlc_chaliced: LocationData(10002000),
@@ -77,13 +79,14 @@ location_level_boss_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_boss_mouse_dlc_chaliced: LocationData(10002009),
     locationnames.loc_level_boss_sallystageplay_dlc_chaliced: LocationData(10002010),
     locationnames.loc_level_boss_train_dlc_chaliced: LocationData(10002011),
-    locationnames.loc_level_boss_kingdice_dlc_chaliced: LocationData(10002012),
-
     locationnames.loc_level_boss_plane_blimp_dlc_chaliced: LocationData(10002013),
     locationnames.loc_level_boss_plane_genie_dlc_chaliced: LocationData(10002014),
     locationnames.loc_level_boss_plane_bird_dlc_chaliced: LocationData(10002015),
     locationnames.loc_level_boss_plane_mermaid_dlc_chaliced: LocationData(10002016),
     locationnames.loc_level_boss_plane_robot_dlc_chaliced: LocationData(10002017),
+}
+location_level_boss_kingdice_dlc_chaliced: dict[str, LocationData] = {
+    locationnames.loc_level_boss_kingdice_dlc_chaliced: LocationData(10002012),
 }
 location_level_boss_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_phase1: LocationData(8000),
@@ -147,9 +150,6 @@ location_level_boss_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_train_phase3: LocationData(8094),
     locationnames.loc_level_boss_train_phase4: LocationData(8096),
 
-    locationnames.loc_level_boss_kingdice_phase1: LocationData(8098),
-    locationnames.loc_level_boss_kingdice_phase2: LocationData(8100),
-
     locationnames.loc_level_boss_plane_blimp_phase1: LocationData(8102),
     locationnames.loc_level_boss_plane_blimp_phase2: LocationData(8104),
     locationnames.loc_level_boss_plane_blimp_phase3: LocationData(8106),
@@ -177,6 +177,10 @@ location_level_boss_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_plane_robot_phase2: LocationData(8142),
     locationnames.loc_level_boss_plane_robot_phase3: LocationData(8144),
 }
+location_level_boss_kingdice_phases: dict[str, LocationData] = {
+    locationnames.loc_level_boss_kingdice_phase1: LocationData(8098),
+    locationnames.loc_level_boss_kingdice_phase2: LocationData(8100),
+}
 location_level_boss_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_event_agrade: LocationData(None),
     locationnames.loc_level_boss_slime_event_agrade: LocationData(None),
@@ -190,13 +194,14 @@ location_level_boss_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_mouse_event_agrade: LocationData(None),
     locationnames.loc_level_boss_sallystageplay_event_agrade: LocationData(None),
     locationnames.loc_level_boss_train_event_agrade: LocationData(None),
-    locationnames.loc_level_boss_kingdice_event_agrade: LocationData(None),
-
     locationnames.loc_level_boss_plane_blimp_event_agrade: LocationData(None),
     locationnames.loc_level_boss_plane_genie_event_agrade: LocationData(None),
     locationnames.loc_level_boss_plane_bird_event_agrade: LocationData(None),
     locationnames.loc_level_boss_plane_mermaid_event_agrade: LocationData(None),
     locationnames.loc_level_boss_plane_robot_event_agrade: LocationData(None),
+}
+location_level_boss_kingdice_event_agrade: dict[str, LocationData] = {
+    locationnames.loc_level_boss_kingdice_event_agrade: LocationData(None),
 }
 location_level_boss_event_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_event_dlc_chaliced: LocationData(None),
@@ -211,13 +216,14 @@ location_level_boss_event_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_boss_mouse_event_dlc_chaliced: LocationData(None),
     locationnames.loc_level_boss_sallystageplay_event_dlc_chaliced: LocationData(None),
     locationnames.loc_level_boss_train_event_dlc_chaliced: LocationData(None),
-    locationnames.loc_level_boss_kingdice_event_dlc_chaliced: LocationData(None),
-
     locationnames.loc_level_boss_plane_blimp_event_dlc_chaliced: LocationData(None),
     locationnames.loc_level_boss_plane_genie_event_dlc_chaliced: LocationData(None),
     locationnames.loc_level_boss_plane_bird_event_dlc_chaliced: LocationData(None),
     locationnames.loc_level_boss_plane_mermaid_event_dlc_chaliced: LocationData(None),
     locationnames.loc_level_boss_plane_robot_event_dlc_chaliced: LocationData(None),
+}
+location_level_boss_kingdice_event_dlc_chaliced: dict[str, LocationData] = {
+    locationnames.loc_level_boss_kingdice_event_dlc_chaliced: LocationData(None),
 }
 location_level_boss_final_topgrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_devil_topgrade: LocationData(10000)
@@ -570,9 +576,20 @@ location_dlc_goal: dict[str, LocationData] = {
     locationnames.loc_event_dlc_goal_saltbaker: LocationData(None),
 }
 
+# Kingdice locations
+locations_kingdice_all: dict[str, LocationData] = {
+    **location_level_boss_kingdice,
+    **location_level_boss_kingdice_topgrade,
+    **location_level_boss_kingdice_phases,
+    **location_level_boss_kingdice_dlc_chaliced,
+    **location_level_boss_kingdice_event_agrade,
+    **location_level_boss_kingdice_event_dlc_chaliced,
+}
+
 locations_base: dict[str, LocationData] = {
     **location_level_tutorial,
     **location_level_boss,
+    **location_level_boss_kingdice,
     #**location_level_boss_final,
     **location_level_rungun,
     **location_level_mausoleum,
@@ -583,12 +600,14 @@ locations_base: dict[str, LocationData] = {
 }
 locations_topgrade: dict[str, LocationData] = {
     **location_level_boss_topgrade,
+    **location_level_boss_kingdice_topgrade,
     #**location_level_boss_final_topgrade,
     **location_level_rungun_agrade,
     **location_level_rungun_pacifist,
 }
 locations_event_agrade: dict[str, LocationData] = {
     **location_level_boss_event_agrade,
+    **location_level_boss_kingdice_event_agrade,
     #**location_level_boss_final_event_agrade,
     **location_level_rungun_event_agrade,
 }
@@ -603,12 +622,14 @@ locations_dlc: dict[str, LocationData] = {
 }
 locations_dlc_boss_chaliced: dict[str, LocationData] = {
     **location_level_boss_dlc_chaliced,
+    **location_level_boss_kingdice_dlc_chaliced,
     #**location_level_boss_final_dlc_chaliced,
     **location_level_dlc_boss_dlc_chaliced,
     #**location_level_dlc_boss_final_dlc_chaliced,
 }
 locations_boss_phases: dict[str, LocationData] = {
     **location_level_boss_phases,
+    **location_level_boss_kingdice_phases,
     #**location_level_boss_final_phases,
     **location_level_dlc_boss_phases,
     #**location_level_dlc_boss_final_phases,
@@ -619,6 +640,7 @@ locations_dlc_topgrade: dict[str, LocationData] = {
 }
 locations_dlc_event_boss_chaliced: dict[str, LocationData] = {
     **location_level_boss_event_dlc_chaliced,
+    **location_level_boss_kingdice_event_dlc_chaliced,
     **location_level_dlc_boss_event_dlc_chaliced,
 }
 locations_dlc_event_boss_final_chaliced: dict[str, LocationData] = {

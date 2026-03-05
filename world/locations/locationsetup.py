@@ -2,6 +2,7 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from __future__ import annotations
+from collections.abc import Iterable
 
 from BaseClasses import LocationProgressType
 
@@ -12,19 +13,25 @@ from . import locationdefs as ld
 from .locationbase import LocationData
 
 
-def add_location(locations_ref: dict[str,LocationData], loc_name: str):
+def add_location(locations_ref: dict[str, LocationData], loc_name: str):
     locations_ref[loc_name] = ld.locations_all[loc_name]
+
+def add_locations(locations_ref: dict[str, LocationData], loc_names: Iterable[str]):
+    [add_location(locations_ref, loc) for loc in loc_names]
 
 def exclude_location(locations_ref: dict[str,LocationData], loc_name: str):
     #print(f"Exclude {loc_name}")
     locations_ref[loc_name] = locations_ref[loc_name].with_progress_type(LocationProgressType.EXCLUDED)
+
+def exclude_locations(locations_ref: dict[str, LocationData], loc_names: Iterable[str], strict: bool = False):
+    [exclude_location(locations_ref, loc) for loc in loc_names if (strict or loc in locations_ref)]
 
 def setup_grade_check_locations(locations_ref: dict[str,LocationData], options: CupheadOptions):
     boss_grade_checks = options.boss_grade_checks.evalue
     rungun_grade_checks = options.rungun_grade_checks.evalue
     if boss_grade_checks>0:
         locations_ref.update(ld.location_level_boss_topgrade)
-        if options.mode.evalue != GameMode.BEAT_DEVIL:
+        if not options.are_bits_satisfied(options.mode, GameMode.BEAT_DEVIL, GameMode.DLC_BEAT_SALTBAKER):
             locations_ref.update(ld.location_level_boss_final_topgrade)
     if rungun_grade_checks>0:
         if rungun_grade_checks>=1 and rungun_grade_checks<=3:
@@ -66,10 +73,24 @@ def setup_boss_final_locations(
         base_final: dict[str,LocationData],
         dlc_final: dict[str,LocationData],
     ):
-    if options.mode.evalue != GameMode.BEAT_DEVIL:
+    if not options.are_bits_satisfied(options.mode, GameMode.BEAT_DEVIL, GameMode.DLC_BEAT_SALTBAKER):
         locations_ref.update(base_final)
-    if options.use_dlc.bvalue and options.mode.evalue != GameMode.DLC_BEAT_SALTBAKER:
+        #if (
+        #    options.are_bits_satisfied(options.mode, GameMode.COLLECT_CONTRACTS, GameMode.DLC_COLLECT_INGREDIENTS) and
+        #    options.contract_requirements.value == options.contract_goal_requirements.value
+        #):
+        #    exclude_locations(locations_ref, ld.locations_kingdice_all.keys())
+        #    exclude_locations(locations_ref, base_final.keys())
+    if (
+        options.use_dlc.bvalue and
+        not options.are_bits_satisfied(options.mode, GameMode.DLC_BEAT_SALTBAKER, GameMode.BEAT_DEVIL)
+    ):
         locations_ref.update(dlc_final)
+        #if (
+        #    options.are_bits_satisfied(options.mode, GameMode.DLC_COLLECT_INGREDIENTS, GameMode.COLLECT_CONTRACTS) and
+        #    options.dlc_ingredient_requirements.value == options.dlc_ingredient_goal_requirements.value
+        #):
+        #    exclude_locations(locations_ref, dlc_final.keys())
 
 def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], options: CupheadOptions):
     if options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED:
@@ -78,9 +99,9 @@ def setup_dlc_chalice_locations(locations_ref: dict[str,LocationData], options: 
         add_location(locations_ref, locationnames.loc_event_dlc_cookie)
     if options.dlc_boss_chalice_checks.value:
         locations_ref.update(ld.locations_dlc_boss_chaliced)
-        if options.mode.evalue != GameMode.BEAT_DEVIL:
+        if not options.are_bits_satisfied(options.mode, GameMode.BEAT_DEVIL, GameMode.DLC_BEAT_SALTBAKER):
             locations_ref.update(ld.location_level_boss_final_dlc_chaliced)
-        if options.mode.evalue != GameMode.DLC_BEAT_SALTBAKER:
+        if not options.are_bits_satisfied(options.mode, GameMode.DLC_BEAT_SALTBAKER, GameMode.BEAT_DEVIL):
             locations_ref.update(ld.location_level_dlc_boss_final_dlc_chaliced)
     if options.dlc_rungun_chalice_checks.value:
         locations_ref.update(ld.location_level_rungun_dlc_chaliced)
@@ -102,7 +123,7 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], options: CupheadO
     locations_ref.update(ld.locations_dlc)
     if options.boss_grade_checks.value > 0:
         locations_ref.update(ld.location_level_dlc_boss_topgrade)
-        if options.mode.evalue != GameMode.DLC_BEAT_SALTBAKER:
+        if not options.are_bits_satisfied(options.mode, GameMode.DLC_BEAT_SALTBAKER, GameMode.BEAT_DEVIL):
             locations_ref.update(ld.location_level_dlc_boss_final_topgrade)
     if options.dlc_requires_mausoleum.bvalue:
         add_location(locations_ref, locationnames.loc_event_mausoleum)
