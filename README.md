@@ -14,7 +14,7 @@ APWorld: [Archipelago-cuphead](https://github.com/JKLeckr/Archipelago-cuphead) (
 
 This is the Archipelago APWorld for Cuphead.
 
-This apworld is currently in alpha. While it is even better than it ever was since early development, there are still insidious issues lurking about. If you are wanting to use this for the Ultimate Experience, then you will surely be disappointed! Use at your own risk!
+This apworld is currently in alpha. While it is even better than it ever was since early development, there are still insidious issues lurking about and there still incomplete and/or missing features. If you are wanting to use this for the Ultimate Experience, then you will surely be disappointed! Use at your own risk!
 
 ## How to use
 Download the copy of the APWorld from the [releases](https://github.com/JKLeckr/Archipelago-cuphead/releases) page.
