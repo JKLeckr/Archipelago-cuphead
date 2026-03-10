@@ -481,6 +481,7 @@ class GameMode(EnumOption[e.GameMode], ChoiceEx, NamedOption):
     default = 1
 
 
+# UNUSED
 class HardLogic(BToggle, NamedOption):
     """
     -WORKS, BUT INCOMPLETE-
@@ -490,7 +491,7 @@ class HardLogic(BToggle, NamedOption):
     """
     name = "hard_logic"
     display_name = "Hard Logic"
-    visibility = Visibility.template | Visibility.spoiler
+    visibility = Visibility.none
 
 
 class LevelPlacements(LevelDict, NamedOption):
@@ -538,6 +539,20 @@ class LevelShuffleSeed(FreeText, NamedOption):
     display_name = "Level Shuffle Seed"
     visibility = Visibility.spoiler
     default = ""
+
+
+class LogicMode(EnumOption[e.LogicMode], Choice, NamedOption):
+    """
+    -HARD LOGIC WORKS, BUT IS INCOMPLETE-
+    Set the logic mode.
+    Hard: Use more difficult logic that may require more skillful actions without specific items.
+    """
+    name = "logic_mode"
+    display_name = "Logic"
+    enum_type = e.LogicMode
+    option_normal = 0
+    option_hard = 1
+    default = 0
 
 
 class MaxHealthUpgrades(Range, NamedOption):

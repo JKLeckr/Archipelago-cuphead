@@ -16,7 +16,6 @@ _bitifiable_fields: list[str] = [
     "fourmel_quest",
     "freemove_isles",
     "ginger_quest",
-    "hard_logic",
     "kingdice_bosssanity",
     "music_quest",
     "pacifist_quest",

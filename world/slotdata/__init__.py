@@ -26,6 +26,7 @@ _slot_data_options: list[str] = [
     "ducklock_platdrop",
     "expert_mode",
     "freemove_isles",
+    "logic_mode",
     "mode",
     "music_shuffle",
     "randomize_abilities",

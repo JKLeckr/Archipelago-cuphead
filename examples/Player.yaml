@@ -25,6 +25,16 @@ Cuphead:
   # Default: beat_devil
   mode: beat_devil
 
+  ## Logic
+  #
+  # -HARD LOGIC WORKS, BUT IS INCOMPLETE-
+  # Set the logic mode.
+  # Hard: Use more difficult logic that may require more skillful actions without specific items.
+  #
+  # Values: normal, hard
+  # Default: normal
+  logic_mode: normal
+
   ## Expert Mode
   #
   # Set the boss difficulty to expert.

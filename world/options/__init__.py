@@ -18,6 +18,7 @@ class CupheadOptions(PerGameCommonOptions):
     version: iodefs.Version
     use_dlc: odefs.DeliciousLastCourse
     mode: odefs.GameMode
+    logic_mode: odefs.LogicMode
     expert_mode: odefs.ExpertMode
     start_weapon: odefs.StartWeapon
     weapon_mode: odefs.WeaponMode
@@ -32,7 +33,7 @@ class CupheadOptions(PerGameCommonOptions):
     level_shuffle_seed: odefs.LevelShuffleSeed
     level_placements: odefs.LevelPlacements
     freemove_isles: odefs.FreeMoveIsles
-    hard_logic: odefs.HardLogic
+    #hard_logic: odefs.HardLogic
     deathlink: odefs.DeathLink
     deathlink_mode: odefs.DeathLinkMode
     deathlink_grace_count: odefs.DeathLinkGraceCount

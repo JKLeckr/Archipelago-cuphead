@@ -131,21 +131,21 @@ class TestOptions(CupheadTestBase):
             "level_shuffle": "plane_separate"
         },
         "Hard Logic": {
-            "hard_logic": True
+            "logic_mode": "hard"
         },
         "Hard Logic Freemove": {
-            "hard_logic": True,
+            "logic_mode": "hard",
             "freemove_isles": True
         },
         "DLC Hard Logic": {
             "use_dlc": True,
             "mode": "dlc_beat_both",
-            "hard_logic": True
+            "logic_mode": "hard"
         },
         "DLC Hard Logic Freemove": {
             "use_dlc": True,
             "mode": "dlc_beat_both",
-            "hard_logic": True,
+            "logic_mode": "hard",
             "freemove_isles": True
         }
     }

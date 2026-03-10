@@ -48,7 +48,7 @@ def dep_dicepalace_sanity(c: CupheadOptions) -> bool:
     return c.kingdice_bosssanity.bvalue
 @dep
 def dep_hard_logic(c: CupheadOptions) -> bool:
-    return c.hard_logic.bvalue
+    return c.logic_mode.evalue > 0
 @dep
 def dep_rando_abilities(c: CupheadOptions) -> bool:
     return c.randomize_abilities.bvalue
