@@ -176,8 +176,8 @@ def main():
         if field == "world_version":
             njson[world_fver_field] = str(module.FVersion.from_int_tuple(_values["_apworld_sem_version"]))
 
-    if args.matchversion and njson[world_fver_field] != args.match_version:
-        print(f"Version mismatch: {njson[world_fver_field]} != {args.match_version}")
+    if args.matchversion and njson[world_fver_field] != args.matchversion:
+        print(f"Version mismatch: {njson[world_fver_field]} != {args.matchversion}")
         exit(2)
 
     res = json.dumps(njson, indent=2, cls=InlineListEncoder)
