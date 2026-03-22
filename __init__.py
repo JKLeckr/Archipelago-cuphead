@@ -55,7 +55,9 @@ class CupheadWorld(World):
     GAME_NAME: ClassVar[str] = "Cuphead"
 
     APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 0)
-    APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_SEM_VERSION))
+    APWORLD_VERSION_POSTFIX: str = ""
+    APWORLD_VERSION_POSTFIX_NO: int = 0
+    APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_SEM_VERSION, APWORLD_VERSION_POSTFIX))
 
     AUTHORS: ClassVar[list[str]] = ["JKLeckr"]
 
@@ -118,7 +120,7 @@ class CupheadWorld(World):
 
             bits: int = slot_data["gen_bits"]
 
-            self.options.shop_mode.value = slot_data["shop_mode"] # TODO: Finish
+            self.options.shop_mode.value = slot_data["shop_mode"] # TODO: TEST
             self.options.contract_requirements.value = slot_data["contract_requirements"]
             self.options.dlc_ingredient_requirements.value = slot_data["dlc_ingredient_requirements"]
 

@@ -29,8 +29,11 @@ APWORLD_FIELDS: dict[str, str] = {
     "AUTHORS": "authors",
     "APWORLD_SEM_VERSION": "world_version",
 }
+APWORLD_INTERNAL_FIELDS: set[str] = {
+    "APWORLD_VERSION_POSTFIX_NO",
+}
 
-FieldTypes = str | int | None
+FieldTypes = str | int | list[str] | None
 FieldTypeTuple = (str , int)
 
 class InlineListEncoder(json.JSONEncoder):
@@ -68,9 +71,8 @@ class InlineListEncoder(json.JSONEncoder):
 
         return _iterencode(o, 0)
 
-def _sem_version_to_tuple_version(version: tuple[int, int, int, int]) -> tuple[int, int, int]:
+def _sem_version_to_tuple_version(version: tuple[int, int, int, int], pofx: int = 0) -> tuple[int, int, int]:
     _format = 1
-    _pofx = 0
     if version[0] > 0:
         raise NotImplementedError("Version tuple parser not implemented for full versions!")
     return (
@@ -80,7 +82,7 @@ def _sem_version_to_tuple_version(version: tuple[int, int, int, int]) -> tuple[i
             ((_format & 0xFF) << 24) |
             ((version[2] & 0xFF) << 16) |
             ((version[3] & 0xFF) << 8) |
-            (_pofx & 0xFF)
+            (pofx & 0xFF)
         )
     )
 
@@ -94,12 +96,13 @@ def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes
     if isinstance(value, tuple) and all(isinstance(x, int) for x in value): # type: ignore
         if key == "APWORLD_SEM_VERSION" and len(value) == 4:
             res_ref["_apworld_sem_version"] = value
-            _value = _sem_version_to_tuple_version(value) # type: ignore
-        else:
-            _value = value
+            return
+        _value = value
         res_ref[key] = ".".join(map(str, _value))
     elif isinstance(value, list):
         res_ref[key] = value
+    elif key == "APWORLD_VERSION_POSTFIX_NO" and isinstance(value, int):
+        res_ref["_apworld_version_postfix_no"] = value
     elif isinstance(value, FieldTypeTuple):
         res_ref[key] = value
     else:
@@ -125,13 +128,20 @@ def get_apworld_fields(
             target = node.target
             if isinstance(target, ast.Name):
                 key: str = target.id
-                if key in APWORLD_FIELDS:
+                if key in APWORLD_FIELDS or key in APWORLD_INTERNAL_FIELDS:
                     try:
                         value = ast.literal_eval(node.value) # type: ignore
                     except Exception as e:
                         raise ValueError(f"Failed to evaluate value for '{key}': {e}") from e
 
                     _add_field_value(res, key, value)
+
+    sem_version = res.get("_apworld_sem_version")
+    if isinstance(sem_version, tuple) and len(sem_version) == 4:
+        postfix_no = res.get("_apworld_version_postfix_no", 0)
+        if not isinstance(postfix_no, int):
+            raise TypeError(f"Unsupported value type for 'APWORLD_VERSION_POSTFIX_NO': {type(postfix_no)}")
+        res["APWORLD_SEM_VERSION"] = ".".join(map(str, _sem_version_to_tuple_version(sem_version, postfix_no)))
 
     return res
 
@@ -141,7 +151,7 @@ def main():
     parser.add_argument("-c", "--classname", default=APWORLD_CLASS, help="Name of the APWorld class")
     parser.add_argument("-o", "--output", default=None, help="Output file")
     parser.add_argument("-m", "--match-version", default=None, help="Version parsed must match this version")
-    parser.add_argument("--ignore-version-postfix", action="store_true", help="Ignore the postfix when matching version")
+    parser.add_argument("--ignore-version-postfix", action="store_true", help="Ignore the postfix when matching version")  # noqa: E501
 
     args = parser.parse_args()
 
