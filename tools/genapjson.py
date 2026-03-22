@@ -140,7 +140,8 @@ def main():
     parser.add_argument("dir", help="Directory where the Python script containing the APWorld class is")
     parser.add_argument("-c", "--classname", default=APWORLD_CLASS, help="Name of the APWorld class")
     parser.add_argument("-o", "--output", default=None, help="Output file")
-    parser.add_argument("-m", "--matchversion", default=None, help="Version parsed must match this version")
+    parser.add_argument("-m", "--match-version", default=None, help="Version parsed must match this version")
+    parser.add_argument("--ignore-postfix", default=False, help="Ignore the postfix when matching version")
 
     args = parser.parse_args()
 
@@ -174,10 +175,13 @@ def main():
         field = APWORLD_FIELDS[k]
         njson[field] = v
         if field == "world_version":
-            njson[world_fver_field] = str(module.FVersion.from_int_tuple(_values["_apworld_sem_version"]))
+            ver = module.FVersion.from_int_tuple(_values["_apworld_sem_version"])
+            if args.ignore_postfix:
+                ver.postfix = ""
+            njson[world_fver_field] = str(ver)
 
-    if args.matchversion and njson[world_fver_field] != args.matchversion:
-        print(f"Version mismatch: {njson[world_fver_field]} != {args.matchversion}")
+    if args.match_version and njson[world_fver_field] != args.match_version:
+        print(f"Version mismatch: {njson[world_fver_field]} != {args.match_version}")
         exit(2)
 
     res = json.dumps(njson, indent=2, cls=InlineListEncoder)
