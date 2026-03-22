@@ -90,6 +90,13 @@ class CupheadOptions(PerGameCommonOptions):
     shop_mode: codefs.ShopMode # TODO: Finish
     weapon_gate: codefs.WeaponGate
 
+    def get_contract_requirements_tuple(self) -> tuple[int, int, int]:
+        return (
+            self.contract_requirements.value,
+            self.contract_requirements_isle2.value,
+            self.contract_requirements_isle3.value
+        )
+
     def is_dlc_chalice_items_separate(self, item_group: e.ItemGroups) -> bool:
         return (self.dlc_chalice_items_separate.fvalue & item_group) > 0
 

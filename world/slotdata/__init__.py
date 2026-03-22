@@ -51,7 +51,7 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
         "level_map": world.level_map,
         "shop_mode": world.options.shop_mode.value,
         "shop_map": world.shop.shop_map,
-        "contract_requirements": world.options.contract_requirements.value,
+        "contract_requirements": world.options.get_contract_requirements_tuple(),
         "dlc_ingredient_requirements": world.options.dlc_ingredient_requirements.value,
         "deathlink": world.options.deathlink_mode.value if world.options.deathlink.bvalue else 0,
         "deathlink_grace_count": world.options.deathlink_grace_count.value,
