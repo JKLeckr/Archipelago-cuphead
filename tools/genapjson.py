@@ -141,7 +141,7 @@ def main():
     parser.add_argument("-c", "--classname", default=APWORLD_CLASS, help="Name of the APWorld class")
     parser.add_argument("-o", "--output", default=None, help="Output file")
     parser.add_argument("-m", "--match-version", default=None, help="Version parsed must match this version")
-    parser.add_argument("--ignore-postfix", default=False, help="Ignore the postfix when matching version")
+    parser.add_argument("--ignore-version-postfix", action="store_true", help="Ignore the postfix when matching version")
 
     args = parser.parse_args()
 
@@ -176,7 +176,7 @@ def main():
         njson[field] = v
         if field == "world_version":
             ver = module.FVersion.from_int_tuple(_values["_apworld_sem_version"])
-            if args.ignore_postfix:
+            if args.ignore_version_postfix:
                 ver.postfix = ""
             njson[world_fver_field] = str(ver)
 

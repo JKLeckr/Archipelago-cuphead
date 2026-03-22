@@ -47,7 +47,7 @@ jobs:
         working-directory: ../
         run: |
           export SIMPLE_VERSION=$(printf '%s\n' "${{ env.RELEASE_VERSION }}" | sed 's/\.[0-9]\+//')
-          python ./genapjson.py -o ./archipelago.json ./Archipelago-cuphead/ -m ${SIMPLE_VERSION}
+          python ./genapjson.py -o ./archipelago.json ./Archipelago-cuphead/ -m ${SIMPLE_VERSION} --ignore-version-postfix
 
       - name: Build ZIP package
         working-directory: ../
