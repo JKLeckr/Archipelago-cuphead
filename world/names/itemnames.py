@@ -83,6 +83,7 @@ item_super_dlc_c_iii = "Chalice Super Art III"
 item_ability_parry = "Parry"
 item_ability_dash = "Dash"
 item_ability_duck = "Duck"
+item_ability_duck_a = "Crouch"
 item_ability_plane_shrink = "Plane Shrink"
 item_ability_plane_parry = "Plane Parry"
 

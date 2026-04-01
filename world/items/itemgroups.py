@@ -35,5 +35,6 @@ item_groups: dict[str, set[str]] = {
     ## Aliases
     itemnames.item_contract_a: {itemnames.item_contract},
     itemnames.item_plane_gun_a: {itemnames.item_plane_gun},
+    itemnames.item_ability_duck_a: {itemnames.item_ability_duck},
     itemnames.item_dlc_cplane_gun_a: {itemnames.item_dlc_cplane_gun},
 }
