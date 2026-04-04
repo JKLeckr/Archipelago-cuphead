@@ -670,6 +670,7 @@ class StartWeapon(ChoiceEx, NamedOption):
     """
     name = "start_weapon"
     display_name = "Start Weapon"
+    option_random_weapon = -2
     option_peashooter = 0
     option_spread = 1
     option_chaser = 2
@@ -679,16 +680,16 @@ class StartWeapon(ChoiceEx, NamedOption):
     option_dlc_crackshot = 6
     option_dlc_converge = 7
     option_dlc_twistup = 8
-    hidden_option_none = 127
-    default = "random"
+    option_none = 127
+    default = -2
 
     @classmethod
     @override
     def from_text(cls, text: str) -> Choice:
         text = text.lower()
         if text == "none":
-            cls.name_lookup[cls.hidden_option_none] = "None"
-            return cls(cls.hidden_option_none)
+            cls.name_lookup[cls.option_none] = "None"
+            return cls(cls.option_none)
         return super().from_text(text)
 
 

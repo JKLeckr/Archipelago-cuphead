@@ -293,7 +293,7 @@ class OptionSanitizer:
         )
 
     def _warn_no_weapons(self) -> None:
-        if self.options.start_weapon != self.options.start_weapon.hidden_option_none:
+        if self.options.start_weapon != self.options.start_weapon.option_none:
             return
 
         self.print_warning(

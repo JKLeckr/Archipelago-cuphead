@@ -92,9 +92,10 @@ def resolve_random_options(options: CupheadOptions, rand: Random) -> None:
         # TODO: Once modes can be combined, remove this and use randint
         _mode_choices = [1, 2, 4] + ([8, 9, 16, 18] if options.use_dlc else [])
         options.mode.value = rand.choice(_mode_choices)
-    if options.start_weapon.value == -1:
-        options.start_weapon.value = rand.randint(0,8 if options.use_dlc else 5)
+    if options.start_weapon.value == -1 or options.start_weapon.value == -2:
+        _newval = rand.randint(-2 + abs(options.start_weapon.value), 8 if options.use_dlc else 5)
+        options.start_weapon.value = options.start_weapon.option_dlc_twistup if _newval == -1 else _newval
     if options.boss_grade_checks.value == -1:
-        options.boss_grade_checks.value = rand.randint(0,4 if options.use_dlc else 3)
+        options.boss_grade_checks.value = rand.randint(0, 4 if options.use_dlc else 3)
     if options.level_shuffle_seed.value == "":
         options.level_shuffle_seed.value = "".join(rand.choices("0123456789", k=16))
