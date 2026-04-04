@@ -2,7 +2,7 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 from .. import enums as e
-from .optionbase import BoolOption, ConstNumericOption, EnumOption
+from .optionbase import BoolOption, ConstNumericOption, ConstToggle, EnumOption
 from .protocols import NamedOption
 
 ## Option classes that are used internally and are constant value.
@@ -18,10 +18,11 @@ class BossPhaseChecks(EnumOption[e.BossPhaseCheckMode], ConstNumericOption, Name
     """
     name = "boss_phase_checks"
     display_name = "Boss Phase Checks"
+    enum_type = e.BossPhaseCheckMode
     value = 0
 
 
-class BusterQuest(BoolOption, ConstNumericOption, NamedOption):
+class BusterQuest(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -29,7 +30,7 @@ class BusterQuest(BoolOption, ConstNumericOption, NamedOption):
     value = 1
 
 
-class DlcRandomizeBoat(BoolOption, ConstNumericOption, NamedOption):
+class DlcRandomizeBoat(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -37,7 +38,7 @@ class DlcRandomizeBoat(BoolOption, ConstNumericOption, NamedOption):
     value = 1
 
 
-class DlcRequiresMausoleum(BoolOption, ConstNumericOption, NamedOption):
+class DlcRequiresMausoleum(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -45,7 +46,7 @@ class DlcRequiresMausoleum(BoolOption, ConstNumericOption, NamedOption):
     value = 1
 
 
-class FourMelQuest(BoolOption, ConstNumericOption, NamedOption):
+class FourMelQuest(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -53,7 +54,7 @@ class FourMelQuest(BoolOption, ConstNumericOption, NamedOption):
     value = 1
 
 
-class GingerQuest(BoolOption, ConstNumericOption, NamedOption):
+class GingerQuest(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -61,7 +62,7 @@ class GingerQuest(BoolOption, ConstNumericOption, NamedOption):
     value = 1
 
 
-class LucienQuest(BoolOption, ConstNumericOption, NamedOption):
+class LucienQuest(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -69,7 +70,7 @@ class LucienQuest(BoolOption, ConstNumericOption, NamedOption):
     value = 0
 
 
-class MusicQuest(BoolOption, ConstNumericOption, NamedOption):
+class MusicQuest(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -77,7 +78,7 @@ class MusicQuest(BoolOption, ConstNumericOption, NamedOption):
     value = 0
 
 
-class RequireSecretShortcuts(BoolOption, ConstNumericOption, NamedOption):
+class RequireSecretShortcuts(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     """
@@ -85,7 +86,7 @@ class RequireSecretShortcuts(BoolOption, ConstNumericOption, NamedOption):
     value = 1
 
 
-class RandomizeAimAbilities(BoolOption, ConstNumericOption, NamedOption):
+class RandomizeAimAbilities(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     Randomize aiming abilities.
@@ -114,7 +115,7 @@ class ShopMode(EnumOption[e.ShopMode], ConstNumericOption, NamedOption):
     value = 0
 
 
-class WeaponGate(BoolOption, ConstNumericOption, NamedOption):
+class WeaponGate(BoolOption, ConstToggle, NamedOption):
     """
     --NOT SUPPORTED OPTION--
     Add a weapon gate which only allows specific weapons for each fight.

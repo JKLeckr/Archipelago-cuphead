@@ -679,7 +679,17 @@ class StartWeapon(ChoiceEx, NamedOption):
     option_dlc_crackshot = 6
     option_dlc_converge = 7
     option_dlc_twistup = 8
+    hidden_option_none = 127
     default = "random"
+
+    @classmethod
+    @override
+    def from_text(cls, text: str) -> Choice:
+        text = text.lower()
+        if text == "none":
+            cls.name_lookup[cls.hidden_option_none] = "None"
+            return cls(cls.hidden_option_none)
+        return super().from_text(text)
 
 
 class TrapLoadoutAnyWeapon(BToggle, NamedOption):

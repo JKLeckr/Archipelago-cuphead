@@ -58,4 +58,6 @@ def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
     }
     for option in _slot_data_options:
         slot_data.update(world.options.as_dict(option))
+    if world.settings.is_debug_bit_on(64):
+        print(f"slot_data: {slot_data}")
     return slot_data

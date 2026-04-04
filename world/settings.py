@@ -33,7 +33,7 @@ class CupheadSettings(settings.Group):
             8: Visualize Regions highlight reachable
             16: Debug hint_dict
             32: Debug aux
-            64: Unused
+            64: Debug options + slot_data
             128: Debug levelrules
             256: Visualize Regions generated for Universal Tracker
             512: Debug even in tests

@@ -26,7 +26,7 @@ from .levelrulebase import (
 )
 
 levelrules = LevelRules({
-    lv.level_boss_veggies: LevelDef(
+    lv.level_boss_veggies: LevelDef( # TODO: Add No start weapon Rules
         exit_location=l.loc_level_boss_veggies,
         locations={
             l.loc_level_boss_veggies: LocationDef(),

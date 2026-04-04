@@ -2,6 +2,7 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 import typing
+from collections.abc import Iterable
 
 from Options import Option
 
@@ -23,15 +24,17 @@ _bitifiable_fields: list[str] = [
     "silverworth_quest",
 ]
 
+def get_bitifiable_options() -> Iterable[str]:
+    return frozenset(_bitifiable_fields)
+
 def debitify(options_ref: CupheadOptions, bits: int) -> None:
     shift = 0
     for bit in _bitifiable_fields:
         if (hasattr(options_ref, bit)):
-            res = (bits << shift) & 1
             _field: Option[typing.Any] = getattr(options_ref, bit)
-            _field.value = bool(res)
+            _field.value = (bits >> shift) & 1
         else:
-            raise KeyError(f"{bit} is not in wconf!")
+            raise KeyError(f"{bit} is not in options!")
         shift += 1
 
 def bitify(options: CupheadOptions) -> int:
@@ -41,9 +44,9 @@ def bitify(options: CupheadOptions) -> int:
     for bit in _bitifiable_fields:
         if (hasattr(options, bit)):
             _field: Option[typing.Any] = getattr(options, bit)
-            res |= ((1 if _field.value else 0) << shift) & 1
+            res |= (1 if _field.value else 0) << shift
         else:
-            raise KeyError(f"{bit} is not in wconf!")
+            raise KeyError(f"{bit} is not in options!")
         shift += 1
 
     return res

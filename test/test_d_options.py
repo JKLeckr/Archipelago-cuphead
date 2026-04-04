@@ -14,7 +14,7 @@ from Options import PerGameCommonOptions
 
 from .. import options
 from ..world import enums as e
-from ..world.options import CupheadOptions
+from ..world.options import CupheadOptions, optionbits
 from . import CupheadTestBase
 
 
@@ -147,6 +147,13 @@ class TestOptions(CupheadTestBase):
             "mode": "dlc_beat_both",
             "logic_mode": "hard",
             "freemove_isles": True
+        },
+        "No Weapons": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "start_weapon": "none",
+            "start_inventory": {"Whetstone": 1, "Parry": 1},
+            "freemove_isles": True
         }
     }
 
@@ -201,6 +208,21 @@ class TestOptions(CupheadTestBase):
                 test_world.world_setup()
                 test_world.test_all_state_can_reach_everything()
 
+class TestOptionBits(CupheadTestBase):
+    def test_option_bits(self):
+        test_world = TestOptionBits()
+        test_world.options = {
+            "boss_secret_checks": True,
+        }
+        test_world.world_setup()
+
+        bitsa = optionbits.bitify(test_world.world.options)  # type: ignore
+
+        test_worldb = TestOptionBits()
+        test_worldb.world_setup()
+
+        optionbits.debitify(test_worldb.world.options, bitsa)  # type: ignore
+        test_worldb.assertEqual(bitsa, optionbits.bitify(test_worldb.world.options))  # type: ignore
 
 class TestOptionSanitizer(CupheadTestBase):
     def test_dlc_off_sanitizes_dlc_options(self):

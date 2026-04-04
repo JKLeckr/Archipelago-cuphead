@@ -11,6 +11,7 @@ from ..dep.depfilter import DepFilter
 from . import levelruleselectors as lrs
 from .levelrulebase import And, Or, RBRule, RuleList, RulePreset, SelectRule, lrpreset
 
+# TODO: Add no start weapon logic
 
 @lrpreset
 def lrp_plane() -> RuleList:

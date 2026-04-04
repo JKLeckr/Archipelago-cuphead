@@ -53,6 +53,9 @@ def dep_hard_logic(c: CupheadOptions) -> bool:
 def dep_rando_abilities(c: CupheadOptions) -> bool:
     return c.randomize_abilities.bvalue
 @dep
+def dep_no_start_weapon(c: CupheadOptions) -> bool:
+    return c.start_weapon.value == c.start_weapon.hidden_option_none
+@dep
 def dep_weapon_ex_rando(c: CupheadOptions) -> bool:
     return c.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0
 @dep

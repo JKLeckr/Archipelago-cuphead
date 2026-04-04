@@ -292,6 +292,15 @@ class OptionSanitizer:
             f"({risk_str}). This combination is known to increase generation failure chance."
         )
 
+    def _warn_no_weapons(self) -> None:
+        if self.options.start_weapon != self.options.start_weapon.hidden_option_none:
+            return
+
+        self.print_warning(
+            "start_weapon set to none. This may not generate well."
+            "Parry and Whetstone should be your start items."
+        )
+
     def sanitize_options(self) -> None:
         _options = self.options
 

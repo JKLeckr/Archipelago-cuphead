@@ -1,7 +1,7 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 
 from Options import NumericOption, OptionGroup, PerGameCommonOptions
 
@@ -89,6 +89,13 @@ class CupheadOptions(PerGameCommonOptions):
     randomize_abilities_aim: codefs.RandomizeAimAbilities
     shop_mode: codefs.ShopMode # TODO: Finish
     weapon_gate: codefs.WeaponGate
+
+    def dump(self) -> dict[str, str]:
+        return {
+            field.name: repr(getattr(self, field.name))
+            for field in fields(self)
+            if hasattr(self, field.name)
+        }
 
     def get_contract_requirements_tuple(self) -> tuple[int, int, int]:
         return (

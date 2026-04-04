@@ -100,6 +100,18 @@ class ConstNumericOption(NumericOption):
         cls.name_lookup[res.value] = str(res.value)
         return res
 
+class ConstToggle(ConstNumericOption):
+    option_false = 0
+    option_true = 1
+    default: int = 0
+
+    @classmethod
+    @override
+    def get_option_name(cls, value: int):
+        return "Yes" if value != 0 else "No"
+
+    __hash__ = Option.__hash__  # type: ignore
+
 class LevelDict(OptionDict):
     valid_keys: Iterable[str] = frozenset(_levelset.levels)
     valid_values: Iterable[str] = valid_keys

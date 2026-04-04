@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Collection
 from typing import Any, ClassVar, TextIO
 
 from typing_extensions import override
@@ -114,17 +115,22 @@ class CupheadWorld(World):
             for okey in _slot_data_options:
                 opt: Option[Any] | None = getattr(self.options, okey, None)
                 if opt is not None:
-                    opt.value = opt.from_any(slot_data[okey])
+                    opt.value = opt.from_any(slot_data[okey]).value
                 else:
                     print(f"re_gen_setup: WARNING: {okey} is not registered!")
 
             bits: int = slot_data["gen_bits"]
 
-            self.options.shop_mode.value = slot_data["shop_mode"] # TODO: TEST
-            self.options.contract_requirements.value = slot_data["contract_requirements"]
+            self.options.shop_mode.value = slot_data["shop_mode"]
+            _contract_reqs = slot_data["contract_requirements"]
+            if not isinstance(_contract_reqs, Collection) or len(_contract_reqs) != 3:  # type: ignore
+                raise ValueError(f"re_gen: contract_requirements are malformed. v: {_contract_reqs}")
+            (self.options.contract_requirements.value,
+                self.options.contract_requirements_isle2.value,
+                self.options.contract_requirements_isle3.value) = _contract_reqs
             self.options.dlc_ingredient_requirements.value = slot_data["dlc_ingredient_requirements"]
 
-            obits.debitify(self.options, bits) # TODO: TEST
+            obits.debitify(self.options, bits)
 
             self.level_map = slot_data["level_map"]
             self.shop = ShopData(slot_data["shop_map"])
@@ -136,16 +142,17 @@ class CupheadWorld(World):
 
         self.options.version.value = self.APWORLD_VERSION
 
-        oresolver.resolve_dependent_options(self.options)
+        if self.fake_gen:
+            self.re_gen_setup()
+
         oresolver.resolve_random_options(self.options, self.random)
+        oresolver.resolve_dependent_options(self.options)
 
         self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
 
         self.option_sanitizer.sanitize_options()
 
-        if self.fake_gen:
-            self.re_gen_setup()
-        else:
+        if not self.fake_gen:
             #print(self.level_map)
             self.level_map = levels.setup_level_map(self.options)
             self.shop = ShopData.create_from_options(self.options)
@@ -169,6 +176,9 @@ class CupheadWorld(World):
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
             self.solo_setup()
+
+        if self.settings.is_debug_bit_on(64):
+            print(f"options: {self.options.dump()}")
 
     @override
     def fill_slot_data(self) -> dict[str, Any]:

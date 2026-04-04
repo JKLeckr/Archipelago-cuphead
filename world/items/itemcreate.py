@@ -137,7 +137,7 @@ def create_dlc_locked_items(world: CupheadWorld):
 def create_locked_items(world: CupheadWorld):
     # Locked Items
     for i in range(1,6):
-        _loc = locationnames.loc_event_isle1_secret_prereq+" "+str(i)
+        _loc = getattr(locationnames, f"loc_event_isle1_secret_prereq{i}")
         create_locked_item(world, itemnames.item_event_isle1_secret_prereq, _loc)
     if world.options.ginger_quest.bvalue:
         create_locked_item(world, itemnames.item_event_isle2_shortcut, locationnames.loc_event_isle2_shortcut)
@@ -232,9 +232,15 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
     _weapons: list[str] = []
     _weapon_dict = weapons.get_weapon_dict(world.options)
 
-    _start_weapons = create_start_weapons(world)
+    if world.options.start_weapon.value in _weapon_dict:
+        _start_weapons = create_start_weapons(world)
+    else:
+        _start_weapons = None
 
-    _no_set = {*precollected_item_names, *_start_weapons}
+    _no_set = {*precollected_item_names}
+
+    if _start_weapons is not None:
+        _no_set.update(*_start_weapons)
 
     _weapons = [x for x in set(_weapon_dict.values()) if x not in _no_set]
 
