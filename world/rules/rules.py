@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-import typing
+from typing import TYPE_CHECKING
 
 from worlds.generic.Rules import forbid_item
 
@@ -13,7 +13,7 @@ from ..names import itemnames, locationnames, regionnames
 from . import levelrules
 from . import rulebase as rb
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 def set_rules(world: CupheadWorld):

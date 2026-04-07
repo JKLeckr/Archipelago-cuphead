@@ -113,3 +113,10 @@ class DepFilter(OptionFilter):
         if len(self._dep_names) > 1:
             expr = f"({expr})"
         return f"!{expr}" if not self.value else expr
+
+    @override
+    def __repr__(self) -> str:
+        fns_expr = str(self._dep_names) if len(self._dep_names) != 1 else self._dep_names[0]
+        value_expr = ", value=False" if not self.value else ""
+        any_expr = ", any=True" if self.any else ""
+        return f"{__class__.__name__}({fns_expr}{value_expr}{any_expr})"

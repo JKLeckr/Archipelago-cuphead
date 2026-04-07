@@ -11,7 +11,47 @@ from ..dep.depfilter import DepFilter
 from . import levelruleselectors as lrs
 from .levelrulebase import And, Or, RBRule, RuleList, RulePreset, SelectRule, lrpreset
 
-# TODO: Add no start weapon logic
+
+@lrpreset
+def lrp_weapon() -> RuleList:
+    return RuleList([
+        Or(
+            RBRule(HasGroup(i.item_group_weapon)),
+            And(
+                RBRule(HasGroup(i.item_group_weapon_ex)),
+                RBRule(Has(i.item_charm_coffee)),
+                options=[
+                    DepFilter(deps.dep_hard_logic),
+                    DepFilter(deps.dep_weapon_ex_separate)
+                ]
+            ),
+            ## Or if we want to make things more difficult, go even more lax.
+            #And(
+            #    RBRule(HasGroup(i.item_group_super)),
+            #    RBRule(Has(i.item_charm_coffee))
+            #),
+            options=[DepFilter(deps.dep_no_start_weapon)]
+        )
+    ])
+
+@lrpreset
+def lrp_rungun_weapon() -> RuleList:
+    return RuleList([
+        Or(
+            RBRule(HasGroup(i.item_group_weapon)),
+            And(
+                RBRule(HasGroup(i.item_group_weapon_ex)),
+                RBRule(Has(i.item_charm_coffee)),
+                options=[DepFilter(deps.dep_weapon_ex_separate)]
+            ),
+            #And(
+            #    RBRule(HasGroup(i.item_group_super)),
+            #    RBRule(Has(i.item_charm_coffee))
+            #),
+            options=[DepFilter(deps.dep_no_start_weapon), DepFilter(deps.dep_hard_logic, False)]
+        )
+    ])
+
 
 @lrpreset
 def lrp_plane() -> RuleList:
@@ -241,14 +281,14 @@ def lrp_duck_dash_and_parry() -> RuleList:
 @lrpreset
 def lrp_any_super() -> RuleList:
     return RuleList([
-        RBRule(HasGroup("Super", 1))
+        RBRule(HasGroup(i.item_group_super, 1))
     ])
 
 
 @lrpreset
 def lrp_weapon_ex() -> RuleList:
     return RuleList([
-        SelectRule(lrs.lrs_all_weapon_ex, True, [DepFilter(deps.dep_weapon_ex_rando)])
+        SelectRule(lrs.lrs_all_weapon_ex, True, options=[DepFilter(deps.dep_weapon_ex_rando)])
     ])
 
 

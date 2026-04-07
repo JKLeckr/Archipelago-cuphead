@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
-import typing
 from collections.abc import Collection
+from typing import TYPE_CHECKING
 
 from BaseClasses import MultiWorld, Region
 
@@ -17,7 +17,7 @@ from . import regiondefs as rd
 from .regionbase import DefType, Target
 from .regiondefs import RegionData
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 ## Currently, with shuffling levels, locations are relocated onto static regions.

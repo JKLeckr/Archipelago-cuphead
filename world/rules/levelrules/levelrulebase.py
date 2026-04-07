@@ -24,6 +24,9 @@ LRSelector = Callable[["CupheadOptions"], dict[str, int]]
 
 ### Base intermediary representation data classes
 
+# Default filtered_resolution in this APWorld is True
+FR_DEFAULT = True
+
 @dataclass(frozen=True)
 class RuleExpr: ...
 
@@ -31,59 +34,134 @@ class RuleExpr: ...
 @dataclass(frozen=True)
 class RBRule(RuleExpr):
     rule: Rule
+    auto_filter_resolution: bool = True
 
 
 @dataclass(frozen=True)
 class SelectRule(RuleExpr):
     select: LRSelector
     any: bool
-    options: Iterable[OptionFilter] = ()
+    options: Iterable[OptionFilter]
+    filtered_resolution: bool
+    fr_auto: bool
+
+    def __init__(
+        self,
+        select: LRSelector,
+        any: bool,
+        *,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool | None = None
+    ):
+        object.__setattr__(self, "select", select)
+        object.__setattr__(self, "any", any)
+        object.__setattr__(self, "options", options)
+        if filtered_resolution is None:
+            object.__setattr__(self, "fr_auto", True)
+            filtered_resolution = FR_DEFAULT
+        else:
+            object.__setattr__(self, "fr_auto", False)
+        object.__setattr__(self, "filtered_resolution", filtered_resolution)
 
 
 @dataclass(frozen=True)
 class RuleRef(RuleExpr):
     ref_name: str
     options: Iterable[OptionFilter]
+    filtered_resolution: bool
+    fr_auto: bool
 
-    def __init__(self, ref: str, options: Iterable[OptionFilter] = ()):
+    def __init__(
+        self,
+        ref: str,
+        *,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool | None = None,
+    ):
         object.__setattr__(self, "ref_name", ref)
         object.__setattr__(self, "options", options)
+        if filtered_resolution is None:
+            object.__setattr__(self, "fr_auto", True)
+            filtered_resolution = FR_DEFAULT
+        else:
+            object.__setattr__(self, "fr_auto", False)
+        object.__setattr__(self, "filtered_resolution", filtered_resolution)
 
 
 @dataclass(frozen=True, init=False)
 class RulePreset(RuleExpr):
     rules: RuleList
     options: Iterable[OptionFilter]
+    filtered_resolution: bool
+    fr_auto: bool
     _ref_name: str
 
     @property
     def preset_name(self) -> str:
         return self._ref_name
 
-    def __init__(self, preset: LRPreset, options: Iterable[OptionFilter] = ()):
+    def __init__(
+        self,
+        preset: LRPreset,
+        *,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool | None = None,
+    ):
         object.__setattr__(self, "_ref_name", preset.__name__)
         object.__setattr__(self, "rules", preset())
         object.__setattr__(self, "options", options)
+        if filtered_resolution is None:
+            object.__setattr__(self, "fr_auto", True)
+            filtered_resolution = FR_DEFAULT
+        else:
+            object.__setattr__(self, "fr_auto", False)
+        object.__setattr__(self, "filtered_resolution", filtered_resolution)
 
 
 @dataclass(frozen=True)
 class And(RuleExpr):
     items: Iterable[RuleExpr]
-    options: Iterable[OptionFilter] = ()
+    options: Iterable[OptionFilter]
+    filtered_resolution: bool
+    fr_auto: bool
 
-    def __init__(self, *items: RuleExpr, options: Iterable[OptionFilter] = ()):
+    def __init__(
+        self,
+        *items: RuleExpr,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool | None = None,
+    ):
         object.__setattr__(self, "items", items)
         object.__setattr__(self, "options", options)
+        if filtered_resolution is None:
+            object.__setattr__(self, "fr_auto", True)
+            filtered_resolution = FR_DEFAULT
+        else:
+            object.__setattr__(self, "fr_auto", False)
+        object.__setattr__(self, "filtered_resolution", filtered_resolution)
 
 
 @dataclass(frozen=True)
 class Or(RuleExpr):
     items: Iterable[RuleExpr]
     options: Iterable[OptionFilter]
+    filtered_resolution: bool
+    fr_auto: bool
 
-    def __init__(self, *items: RuleExpr, options: Iterable[OptionFilter] = ()):
+    def __init__(
+        self,
+        *items: RuleExpr,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool | None = None,
+    ):
         object.__setattr__(self, "items", items)
         object.__setattr__(self, "options", options)
+        if filtered_resolution is None:
+            object.__setattr__(self, "fr_auto", True)
+            filtered_resolution = FR_DEFAULT
+        else:
+            object.__setattr__(self, "fr_auto", False)
+        object.__setattr__(self, "filtered_resolution", filtered_resolution)
 
 
 ## Rule Containers

@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
-import typing
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionRule, Entrance, Location, Region
 from rule_builder.rules import (
@@ -27,7 +27,7 @@ from rule_builder.rules import (
     True_,
 )
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 RuleReg = dict[Location | Entrance, list[CollectionRule]]

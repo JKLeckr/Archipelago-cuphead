@@ -305,7 +305,7 @@ class CupheadWorld(World):
         #debug.print_locations(self)
         if self.settings.is_debug_bit_on(4):
             dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))
-        if self.fake_gen and self.settings.is_debug_bit_on(256):
+        if self.fake_gen and self.settings.is_debug_bit_on(512):
             #dbg.debug_print_regions(self)
             dbg.debug_visualize_regions(self, True, "UT")
 

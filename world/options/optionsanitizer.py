@@ -256,6 +256,8 @@ class OptionSanitizer:
             risks_ref.append("randomize_abilities")
         if options.weapon_mode.value != int(WeaponMode.NORMAL):
             risks_ref.append("weapon_mode != normal")
+        if options.start_weapon.value == self.options.start_weapon.option_none:
+            risks_ref.append("start_weapon = none")
         if options.boss_grade_checks.value > 0:
             risks_ref.append("boss_grade_checks")
         if options.rungun_grade_checks.value > 0:
@@ -290,15 +292,6 @@ class OptionSanitizer:
         self.print_warning(
             "Accessibility is set to 'minimal' with high-risk options enabled "
             f"({risk_str}). This combination is known to increase generation failure chance."
-        )
-
-    def _warn_no_weapons(self) -> None:
-        if self.options.start_weapon != self.options.start_weapon.option_none:
-            return
-
-        self.print_warning(
-            "start_weapon set to none. This may not generate well."
-            "Parry and Whetstone should be your start items."
         )
 
     def sanitize_options(self) -> None:

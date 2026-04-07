@@ -3,19 +3,19 @@
 
 from __future__ import annotations
 
-import typing
 from collections.abc import Iterable
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from rule_builder.options import OptionFilter
 from rule_builder.rules import And as RBAnd
-from rule_builder.rules import HasAllCounts, HasAnyCount, Rule, True_
+from rule_builder.rules import False_, HasAllCounts, HasAnyCount, Rule, True_
 from rule_builder.rules import Or as RBOr
 
 from . import levelrulebase as lrb
 from .levelruledefs import levelrules
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from .... import CupheadWorld
     from ...options import CupheadOptions
 
@@ -49,44 +49,99 @@ class LevelRuleComp:
             case _:
                 return False
 
-    def _set_filtered_resolution(self, rule: Rule) -> Rule:
-        rule.filtered_resolution = True
-        children = getattr(rule, "children", None)
-        if children:
-            for child in children:
-                self._set_filtered_resolution(child)
-        return rule
+    def _eval_rule_ref(self, ref: lrb.RuleRef, ctx: _RuleEvalCtx, filtered_resolution: bool):
+        if not self._check_filters(ref.options):
+            # Inactive RuleRef compiles to no-op and does not trigger ruledef compilation.
+            return True_() if filtered_resolution else False_()
 
-    def _eval_rule_expr(self, expr: lrb.RuleExpr, ctx: _RuleEvalCtx) -> Rule:
+        cached = ctx.compiled_ruledefs.get(ref.ref_name)
+        if cached is not None:
+            return cached
+
+        ruledef = ctx.ruledefs.get(ref.ref_name)
+        if ruledef is None:
+            raise ValueError(f"Unknown RuleRef '{ref.ref_name}' in level '{ctx.level_name}'.")
+
+        compiled = self._eval_rule_list(ruledef, ctx)
+        ctx.compiled_ruledefs[ref.ref_name] = compiled
+        return compiled
+
+    def _eval_filtered_resolution(self, fr_orig: bool, fr_override: bool | None, fr_auto: bool) -> bool:
+        return (
+            fr_override
+            if fr_override is not None and fr_auto else
+            fr_orig
+        )
+
+    def _eval_rule_expr(
+        self,
+        expr: lrb.RuleExpr,
+        ctx: _RuleEvalCtx,
+        fr_override: bool | None
+    ) -> Rule:
         match expr:
             case lrb.RBRule():
-                return self._set_filtered_resolution(expr.rule)
+                if expr.auto_filter_resolution:
+                    expr.rule.filtered_resolution = (
+                        fr_override if fr_override is not None else lrb.FR_DEFAULT
+                    )
+                return expr.rule
             case lrb.SelectRule():
+                filtered_resolution = (
+                    self._eval_filtered_resolution(expr.filtered_resolution, fr_override, expr.fr_auto)
+                )
                 selected = expr.select(self._options)
-                _rule = HasAnyCount(selected) if expr.any else HasAllCounts(selected)
-                return self._set_filtered_resolution(_rule)
+                return (
+                    HasAnyCount(
+                        selected,
+                        options=expr.options,
+                        filtered_resolution=filtered_resolution
+                    )
+                    if expr.any else
+                    HasAllCounts(
+                        selected,
+                        options=expr.options,
+                        filtered_resolution=filtered_resolution
+                    )
+                )
             case lrb.RulePreset():
-                return self._eval_rule_list(expr.rules, ctx, True, expr.options)
+                filtered_resolution = (
+                    self._eval_filtered_resolution(expr.filtered_resolution, fr_override, expr.fr_auto)
+                )
+                return self._eval_rule_list(
+                    expr.rules,
+                    ctx,
+                    True,
+                    expr.options,
+                    filtered_resolution
+                )
             case lrb.And():
-                return self._eval_rule_list(expr.items, ctx, True, expr.options)
+                filtered_resolution = (
+                    self._eval_filtered_resolution(expr.filtered_resolution, fr_override, expr.fr_auto)
+                )
+                return self._eval_rule_list(
+                    expr.items,
+                    ctx,
+                    True,
+                    expr.options,
+                    filtered_resolution
+                )
             case lrb.Or():
-                return self._eval_rule_list(expr.items, ctx, False, expr.options)
+                filtered_resolution = (
+                    self._eval_filtered_resolution(expr.filtered_resolution, fr_override, expr.fr_auto)
+                )
+                return self._eval_rule_list(
+                    expr.items,
+                    ctx,
+                    False,
+                    expr.options,
+                    filtered_resolution
+                )
             case lrb.RuleRef():
-                if not self._check_filters(expr.options):
-                    # Inactive RuleRef compiles to no-op and does not trigger ruledef compilation.
-                    return True_()
-
-                cached = ctx.compiled_ruledefs.get(expr.ref_name)
-                if cached is not None:
-                    return cached
-
-                ruledef = ctx.ruledefs.get(expr.ref_name)
-                if ruledef is None:
-                    raise ValueError(f"Unknown RuleRef '{expr.ref_name}' in level '{ctx.level_name}'.")
-
-                compiled = self._eval_rule_list(ruledef, ctx)
-                ctx.compiled_ruledefs[expr.ref_name] = compiled
-                return compiled
+                filtered_resolution = (
+                    self._eval_filtered_resolution(expr.filtered_resolution, fr_override, expr.fr_auto)
+                )
+                return self._eval_rule_ref(expr, ctx, filtered_resolution)
             case _:
                 raise TypeError(f"Unsupported rule expression type: {type(expr)!r}")
 
@@ -96,17 +151,23 @@ class LevelRuleComp:
         ctx: _RuleEvalCtx,
         op_and: bool = True,
         filters: Iterable[OptionFilter] = (),
+        filtered_resolution: bool = True
     ) -> Rule:
         if not self._check_filters(filters):
-            return True_()
+            return True_() if filtered_resolution else False_()
 
         if not rule_list:
             return True_()
 
-        rules = [self._eval_rule_expr(rule, ctx) for rule in rule_list]
+        fr_override = False if not op_and else None
+        rules = [self._eval_rule_expr(rule, ctx, fr_override) for rule in rule_list]
         if len(rules) == 1:
             return rules[0]
-        return self._set_filtered_resolution(RBAnd(*rules) if op_and else RBOr(*rules))
+        return (
+            RBAnd(*rules, options=filters, filtered_resolution=filtered_resolution)
+            if op_and else
+            RBOr(*rules, options=filters, filtered_resolution=filtered_resolution)
+        )
 
     def _validate_ruledefs(self, ctx: _RuleEvalCtx) -> None:
         for def_name, rule_list in ctx.ruledefs.items():

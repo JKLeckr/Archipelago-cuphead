@@ -207,4 +207,40 @@ class TestLogicInit(TestLogicBase):
 
         test.assertEqual(test.count(itemnames.item_weapon_lobber), 1)
         test.assertEqual(test.count(itemnames.item_weapon_lobber_ex), 1)
+
+
+
+    ## levelrulecomp
+    def _eval_filtered_resolution_value(self, value: bool | None) -> bool:
+        # Default resolution value in this APWorld is True
+        return value if value is not None else True
+
+    def _set_filtered_resolution(self, rule: Rule, value: bool | None) -> Rule:
+        rule.filtered_resolution = self._eval_filtered_resolution_value(value)
+        children = getattr(rule, "children", None)
+        if children:
+            for child in children:
+                self._set_filtered_resolution(child, value)
+        return rule
+
+@dataclass(frozen=True)
+class RBRule(RuleExpr):
+    rule: Rule
+    options: Iterable[OptionFilter]
+    filtered_resolution: bool
+    _fr_auto: bool = False
+
+    def __init__(
+        self,
+        rule: Rule,
+        *,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool | None = None
+    ):
+        object.__setattr__(self, "rule", rule)
+        object.__setattr__(self, "options", options)
+        if filtered_resolution is None:
+            object.__setattr__(self, "_fr_auto", True)
+            filtered_resolution = _FR_DEFAULT
+        object.__setattr__(self, "filtered_resolution", filtered_resolution)
 ```

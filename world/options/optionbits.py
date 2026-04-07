@@ -1,8 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-import typing
 from collections.abc import Iterable
+from typing import Any
 
 from Options import Option
 
@@ -31,7 +31,7 @@ def debitify(options_ref: CupheadOptions, bits: int) -> None:
     shift = 0
     for bit in _bitifiable_fields:
         if (hasattr(options_ref, bit)):
-            _field: Option[typing.Any] = getattr(options_ref, bit)
+            _field: Option[Any] = getattr(options_ref, bit)
             _field.value = (bits >> shift) & 1
         else:
             raise KeyError(f"{bit} is not in options!")
@@ -43,7 +43,7 @@ def bitify(options: CupheadOptions) -> int:
     shift = 0
     for bit in _bitifiable_fields:
         if (hasattr(options, bit)):
-            _field: Option[typing.Any] = getattr(options, bit)
+            _field: Option[Any] = getattr(options, bit)
             res |= (1 if _field.value else 0) << shift
         else:
             raise KeyError(f"{bit} is not in options!")

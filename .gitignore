@@ -1,6 +1,9 @@
 .idea
 .vscode
 
+# Backup files
+*.py.bak
+
 /output/
 /tools/output/
 

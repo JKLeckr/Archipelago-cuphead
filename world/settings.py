@@ -35,13 +35,14 @@ class CupheadSettings(settings.Group):
             32: Debug aux
             64: Debug options + slot_data
             128: Debug levelrules
-            256: Visualize Regions generated for Universal Tracker
-            512: Debug even in tests
-            1024: Debug Tests
+            256: Debug rulereg
+            512: Visualize Regions generated for Universal Tracker
+            1024: Debug even in tests
+            2048: Debug Tests
         """
 
         #print(f"debug_bit_test {bit:f}")
 
-        if "PYTEST_CURRENT_TEST" in os.environ and (int(self.debug) & 512) == 0:
+        if "PYTEST_CURRENT_TEST" in os.environ and (int(self.debug) & 1024) == 0:
             return False
         return (int(self.debug) & bit) == bit

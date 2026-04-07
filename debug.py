@@ -3,9 +3,8 @@
 
 from __future__ import annotations
 
-import typing
 from collections.abc import Iterable
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 import Utils
 from BaseClasses import Region
@@ -15,7 +14,7 @@ from .world.auxiliary import format_list
 from .world.items.itemdefs import items_all
 from .world.locations.locationdefs import locations_all
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from . import CupheadWorld
 
 T = TypeVar("T")

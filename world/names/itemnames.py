@@ -10,6 +10,14 @@ from . import regionnames as rn
 _item_event_ = "Event "
 _item_progressive = "Progressive "
 
+# Groups
+item_group_weapon = "Weapon"
+item_group_weapon_ex = "Weapon EX"
+item_group_charm = "Charm"
+item_group_super = "Super"
+item_group_ability = "Ability"
+item_group_aim_ability = "Aim Ability"
+
 # Junk
 item_level_generic = "Present"
 item_level_extrahealth = "+1 Health"

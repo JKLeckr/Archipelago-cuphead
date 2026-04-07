@@ -3,12 +3,12 @@
 
 from __future__ import annotations
 
-import typing
 from random import Random
+from typing import TYPE_CHECKING
 
 from ..names import itemnames
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from . import CupheadOptions
 
 def _set_coin_amounts(options_ref: CupheadOptions):

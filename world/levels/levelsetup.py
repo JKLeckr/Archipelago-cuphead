@@ -3,8 +3,8 @@
 
 from __future__ import annotations
 
-import typing
 from random import Random
+from typing import TYPE_CHECKING
 
 from ..auxiliary import scrub_list
 from ..enums import GameMode
@@ -15,7 +15,7 @@ from . import leveldefs as ldef
 from . import levelids, levelshuffle
 from .levelbase import LevelData
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ..settings import CupheadSettings
 
 def _add_level(level_ref: dict[str, LevelData], lname: str, level_def: dict[str, LevelData]):

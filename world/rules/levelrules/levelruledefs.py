@@ -26,8 +26,9 @@ from .levelrulebase import (
 )
 
 levelrules = LevelRules({
-    lv.level_boss_veggies: LevelDef( # TODO: Add No start weapon Rules
+    lv.level_boss_veggies: LevelDef(
         exit_location=l.loc_level_boss_veggies,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_boss_veggies: LocationDef(),
             l.loc_level_boss_veggies_topgrade: LocationDef(
@@ -55,6 +56,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_slime: LevelDef(
         exit_location=l.loc_level_boss_slime,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_duck_or_dash),
         ],
@@ -84,6 +86,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_frogs: LevelDef(
         exit_location=l.loc_level_boss_frogs,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_parry_or_psugar),
         ],
@@ -113,6 +116,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_flower: LevelDef(
         exit_location=l.loc_level_boss_flower,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_boss_flower: LocationDef(),
             l.loc_level_boss_flower_topgrade: LocationDef(
@@ -139,6 +143,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_baroness: LevelDef(
         exit_location=l.loc_level_boss_baroness,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_parry_or_psugar),
         ],
@@ -204,6 +209,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_clown: LevelDef(
         exit_location=l.loc_level_boss_clown,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_dash_or_parry),
         ],
@@ -233,6 +239,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_dragon: LevelDef(
         exit_location=l.loc_level_boss_dragon,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             Or(
                 RulePreset(lrp.lrp_dash),
@@ -281,6 +288,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_bee: LevelDef(
         exit_location=l.loc_level_boss_bee,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_boss_bee: LocationDef(),
             l.loc_level_boss_bee_topgrade: LocationDef(
@@ -307,6 +315,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_pirate: LevelDef(
         exit_location=l.loc_level_boss_pirate,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             Or(
                 RulePreset(lrp.lrp_duck),
@@ -330,9 +339,7 @@ levelrules = LevelRules({
                     RulePreset(lrp.lrp_duck),
                     And(
                         RulePreset(lrp.lrp_dash_and_parry),
-                        RulePreset(
-                            lrp.lrp_dlc_doublejump,
-                        )
+                        RulePreset(lrp.lrp_dlc_doublejump)
                     ),
                     options=[
                         DepFilter(deps.dep_rando_abilities),
@@ -380,6 +387,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_mouse: LevelDef(
         exit_location=l.loc_level_boss_mouse,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_duck),
             RulePreset(
@@ -437,6 +445,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_sallystageplay: LevelDef(
         exit_location=l.loc_level_boss_sallystageplay,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_parry),
             Or(
@@ -518,6 +527,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_train: LevelDef(
         exit_location=l.loc_level_boss_train,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_parry),
             RulePreset(
@@ -570,6 +580,7 @@ levelrules = LevelRules({
         exit_location=l.loc_level_boss_kingdice,
         access=[
             SelectRule(lrs.lrs_contract_req, False),
+            RulePreset(lrp.lrp_weapon),
         ],
         base=[
             RulePreset(lrp.lrp_plane),
@@ -757,6 +768,7 @@ levelrules = LevelRules({
     ),
     lv.level_boss_devil: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             Or(
                 RulePreset(lrp.lrp_dlc_doublejump),
@@ -806,6 +818,7 @@ levelrules = LevelRules({
     ),
     lv.level_dlc_boss_oldman: LevelDef(
         exit_location=l.loc_level_dlc_boss_oldman,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             And(
                 RulePreset(lrp.lrp_dash),
@@ -834,6 +847,7 @@ levelrules = LevelRules({
     ),
     lv.level_dlc_boss_rumrunners: LevelDef(
         exit_location=l.loc_level_dlc_boss_rumrunners,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_duck_and_parry),
             RulePreset(
@@ -897,6 +911,7 @@ levelrules = LevelRules({
     ),
     lv.level_dlc_boss_snowcult: LevelDef(
         exit_location=l.loc_level_dlc_boss_snowcult,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(
                 lrp.lrp_dlc_doublejump,
@@ -927,6 +942,7 @@ levelrules = LevelRules({
     ),
     lv.level_dlc_boss_airplane: LevelDef(
         exit_location=l.loc_level_dlc_boss_airplane,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_duck_or_dash, options=[DepFilter(deps.dep_dlc_chalice_only, False)]),
             RulePreset(
@@ -957,8 +973,7 @@ levelrules = LevelRules({
                         RulePreset(lrp.lrp_dash),
                         RulePreset(lrp.lrp_dlc_doublejump)
                     ),
-                    options=[DepFilter(deps.dep_hard_logic, False)
-                    ]
+                    options=[DepFilter(deps.dep_hard_logic, False)]
                 ),
             ],
         },
@@ -1006,6 +1021,7 @@ levelrules = LevelRules({
         exit_location=None,
         access=[
             SelectRule(lrs.lrs_dlc_ingredient_req, False),
+            RulePreset(lrp.lrp_weapon)
         ],
         base=[
             RulePreset(lrp.lrp_parry, options=[DepFilter(deps.dep_rando_abilities)]),
@@ -1084,6 +1100,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_booze: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_dicepalace_boss_booze: LocationDef(),
             l.loc_level_dicepalace_boss_booze_dlc_chaliced: LocationDef(
@@ -1095,6 +1112,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_chips: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_dicepalace_boss_chips: LocationDef(),
             l.loc_level_dicepalace_boss_chips_dlc_chaliced: LocationDef(
@@ -1106,6 +1124,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_cigar: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[RulePreset(lrp.lrp_dash)],
         locations={
             l.loc_level_dicepalace_boss_cigar: LocationDef(),
@@ -1118,6 +1137,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_domino: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_dicepalace_boss_domino: LocationDef(),
             l.loc_level_dicepalace_boss_domino_dlc_chaliced: LocationDef(
@@ -1129,6 +1149,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_rabbit: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         base=[
             RulePreset(lrp.lrp_parry),
         ],
@@ -1165,6 +1186,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_roulette: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_dicepalace_boss_roulette: LocationDef(),
             l.loc_level_dicepalace_boss_roulette_dlc_chaliced: LocationDef(
@@ -1176,6 +1198,7 @@ levelrules = LevelRules({
     ),
     lv.level_dicepalace_boss_eightball: LevelDef(
         exit_location=None,
+        access=[RulePreset(lrp.lrp_weapon)],
         locations={
             l.loc_level_dicepalace_boss_eightball: LocationDef(),
             l.loc_level_dicepalace_boss_eightball_dlc_chaliced: LocationDef(
@@ -1202,6 +1225,7 @@ levelrules = LevelRules({
     lv.level_rungun_forest: LevelDef(
         exit_location=l.loc_level_rungun_forest,
         base=[
+            RulePreset(lrp.lrp_rungun_weapon),
             RulePreset(lrp.lrp_dash),
         ],
         locations={
@@ -1232,6 +1256,7 @@ levelrules = LevelRules({
             ),
             l.loc_level_rungun_forest_coin5: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_dash),
                 ],
                 inherit=InheritMode.NONE,
@@ -1256,9 +1281,14 @@ levelrules = LevelRules({
             RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_dlc_chalice_only)])
         ],
         locations={
-            l.loc_level_rungun_tree: LocationDef(),
+            l.loc_level_rungun_tree: LocationDef(
+                rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
+                ],
+            ),
             l.loc_level_rungun_tree_agrade: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_rungun_topgrade),
                 ],
             ),
@@ -1279,12 +1309,14 @@ levelrules = LevelRules({
             l.loc_level_rungun_tree_coin5: LocationDef(),
             l.loc_level_rungun_tree_dlc_chaliced: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_dlc_rungun_chaliced),
                     RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_dlc_chalice_only, False)]),
                 ],
             ),
             l.loc_level_rungun_tree_event_agrade: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_rungun_topgrade),
                 ],
             ),
@@ -1294,6 +1326,7 @@ levelrules = LevelRules({
     lv.level_rungun_circus: LevelDef(
         exit_location=l.loc_level_rungun_circus,
         base=[
+            RulePreset(lrp.lrp_rungun_weapon),
             RulePreset(lrp.lrp_parry_or_psugar),
             RulePreset(
                 lrp.lrp_dlc_doublejump,
@@ -1348,6 +1381,7 @@ levelrules = LevelRules({
     lv.level_rungun_funhouse: LevelDef(
         exit_location=l.loc_level_rungun_funhouse,
         base=[
+            RulePreset(lrp.lrp_rungun_weapon),
             RulePreset(
                 lrp.lrp_parry,
                 options=[
@@ -1380,18 +1414,21 @@ levelrules = LevelRules({
             ),
             l.loc_level_rungun_funhouse_coin2: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_parry_or_psugar),
                 ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_funhouse_coin3: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_parry_or_psugar),
                 ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_funhouse_coin4: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_parry_or_psugar),
                 ],
                 inherit=InheritMode.NONE,
@@ -1413,6 +1450,7 @@ levelrules = LevelRules({
     lv.level_rungun_harbour: LevelDef(
         exit_location=l.loc_level_rungun_harbour,
         base=[
+            RulePreset(lrp.lrp_rungun_weapon),
             RulePreset(lrp.lrp_dash_and_parry),
             RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_dlc_chalice_only)])
         ],
@@ -1426,21 +1464,27 @@ levelrules = LevelRules({
             l.loc_level_rungun_harbour_pacifist: LocationDef(),
             l.loc_level_rungun_harbour_coin1: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_dash_parry_or_psugar),
                 ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_harbour_coin2: LocationDef(
+                rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
+                ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_harbour_coin3: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_parry_or_psugar),
                 ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_harbour_coin4: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     Or(RulePreset(lrp.lrp_parry), And(RBRule(Has(i.item_charm_psugar)), RulePreset(lrp.lrp_dash))),
                     RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_dlc_chalice_only)])
                 ],
@@ -1464,6 +1508,7 @@ levelrules = LevelRules({
     lv.level_rungun_mountain: LevelDef(
         exit_location=l.loc_level_rungun_mountain,
         base=[
+            RulePreset(lrp.lrp_rungun_weapon),
             RulePreset(lrp.lrp_dash, options=[DepFilter(deps.dep_dlc_chalice, False)]),
             Or(RulePreset(lrp.lrp_dash), RulePreset(lrp.lrp_dlc_doublejump), options=[DepFilter(deps.dep_dlc_chalice)]),
         ],
@@ -1476,25 +1521,34 @@ levelrules = LevelRules({
             ),
             l.loc_level_rungun_mountain_pacifist: LocationDef(),
             l.loc_level_rungun_mountain_coin1: LocationDef(
+                rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
+                ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_mountain_coin2: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_dash_or_dlc_doublejump),
                 ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_mountain_coin3: LocationDef(
+                rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
+                ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_mountain_coin4: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_dlc_doublejump, options=[DepFilter(deps.dep_dlc_chalice_only)])
                 ],
                 inherit=InheritMode.NONE,
             ),
             l.loc_level_rungun_mountain_coin5: LocationDef(
                 rules=[
+                    RulePreset(lrp.lrp_rungun_weapon),
                     RulePreset(lrp.lrp_dash_or_dlc_doublejump),
                 ],
                 inherit=InheritMode.NONE,
@@ -1610,10 +1664,10 @@ levelrules = LevelRules({
     lv.level_tutorial: LevelDef(
         exit_location=None,
         access=[
+            RulePreset(lrp.lrp_weapon),
             RulePreset(lrp.lrp_duck_dash_and_parry),
         ],
-        locations={
-        },
+        locations={},
     ),
     lv.level_dlc_tutorial: LevelDef(
         exit_location=None,
@@ -1631,6 +1685,7 @@ levelrules = LevelRules({
     lv.level_dlc_graveyard: LevelDef(
         exit_location=None,
         access=[
+            RulePreset(lrp.lrp_weapon),
             RBRule(Has(i.item_charm_dlc_broken_relic)),
         ],
         locations={

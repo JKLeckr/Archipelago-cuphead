@@ -6,31 +6,33 @@ from . import itemdefs as idefs
 
 item_groups: dict[str, set[str]] = {
     ## Main Groups
-    "Weapon": {
+    itemnames.item_group_weapon: {
         *idefs.item_weapons.keys(),
         *idefs.item_p_weapons.keys(),
         *idefs.item_dlc_weapons.keys(),
         *idefs.item_dlc_p_weapons.keys()
     },
-    "Weapon EX": {
+    itemnames.item_group_weapon_ex: {
         *idefs.item_weapon_ex.keys(),
         *idefs.item_dlc_weapon_ex.keys()
     },
-    "Charm": {
+    itemnames.item_group_charm: {
         *idefs.item_charms.keys(),
         *idefs.item_dlc_charms.keys(),
         itemnames.item_charm_dlc_cookie
     },
-    "Super": {
+    itemnames.item_group_super: {
         *idefs.item_super.keys(),
         *idefs.item_dlc_chalice_super.keys()
     },
-    "Ability": {
+    itemnames.item_group_ability: {
         *idefs.item_abilities.keys(),
-        #*idefs.item_abilities_aim.keys(),
         *idefs.item_dlc_chalice_abilities.keys(),
-        #*idefs.item_dlc_chalice_abilities_aim.keys()
     },
+    #itemnames.item_group_aim_ability: {
+    #    *idefs.item_abilities_aim.keys(),
+    #    *idefs.item_dlc_chalice_abilities_aim.keys()
+    #},
 
     ## Aliases
     itemnames.item_contract_a: {itemnames.item_contract},

@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
-import typing
+from typing import TYPE_CHECKING
 
 from . import itembase
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 def get_filler_item_name(world: CupheadWorld) -> str:

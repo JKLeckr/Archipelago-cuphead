@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import math
-import typing
 from collections.abc import Iterable
 from random import Random
+from typing import TYPE_CHECKING
 
 from BaseClasses import Item, ItemClassification, Location, LocationProgressType
 
@@ -19,7 +19,7 @@ from . import weapons
 from .filler import get_filler_item_name
 from .itembase import CupheadItem, ItemData, weighted_item_choice
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 def create_item(name: str, player: int, force_classification: ItemClassification | None = None) -> Item:

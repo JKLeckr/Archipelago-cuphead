@@ -3,16 +3,15 @@
 
 from __future__ import annotations
 
-import typing
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import NamedTuple
+from typing import TYPE_CHECKING, NamedTuple
 
 from rule_builder.rules import And, Or, Rule
 
 from . import rulebase as rb
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 class SpotType(IntEnum):
@@ -29,10 +28,12 @@ class RuleData(NamedTuple):
 
 @dataclass(init=False)
 class RuleReg:
+    _debug: bool = False
     _reg: dict[Spot, list[RuleData]]
     _world: CupheadWorld
 
     def __init__(self, world: CupheadWorld):
+        self._debug = world.settings.is_debug_bit_on(256)
         self._reg = {}
         self._world = world
 
@@ -75,9 +76,11 @@ class RuleReg:
         # that spot (location or entrance) using self._world.set_rules(). It is done this way
         # because rule_builder Rules cannot be appended to exising world rules.
         # So this will stitch together all the rule_builder rules before setting them.
+        if self._debug:
+            print(f"rr size: {len(self._reg.keys())}")
         for (spot_name, spot_type), rules in self._reg.items():
             if len(rules) < 1:
-                print(f"{spot_name} rules is empty")
+                print(f"rr: {spot_name} rules is empty")
                 continue
 
             if spot_type == SpotType.ENTRANCE:
@@ -86,6 +89,8 @@ class RuleReg:
                 spot = rb.get_location(self._world, spot_name)
 
             if len(rules) == 1:
+                if self._debug:
+                    print(f"rr: '{spot}': `{rules[0].rule}`")
                 self._world.set_rule(spot, rules[0].rule)
                 continue
 
@@ -99,4 +104,6 @@ class RuleReg:
                 _col.append(rule.rule)
 
             _res = And(*_col) if _and else Or(*_col)
+            if self._debug:
+                print(f"rr: '{spot}': `{_res}`")
             self._world.set_rule(spot, _res)

@@ -3,12 +3,12 @@
 
 from __future__ import annotations
 
-import typing
+from typing import TYPE_CHECKING
 
 from . import levelids, levelsetup
 from .levelbase import LevelData
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from ... import CupheadWorld
 
 setup_levels = levelsetup.setup_levels

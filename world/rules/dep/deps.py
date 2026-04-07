@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from ...enums import ChaliceCheckMode, ChaliceMode, WeaponMode
+from ...enums import ChaliceCheckMode, ChaliceMode, GradeCheckMode, WeaponMode
 from ...options import CupheadOptions
 from . import depbase
 from .depbase import Dep, dep
@@ -50,6 +50,9 @@ def dep_dicepalace_sanity(c: CupheadOptions) -> bool:
 def dep_hard_logic(c: CupheadOptions) -> bool:
     return c.logic_mode.evalue > 0
 @dep
+def dep_is_pacifist(c: CupheadOptions) -> bool:
+    return dep_pacifist_quest(c) or c.rungun_grade_checks == GradeCheckMode.PACIFIST
+@dep
 def dep_rando_abilities(c: CupheadOptions) -> bool:
     return c.randomize_abilities.bvalue
 @dep
@@ -58,6 +61,9 @@ def dep_no_start_weapon(c: CupheadOptions) -> bool:
 @dep
 def dep_weapon_ex_rando(c: CupheadOptions) -> bool:
     return c.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE) > 0
+@dep
+def dep_weapon_ex_separate(c: CupheadOptions) -> bool:
+    return c.weapon_mode.evalue & WeaponMode.EX_SEPARATE > 0
 @dep
 def dep_dlc_chalice(c: CupheadOptions) -> bool:
     return c.use_dlc.bvalue and c.dlc_chalice.value > 0

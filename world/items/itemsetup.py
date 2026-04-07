@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from BaseClasses import ItemClassification
 
-from ..enums import ChaliceCheckMode, ChaliceMode, GameMode, GradeCheckMode, ItemGroups, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, GameMode, GradeCheckMode, ItemGroups, LogicMode, WeaponMode
 from ..names import itemnames
 from ..options import CupheadOptions
 from . import itemdefs as idef
@@ -91,6 +91,10 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
         if _grade_checks_required:
             [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
 
+def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptions):
+    if options.logic_mode.evalue == LogicMode.HARD:
+        change_item_type(items_ref, itemnames.item_charm_coffee, ItemClassification.progression)
+
 def setup_items(options: CupheadOptions) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}
     setup_weapons(items, options)
@@ -106,4 +110,5 @@ def setup_items(options: CupheadOptions) -> dict[str, ItemData]:
             items.update(idef.item_dlc_chalice_abilities_aim)
     if options.traps.value > 0:
         items.update(idef.item_trap)
+    setup_item_progression(items, options)
     return items

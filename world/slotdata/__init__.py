@@ -3,10 +3,9 @@
 
 from __future__ import annotations
 
-import typing
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
      from ... import CupheadWorld
      from ..options import CupheadOptions
 
