@@ -174,7 +174,7 @@ item_dlc_special: dict[str, ItemData] = {
     itemnames.item_event_mausoleum: ItemData(None, ItemClassification.progression, 0),
     itemnames.item_event_dlc_boataccess: ItemData(None, ItemClassification.progression, 0),
     itemnames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
-    itemnames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_skip_balancing, 0),
+    itemnames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_deprioritized_skip_balancing, 0),
 }
 
 item_goal: dict[str, ItemData] = {

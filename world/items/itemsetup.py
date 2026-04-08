@@ -93,14 +93,14 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
     if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
         if _grade_checks_required:
             [
-                change_item_type(items_ref, x, ItemClassification.progression | ItemClassification.useful)
+                change_item_type(items_ref, x, ItemClassification.progression_deprioritized | ItemClassification.useful)
                 for i,x in _weapon_dict.items() if i in weapons.weapon_p_dict.keys()
             ]
     if (options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
         items_ref.update({x: idef.items_all[x] for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()})
         if _grade_checks_required:
             [
-                change_item_type(items_ref, x, ItemClassification.progression | ItemClassification.useful)
+                change_item_type(items_ref, x, ItemClassification.progression_deprioritized | ItemClassification.useful)
                 for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()
             ]
     if (options.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
