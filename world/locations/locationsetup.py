@@ -158,9 +158,10 @@ def setup_locations(options: CupheadOptions) -> dict[str,LocationData]:
     use_dlc = options.use_dlc.bvalue
     locations: dict[str,LocationData] = {**ld.locations_base}
 
-    add_location(locations, locationnames.loc_event_start_weapon)
-    if (options.weapon_mode.evalue & WeaponMode.EXCEPT_START) > 0:
-        add_location(locations, locationnames.loc_event_start_weapon_ex)
+    if options.start_weapon.value != options.start_weapon.option_none:
+        add_location(locations, locationnames.loc_event_start_weapon)
+        if (options.weapon_mode.evalue & WeaponMode.EXCEPT_START) > 0:
+            add_location(locations, locationnames.loc_event_start_weapon_ex)
 
     setup_grade_check_locations(locations, options)
 

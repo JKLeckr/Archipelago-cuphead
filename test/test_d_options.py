@@ -44,8 +44,11 @@ class TestOptions(CupheadTestBase):
         "Level Shuffle Plane": {
             "level_shuffle": "plane_separate"
         },
-        "Weapon Ex": {
+        "Weapon Progressive": {
             "weapon_mode": "progressive",
+        },
+        "Weapon EX Separate": {
+            "weapon_mode": "ex_separate",
         },
         "No Ability Rando": {
             "randomize_abilities": False,
@@ -152,7 +155,50 @@ class TestOptions(CupheadTestBase):
             "use_dlc": True,
             "mode": "dlc_beat_both",
             "start_weapon": "none",
+            "freemove_isles": True
+        },
+        "No Weapons Hard Logic": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "logic_mode": "hard",
+            "start_weapon": "none",
+            "freemove_isles": True
+        },
+        "No Weapons w Whetstone and Parry": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "start_weapon": "none",
             "start_inventory": {"Whetstone": 1, "Parry": 1},
+            "freemove_isles": True
+        },
+        "No Weapons Progressive": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "start_weapon": "none",
+            "weapon_mode": "progressive",
+            "freemove_isles": True
+        },
+        "No Weapons Progressive Hard Logic": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "logic_mode": "hard",
+            "start_weapon": "none",
+            "weapon_mode": "progressive",
+            "freemove_isles": True
+        },
+        "No Weapons EX Separate": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "start_weapon": "none",
+            "weapon_mode": "ex_separate",
+            "freemove_isles": True
+        },
+        "No Weapons EX Separate Hard Logic": {
+            "use_dlc": True,
+            "mode": "dlc_beat_both",
+            "logic_mode": "hard",
+            "start_weapon": "none",
+            "weapon_mode": "ex_separate",
             "freemove_isles": True
         }
     }

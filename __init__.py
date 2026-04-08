@@ -96,11 +96,22 @@ class CupheadWorld(World):
 
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
+        no_weapons = self.options.start_weapon.value == self.options.start_weapon.option_none
         if self.options.randomize_abilities.value:
             self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
             self.multiworld.early_items[self.player][itemnames.item_ability_dash] = 1
         if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0:
-            _start_weapon = weapons.weapon_p_dict[self.options.start_weapon.value]
+            if no_weapons:
+                _start_weapon = self.random.choice(
+                    weapons.get_weapon_dict(self.options, self.use_dlc)
+                )
+            else:
+                _start_weapon = weapons.weapon_p_dict[self.options.start_weapon.value]
+            self.multiworld.early_items[self.player][_start_weapon] = 2 if no_weapons else 1
+        elif no_weapons:
+            _start_weapon = self.random.choice(
+                weapons.get_weapon_dict(self.options, self.use_dlc)
+            )
             self.multiworld.early_items[self.player][_start_weapon] = 1
         if (self.options.weapon_mode.value & WeaponMode.EX_SEPARATE) > 0:
             _weapon = self.random.choice(weapons.weapon_ex_dict)

@@ -12,6 +12,7 @@ from ..locations import locationdefs as ld
 from ..names import itemnames, locationnames, regionnames
 from . import levelrules
 from . import rulebase as rb
+from .rulereg import SpotType
 
 if TYPE_CHECKING:
     from ... import CupheadWorld
@@ -92,7 +93,21 @@ def set_quest_rules(world: CupheadWorld):
 
 def set_level_rules(world: CupheadWorld):
     w = world
+    rr = w.rulereg
     levelrules.set_levelrules(w)
+    level_loc_rule_map: dict[str, str] = {
+        locationnames.loc_event_isle1_secret_prereq1: regionnames.level_boss_veggies,
+        locationnames.loc_event_isle1_secret_prereq2: regionnames.level_boss_slime,
+        locationnames.loc_event_isle1_secret_prereq3: regionnames.level_boss_plane_blimp,
+        locationnames.loc_event_isle1_secret_prereq4: regionnames.level_boss_frogs,
+        locationnames.loc_event_isle1_secret_prereq5: regionnames.level_boss_flower
+    }
+    for llrl, llrr in level_loc_rule_map.items():
+        locs = rb.get_region(world, llrr).get_locations()
+        loc = locs[0].name
+        if not loc.endswith("Complete"):
+            raise ValueError(f"{loc} is not the correct 'Complete' location for region {llrr}")
+        rr.copy_rule(loc, SpotType.LOCATION, llrl, SpotType.LOCATION)
 
 def set_shop_rules(world: CupheadWorld):
     w = world

@@ -303,6 +303,16 @@ class OptionSanitizer:
         if _options.weapon_mode.value == WeaponMode.EXCEPT_START:
             self.override_num_option(_options.weapon_mode, 0, "Unsupported option")
 
+        if (
+            _options.start_weapon.value == _options.start_weapon.option_none and
+            (_options.weapon_mode.value & WeaponMode.EXCEPT_START) > 0
+        ):
+            self.override_num_option(
+                _options.weapon_mode,
+                _options.weapon_mode.value & ~WeaponMode.EXCEPT_START,
+                "Start weapon set to 'none'"
+            )
+
         self._sanitize_dlc_options()
 
         self._sanitize_level_placement()

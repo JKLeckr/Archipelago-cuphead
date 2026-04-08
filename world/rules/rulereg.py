@@ -37,21 +37,57 @@ class RuleReg:
         self._reg = {}
         self._world = world
 
-    def clear_rules(self):
+    def clear_all_rules(self):
         self._reg.clear()
 
-    def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule, combine_and: bool):
-        spot = Spot(spot_name, spot_type)
+    def in_reg(self, spot: str, spot_type: SpotType) -> bool:
+        return Spot(spot, spot_type) in self._reg
+
+    def get_rule(self, spot: str, spot_type: SpotType) -> list[RuleData]:
+        return self._reg[Spot(spot, spot_type)]
+
+    def _add_rule(self, spot: Spot, rule: Rule, combine_and: bool):
         if spot not in self._reg:
             self._reg[spot] = [RuleData(rule)]
         else:
             self._reg[spot].append(RuleData(rule, combine_and))
 
-    def pop_rule(self, spot_name: str, spot_type: SpotType) -> list[RuleData] | None:
+    def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule, combine_and: bool = True):
         spot = Spot(spot_name, spot_type)
+        self._add_rule(spot, rule, combine_and)
+
+    def _pop_rule(self, spot: Spot) -> list[RuleData] | None:
         if spot not in self._reg:
             return None
         return self._reg.pop(spot)
+
+    def pop_rule(self, spot_name: str, spot_type: SpotType) -> list[RuleData] | None:
+        spot = Spot(spot_name, spot_type)
+        return self._pop_rule(spot)
+
+    def copy_rule(
+        self,
+        src_spot_name: str,
+        src_spot_type: SpotType,
+        dest_spot_name: str,
+        dest_spot_type: SpotType,
+        combine_and: bool = True
+    ):
+        sspot = Spot(src_spot_name, src_spot_type)
+        if sspot not in self._reg:
+            raise KeyError(f"{sspot} is not in the rulereg")
+        dspot = Spot(dest_spot_name, dest_spot_type)
+        rdefs = self._reg[sspot]
+        empty_dest = dspot not in self._reg
+        if empty_dest:
+            self._reg[dspot] = []
+        set_combine = not empty_dest
+        for rdef in rdefs:
+            self._reg[dspot].append(
+                RuleData(rdef.rule, combine_and if set_combine else rdef.combine_and)
+            )
+            if set_combine:
+                set_combine = False
 
     def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
         self.add_loc_rule(loc, rb.rule_has(item, count), combine_and)
