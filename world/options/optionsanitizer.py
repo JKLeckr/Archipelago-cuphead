@@ -256,7 +256,7 @@ class OptionSanitizer:
             risks_ref.append("randomize_abilities")
         if options.weapon_mode.value != int(WeaponMode.NORMAL):
             risks_ref.append("weapon_mode != normal")
-        if options.start_weapon.value == self.options.start_weapon.option_none:
+        if options.start_weapon.is_none():
             risks_ref.append("start_weapon = none")
         if options.boss_grade_checks.value > 0:
             risks_ref.append("boss_grade_checks")
@@ -304,7 +304,7 @@ class OptionSanitizer:
             self.override_num_option(_options.weapon_mode, 0, "Unsupported option")
 
         if (
-            _options.start_weapon.value == _options.start_weapon.option_none and
+            _options.start_weapon.is_none() and
             (_options.weapon_mode.value & WeaponMode.EXCEPT_START) > 0
         ):
             self.override_num_option(

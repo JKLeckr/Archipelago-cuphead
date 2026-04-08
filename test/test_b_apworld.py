@@ -65,6 +65,7 @@ class TestAPWorldItemSetup(unittest.TestCase):
     def _options_for_weapon_mode(mode: WeaponMode):
         return SimpleNamespace(
             weapon_mode=SimpleNamespace(evalue=mode),
+            start_weapon=SimpleNamespace(value=0, is_none=lambda: False),
             use_dlc=SimpleNamespace(bvalue=True),
             boss_grade_checks=SimpleNamespace(evalue=0),
             rungun_grade_checks=SimpleNamespace(evalue=0),

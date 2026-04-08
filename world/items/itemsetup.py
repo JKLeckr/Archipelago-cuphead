@@ -31,7 +31,9 @@ def setup_dlc_items(items_ref: dict[str, ItemData], options: CupheadOptions):
             options.dlc_cactusgirl_quest.value or
             (options.mode.evalue & GameMode.DLC_NO_ISLE4) == 0
         ):
-            change_item_type(items_ref, itemnames.item_charm_dlc_cookie, ItemClassification.progression)
+            change_item_type(
+                items_ref, itemnames.item_charm_dlc_cookie, ItemClassification.progression | ItemClassification.useful
+            )
     if options.is_dlc_chalice_items_separate(ItemGroups.ESSENTIAL):
         items_ref.update(idef.item_dlc_chalice_essential)
     if options.is_dlc_chalice_items_separate(ItemGroups.SUPER):
@@ -49,9 +51,19 @@ def setup_abilities(items_ref: dict[str, ItemData], options: CupheadOptions):
             items_ref.update(idef.item_dlc_chalice_abilities)
         else:
             add_item(items_ref, itemnames.item_ability_dlc_cdoublejump)
-    change_item_type(items_ref, itemnames.item_charm_psugar, ItemClassification.progression)
+    change_item_type(items_ref, itemnames.item_charm_psugar, ItemClassification.progression | ItemClassification.useful)
     if options.boss_secret_checks.value:
-        change_item_type(items_ref, itemnames.item_ability_plane_shrink, ItemClassification.progression)
+        change_item_type(
+            items_ref,
+            itemnames.item_ability_plane_shrink,
+            ItemClassification.progression_deprioritized | ItemClassification.useful
+        )
+        if options.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
+            change_item_type(
+                items_ref,
+                itemnames.item_ability_dlc_cplane_shrink,
+                ItemClassification.progression_deprioritized | ItemClassification.useful
+            )
 
 def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
     weapon_keys = {
@@ -60,7 +72,12 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
     }
     for w in weapon_keys:
         if w in items_ref.keys():
-            change_item_type(items_ref, w, ItemClassification.progression)
+            change_item_type(items_ref, w, ItemClassification.progression | ItemClassification.useful)
+
+def setup_no_start_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
+    change_item_type(
+        items_ref, itemnames.item_charm_whetstone, ItemClassification.progression | ItemClassification.useful
+    )
 
 def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
     _weapon_dict = weapons.get_weapon_dict(options, options.use_dlc.bvalue)
@@ -76,24 +93,31 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
     if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
         if _grade_checks_required:
             [
-                change_item_type(items_ref, x, ItemClassification.progression)
+                change_item_type(items_ref, x, ItemClassification.progression | ItemClassification.useful)
                 for i,x in _weapon_dict.items() if i in weapons.weapon_p_dict.keys()
             ]
     if (options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
         items_ref.update({x: idef.items_all[x] for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()})
         if _grade_checks_required:
             [
-                change_item_type(items_ref, x, ItemClassification.progression)
+                change_item_type(items_ref, x, ItemClassification.progression | ItemClassification.useful)
                 for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()
             ]
     if (options.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, itemnames.item_plane_ex, 1)
         if _grade_checks_required:
-            [change_item_type(items_ref, x, ItemClassification.progression) for x in idef.item_super]
+            [
+                change_item_type(items_ref, x, ItemClassification.progression | ItemClassification.useful)
+                for x in idef.item_super
+            ]
+    if options.start_weapon.is_none():
+        setup_no_start_weapons(items_ref, options)
 
 def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptions):
-    if options.logic_mode.evalue == LogicMode.HARD:
-        change_item_type(items_ref, itemnames.item_charm_coffee, ItemClassification.progression)
+    if options.logic_mode.evalue == LogicMode.HARD or options.start_weapon.is_none():
+        change_item_type(
+            items_ref, itemnames.item_charm_coffee, ItemClassification.progression | ItemClassification.useful
+        )
 
 def setup_items(options: CupheadOptions) -> dict[str, ItemData]:
     items: dict[str, ItemData] = {**idef.items_base}

@@ -1,6 +1,9 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# Prefer things to be on one line than scrunched, so ignore length issues with linting.
+# ruff: noqa: E501
+
 from __future__ import annotations
 
 from BaseClasses import ItemClassification
@@ -21,23 +24,23 @@ item_filler: dict[str, ItemData] = {
 }
 
 item_essential: dict[str, ItemData] = {
-    itemnames.item_coin: ItemData(4000, ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_coin2: ItemData(4001, ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_coin3: ItemData(4002, ItemClassification.progression_skip_balancing, 0),
+    itemnames.item_coin: ItemData(4000, ItemClassification.progression_deprioritized_skip_balancing, 0),
+    itemnames.item_coin2: ItemData(4001, ItemClassification.progression_deprioritized_skip_balancing, 0),
+    itemnames.item_coin3: ItemData(4002, ItemClassification.progression_deprioritized_skip_balancing, 0),
     itemnames.item_contract: ItemData(4003, ItemClassification.progression_skip_balancing, 17),
-    itemnames.item_plane_gun: ItemData(4004, ItemClassification.progression),
-    itemnames.item_plane_ex: ItemData(4005, ItemClassification.progression, 0),
-    itemnames.item_plane_bombs: ItemData(4006, ItemClassification.progression),
+    itemnames.item_plane_gun: ItemData(4004, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_plane_ex: ItemData(4005, ItemClassification.progression | ItemClassification.useful, 0),
+    itemnames.item_plane_bombs: ItemData(4006, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_healthupgrade: ItemData(4007, ItemClassification.useful, 0)
 }
 item_dlc_essential: dict[str, ItemData] = {
-    itemnames.item_dlc_boat: ItemData(10000000, ItemClassification.progression),
-    itemnames.item_dlc_ingredient: ItemData(10000001, ItemClassification.progression_skip_balancing, 5),
+    itemnames.item_dlc_boat: ItemData(10000000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_dlc_ingredient: ItemData(10000001, ItemClassification.progression_deprioritized_skip_balancing, 5),
 }
 item_dlc_chalice_essential: dict[str, ItemData] = {
-    itemnames.item_dlc_cplane_gun: ItemData(10002000, ItemClassification.progression),
-    itemnames.item_dlc_cplane_ex: ItemData(10002001, ItemClassification.progression, 0),
-    itemnames.item_dlc_cplane_bombs: ItemData(10002002, ItemClassification.progression),
+    itemnames.item_dlc_cplane_gun: ItemData(10002000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_dlc_cplane_ex: ItemData(10002001, ItemClassification.progression | ItemClassification.useful, 0),
+    itemnames.item_dlc_cplane_bombs: ItemData(10002002, ItemClassification.progression | ItemClassification.useful),
 }
 
 item_weapons: dict[str, ItemData] = {
@@ -95,7 +98,7 @@ item_charms: dict[str, ItemData] = {
 }
 item_dlc_charms: dict[str, ItemData] = {
     itemnames.item_charm_dlc_heartring: ItemData(10010000, ItemClassification.useful),
-    itemnames.item_charm_dlc_broken_relic: ItemData(10010001, ItemClassification.useful, 0), # Sequence will not be in logic  # noqa: E501
+    itemnames.item_charm_dlc_broken_relic: ItemData(10010001, ItemClassification.useful, 0), # Sequence will not be in logic
 }
 item_all_charms: dict[str, ItemData] = {**item_charms, **item_dlc_charms}
 
@@ -113,38 +116,38 @@ item_dlc_chalice_super: dict[str, ItemData] = {
 }
 
 item_abilities: dict[str, ItemData] = {
-    itemnames.item_ability_duck: ItemData(16000, ItemClassification.progression),
-    itemnames.item_ability_dash: ItemData(16001, ItemClassification.progression),
-    itemnames.item_ability_parry: ItemData(16002, ItemClassification.progression),
-    itemnames.item_ability_plane_parry: ItemData(16003, ItemClassification.progression),
+    itemnames.item_ability_duck: ItemData(16000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dash: ItemData(16001, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_parry: ItemData(16002, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_plane_parry: ItemData(16003, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_plane_shrink: ItemData(16004, ItemClassification.useful),
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
-    itemnames.item_ability_dlc_cduck: ItemData(10014000, ItemClassification.progression),
-    itemnames.item_ability_dlc_p_cdash: ItemData(10014001, ItemClassification.progression, 2),
-    itemnames.item_ability_dlc_cdoublejump: ItemData(10014002, ItemClassification.progression),
-    itemnames.item_ability_dlc_cplane_parry: ItemData(10014003, ItemClassification.progression),
+    itemnames.item_ability_dlc_cduck: ItemData(10014000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_p_cdash: ItemData(10014001, ItemClassification.progression | ItemClassification.useful, 2),
+    itemnames.item_ability_dlc_cdoublejump: ItemData(10014002, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_cplane_parry: ItemData(10014003, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_dlc_cplane_shrink: ItemData(10014004, ItemClassification.useful),
 }
 item_abilities_aim: dict[str, ItemData] = {
-    itemnames.item_ability_aim_left: ItemData(18000, ItemClassification.progression),
-    itemnames.item_ability_aim_right: ItemData(18001, ItemClassification.progression),
-    itemnames.item_ability_aim_up: ItemData(18002, ItemClassification.progression),
-    itemnames.item_ability_aim_down: ItemData(18003, ItemClassification.progression),
-    itemnames.item_ability_aim_upleft: ItemData(18004, ItemClassification.progression),
-    itemnames.item_ability_aim_upright: ItemData(18005, ItemClassification.progression),
-    itemnames.item_ability_aim_downleft: ItemData(18006, ItemClassification.progression),
-    itemnames.item_ability_aim_downright: ItemData(18007, ItemClassification.progression),
+    itemnames.item_ability_aim_left: ItemData(18000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_right: ItemData(18001, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_up: ItemData(18002, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_down: ItemData(18003, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_upleft: ItemData(18004, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_upright: ItemData(18005, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_downleft: ItemData(18006, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_aim_downright: ItemData(18007, ItemClassification.progression | ItemClassification.useful),
 }
 item_dlc_chalice_abilities_aim: dict[str, ItemData] = {
-    itemnames.item_ability_dlc_c_aim_left: ItemData(20000, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_right: ItemData(20001, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_up: ItemData(20002, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_down: ItemData(20003, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_upleft: ItemData(20004, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_upright: ItemData(20005, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_downleft: ItemData(20006, ItemClassification.progression),
-    itemnames.item_ability_dlc_c_aim_downright: ItemData(20007, ItemClassification.progression),
+    itemnames.item_ability_dlc_c_aim_left: ItemData(20000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_right: ItemData(20001, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_up: ItemData(20002, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_down: ItemData(20003, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_upleft: ItemData(20004, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_upright: ItemData(20005, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_downleft: ItemData(20006, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_c_aim_downright: ItemData(20007, ItemClassification.progression | ItemClassification.useful),
 }
 
 item_trap: dict[str, ItemData] = {
@@ -157,14 +160,14 @@ item_trap: dict[str, ItemData] = {
 
 item_special: dict[str, ItemData] = {
     itemnames.item_event_boss_defeated: ItemData(None, ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_event_isle1_secret_prereq: ItemData(None, ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_event_isle2_shortcut: ItemData(None, ItemClassification.progression, 0),
-    itemnames.item_event_quest_4mel_4th: ItemData(None, ItemClassification.progression, 0),
-    itemnames.item_event_agrade: ItemData(None, ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_event_pacifist: ItemData(None, ItemClassification.progression_skip_balancing, 0),
-    itemnames.item_event_ludwig: ItemData(None, ItemClassification.progression, 0),
-    itemnames.item_event_wolfgang: ItemData(None, ItemClassification.progression, 0),
-    #itemnames.item_event_music: ItemData(None, ItemClassification.progression, 0),
+    itemnames.item_event_isle1_secret_prereq: ItemData(None, ItemClassification.progression_deprioritized_skip_balancing, 0),
+    itemnames.item_event_isle2_shortcut: ItemData(None, ItemClassification.progression_deprioritized, 0),
+    itemnames.item_event_quest_4mel_4th: ItemData(None, ItemClassification.progression_deprioritized, 0),
+    itemnames.item_event_agrade: ItemData(None, ItemClassification.progression_deprioritized_skip_balancing, 0),
+    itemnames.item_event_pacifist: ItemData(None, ItemClassification.progression_deprioritized_skip_balancing, 0),
+    itemnames.item_event_ludwig: ItemData(None, ItemClassification.progression_deprioritized, 0),
+    itemnames.item_event_wolfgang: ItemData(None, ItemClassification.progression_deprioritized, 0),
+    #itemnames.item_event_music: ItemData(None, ItemClassification.progression_deprioritized, 0),
 }
 item_dlc_special: dict[str, ItemData] = {
     itemnames.item_charm_dlc_cookie: ItemData(10016000, ItemClassification.useful, 0),

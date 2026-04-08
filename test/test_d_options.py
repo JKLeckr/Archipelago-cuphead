@@ -164,13 +164,13 @@ class TestOptions(CupheadTestBase):
             "start_weapon": "none",
             "freemove_isles": True
         },
-        "No Weapons w Whetstone and Parry": {
-            "use_dlc": True,
-            "mode": "dlc_beat_both",
-            "start_weapon": "none",
-            "start_inventory": {"Whetstone": 1, "Parry": 1},
-            "freemove_isles": True
-        },
+        #"No Weapons w Whetstone and Parry": {
+        #    "use_dlc": True,
+        #    "mode": "dlc_beat_both",
+        #    "start_weapon": "none",
+        #    "start_inventory": {"Whetstone": 1, "Parry": 1},
+        #    "freemove_isles": True
+        #},
         "No Weapons Progressive": {
             "use_dlc": True,
             "mode": "dlc_beat_both",

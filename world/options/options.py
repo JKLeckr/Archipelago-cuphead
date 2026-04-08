@@ -683,6 +683,9 @@ class StartWeapon(ChoiceEx, NamedOption):
     option_none = 127
     default = -2
 
+    def is_none(self) -> bool:
+        return self.value == self.option_none
+
     @classmethod
     @override
     def from_text(cls, text: str) -> Choice:

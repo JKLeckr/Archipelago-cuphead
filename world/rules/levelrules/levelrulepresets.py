@@ -13,47 +13,6 @@ from .levelrulebase import And, Or, RBRule, RuleList, RulePreset, SelectRule, lr
 
 
 @lrpreset
-def lrp_weapon() -> RuleList:
-    return RuleList([
-        Or(
-            RBRule(HasGroup(i.item_group_weapon)),
-            And(
-                RBRule(HasGroup(i.item_group_weapon_ex)),
-                RBRule(Has(i.item_charm_coffee)),
-                options=[
-                    DepFilter(deps.dep_hard_logic),
-                    DepFilter(deps.dep_weapon_ex_separate)
-                ]
-            ),
-            ## Or if we want to make things more difficult, go even more lax.
-            #And(
-            #    RBRule(HasGroup(i.item_group_super)),
-            #    RBRule(Has(i.item_charm_coffee))
-            #),
-            options=[DepFilter(deps.dep_no_start_weapon)]
-        )
-    ])
-
-@lrpreset
-def lrp_rungun_weapon() -> RuleList:
-    return RuleList([
-        Or(
-            RBRule(HasGroup(i.item_group_weapon)),
-            And(
-                RBRule(HasGroup(i.item_group_weapon_ex)),
-                RBRule(Has(i.item_charm_coffee)),
-                options=[DepFilter(deps.dep_weapon_ex_separate)]
-            ),
-            #And(
-            #    RBRule(HasGroup(i.item_group_super)),
-            #    RBRule(Has(i.item_charm_coffee))
-            #),
-            options=[DepFilter(deps.dep_no_start_weapon), DepFilter(deps.dep_hard_logic, False)]
-        )
-    ])
-
-
-@lrpreset
 def lrp_plane() -> RuleList:
     return RuleList([
         RBRule(
@@ -324,6 +283,59 @@ def lrp_plane_topgrade() -> RuleList:
 def lrp_rungun_topgrade() -> RuleList:
     return RuleList([
         RulePreset(lrp_parry)
+    ])
+
+
+@lrpreset
+def lrp_weapon() -> RuleList:
+    return RuleList([
+        Or(
+            RBRule(HasGroup(i.item_group_weapon)),
+            And(
+                RBRule(HasGroup(i.item_group_weapon_ex)),
+                RBRule(Has(i.item_charm_coffee)),
+                options=[
+                    DepFilter(deps.dep_hard_logic),
+                    DepFilter(deps.dep_weapon_ex_separate)
+                ]
+            ),
+            And(
+                RulePreset(lrp_parry),
+                RBRule(Has(i.item_charm_whetstone)),
+                options=[
+                    DepFilter(deps.dep_hard_logic),
+                ]
+            ),
+            ## Or if we want to make things more difficult, go even more lax.
+            #And(
+            #    RBRule(HasGroup(i.item_group_super)),
+            #    RBRule(Has(i.item_charm_coffee))
+            #),
+            options=[DepFilter(deps.dep_no_start_weapon)]
+        )
+    ])
+
+
+@lrpreset
+def lrp_rungun_weapon() -> RuleList:
+    return RuleList([
+        Or(
+            RBRule(HasGroup(i.item_group_weapon)),
+            And(
+                RBRule(HasGroup(i.item_group_weapon_ex)),
+                RBRule(Has(i.item_charm_coffee)),
+                options=[DepFilter(deps.dep_weapon_ex_separate)]
+            ),
+            And(
+                RulePreset(lrp_parry),
+                RBRule(Has(i.item_charm_whetstone)),
+            ),
+            #And(
+            #    RBRule(HasGroup(i.item_group_super)),
+            #    RBRule(Has(i.item_charm_coffee))
+            #),
+            options=[DepFilter(deps.dep_no_start_weapon), DepFilter(deps.dep_hard_logic, False)]
+        )
     ])
 
 
