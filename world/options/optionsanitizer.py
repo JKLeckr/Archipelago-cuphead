@@ -7,7 +7,7 @@ from collections.abc import Iterable
 from random import Random
 
 from ..auxiliary import format_list
-from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LevelShuffleMode, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LevelShuffleMode, LogicMode, WeaponMode
 from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 from .protocols import CupheadNumericOption, CupheadOptionSet
@@ -294,6 +294,14 @@ class OptionSanitizer:
             f"({risk_str}). This combination is known to increase generation failure chance."
         )
 
+    def _warn_risks(self) -> None:
+        options = self.options
+
+        self._warn_accessibility_risks()
+
+        if options.start_weapon.is_none() and options.logic_mode != LogicMode.HARD:
+            self.print_warning("Currently, setting start_weapon to 'none' may fail unless Logic Mode is set to 'hard'.")
+
     def sanitize_options(self) -> None:
         _options = self.options
 
@@ -321,4 +329,4 @@ class OptionSanitizer:
         if not _options.expert_mode and _options.boss_grade_checks.value>3:
             self.override_num_option(_options.boss_grade_checks, 3, "Expert Off")
 
-        self._warn_accessibility_risks()
+        self._warn_risks()
