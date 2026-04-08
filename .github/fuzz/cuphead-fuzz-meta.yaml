@@ -25,3 +25,7 @@ Cuphead:
         dlc_kingdice_chalice_checks: disabled
         dlc_chess_chalice_checks: disabled
         dlc_cactusgirl_quest: "false"
+    - option: start_weapon
+      if_value: none
+      then:
+        logic_mode: hard
