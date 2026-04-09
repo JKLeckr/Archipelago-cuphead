@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from rule_builder.options import OptionFilter
 from rule_builder.rules import And as RBAnd
-from rule_builder.rules import False_, HasAllCounts, HasAnyCount, Rule, True_
+from rule_builder.rules import HasAllCounts, HasAnyCount, Rule, True_
 from rule_builder.rules import Or as RBOr
 
 from . import levelrulebase as lrb
@@ -50,10 +50,6 @@ class LevelRuleComp:
                 return False
 
     def _eval_rule_ref(self, ref: lrb.RuleRef, ctx: _RuleEvalCtx, filtered_resolution: bool):
-        if not self._check_filters(ref.options):
-            # Inactive RuleRef compiles to no-op and does not trigger ruledef compilation.
-            return True_() if filtered_resolution else False_()
-
         cached = ctx.compiled_ruledefs.get(ref.ref_name)
         if cached is not None:
             return cached
@@ -153,11 +149,8 @@ class LevelRuleComp:
         filters: Iterable[OptionFilter] = (),
         filtered_resolution: bool = True
     ) -> Rule:
-        if not self._check_filters(filters):
-            return True_() if filtered_resolution else False_()
-
         if not rule_list:
-            return True_()
+            return True_(options=filters, filtered_resolution=filtered_resolution)
 
         fr_override = False if not op_and else None
         rules = [self._eval_rule_expr(rule, ctx, fr_override) for rule in rule_list]
