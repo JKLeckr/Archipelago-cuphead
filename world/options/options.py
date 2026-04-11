@@ -396,6 +396,17 @@ class DuckLockPlatDrop(BToggle, NamedOption):
     visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
 
 
+class EarlyParry(BToggle, NamedOption):
+    """
+    Make Parry be placed early in the multiworld.
+    This may prevent early BK.
+    NOTE: This is on regardless in single player multiworlds.
+    """
+    name = "early_parry"
+    display_name = "Early Parry"
+    visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
+
+
 class ExpertMode(BToggle, NamedOption):
     """
     Set the boss difficulty to expert.

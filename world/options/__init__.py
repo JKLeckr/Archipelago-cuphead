@@ -53,6 +53,7 @@ class CupheadOptions(PerGameCommonOptions):
     dlc_kingsleap: odefs.DlcChessCastle
     dlc_cactusgirl_quest: odefs.DlcCactusGirlQuest
     dlc_curse_mode: odefs.DlcCurseMode
+    early_parry: odefs.EarlyParry
     extra_coins: odefs.ExtraCoins
     maxhealth_upgrades: odefs.MaxHealthUpgrades
     minimum_filler: odefs.MinimumFillerItems

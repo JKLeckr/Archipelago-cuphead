@@ -94,6 +94,10 @@ class CupheadWorld(World):
     fake_gen: bool = False
     ut_can_gen_without_yaml: ClassVar[bool] = True
 
+    def set_early_items(self) -> None:
+        if self.options.early_parry.bvalue:
+            self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
+
     def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
         no_weapons = self.options.start_weapon.is_none()
@@ -183,6 +187,8 @@ class CupheadWorld(World):
         self.active_levels = levels.setup_levels(self.settings, self.options, self.active_locations)
 
         self.rulereg = RuleReg(self)
+
+        self.set_early_items()
 
         # Solo World Setup (for loners)
         if self.multiworld.players<2:
