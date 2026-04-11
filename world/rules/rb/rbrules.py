@@ -1,32 +1,39 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, ClassVar
+from collections.abc import Iterable
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from typing_extensions import override
 
 from BaseClasses import CollectionState
 from NetUtils import JSONMessagePart
+from rule_builder.options import OptionFilter
 from rule_builder.rules import Has, HasAny, Rule, WrapperRule
 
 from ...consts import GAME_NAME as GAME
 from ...items import weapons
+from .rbbase import PresetData
 
 if TYPE_CHECKING:
     from .... import CupheadWorld
 
-@dataclass
+@dataclass(init=False)
 class Preset(WrapperRule["CupheadWorld"], game=GAME):
     name: str
-    filtered_resolution: bool = field(default=True, kw_only=True)
-    _names_reg: ClassVar[set[str]] = set()
 
-    def __post_init__(self) -> None:
-        if self.name in self._names_reg:
-            raise ValueError(f"Preset name '{self.name}' already exists!")
-        super().__post_init__()
-        self._names_reg.add(self.name)
+    def __init__(
+        self,
+        preset: PresetData,
+        *,
+        options: Iterable[OptionFilter] = (),
+        filtered_resolution: bool = True
+    ):
+        self.name = preset.name
+        self.child = preset.rule
+        self.options = options
+        self.filtered_resolution = filtered_resolution
 
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
