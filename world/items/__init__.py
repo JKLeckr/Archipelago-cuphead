@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from . import filler, itembase, itemcreate, itemsetup
 
 CupheadItem = itembase.CupheadItem

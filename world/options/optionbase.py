@@ -1,11 +1,9 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from collections.abc import Iterable
 from enum import IntEnum, IntFlag
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, Self, TypeVar
 
 from typing_extensions import override
 
@@ -79,7 +77,7 @@ class ConstOption(Option[Any], Generic[T]):
 
     @classmethod
     @override
-    def from_any(cls, data: Any) -> ConstOption[T]:
+    def from_any(cls, data: Any) -> Self:
         res = cls()
         cls.name_lookup[res.value] = str(res.value)
         return res
@@ -95,7 +93,7 @@ class ConstNumericOption(NumericOption):
 
     @classmethod
     @override
-    def from_any(cls, data: Any) -> ConstNumericOption:
+    def from_any(cls, data: Any) -> Self:
         res = cls()
         cls.name_lookup[res.value] = str(res.value)
         return res

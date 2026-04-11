@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
@@ -86,11 +84,11 @@ def rule_can_reach_any_entrance(entrances: Iterable[str]) -> Rule:
 
 def get_entrance_name(exit: str, entrance: str) -> str:
     return f"({exit})->({entrance})"
-def get_entrance_by_name(world: CupheadWorld, entrance_name: str) -> Entrance:
+def get_entrance_by_name(world: "CupheadWorld", entrance_name: str) -> Entrance:
     return world.multiworld.get_entrance(entrance_name, world.player)
-def get_entrance(world: CupheadWorld, exit: str, entrance: str) -> Entrance:
+def get_entrance(world: "CupheadWorld", exit: str, entrance: str) -> Entrance:
     return get_entrance_by_name(world, get_entrance_name(exit, entrance))
-def get_location(world: CupheadWorld, location: str) -> Location:
+def get_location(world: "CupheadWorld", location: str) -> Location:
     return world.multiworld.get_location(location, world.player)
-def get_region(world: CupheadWorld, region: str) -> Region:
+def get_region(world: "CupheadWorld", region: str) -> Region:
     return world.multiworld.get_region(region, world.player)

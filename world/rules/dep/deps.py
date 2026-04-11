@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from ...enums import ChaliceCheckMode, ChaliceMode, GradeCheckMode, WeaponMode
 from ...options import CupheadOptions
 from . import depbase

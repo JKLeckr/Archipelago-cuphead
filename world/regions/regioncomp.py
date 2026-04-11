@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from collections.abc import Collection
 from typing import TYPE_CHECKING
 
@@ -23,7 +21,7 @@ if TYPE_CHECKING:
 ## Currently, with shuffling levels, locations are relocated onto static regions.
 ## Eventually, it might be better (maybe) to properly map regions
 
-def get_regions(world: CupheadWorld) -> list[RegionData]:
+def get_regions(world: "CupheadWorld") -> list[RegionData]:
     shop_locations = world.shop.shop_locations
     using_dlc = world.options.use_dlc.bvalue
 
@@ -43,7 +41,7 @@ def get_regions(world: CupheadWorld) -> list[RegionData]:
 
     return total_regions
 
-def get_region_locations(world: CupheadWorld, regc: RegionData) -> list[str]:
+def get_region_locations(world: "CupheadWorld", regc: RegionData) -> list[str]:
     locations: list[str] = []
 
     if regc.region_type == DefType.LEVEL:
@@ -60,10 +58,10 @@ def get_region_locations(world: CupheadWorld, regc: RegionData) -> list[str]:
 
     return locations
 
-def _create_new_region(world: CupheadWorld, regc: RegionData) -> Region:
+def _create_new_region(world: "CupheadWorld", regc: RegionData) -> Region:
     return Region(regc.name, world.player, world.multiworld, None)
 
-def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
+def create_region(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None):
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
@@ -95,7 +93,7 @@ def create_region(world: CupheadWorld, regc: RegionData, locset: set[str] | None
     if world.settings.is_debug_bit_on(2):
         debug.debug_print_regions(world)
 
-def connect_target(world: CupheadWorld, region_name: str, target: Target, locset: set[str] | None = None):
+def connect_target(world: "CupheadWorld", region_name: str, target: Target, locset: set[str] | None = None):
     multiworld = world.multiworld
     player = world.player
     target_name = target.name
@@ -109,7 +107,7 @@ def connect_target(world: CupheadWorld, region_name: str, target: Target, locset
     src.connect(tgt, name, None)
     #print(f"{name} | {regc.region_type} | {target.tgt_type}")
 
-def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[str] | None = None):
+def connect_region_targets(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None):
     if not regc.connect_to:
         raise ValueError(f"For {regc.name}: connect_to cannot be None!")
     for target in regc.connect_to:
@@ -121,7 +119,7 @@ def connect_region_targets(world: CupheadWorld, regc: RegionData, locset: set[st
         else:
             print(f"WARNING: For '{regc.name}': a target is None!")
 
-def create_regions(world: CupheadWorld) -> None:
+def create_regions(world: "CupheadWorld") -> None:
     compile_regions = get_regions(world)
     #debug.print_list(list_regions_names(compile_regions))
 

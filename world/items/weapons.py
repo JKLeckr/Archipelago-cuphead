@@ -39,6 +39,8 @@ weapon_p_dict: dict[int,str] = {
     8: itemnames.item_p_weapon_dlc_twistup,
 }
 weapon_to_index: dict[str, int] = {y:x for x,y in weapon_dict.items()}
+weapon_p_to_index: dict[str, int] = {y:x for x,y in weapon_p_dict.items()}
+weapon_ex_to_index: dict[str, int] = {y:x for x,y in weapon_ex_dict.items()}
 
 def get_weapon_dict(options: CupheadOptions, dlc_weapons: bool = True) -> dict[int,str]:
     orig_weapon_dict: dict[int,str] = (

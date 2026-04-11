@@ -1,9 +1,7 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 from ..names import locationnames, regionnames
 
@@ -58,5 +56,5 @@ class ShopData:
         self.shop_locations = shop_locations
 
     @classmethod
-    def create_from_options(cls, options: CupheadOptions) -> ShopData:
-        return ShopData(options.shop_map.value)
+    def create_from_options(cls, options: "CupheadOptions") -> Self:
+        return cls(options.shop_map.value)

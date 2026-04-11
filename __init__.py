@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from collections.abc import Collection
 from typing import Any, ClassVar, TextIO
 
@@ -10,7 +8,8 @@ from typing_extensions import override
 
 from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
 from Options import Option, PerGameCommonOptions
-from worlds.AutoWorld import WebWorld, World
+from rule_builder.cached_world import CachedRuleBuilderWorld
+from worlds.AutoWorld import WebWorld
 
 from . import debug as dbg
 from .fver import FVersion
@@ -48,7 +47,7 @@ class CupheadWebWorld(WebWorld):
     option_groups = options.cuphead_option_groups
     options_presets = presets.option_presets
 
-class CupheadWorld(World):
+class CupheadWorld(CachedRuleBuilderWorld):
     """
     A classic run and gun action game heavily focused on boss battles
     """
@@ -82,6 +81,11 @@ class CupheadWorld(World):
     location_names: ClassVar[set[str]] = set(ld.locations_all.keys())
 
     settings: CupheadSettings # type: ignore
+
+    item_mapping: ClassVar[dict[str, str]] = {
+        itemnames.item_coin2: itemnames.item_coin,
+        itemnames.item_coin3: itemnames.item_coin,
+    }
 
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
@@ -250,13 +254,19 @@ class CupheadWorld(World):
                 state.add_item(_name, self.player, amount)
                 return True
             return False
-        if (self.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if item.name in weapons.weapon_p_to_index.keys():
+            _weapon_index = weapons.weapon_p_to_index[item.name]
+            _weapon_dict = (
+                weapons.weapon_ex_dict
+                if state.has(weapons.weapon_dict[_weapon_index], self.player) else
+                weapons.weapon_dict
+            )
             _name = self.collect_item(
                 state,
-                itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
+                itemcreate.create_item(_weapon_dict[_weapon_index], self.player),
             )
             if _name:
-                state.add_item(_name, self.player, 2)
+                state.add_item(_name, self.player)
                 return True
             return False
         return super().collect(state, item)
@@ -274,14 +284,20 @@ class CupheadWorld(World):
                 state.remove_item(_name, self.player, amount)
                 return True
             return False
-        if (self.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 and item.name in weapons.weapon_dict.values():
+        if item.name in weapons.weapon_p_to_index.keys():
+            _weapon_index = weapons.weapon_p_to_index[item.name]
+            _weapon_dict = (
+                weapons.weapon_ex_dict
+                if state.has(weapons.weapon_ex_dict[_weapon_index], self.player) else
+                weapons.weapon_dict
+            )
             _name = self.collect_item(
                 state,
-                itemcreate.create_active_item(self, weapons.weapon_p_dict[weapons.weapon_to_index[item.name]]),
+                itemcreate.create_item(_weapon_dict[_weapon_index], self.player),
                 True
             )
             if _name:
-                state.remove_item(_name, self.player, 2)
+                state.remove_item(_name, self.player)
                 return True
             return False
         return super().remove(state, item)

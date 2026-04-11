@@ -100,6 +100,7 @@ item_ability_dlc_cdash = "Chalice Dash"
 item_ability_dlc_p_cdash = _item_progressive + "Chalice Dash"
 item_ability_dlc_cdoublejump = "Chalice Double Jump"
 item_ability_dlc_cduck = "Chalice Duck"
+item_ability_dlc_cduck_a = "Chalice Crouch"
 item_ability_dlc_cplane_shrink = "Chalice Plane Shrink"
 item_ability_dlc_cplane_parry = "Chalice Plane Parry"
 

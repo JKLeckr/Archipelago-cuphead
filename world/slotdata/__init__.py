@@ -1,15 +1,13 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
      from ... import CupheadWorld
      from ..options import CupheadOptions
 
-def _get_feature_bits(options: CupheadOptions) -> int:
+def _get_feature_bits(options: "CupheadOptions") -> int:
     return 0
 
 _slot_data_options: list[str] = [
@@ -41,7 +39,7 @@ _slot_data_options: list[str] = [
 def get_slot_data_options() -> frozenset[str]:
     return frozenset(_slot_data_options)
 
-def fill_slot_data(world: CupheadWorld) -> dict[str, Any]:
+def fill_slot_data(world: "CupheadWorld") -> dict[str, Any]:
     slot_data: dict[str, Any] = {
         "version": world.SLOT_DATA_VERSION,
         "world_version": world.APWORLD_VERSION,

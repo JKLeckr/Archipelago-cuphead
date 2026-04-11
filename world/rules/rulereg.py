@@ -1,15 +1,16 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from enum import IntEnum
 from typing import TYPE_CHECKING, NamedTuple
 
+from typing_extensions import override
+
 from rule_builder.rules import And, Or, Rule
 
 from . import rulebase as rb
+from .rulepresetreg import RulePresetReg
 
 if TYPE_CHECKING:
     from ... import CupheadWorld
@@ -23,36 +24,42 @@ class Spot(NamedTuple):
     type: SpotType
 
 class RuleData(NamedTuple):
-    rule: Rule
+    rule: Rule["CupheadWorld"]
     combine_and: bool = True
 
 @dataclass(init=False)
 class RuleReg:
     _debug: bool = False
     _reg: dict[Spot, list[RuleData]]
-    _world: CupheadWorld
+    _preset_reg: RulePresetReg
+    _world: "CupheadWorld"
 
-    def __init__(self, world: CupheadWorld):
+    def __init__(self, world: "CupheadWorld"):
         self._debug = world.settings.is_debug_bit_on(256)
         self._reg = {}
+        self._preset_reg = RulePresetReg()
         self._world = world
+
+    @property
+    def presets(self) -> RulePresetReg:
+        return self._preset_reg
 
     def clear_all_rules(self):
         self._reg.clear()
 
-    def in_reg(self, spot: str, spot_type: SpotType) -> bool:
+    def contains(self, spot: str, spot_type: SpotType) -> bool:
         return Spot(spot, spot_type) in self._reg
 
     def get_rule(self, spot: str, spot_type: SpotType) -> list[RuleData]:
         return self._reg[Spot(spot, spot_type)]
 
-    def _add_rule(self, spot: Spot, rule: Rule, combine_and: bool):
+    def _add_rule(self, spot: Spot, rule: Rule["CupheadWorld"], combine_and: bool):
         if spot not in self._reg:
             self._reg[spot] = [RuleData(rule)]
         else:
             self._reg[spot].append(RuleData(rule, combine_and))
 
-    def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule, combine_and: bool = True):
+    def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule["CupheadWorld"], combine_and: bool = True):
         spot = Spot(spot_name, spot_type)
         self._add_rule(spot, rule, combine_and)
 
@@ -91,13 +98,13 @@ class RuleReg:
 
     def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
         self.add_loc_rule(loc, rb.rule_has(item, count), combine_and)
-    def add_loc_rule(self, loc: str, rule: Rule, combine_and: bool = True) -> None:
+    def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         self.add_rule(loc, SpotType.LOCATION, rule, combine_and)
-    def add_region_rule(self, region_name: str, rule: Rule, combine_and: bool = True):
+    def add_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         region = rb.get_region(self._world, region_name)
         for entrance in region.entrances:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
-    def add_region_exit_rule(self, region_name: str, rule: Rule, combine_and: bool = True):
+    def add_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         region = rb.get_region(self._world, region_name)
         for entrance in region.exits:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
@@ -106,6 +113,10 @@ class RuleReg:
         self.pop_rule(loc, SpotType.LOCATION)
     def pop_entrance_rule(self, entrance_name: str) -> dict[str, list[RuleData]] | None:
         self.pop_rule(entrance_name, SpotType.ENTRANCE)
+
+    @override
+    def __str__(self) -> str:
+        return f"{self.__class__.__name__}(reg = {self._reg!s}, preset_reg = {self._preset_reg!s})"
 
     def compile_rules(self):
         # This will iterate through the rules for each type and set the rule for
@@ -130,7 +141,7 @@ class RuleReg:
                 self._world.set_rule(spot, rules[0].rule)
                 continue
 
-            _col: list[Rule] = []
+            _col: list[Rule[CupheadWorld]] = []
             _and = True
             for rule in rules:
                 if rule.combine_and != _and:

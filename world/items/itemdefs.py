@@ -4,8 +4,6 @@
 # Prefer things to be on one line than scrunched, so ignore length issues with linting.
 # ruff: noqa: E501
 
-from __future__ import annotations
-
 from BaseClasses import ItemClassification
 
 from ..names import itemnames

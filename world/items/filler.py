@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from . import itembase
@@ -10,7 +8,7 @@ from . import itembase
 if TYPE_CHECKING:
     from ... import CupheadWorld
 
-def get_filler_item_name(world: CupheadWorld) -> str:
+def get_filler_item_name(world: "CupheadWorld") -> str:
     item_weights = world.options.filler_item_weights.value
     if item_weights:
         return itembase.weighted_item_choice(item_weights, world.random)

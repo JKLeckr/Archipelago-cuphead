@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from ..names import locationnames, regionnames
 from ..rules.dep import deps
 from .regionbase import DefFlags, LevelRegionData, LevelTarget, RegionData, Target, WorldRegionData

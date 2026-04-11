@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from random import Random
 from typing import TYPE_CHECKING
 
@@ -24,7 +22,7 @@ def _add_level(level_ref: dict[str, LevelData], lname: str, level_def: dict[str,
     level_ref[lname] = level_def[lname]
 
 def setup_levels(
-        settings: CupheadSettings,
+        settings: "CupheadSettings",
         options: CupheadOptions,
         active_locations: dict[str,LocationData]
     ) -> dict[str,LevelData]:

@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from collections.abc import Mapping
 from random import Random
 from typing import NamedTuple
@@ -20,9 +18,9 @@ class ItemData(NamedTuple):
     event: bool = False
     category: str | None = None
 
-    def with_item_type(self, type: ItemClassification) -> ItemData:
+    def with_item_type(self, type: ItemClassification) -> "ItemData":
         return ItemData(self.id, type, self.quantity, self.event, self.category)
-    def with_quantity(self, quantity: int) -> ItemData:
+    def with_quantity(self, quantity: int) -> "ItemData":
         return ItemData(self.id, self.item_type, quantity, self.event, self.category)
 
 def weighted_item_choice(item_weights: Mapping[str, int], rand: Random) -> str:

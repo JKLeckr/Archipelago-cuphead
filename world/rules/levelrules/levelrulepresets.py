@@ -1,448 +1,318 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
-from rule_builder.rules import False_, Has, HasAll, HasAny, HasGroup
-
 from ...names import itemnames as i
 from ..dep import deps
 from ..dep.depfilter import DepFilter
-from . import levelruleselectors as lrs
-from .levelrulebase import And, Or, RBRule, RuleList, RulePreset, SelectRule, lrpreset
+from ..rb.rbbaserules import Filtered, Has, HasAll, HasAny, HasGroup
+from ..rb.rbrules import HasAnyWeaponEx, Preset
 
+LrpPlane = Preset(
+    Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, value=False)]) &
+    HasAny(i.item_plane_gun, i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic)]),
+    "Plane"
+)
 
-@lrpreset
-def lrp_plane() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, value=False)])
-        ),
-        RBRule(
-            HasAny(i.item_plane_gun, i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic)])
-        )
-    ])
+LrpDuck = Preset(
+    Has(i.item_ability_duck, options=[DepFilter(deps.dep_rando_abilities)]),
+    "Duck"
+)
 
+LrpDash = Preset(
+    Has(i.item_ability_dash, options=[DepFilter(deps.dep_rando_abilities)]),
+    "Dash"
+)
 
-@lrpreset
-def lrp_duck() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(i.item_ability_duck, options=[DepFilter(deps.dep_rando_abilities)])
-        )
-    ])
+LrpParry = Preset(
+    Has(
+        i.item_ability_parry,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only, value=False)
+        ]
+    ) &
+    HasAll(
+        i.item_ability_parry,
+        i.item_ability_dash,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only)
+        ]
+    ),
+    "Parry"
+)
 
+LrpPlaneParry = Preset(
+    Has(i.item_ability_plane_parry, options=[DepFilter(deps.dep_rando_abilities)]),
+    "Plane Parry"
+)
 
-@lrpreset
-def lrp_dash() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(i.item_ability_dash, options=[DepFilter(deps.dep_rando_abilities)])
-        )
-    ])
+LrpPlaneShrink = Preset(
+    Has(i.item_ability_plane_shrink, options=[DepFilter(deps.dep_rando_abilities)]),
+    "Plane Shrink"
+)
 
+LrpDuckOrDash = Preset(
+    HasAny(
+        i.item_ability_duck,
+        i.item_ability_dash,
+        options=[DepFilter(deps.dep_rando_abilities)]
+    ),
+    "Duck or Dash"
+)
 
-@lrpreset
-def lrp_parry() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(
-                i.item_ability_parry,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, value=False)
-                ]
-            )
-        ),
-        RBRule(
-            HasAll(
-                i.item_ability_parry,
-                i.item_ability_dash,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only)
-                ]
-            )
-        )
-    ])
+LrpDuckAndDash = Preset(
+    HasAll(
+        i.item_ability_duck,
+        i.item_ability_dash,
+        options=[DepFilter(deps.dep_rando_abilities)]
+    ),
+    "Duck and Dash"
+)
 
+LrpParryOrPSugar = Preset(
+    HasAny(
+        i.item_ability_parry,
+        i.item_charm_psugar,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only, value=False)
+        ]
+    ) &
+    HasAll(
+        i.item_ability_parry,
+        i.item_ability_dash,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only)
+        ]
+    ),
+    "Parry or P. Sugar"
+)
 
-@lrpreset
-def lrp_plane_parry() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(i.item_ability_plane_parry, options=[DepFilter(deps.dep_rando_abilities)])
-        )
-    ])
+LrpDashOrParry = Preset(
+    HasAny(
+        i.item_ability_dash,
+        i.item_ability_parry,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only, value=False)
+        ]
+    ) &
+    Has(
+        i.item_ability_dash,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only)
+        ]
+    ),
+    "Dash or Parry"
+)
 
+LrpDashAndParry = Preset(
+    HasAll(
+        i.item_ability_dash,
+        i.item_ability_parry,
+        options=[DepFilter(deps.dep_rando_abilities)]
+    ),
+    "Dash and Parry"
+)
 
-@lrpreset
-def lrp_plane_shrink() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(i.item_ability_plane_shrink, options=[DepFilter(deps.dep_rando_abilities)])
-        )
-    ])
+LrpDashParryOrPSugar = Preset(
+    HasAny(
+        i.item_ability_dash,
+        i.item_ability_parry,
+        i.item_charm_psugar,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only, value=False)
+        ]
+    ) &
+    Has(
+        i.item_ability_dash,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only)
+        ]
+    ),
+    "Dash, Parry, or P. Sugar"
+)
 
+LrpDuckAndParry = Preset(
+    HasAll(
+        i.item_ability_duck,
+        i.item_ability_parry,
+        options=[DepFilter(deps.dep_rando_abilities)]
+    ) &
+    Has(
+        i.item_ability_dash,
+        options=[
+            DepFilter(deps.dep_rando_abilities),
+            DepFilter(deps.dep_dlc_chalice_only)
+        ]
+    ),
+    "Duck and Parry"
+)
 
-@lrpreset
-def lrp_duck_or_dash() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAny(
-                i.item_ability_duck,
-                i.item_ability_dash,
-                options=[DepFilter(deps.dep_rando_abilities)]
-            )
-        )
-    ])
+LrpDuckDashAndParry = Preset(
+    HasAll(
+        i.item_ability_duck,
+        i.item_ability_dash,
+        i.item_ability_parry,
+        options=[DepFilter(deps.dep_rando_abilities)]
+    ),
+    "Duck, Dash and Parry"
+)
 
+LrpAnySuper = Preset(
+    HasGroup(i.item_group_super, 1),
+    "Any Super"
+)
 
-@lrpreset
-def lrp_duck_and_dash() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAll(
-                i.item_ability_duck,
-                i.item_ability_dash,
-                options=[DepFilter(deps.dep_rando_abilities)]
-            )
-        )
-    ])
+LrpWeaponEx = Preset(
+    HasAnyWeaponEx(options=[DepFilter(deps.dep_weapon_ex_rando)]),
+    "Weapon EX"
+)
 
+LrpTopgrade = Preset(
+    LrpParry &
+    Filtered(
+        LrpAnySuper | LrpWeaponEx,
+        options=[DepFilter(deps.dep_weapon_ex_rando)]
+    ),
+    "Topgrade"
+)
 
-@lrpreset
-def lrp_parry_or_psugar() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAny(
-                i.item_ability_parry,
-                i.item_charm_psugar,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, value=False)
-                ]
-            )
-        ),
-        RBRule(
-            HasAll(
-                i.item_ability_parry,
-                i.item_ability_dash,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only)
-                ]
-            )
-        )
-    ])
+LrpPlaneTopgrade = Preset(
+    LrpPlaneParry &
+    HasAny(
+        i.item_plane_ex,
+        i.item_plane_super,
+        i.item_dlc_cplane_ex,
+        i.item_dlc_cplane_super,
+        options=[DepFilter(deps.dep_weapon_ex_rando)]
+    ),
+    "Plane Topgrade"
+)
 
+LrpRungunTopgrade = Preset(
+    LrpParry,
+    "Run n Gun Topgrade"
+)
 
-@lrpreset
-def lrp_dash_or_parry() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAny(
-                i.item_ability_dash,
-                i.item_ability_parry,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, value=False)
-                ]
-            )
-        ),
-        RBRule(
-            Has(
-                i.item_ability_dash,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only)
-                ]
-            )
-        )
-    ])
+LrpWeapon = Preset(
+    HasGroup(i.item_group_weapon) |
+    Filtered(
+        HasAnyWeaponEx() & Has(i.item_charm_coffee),
+        options=[
+            DepFilter(deps.dep_hard_logic),
+            DepFilter(deps.dep_weapon_ex_separate)
+        ],
+    ) |
+    Filtered(
+        LrpParry & Has(i.item_charm_whetstone),
+        options=[DepFilter(deps.dep_hard_logic)],
+    ), #|
+    ## Or if we want to make things more difficult, go even more lax.
+    #(HasGroup(i.item_group_super) & Has(i.item_charm_coffee)),
+    "Weapon",
+    options=[DepFilter(deps.dep_no_start_weapon)],
+)
 
+LrpRungunWeapon = Preset(
+    HasGroup(i.item_group_weapon) |
+    Filtered(
+        HasAnyWeaponEx() | Has(i.item_charm_coffee),
+        options=[DepFilter(deps.dep_weapon_ex_separate)]
+    ) |
+    (LrpParry & Has(i.item_charm_whetstone)), #|
+    #(HasGroup(i.item_group_super) & Has(i.item_charm_coffee))
+    "Run n Gun Weapon",
+    options=[DepFilter(deps.dep_no_start_weapon), DepFilter(deps.dep_hard_logic, False)],
+)
 
-@lrpreset
-def lrp_dash_and_parry() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAll(
-                i.item_ability_dash,
-                i.item_ability_parry,
-                options=[DepFilter(deps.dep_rando_abilities)]
-            )
-        )
-    ])
+LrpDlcCookie = Preset(
+    Has(i.item_charm_dlc_cookie, options=[DepFilter(deps.dep_dlc_cookie)]),
+    "DLC Cookie",
+    options=[DepFilter(deps.dep_dlc_chalice, value=False)],
+    filtered_resolution=False
+)
 
+LrpDlcDoublejump = Preset(
+    LrpDlcCookie &
+    Has(i.item_ability_dlc_cdoublejump, options=[DepFilter(deps.dep_rando_abilities)]),
+    "DLC Double Jump",
+    options=[DepFilter(deps.dep_dlc_chalice, value=False)],
+    filtered_resolution=False
+)
 
-@lrpreset
-def lrp_dash_parry_or_psugar() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAny(
-                i.item_ability_dash,
-                i.item_ability_parry,
-                i.item_charm_psugar,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only, value=False)
-                ]
-            )
-        ),
-        RBRule(
-            Has(
-                i.item_ability_dash,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only)
-                ]
-            )
-        )
-    ])
+LrpDashOrDlcDoublejump = Preset(
+    Has(
+        i.item_ability_dash,
+        options=[DepFilter(deps.dep_dlc_chalice, value=False), DepFilter(deps.dep_rando_abilities)]
+    ) &
+    HasAll(
+        i.item_ability_dash,
+        i.item_ability_dlc_cdoublejump,
+        options=[DepFilter(deps.dep_dlc_chalice), DepFilter(deps.dep_rando_abilities)]
+    ),
+    "Dash or DLC Double Jump"
+)
 
+LrpDlcBossChaliced = Preset(
+    LrpDlcCookie &
+    Filtered(
+        LrpTopgrade,
+        options=[DepFilter(deps.dep_dlc_chaliced_grade_required)]
+    ) &
+    Filtered(
+        LrpDash,
+        options=[
+            DepFilter(deps.dep_dlc_chaliced_grade_required),
+            DepFilter(deps.dep_dlc_chalice_only, value=False)
+        ]
+    ),
+    "DLC Boss Chaliced"
+)
 
-@lrpreset
-def lrp_duck_and_parry() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAll(
-                i.item_ability_duck,
-                i.item_ability_parry,
-                options=[DepFilter(deps.dep_rando_abilities)]
-            )
-        ),
-        RBRule(
-            Has(
-                i.item_ability_dash,
-                options=[
-                    DepFilter(deps.dep_rando_abilities),
-                    DepFilter(deps.dep_dlc_chalice_only)
-                ]
-            )
-        )
-    ])
+LrpDlcBossPlaneChaliced = Preset(
+    LrpDlcCookie &
+    Filtered(
+        LrpPlaneTopgrade,
+        options=[DepFilter(deps.dep_dlc_chaliced_grade_required)]
+    ),
+    "DLC Boss Plane Chaliced"
+)
 
+LrpDlcBossChalicedParry = Preset(
+    LrpDlcBossChaliced &
+    Filtered(
+        LrpDashAndParry,
+        options=[DepFilter(deps.dep_dlc_chaliced_grade_required,value=False)]
+    ),
+    "DLC Boss Chaliced Parry"
+)
 
-@lrpreset
-def lrp_duck_dash_and_parry() -> RuleList:
-    return RuleList([
-        RBRule(
-            HasAll(
-                i.item_ability_duck,
-                i.item_ability_dash,
-                i.item_ability_parry,
-                options=[DepFilter(deps.dep_rando_abilities)]
-            )
-        )
-    ])
+LrpDlcRungunChaliced = Preset(
+    LrpDlcCookie &
+    Filtered(LrpRungunTopgrade, options=[DepFilter(deps.dep_dlc_rungun_chaliced_grade_required)]) &
+    Filtered(
+        LrpDash,
+        options=[
+            DepFilter(deps.dep_dlc_rungun_chaliced_grade_required),
+            DepFilter(deps.dep_dlc_chalice_only, value=False)
+        ]
+    ),
+    "DLC Run n Gun Chaliced"
+)
 
+LrpDlcRungunChalicedParry = Preset(
+    LrpDlcRungunChaliced &
+    Filtered(LrpDash, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, value=False)]),
+    "DLC Run n Gun Chaliced Parry"
+)
 
-@lrpreset
-def lrp_any_super() -> RuleList:
-    return RuleList([
-        RBRule(HasGroup(i.item_group_super, 1))
-    ])
-
-
-@lrpreset
-def lrp_weapon_ex() -> RuleList:
-    return RuleList([
-        SelectRule(lrs.lrs_all_weapon_ex, True, options=[DepFilter(deps.dep_weapon_ex_rando)])
-    ])
-
-
-@lrpreset
-def lrp_topgrade() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_parry),
-        Or(
-            RulePreset(lrp_any_super),
-            RulePreset(lrp_weapon_ex),
-            options=[DepFilter(deps.dep_weapon_ex_rando)]
-        )
-    ])
-
-
-@lrpreset
-def lrp_plane_topgrade() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_plane_parry),
-        RBRule(
-            HasAny(
-                i.item_plane_ex,
-                i.item_plane_super,
-                i.item_dlc_cplane_ex,
-                i.item_dlc_cplane_super,
-                options=[DepFilter(deps.dep_weapon_ex_rando)]
-            )
-        )
-    ])
-
-
-@lrpreset
-def lrp_rungun_topgrade() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_parry)
-    ])
-
-
-@lrpreset
-def lrp_weapon() -> RuleList:
-    return RuleList([
-        Or(
-            RBRule(HasGroup(i.item_group_weapon)),
-            And(
-                RBRule(HasGroup(i.item_group_weapon_ex)),
-                RBRule(Has(i.item_charm_coffee)),
-                options=[
-                    DepFilter(deps.dep_hard_logic),
-                    DepFilter(deps.dep_weapon_ex_separate)
-                ]
-            ),
-            And(
-                RulePreset(lrp_parry),
-                RBRule(Has(i.item_charm_whetstone)),
-                options=[
-                    DepFilter(deps.dep_hard_logic),
-                ]
-            ),
-            ## Or if we want to make things more difficult, go even more lax.
-            #And(
-            #    RBRule(HasGroup(i.item_group_super)),
-            #    RBRule(Has(i.item_charm_coffee))
-            #),
-            options=[DepFilter(deps.dep_no_start_weapon)]
-        )
-    ])
-
-
-@lrpreset
-def lrp_rungun_weapon() -> RuleList:
-    return RuleList([
-        Or(
-            RBRule(HasGroup(i.item_group_weapon)),
-            And(
-                RBRule(HasGroup(i.item_group_weapon_ex)),
-                RBRule(Has(i.item_charm_coffee)),
-                options=[DepFilter(deps.dep_weapon_ex_separate)]
-            ),
-            And(
-                RulePreset(lrp_parry),
-                RBRule(Has(i.item_charm_whetstone)),
-            ),
-            #And(
-            #    RBRule(HasGroup(i.item_group_super)),
-            #    RBRule(Has(i.item_charm_coffee))
-            #),
-            options=[DepFilter(deps.dep_no_start_weapon), DepFilter(deps.dep_hard_logic, False)]
-        )
-    ])
-
-
-@lrpreset
-def lrp_dlc_cookie() -> RuleList:
-    return RuleList([
-        RBRule(
-            False_(options=[DepFilter(deps.dep_dlc_chalice, value=False)])
-        ),
-        RBRule(
-            Has(i.item_charm_dlc_cookie, options=[DepFilter(deps.dep_dlc_cookie)])
-        )
-    ])
-
-
-@lrpreset
-def lrp_dlc_doublejump() -> RuleList:
-    return RuleList([
-        RBRule(
-            False_(options=[DepFilter(deps.dep_dlc_chalice, value=False)])
-        ),
-        And(
-            RulePreset(lrp_dlc_cookie),
-            RBRule(Has(i.item_ability_dlc_cdoublejump)),
-            options=[DepFilter(deps.dep_rando_abilities)]
-        )
-    ])
-
-
-@lrpreset
-def lrp_dash_or_dlc_doublejump() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(
-                i.item_ability_dash,
-                options=[DepFilter(deps.dep_dlc_chalice, value=False), DepFilter(deps.dep_rando_abilities)]
-            )
-        ),
-        RBRule(
-            HasAll(
-                i.item_ability_dash,
-                i.item_ability_dlc_cdoublejump,
-                options=[DepFilter(deps.dep_dlc_chalice), DepFilter(deps.dep_rando_abilities)]
-            )
-        )
-    ])
-
-
-@lrpreset
-def lrp_dlc_boss_chaliced() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_dlc_cookie),
-        RulePreset(lrp_topgrade, options=[DepFilter(deps.dep_dlc_chaliced_grade_required)]),
-        RulePreset(
-            lrp_dash,
-            options=[
-                DepFilter(deps.dep_dlc_chaliced_grade_required),
-                DepFilter(deps.dep_dlc_chalice_only, value=False)
-            ]
-        )
-    ])
-
-
-@lrpreset
-def lrp_dlc_boss_plane_chaliced() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_dlc_cookie),
-        RulePreset(lrp_plane_topgrade, options=[DepFilter(deps.dep_dlc_chaliced_grade_required)])
-    ])
-
-
-@lrpreset
-def lrp_dlc_boss_chaliced_parry() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_dlc_boss_chaliced),
-        RulePreset(lrp_dash_and_parry, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, value=False)])
-    ])
-
-
-@lrpreset
-def lrp_dlc_rungun_chaliced() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_dlc_cookie),
-        RulePreset(lrp_rungun_topgrade, options=[DepFilter(deps.dep_dlc_rungun_chaliced_grade_required)]),
-        RulePreset(
-            lrp_dash,
-            options=[
-                DepFilter(deps.dep_dlc_rungun_chaliced_grade_required),
-                DepFilter(deps.dep_dlc_chalice_only, value=False)
-            ]
-        )
-    ])
-
-
-@lrpreset
-def lrp_dlc_rungun_chaliced_parry() -> RuleList:
-    return RuleList([
-        RulePreset(lrp_dlc_rungun_chaliced),
-        RulePreset(lrp_dash, options=[DepFilter(deps.dep_dlc_chaliced_grade_required, value=False)])
-    ])
-
-
-@lrpreset
-def lrp_dlc_relic() -> RuleList:
-    return RuleList([
-        RBRule(
-            Has(i.item_charm_dlc_broken_relic)
-        )
-    ])
-
+LrpDlcRelic = Preset(
+    Has(i.item_charm_dlc_broken_relic),
+    "DLC Relic"
+)

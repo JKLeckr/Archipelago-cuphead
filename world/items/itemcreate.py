@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 import math
 from collections.abc import Iterable
 from random import Random
@@ -25,7 +23,11 @@ if TYPE_CHECKING:
 def create_item(name: str, player: int, force_classification: ItemClassification | None = None) -> Item:
     return create_item_ext(name, player, idef.items_all, force_classification)
 
-def create_active_item(world: CupheadWorld, name: str, force_classification: ItemClassification | None = None) -> Item:
+def create_active_item(
+    world: "CupheadWorld",
+    name: str,
+    force_classification: ItemClassification | None = None
+) -> Item:
     if name not in world.active_items:
         raise KeyError(f"Item {name} is not in active items!")
     return create_item_ext(name, world.player, world.active_items, force_classification)
@@ -48,10 +50,10 @@ def create_item_ext(
     return CupheadItem(name, classification, data.id, player)
 
 
-def create_filler_item(world: CupheadWorld) -> Item:
+def create_filler_item(world: "CupheadWorld") -> Item:
     return create_active_item(world, get_filler_item_name(world))
 
-def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
+def create_filler_items(world: "CupheadWorld", filler_count: int) -> list[Item]:
     #print(f"Filler count: {filler_count}")
     rand = world.random
     _itempool: list[Item] = []
@@ -70,7 +72,7 @@ def create_filler_items(world: CupheadWorld, filler_count: int) -> list[Item]:
     #print(f"Total count: {len(_itempool)}")
     return _itempool
 
-def create_traps(world: CupheadWorld, trap_count: int, rand: Random) -> list[Item]:
+def create_traps(world: "CupheadWorld", trap_count: int, rand: Random) -> list[Item]:
     active_trap_weights = world.options.trap_item_weights.value
 
     if not active_trap_weights:
@@ -83,7 +85,7 @@ def create_traps(world: CupheadWorld, trap_count: int, rand: Random) -> list[Ite
 
     return res
 
-def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[str]) -> list[Item]:
+def create_pool_items(world: "CupheadWorld", items: list[str], precollected: list[str]) -> list[Item]:
     _itempool: list[Item] = []
     for itemname in items:
         if itemname in world.active_items.keys():
@@ -95,11 +97,11 @@ def create_pool_items(world: CupheadWorld, items: list[str], precollected: list[
                 _itempool += [create_active_item(world, itemname, item.item_type) for _ in range(qty)]
     return _itempool
 
-def place_locked_item(world: CupheadWorld, item: Item, location: str):
+def place_locked_item(world: "CupheadWorld", item: Item, location: str):
     world.multiworld.get_location(location, world.player) \
         .place_locked_item(item)
 def create_locked_item(
-        world: CupheadWorld,
+        world: "CupheadWorld",
         name: str,
         location: str,
         force_classification: ItemClassification | None = None
@@ -107,7 +109,7 @@ def create_locked_item(
     #print(f"Create locked item: '{name}' at '{location}'")
     place_locked_item(world, create_active_item(world, name, force_classification), location)
 def create_locked_items_at(
-        world: CupheadWorld,
+        world: "CupheadWorld",
         name: str,
         locations: Iterable[str],
         force_classification: ItemClassification | None = None
@@ -118,7 +120,7 @@ def create_locked_items_at(
         elif world.settings.is_debug_bit_on(1):
             print(f"Skipped {name} for {loc}")
 
-def create_dlc_locked_items(world: CupheadWorld):
+def create_dlc_locked_items(world: "CupheadWorld"):
     if world.options.dlc_requires_mausoleum.bvalue:
         create_locked_item(world, itemnames.item_event_mausoleum, locationnames.loc_event_mausoleum)
     if world.options.dlc_chalice.evalue == ChaliceMode.VANILLA:
@@ -134,7 +136,7 @@ def create_dlc_locked_items(world: CupheadWorld):
         ldef.locations_dlc_event_boss_final_chaliced
     )
 
-def create_locked_items(world: CupheadWorld):
+def create_locked_items(world: "CupheadWorld"):
     # Locked Items
     for i in range(1,6):
         _loc = getattr(locationnames, f"loc_event_isle1_secret_prereq{i}")
@@ -159,7 +161,7 @@ def create_locked_items(world: CupheadWorld):
     if world.use_dlc:
         create_dlc_locked_items(world)
 
-def create_special_items(world: CupheadWorld, precollected: list[str]) -> list[Item]:
+def create_special_items(world: "CupheadWorld", precollected: list[str]) -> list[Item]:
     options = world.options
     items: list[Item] = []
 
@@ -208,7 +210,7 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
             break
     return (total_single_coins, total_double_coins, total_triple_coins)
 
-def create_start_weapons(world: CupheadWorld) -> set[str]:
+def create_start_weapons(world: "CupheadWorld") -> set[str]:
     options = world.options
     weapon_dict = weapons.get_weapon_dict(options)
     res: set[str] = set()
@@ -228,7 +230,7 @@ def create_start_weapons(world: CupheadWorld) -> set[str]:
         res.add(weapon_ex)
     return res
 
-def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
+def setup_weapon_pool(world: "CupheadWorld", precollected_item_names: list[str]) -> list[str]:
     _weapons: list[str] = []
     _weapon_dict = weapons.get_weapon_dict(world.options)
 
@@ -251,7 +253,7 @@ def setup_weapon_pool(world: CupheadWorld, precollected_item_names: list[str]) -
 
     return _weapons
 
-def setup_ability_pool(world: CupheadWorld, precollected_item_names: list[str]) -> list[str]:
+def setup_ability_pool(world: "CupheadWorld", precollected_item_names: list[str]) -> list[str]:
     _precollected = precollected_item_names
     abilities = list(idef.item_abilities.keys())
     # FIXME: Is this needed? If they are not active, they won't be added anyways
@@ -262,7 +264,7 @@ def setup_ability_pool(world: CupheadWorld, precollected_item_names: list[str]) 
     # FIXME: Is checking precollected needed? (it is probably done elsewhere)
     return abilities
 
-def create_coins(world: CupheadWorld, location_count: int, precollected_item_names: list[str],
+def create_coins(world: "CupheadWorld", location_count: int, precollected_item_names: list[str],
                  coin_items: tuple[str, str, str]) -> list[Item]:
     res: list[Item] = []
     # Coins
@@ -302,7 +304,7 @@ def create_coins(world: CupheadWorld, location_count: int, precollected_item_nam
 
     return res
 
-def create_items(world: CupheadWorld) -> None:
+def create_items(world: "CupheadWorld") -> None:
     itempool: list[Item] = []
 
     precollected_item_names = [x.name for x in world.multiworld.precollected_items[world.player]]

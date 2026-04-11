@@ -1,8 +1,6 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING
 
 from . import levelids, levelsetup
@@ -15,7 +13,7 @@ setup_levels = levelsetup.setup_levels
 
 setup_level_map = levelsetup.setup_level_map
 
-def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
+def get_mapped_level_name(world: "CupheadWorld", level: str) -> str:
     if world.level_map:
         level_map = world.level_map
         if level in levelids.level_to_id:
@@ -24,7 +22,7 @@ def get_mapped_level_name(world: CupheadWorld, level: str) -> str:
                 return levelids.level_ids[level_map[level_map_id]]
     return level
 
-def get_level(world: CupheadWorld, level: str, map: bool = True) -> LevelData:
+def get_level(world: "CupheadWorld", level: str, map: bool = True) -> LevelData:
     levels = world.active_levels
     if level not in levels:
         raise ValueError(f"For '{level}': level is invalid!")

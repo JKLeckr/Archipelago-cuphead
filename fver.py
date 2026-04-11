@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+from typing import Self
+
 from typing_extensions import override
 
 
@@ -19,7 +21,7 @@ class FVersion:
         self.postfix = postfix
 
     @classmethod
-    def from_int_tuple(cls, version: tuple[int, int, int, int], postfix: str = "") -> "FVersion":
+    def from_int_tuple(cls, version: tuple[int, int, int, int], postfix: str = "") -> Self:
         if version[0] == 0:
             match version[1]:
                 case 1:
@@ -34,7 +36,7 @@ class FVersion:
                     branch = "unknown"
         else:
             branch = "v"
-        return FVersion(version[2], version[3], 0, branch, postfix)
+        return cls(version[2], version[3], 0, branch, postfix)
 
     def get_revision_letter(self) -> str:
         if self.revision < 0:
