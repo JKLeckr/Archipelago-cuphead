@@ -28,7 +28,7 @@ class Preset(WrapperRule["CupheadWorld"], game=GAME):
         preset: PresetData,
         *,
         options: Iterable[OptionFilter] = (),
-        filtered_resolution: bool = True
+        filtered_resolution: bool = False
     ):
         self.name = preset.name
         self.child = preset.rule

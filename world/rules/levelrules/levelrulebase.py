@@ -12,8 +12,6 @@ if TYPE_CHECKING:
 
 ### Base level rule data classes
 
-## Data Structure
-
 class InheritMode(IntEnum):
     NONE = 0
     AND = 1
