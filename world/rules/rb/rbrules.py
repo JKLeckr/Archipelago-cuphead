@@ -1,9 +1,9 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Self
 
 from typing_extensions import override
 
@@ -17,11 +17,13 @@ from ...items import weapons
 from .rbbase import PresetData
 
 if TYPE_CHECKING:
+    from worlds.AutoWorld import World
+
     from .... import CupheadWorld
 
 @dataclass(init=False)
 class Preset(WrapperRule["CupheadWorld"], game=GAME):
-    name: str
+    pname: str
 
     def __init__(
         self,
@@ -30,7 +32,7 @@ class Preset(WrapperRule["CupheadWorld"], game=GAME):
         options: Iterable[OptionFilter] = (),
         filtered_resolution: bool = False
     ):
-        self.name = preset.name
+        self.pname = preset.name
         self.child = preset.rule
         self.options = options
         self.filtered_resolution = filtered_resolution
@@ -38,16 +40,31 @@ class Preset(WrapperRule["CupheadWorld"], game=GAME):
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
         _reg = world.rulereg.presets
-        if rrule := _reg.get(self.name):
+        if rrule := _reg.get(self.pname):
             return rrule
         rrule = self.Resolved(
             self.child.resolve(world),
-            self.name,
+            self.pname,
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
-        _reg.set(self.name, rrule)
+        _reg.set(self.pname, rrule)
         return rrule
+
+    @override
+    def to_dict(self) -> dict[str, Any]:
+        data = super().to_dict()
+        data["preset_name"] = self.pname
+        return data
+
+    @override
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any], world_cls: "type[World]") -> Self:
+        res = super().from_dict(data, world_cls)
+        if not (_pname := data.get("preset_name", "")):
+            raise ValueError("preset_name is not a valid name")
+        res.pname = _pname
+        return res
 
     @override
     def __str__(self) -> str:

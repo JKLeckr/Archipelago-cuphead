@@ -3,7 +3,7 @@
 
 from typing import TYPE_CHECKING
 
-from rule_builder.rules import Rule
+from rule_builder.rules import Rule, True_
 
 from . import levelrulebase as lrb
 from .levelruledefs import levelrules
@@ -48,7 +48,7 @@ class LevelRuleComp:
         if locname in self._world.active_locations:
             _rule = self._compile_location_rule(ldef, loc)
             if _rule is None:
-                return
+                _rule = True_()
             self._world.rulereg.add_loc_rule(locname, _rule)
             if locname == ldef.exit_location:
                 self._world.rulereg.add_region_exit_rule(rlname, _rule)
@@ -71,8 +71,8 @@ class LevelRuleComp:
                 if ldef.exit_location and ldef.exit_location not in ldef.locations:
                     raise ValueError(f"'{lname}'.exit_location: '{ldef.exit_location}' is unknown.")
 
-                if ldef.access is not None:
-                    self._world.rulereg.add_region_rule(lname, ldef.access)
+                _rule = ldef.access
+                self._world.rulereg.add_region_rule(lname, _rule if _rule is not None else True_())
 
                 for locname, loc in ldef.locations.items():
                     self._compile_level_loc(lname, ldef, locname, loc)

@@ -6,48 +6,67 @@ from rule_builder.rules import Filtered
 from ..dep import deps
 from ..dep.depfilter import DepFilter
 from ..rb.rbrules import Preset
-from .levelrulepresets import (
-    LrpDash,
-    LrpDashAndParry,
-    LrpDlcBossChaliced,
-    LrpDlcCookie,
-    LrpDlcDoublejump,
-    LrpDuck,
-    LrpDuckOrDash,
-    LrpParry,
-)
+from . import levelrulepresets as lrp
 
 LrdBossBaronessChalice = (
-    Preset(LrpDlcDoublejump) #&
+    Preset(lrp.LrpDlcDoublejump) #&
     ## Maybe need duck?
-    #(Preset(LrpDuck) | DepFilter(deps.dep_hard_logic))
+    #(Preset(lrp.LrpDuck) | DepFilter(deps.dep_hard_logic))
+)
+
+LrdBossBaronessChaliceOnly = (
+    LrdBossBaronessChalice |
+    DepFilter(deps.dep_dlc_chalice_only, False)
+)
+
+LrdBossDragonChaliced = (
+    Preset(lrp.LrpDlcBossChaliced) &
+    Filtered(
+        Preset(lrp.LrpDash) | Preset(lrp.LrpDlcDoublejump),
+        options=[DepFilter(deps.dep_hard_logic, False)],
+        filtered_resolution=True
+    )
 )
 
 LrdBossPirateChalice = (
-    (Preset(LrpDuck) | (Preset(LrpDashAndParry) & Preset(LrpDlcDoublejump))) |
-    DepFilter(deps.dep_rando_abilities, value=False)
+    (Preset(lrp.LrpDuck) | (Preset(lrp.LrpDashAndParry) & Preset(lrp.LrpDlcDoublejump))) |
+    DepFilter(deps.dep_rando_abilities, False)
 )
 
 LrdBossSallyStagePlaySecret = (
-    Preset(LrpParry) &
-    (Preset(LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, value=False))
+    Preset(lrp.LrpParry) &
+    (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
+)
+
+LrdBossTrainChaliced = (
+    Preset(lrp.LrpDlcBossChalicedParry) &
+    Filtered(
+        Preset(lrp.LrpDlcDoublejump),
+        options=[DepFilter(deps.dep_dlc_chalice_only, False), DepFilter(deps.dep_hard_logic, False)],
+        filtered_resolution=True
+    )
 )
 
 LrdDlcBossRumRunnersEarlyPhase = (
-    Preset(LrpDuck) &
-    (Preset(LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, value=False))
+    Preset(lrp.LrpDuck) &
+    (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
+)
+
+LrdDlcBossRumRunnersChaliced = (
+    Preset(lrp.LrpDlcBossChalicedParry) &
+    (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
 )
 
 LrdDlcBossSnowCultChaliced = (
-    Preset(LrpDlcBossChaliced) &
-    (Preset(LrpDlcDoublejump) | DepFilter(deps.dep_hard_logic))
+    Preset(lrp.LrpDlcBossChaliced) &
+    (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_hard_logic))
 )
 
 LrdDlcBossAirplaneChaliced = (
-    Preset(LrpDlcCookie) &
+    Preset(lrp.LrpDlcCookie) &
     Filtered(
-        Preset(LrpDuckOrDash) &
-        (Preset(LrpDuck) | (Preset(LrpDash) & Preset(LrpDlcDoublejump))),
+        Preset(lrp.LrpDuckOrDash) &
+        (Preset(lrp.LrpDuck) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump))),
         options=[DepFilter(deps.dep_hard_logic, False)],
         filtered_resolution=True
     )

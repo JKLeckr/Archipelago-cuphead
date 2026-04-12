@@ -10,52 +10,52 @@ from ..rb.rbbase import PresetData
 from ..rb.rbrules import HasAnyWeapon, HasAnyWeaponEx, Preset
 
 LrpPlane = PresetData(
-    Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, value=False)]) |
+    Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, False)]) |
     HasAny(i.item_plane_gun, i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic)]),
     "Plane"
 )
 
 LrpDuck = PresetData(
-    Has(i.item_ability_duck) | DepFilter(deps.dep_rando_abilities, value=False),
+    Has(i.item_ability_duck) | DepFilter(deps.dep_rando_abilities, False),
     "Duck"
 )
 
 LrpDash = PresetData(
-    Has(i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, value=False),
+    Has(i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
     "Dash"
 )
 
 LrpParry = PresetData(
     Has(
         i.item_ability_parry,
-        options=[DepFilter(deps.dep_dlc_chalice_only, value=False)]
+        options=[DepFilter(deps.dep_dlc_chalice_only, False)]
     ) |
     HasAll(
         i.item_ability_parry,
         i.item_ability_dash,
         options=[DepFilter(deps.dep_dlc_chalice_only)]
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Parry"
 )
 
 LrpPlaneParry = PresetData(
-    Has(i.item_ability_plane_parry) | DepFilter(deps.dep_rando_abilities, value=False),
+    Has(i.item_ability_plane_parry) | DepFilter(deps.dep_rando_abilities, False),
     "Plane Parry"
 )
 
 LrpPlaneShrink = PresetData(
-    Has(i.item_ability_plane_shrink) | DepFilter(deps.dep_rando_abilities, value=False),
+    Has(i.item_ability_plane_shrink) | DepFilter(deps.dep_rando_abilities, False),
     "Plane Shrink"
 )
 
 LrpDuckOrDash = PresetData(
-    HasAny(i.item_ability_duck, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, value=False),
+    HasAny(i.item_ability_duck, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
     "Duck or Dash"
 )
 
 LrpDuckAndDash = PresetData(
-    HasAll(i.item_ability_duck, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, value=False),
+    HasAll(i.item_ability_duck, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
     "Duck and Dash"
 )
 
@@ -63,14 +63,14 @@ LrpParryOrPSugar = PresetData(
     HasAny(
         i.item_ability_parry,
         i.item_charm_psugar,
-        options=[DepFilter(deps.dep_dlc_chalice_only, value=False)]
+        options=[DepFilter(deps.dep_dlc_chalice_only, False)]
     ) |
     HasAll(
         i.item_ability_parry,
         i.item_ability_dash,
         options=[DepFilter(deps.dep_dlc_chalice_only)]
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Parry or P. Sugar"
 )
 
@@ -78,18 +78,18 @@ LrpDashOrParry = PresetData(
     HasAny(
         i.item_ability_dash,
         i.item_ability_parry,
-        options=[DepFilter(deps.dep_dlc_chalice_only, value=False)]
+        options=[DepFilter(deps.dep_dlc_chalice_only, False)]
     ) |
     Has(
         i.item_ability_dash,
         options=[DepFilter(deps.dep_dlc_chalice_only)]
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Dash or Parry"
 )
 
 LrpDashAndParry = PresetData(
-    HasAll(i.item_ability_dash, i.item_ability_parry) | DepFilter(deps.dep_rando_abilities, value=False),
+    HasAll(i.item_ability_dash, i.item_ability_parry) | DepFilter(deps.dep_rando_abilities, False),
     "Dash and Parry"
 )
 
@@ -98,13 +98,13 @@ LrpDashParryOrPSugar = PresetData(
         i.item_ability_dash,
         i.item_ability_parry,
         i.item_charm_psugar,
-        options=[DepFilter(deps.dep_dlc_chalice_only, value=False)]
+        options=[DepFilter(deps.dep_dlc_chalice_only, False)]
     ) |
     Has(
         i.item_ability_dash,
         options=[DepFilter(deps.dep_dlc_chalice_only)]
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Dash, Parry, or P. Sugar"
 )
 
@@ -114,9 +114,9 @@ LrpDuckAndParry = PresetData(
             i.item_ability_duck,
             i.item_ability_parry,
         ) &
-        (Has(i.item_ability_dash) | DepFilter(deps.dep_dlc_chalice_only, value=False))
+        (Has(i.item_ability_dash) | DepFilter(deps.dep_dlc_chalice_only, False))
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Duck and Parry"
 )
 
@@ -126,7 +126,7 @@ LrpDuckDashAndParry = PresetData(
         i.item_ability_dash,
         i.item_ability_parry,
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Duck, Dash and Parry"
 )
 
@@ -203,14 +203,14 @@ LrpRungunWeapon = PresetData(
 )
 
 LrpDlcCookie = PresetData(
-    (Has(i.item_charm_dlc_cookie) | DepFilter(deps.dep_dlc_cookie, value=False)) &
+    (Has(i.item_charm_dlc_cookie) | DepFilter(deps.dep_dlc_cookie, False)) &
     DepFilter(deps.dep_dlc_chalice),
     "DLC Cookie"
 )
 
 LrpDlcDoublejump = PresetData(
     Preset(LrpDlcCookie) &
-    (Has(i.item_ability_dlc_cdoublejump) | DepFilter(deps.dep_rando_abilities, value=False)) &
+    (Has(i.item_ability_dlc_cdoublejump) | DepFilter(deps.dep_rando_abilities, False)) &
     DepFilter(deps.dep_dlc_chalice),
     "DLC Double Jump"
 )
@@ -218,14 +218,14 @@ LrpDlcDoublejump = PresetData(
 LrpDashOrDlcDoublejump = PresetData(
     Has(
         i.item_ability_dash,
-        options=[DepFilter(deps.dep_dlc_chalice, value=False)]
+        options=[DepFilter(deps.dep_dlc_chalice, False)]
     ) |
     HasAll(
         i.item_ability_dash,
         i.item_ability_dlc_cdoublejump,
         options=[DepFilter(deps.dep_dlc_chalice)]
     ) |
-    DepFilter(deps.dep_rando_abilities, value=False),
+    DepFilter(deps.dep_rando_abilities, False),
     "Dash or DLC Double Jump"
 )
 
@@ -242,7 +242,7 @@ LrpDlcBossChaliced = PresetData(
 
 LrpDlcBossPlaneChaliced = PresetData(
     Preset(LrpDlcCookie) &
-    (Preset(LrpPlaneTopgrade) | DepFilter(deps.dep_dlc_chaliced_grade_required, value=False)),
+    (Preset(LrpPlaneTopgrade) | DepFilter(deps.dep_dlc_chaliced_grade_required, False)),
     "DLC Boss Plane Chaliced"
 )
 

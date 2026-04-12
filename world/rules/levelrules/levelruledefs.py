@@ -69,62 +69,35 @@ levelrules = LevelRules(
             base=Preset(lrp.LrpParryOrPSugar),
             locations={
                 l.loc_level_boss_baroness: LocationDef(
-                    rule=Filtered(
-                        lrd.LrdBossBaronessChalice,
-                        options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    )
+                    rule=lrd.LrdBossBaronessChaliceOnly
                 ),
                 l.loc_level_boss_baroness_topgrade: LocationDef(
-                    rule=(
-                        Filtered(
-                            lrd.LrdBossBaronessChalice,
-                            options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        ) &
-                        Preset(lrp.LrpTopgrade)
-                    )
+                    rule=(lrd.LrdBossBaronessChaliceOnly & Preset(lrp.LrpTopgrade))
                 ),
                 l.loc_level_boss_baroness_phase1: LocationDef(
-                    rule=Filtered(
-                        lrd.LrdBossBaronessChalice,
-                        options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    ),
+                    rule=lrd.LrdBossBaronessChaliceOnly,
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_boss_baroness_phase2: LocationDef(
-                    rule=Filtered(
-                        lrd.LrdBossBaronessChalice,
-                        options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    ),
+                    rule=lrd.LrdBossBaronessChaliceOnly,
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_boss_baroness_phase3: LocationDef(
-                    rule=Filtered(
-                        lrd.LrdBossBaronessChalice,
-                        options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    ),
+                    rule=lrd.LrdBossBaronessChaliceOnly,
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_boss_baroness_phase4: LocationDef(
-                    rule=Filtered(
-                        lrd.LrdBossBaronessChalice,
-                        options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    )
+                    rule=lrd.LrdBossBaronessChaliceOnly
                 ),
                 l.loc_level_boss_baroness_event_agrade: LocationDef(
-                    rule=(
-                        Filtered(
-                            lrd.LrdBossBaronessChalice,
-                            options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        ) &
-                        Preset(lrp.LrpTopgrade)
-                    )
+                    rule=(lrd.LrdBossBaronessChaliceOnly & Preset(lrp.LrpTopgrade))
                 ),
                 l.loc_level_boss_baroness_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossBaronessChalice,
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossBaronessChalice),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_boss_baroness_event_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossBaronessChalice,
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossBaronessChalice),
                     inherit=InheritMode.NONE
                 ),
             },
@@ -144,33 +117,23 @@ levelrules = LevelRules(
         lv.level_boss_dragon: LevelDef(
             exit_location=l.loc_level_boss_dragon,
             access=Preset(lrp.LrpWeapon),
-            base=Filtered(
-                Preset(lrp.LrpDash) |
-                Preset(lrp.LrpDlcDoublejump),
-                options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+            base=(
+                Filtered(
+                    Preset(lrp.LrpDash) | Preset(lrp.LrpDlcDoublejump),
+                    options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                    filtered_resolution=True
+                )
             ),
             locations={
                 l.loc_level_boss_dragon: LocationDef(),
                 l.loc_level_boss_dragon_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_dragon_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_dragon_dlc_chaliced: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpDlcBossChaliced) &
-                        Filtered(
-                            Preset(lrp.LrpDash) | Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_hard_logic, False)]
-                        )
-                    ),
+                    rule=lrd.LrdBossDragonChaliced,
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_boss_dragon_event_dlc_chaliced: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpDlcBossChaliced) &
-                        Filtered(
-                            Preset(lrp.LrpDash) | Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_hard_logic, False)]
-                        )
-                    ),
+                    rule=lrd.LrdBossDragonChaliced,
                     inherit=InheritMode.NONE,
                 ),
             },
@@ -189,15 +152,10 @@ levelrules = LevelRules(
         lv.level_boss_pirate: LevelDef(
             exit_location=l.loc_level_boss_pirate,
             access=Preset(lrp.LrpWeapon),
-            base=Filtered(
+            base=(
                 Preset(lrp.LrpDuck) |
-                (
-                    Preset(lrp.LrpDashAndParry) &
-                    Filtered(
-                        Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    )
-                ),
-                options=[DepFilter(deps.dep_rando_abilities)],
+                (Preset(lrp.LrpDashAndParry) &
+                    (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False)))
             ),
             locations={
                 l.loc_level_boss_pirate: LocationDef(),
@@ -208,11 +166,11 @@ levelrules = LevelRules(
                 l.loc_level_boss_pirate_phase4: LocationDef(),
                 l.loc_level_boss_pirate_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_pirate_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossPirateChalice,
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossPirateChalice),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_boss_pirate_event_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossPirateChalice,
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & lrd.LrdBossPirateChalice),
                     inherit=InheritMode.NONE
                 ),
             },
@@ -222,42 +180,30 @@ levelrules = LevelRules(
             access=Preset(lrp.LrpWeapon),
             base=(
                 Preset(lrp.LrpDuck) &
-                Filtered(
-                    Preset(lrp.LrpParry),
-                    options=[DepFilter(deps.dep_rando_abilities), DepFilter(deps.dep_dlc_chalice_only)],
-                ) &
-                Filtered(
-                    Preset(lrp.LrpParryOrPSugar),
-                    options=[DepFilter(deps.dep_rando_abilities), DepFilter(deps.dep_dlc_chalice_only, False)],
-                )
+                ((Preset(lrp.LrpParry) & DepFilter(deps.dep_dlc_chalice_only)) |
+                    (Preset(lrp.LrpParryOrPSugar) & DepFilter(deps.dep_dlc_chalice_only, False)))
             ),
             locations={
                 l.loc_level_boss_mouse: LocationDef(
-                    rule=Filtered(
-                        Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    )
+                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                 ),
                 l.loc_level_boss_mouse_topgrade: LocationDef(
                     rule=(
                         Preset(lrp.LrpTopgrade) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        )
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                     )
                 ),
                 l.loc_level_boss_mouse_phase1: LocationDef(),
                 l.loc_level_boss_mouse_phase2: LocationDef(
-                    rule=Filtered(
-                        Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                    )
+                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                 ),
                 l.loc_level_boss_mouse_phase3: LocationDef(),
                 l.loc_level_boss_mouse_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_mouse_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump)
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump))
                 ),
                 l.loc_level_boss_mouse_event_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump)
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump))
                 ),
             },
         ),
@@ -268,7 +214,8 @@ levelrules = LevelRules(
                 Preset(lrp.LrpParry) &
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck),
-                    options=[DepFilter(deps.dep_dlc_chalice_only)]
+                    options=[DepFilter(deps.dep_dlc_chalice_only)],
+                    filtered_resolution=True
                 )
             ),
             locations={
@@ -300,11 +247,17 @@ levelrules = LevelRules(
                 ),
                 l.loc_level_boss_sallystageplay_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_sallystageplay_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck)),
+                    rule=(
+                        Preset(lrp.LrpDlcBossChalicedParry) &
+                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck))
+                    ),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_boss_sallystageplay_event_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck)),
+                    rule=(
+                        Preset(lrp.LrpDlcBossChalicedParry) &
+                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck))
+                    ),
                     inherit=InheritMode.NONE
                 ),
             },
@@ -317,39 +270,25 @@ levelrules = LevelRules(
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump),
                     options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                    filtered_resolution=True
                 )
             ),
             locations={
                 l.loc_level_boss_train: LocationDef(),
                 l.loc_level_boss_train_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_train_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
-                l.loc_level_boss_train_dlc_chaliced: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpDlcBossChalicedParry) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False), DepFilter(deps.dep_hard_logic, False)]
-                        )
-                    )
-                ),
-                l.loc_level_boss_train_event_dlc_chaliced: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpDlcBossChalicedParry) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False), DepFilter(deps.dep_hard_logic, False)]
-                        )
-                    )
-                ),
+                l.loc_level_boss_train_dlc_chaliced: LocationDef(rule=(lrd.LrdBossTrainChaliced)),
+                l.loc_level_boss_train_event_dlc_chaliced: LocationDef(rule=(lrd.LrdBossTrainChaliced)),
             },
         ),
         lv.level_boss_kingdice: LevelDef(
             exit_location=l.loc_level_boss_kingdice,
-            access=Has(i.item_contract, ContractReqsResolver()) & Preset(lrp.LrpWeapon),
-            base=(
-                Preset(lrp.LrpPlane) &
-                Filtered(Preset(lrp.LrpDashAndParry), options=[DepFilter(deps.dep_rando_abilities)])
+            access=(
+                Has(i.item_contract, ContractReqsResolver()) &
+                Preset(lrp.LrpWeapon) &
+                Preset(lrp.LrpParryOrPSugar)
             ),
+            base=(Preset(lrp.LrpPlane) & Preset(lrp.LrpDashAndParry)),
             locations={
                 l.loc_level_boss_kingdice: LocationDef(),
                 l.loc_level_boss_kingdice_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
@@ -384,11 +323,7 @@ levelrules = LevelRules(
         lv.level_boss_plane_bird: LevelDef(
             exit_location=l.loc_level_boss_plane_bird,
             access=Preset(lrp.LrpPlane),
-            base=(
-                Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic)]) &
-                Has(i.item_plane_gun, options=[DepFilter(deps.dep_hard_logic, False)]) &
-                Has(i.item_plane_bombs, options=[DepFilter(deps.dep_hard_logic, False)])
-            ),
+            base=(Has(i.item_plane_bombs) | DepFilter(deps.dep_hard_logic)),
             locations={
                 l.loc_level_boss_plane_bird: LocationDef(),
                 l.loc_level_boss_plane_bird_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
@@ -412,10 +347,7 @@ levelrules = LevelRules(
         ),
         lv.level_boss_plane_robot: LevelDef(
             exit_location=l.loc_level_boss_plane_robot,
-            access=(
-                Preset(lrp.LrpPlane) &
-                Filtered(Preset(lrp.LrpPlaneParry), options=[DepFilter(deps.dep_rando_abilities)])
-            ),
+            access=(Preset(lrp.LrpPlane) & Preset(lrp.LrpPlaneParry)),
             locations={
                 l.loc_level_boss_plane_robot: LocationDef(),
                 l.loc_level_boss_plane_robot_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
@@ -431,21 +363,21 @@ levelrules = LevelRules(
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDashAndParry),
                     options=[
-                        DepFilter(deps.dep_rando_abilities),
                         DepFilter(deps.dep_dlc_chalice_not_separate),
                         DepFilter(deps.dep_hard_logic),
                     ],
+                    filtered_resolution=True
                 ) &
                 Filtered(
                     Preset(lrp.LrpDashAndParry),
                     options=[
-                        DepFilter(deps.dep_rando_abilities),
                         DepFilter(
                             (deps.dep_dlc_chalice_not_separate, deps.dep_hard_logic),
                             value=False,
                             any=True
                         ),
                     ],
+                    filtered_resolution=True
                 )
             ),
             locations={
@@ -460,10 +392,7 @@ levelrules = LevelRules(
         lv.level_dlc_boss_oldman: LevelDef(
             exit_location=l.loc_level_dlc_boss_oldman,
             access=Preset(lrp.LrpWeapon),
-            base=Filtered(
-                Preset(lrp.LrpDash) & Preset(lrp.LrpParryOrPSugar),
-                options=[DepFilter(deps.dep_rando_abilities)]
-            ),
+            base=(Preset(lrp.LrpDash) & Preset(lrp.LrpParryOrPSugar)),
             locations={
                 l.loc_level_dlc_boss_oldman: LocationDef(),
                 l.loc_level_dlc_boss_oldman_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
@@ -476,7 +405,7 @@ levelrules = LevelRules(
             access=Preset(lrp.LrpWeapon),
             base=(
                 Preset(lrp.LrpDuckAndParry) &
-                Filtered(Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)])
+                (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
                 l.loc_level_dlc_boss_rumrunners: LocationDef(),
@@ -492,31 +421,21 @@ levelrules = LevelRules(
                 l.loc_level_dlc_boss_rumrunners_phase3: LocationDef(),
                 l.loc_level_dlc_boss_rumrunners_phase4: LocationDef(),
                 l.loc_level_dlc_boss_rumrunners_dlc_chaliced: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpDlcBossChalicedParry) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False)]
-                        )
-                    )
+                    rule=lrd.LrdDlcBossRumRunnersChaliced
                 ),
                 l.loc_level_dlc_boss_rumrunners_event_dlc_chaliced: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpDlcBossChalicedParry) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False)]
-                        )
-                    )
+                    rule=lrd.LrdDlcBossRumRunnersChaliced
                 ),
             },
         ),
         lv.level_dlc_boss_snowcult: LevelDef(
             exit_location=l.loc_level_dlc_boss_snowcult,
             access=Preset(lrp.LrpWeapon),
-            base=Filtered(
-                Preset(lrp.LrpDlcDoublejump),
-                options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+            base=(
+                Filtered(
+                    Preset(lrp.LrpDlcDoublejump),
+                    options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                )
             ),
             locations={
                 l.loc_level_dlc_boss_snowcult: LocationDef(),
@@ -529,16 +448,14 @@ levelrules = LevelRules(
             exit_location=l.loc_level_dlc_boss_airplane,
             access=Preset(lrp.LrpWeapon),
             base=(
+                Preset(lrp.LrpDuckOrDash, options=[DepFilter(deps.dep_dlc_chalice_only, False)]) |
                 Filtered(
-                    Preset(lrp.LrpDuckOrDash), options=[DepFilter(deps.dep_dlc_chalice_only, False)]
-                ) &
-                Filtered(
-                    Preset(lrp.LrpDuckOrDash),
-                    options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic)],
-                ) &
-                Filtered(
-                    Preset(lrp.LrpDuck) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump)),
-                    options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                    Preset(lrp.LrpDuckOrDash, options=[DepFilter(deps.dep_hard_logic)]) |
+                    Filtered(
+                        Preset(lrp.LrpDuck) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump)),
+                        options=[DepFilter(deps.dep_hard_logic, False)]
+                    ),
+                    options=[DepFilter(deps.dep_dlc_chalice_only)],
                 )
             ),
             locations={
@@ -565,35 +482,40 @@ levelrules = LevelRules(
             exit_location=None,
             access=Has(i.item_dlc_ingredient, DlcIngredientReqsResolver()) & Preset(lrp.LrpWeapon),
             base=(
-                Filtered(Preset(lrp.LrpParry), options=[DepFilter(deps.dep_rando_abilities)]) &
-                Filtered(Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)])
+                Preset(lrp.LrpParry) &
+                (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
                 l.loc_level_dlc_boss_saltbaker: LocationDef(),
                 l.loc_level_dlc_boss_saltbaker_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_dlc_boss_saltbaker_phase1: LocationDef(
-                    rule=Filtered(
-                        Preset(lrp.LrpDlcDoublejump),
-                        options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)]
+                    rule=(
+                        Preset(
+                            lrp.LrpDlcDoublejump,
+                            options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                            filtered_resolution=True
+                        )
                     ),
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_dlc_boss_saltbaker_phase2: LocationDef(
                     rule=(
-                        Filtered(Preset(lrp.LrpParry), options=[DepFilter(deps.dep_rando_abilities)]) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)]
+                        Preset(lrp.LrpParry) &
+                        Preset(
+                            lrp.LrpDlcDoublejump,
+                            options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                            filtered_resolution=True
                         )
                     ),
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_dlc_boss_saltbaker_phase3: LocationDef(
                     rule=(
-                        Filtered(Preset(lrp.LrpParry), options=[DepFilter(deps.dep_rando_abilities)]) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)]
+                        Preset(lrp.LrpParry) &
+                        Preset(
+                            lrp.LrpDlcDoublejump,
+                            options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                            filtered_resolution=True
                         )
                     ),
                     inherit=InheritMode.NONE,
@@ -601,11 +523,11 @@ levelrules = LevelRules(
                 l.loc_level_dlc_boss_saltbaker_phase4: LocationDef(),
                 l.loc_level_dlc_boss_saltbaker_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_dlc_boss_saltbaker_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump),
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_dlc_boss_saltbaker_event_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump),
+                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_event_dlc_goal_saltbaker: LocationDef(),
@@ -650,14 +572,10 @@ levelrules = LevelRules(
             base=Preset(lrp.LrpParry),
             locations={
                 l.loc_level_dicepalace_boss_rabbit: LocationDef(
-                    rule=(
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        )
-                    )
+                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                 ),
                 l.loc_level_dicepalace_boss_rabbit_dlc_chaliced: LocationDef(
-                    rule=Preset(lrp.LrpDlcBossChaliced) & Preset(lrp.LrpDlcDoublejump)
+                    rule=(Preset(lrp.LrpDlcBossChaliced) & Preset(lrp.LrpDlcDoublejump))
                 ),
             },
         ),
@@ -689,7 +607,7 @@ levelrules = LevelRules(
         ),
         lv.level_dicepalace_boss_plane_memory: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpPlane),
+            access=(Preset(lrp.LrpPlane) & Preset(lrp.LrpPlaneParry)),
             locations={
                 l.loc_level_dicepalace_boss_plane_memory: LocationDef(),
                 l.loc_level_dicepalace_boss_plane_memory_dlc_chaliced: LocationDef(
@@ -721,12 +639,12 @@ levelrules = LevelRules(
             exit_location=l.loc_level_rungun_tree,
             base=(
                 Preset(lrp.LrpDash) &
-                Filtered(Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)])
+                (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
                 l.loc_level_rungun_tree: LocationDef(rule=Preset(lrp.LrpRungunWeapon)),
                 l.loc_level_rungun_tree_agrade: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpRungunTopgrade)
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpRungunTopgrade))
                 ),
                 l.loc_level_rungun_tree_pacifist: LocationDef(),
                 l.loc_level_rungun_tree_coin1: LocationDef(rule=Preset(lrp.LrpParry), inherit=InheritMode.NONE),
@@ -738,14 +656,11 @@ levelrules = LevelRules(
                     rule=(
                         Preset(lrp.LrpRungunWeapon) &
                         Preset(lrp.LrpDlcRungunChaliced) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False)]
-                        )
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
                     )
                 ),
                 l.loc_level_rungun_tree_event_agrade: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpRungunTopgrade)
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpRungunTopgrade))
                 ),
                 l.loc_level_rungun_tree_event_pacifist: LocationDef(),
             },
@@ -758,14 +673,13 @@ levelrules = LevelRules(
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump),
                     options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                    filtered_resolution=True
                 )
             ),
             locations={
                 l.loc_level_rungun_circus: LocationDef(),
                 l.loc_level_rungun_circus_agrade: LocationDef(
-                    rule=Filtered(
-                        Preset(lrp.LrpRungunTopgrade), options=[DepFilter(deps.dep_hard_logic, False)]
-                    )
+                    rule=(Preset(lrp.LrpRungunTopgrade) | DepFilter(deps.dep_hard_logic))
                 ),
                 l.loc_level_rungun_circus_pacifist: LocationDef(),
                 l.loc_level_rungun_circus_coin1: LocationDef(inherit=InheritMode.NONE),
@@ -779,17 +693,17 @@ levelrules = LevelRules(
                         Preset(lrp.LrpDashAndParry) &
                         Filtered(
                             Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False), DepFilter(deps.dep_hard_logic, False)]
+                            options=[
+                                DepFilter(deps.dep_dlc_chalice_only, False),
+                                DepFilter(deps.dep_hard_logic, False)
+                            ],
+                            filtered_resolution=True
                         )
                     ),
                     inherit=InheritMode.NONE,
                 ),
                 l.loc_level_rungun_circus_event_agrade: LocationDef(
-                    rule=(
-                        Filtered(
-                            Preset(lrp.LrpRungunTopgrade), options=[DepFilter(deps.dep_hard_logic, False)]
-                        )
-                    )
+                    rule=(Preset(lrp.LrpRungunTopgrade) | DepFilter(deps.dep_hard_logic))
                 ),
                 l.loc_level_rungun_circus_event_pacifist: LocationDef(),
             },
@@ -798,13 +712,12 @@ levelrules = LevelRules(
             exit_location=l.loc_level_rungun_funhouse,
             base=(
                 Preset(lrp.LrpRungunWeapon) &
-                Filtered(
-                    Preset(lrp.LrpParry),
-                    options=[DepFilter(deps.dep_rando_abilities), DepFilter(deps.dep_dlc_chalice_only)],
-                ) &
-                Filtered(
-                    Preset(lrp.LrpParry) | (Has(i.item_charm_psugar) & Preset(lrp.LrpDash)),
-                    options=[DepFilter(deps.dep_rando_abilities), DepFilter(deps.dep_dlc_chalice_only, False)],
+                (
+                    Preset(lrp.LrpParry) |
+                    Filtered(
+                        Has(i.item_charm_psugar) & Preset(lrp.LrpDash),
+                        options=[DepFilter(deps.dep_dlc_chalice_only, False)],
+                    )
                 )
             ),
             locations={
@@ -816,15 +729,15 @@ levelrules = LevelRules(
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_funhouse_coin2: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar),
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_funhouse_coin3: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar),
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_funhouse_coin4: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar),
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_funhouse_coin5: LocationDef(),
@@ -838,14 +751,14 @@ levelrules = LevelRules(
             base=(
                 Preset(lrp.LrpRungunWeapon) &
                 Preset(lrp.LrpDashAndParry) &
-                Filtered(Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)])
+                (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
                 l.loc_level_rungun_harbour: LocationDef(),
                 l.loc_level_rungun_harbour_agrade: LocationDef(rule=Preset(lrp.LrpRungunTopgrade)),
                 l.loc_level_rungun_harbour_pacifist: LocationDef(),
                 l.loc_level_rungun_harbour_coin1: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpDashParryOrPSugar),
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpDashParryOrPSugar)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_harbour_coin2: LocationDef(
@@ -853,16 +766,14 @@ levelrules = LevelRules(
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_harbour_coin3: LocationDef(
-                    rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar),
+                    rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpParryOrPSugar)),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_harbour_coin4: LocationDef(
                     rule=(
                         Preset(lrp.LrpRungunWeapon) &
                         (Preset(lrp.LrpParry) | (Has(i.item_charm_psugar) & Preset(lrp.LrpDash))) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        )
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                     ),
                     inherit=InheritMode.NONE,
                 ),
@@ -870,10 +781,7 @@ levelrules = LevelRules(
                 l.loc_level_rungun_harbour_dlc_chaliced: LocationDef(
                     rule=(
                         Preset(lrp.LrpDlcRungunChaliced) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump),
-                            options=[DepFilter(deps.dep_dlc_chalice_only, False)]
-                        )
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
                     )
                 ),
                 l.loc_level_rungun_harbour_event_agrade: LocationDef(rule=Preset(lrp.LrpRungunTopgrade)),
@@ -884,8 +792,10 @@ levelrules = LevelRules(
             exit_location=l.loc_level_rungun_mountain,
             base=(
                 Preset(lrp.LrpRungunWeapon) &
-                Filtered(Preset(lrp.LrpDash), options=[DepFilter(deps.dep_dlc_chalice, False)]) &
-                Filtered(Preset(lrp.LrpDash) | Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice)])
+                (
+                    Preset(lrp.LrpDash) |
+                    (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice, False))
+                )
             ),
             locations={
                 l.loc_level_rungun_mountain: LocationDef(),
@@ -906,11 +816,9 @@ levelrules = LevelRules(
                 l.loc_level_rungun_mountain_coin4: LocationDef(
                     rule=(
                         Preset(lrp.LrpRungunWeapon) &
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        )
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                     ),
-                    inherit=InheritMode.NONE,
+                    inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_mountain_coin5: LocationDef(
                     rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpDashOrDlcDoublejump),
@@ -921,9 +829,9 @@ levelrules = LevelRules(
                 l.loc_level_rungun_mountain_event_pacifist: LocationDef(),
             },
         ),
-        lv.level_mausoleum_i: LevelDef(exit_location=None, access=Preset(lrp.LrpParry), locations={}),
-        lv.level_mausoleum_ii: LevelDef(exit_location=None, access=Preset(lrp.LrpParry), locations={}),
-        lv.level_mausoleum_iii: LevelDef(exit_location=None, access=Preset(lrp.LrpParry), locations={}),
+        lv.level_mausoleum_i: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
+        lv.level_mausoleum_ii: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
+        lv.level_mausoleum_iii: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
         lv.level_dlc_chesscastle_pawn: LevelDef(
             exit_location=None,
             access=Preset(lrp.LrpParry),
@@ -937,11 +845,7 @@ levelrules = LevelRules(
             access=Preset(lrp.LrpParry),
             locations={
                 l.loc_level_dlc_chesscastle_knight: LocationDef(
-                    rule=(
-                        Filtered(
-                            Preset(lrp.LrpDlcDoublejump), options=[DepFilter(deps.dep_dlc_chalice_only)]
-                        )
-                    )
+                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
                 ),
                 l.loc_level_dlc_chesscastle_knight_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcDoublejump)),
             },
