@@ -9,7 +9,7 @@ from typing_extensions import override
 
 from rule_builder.field_resolvers import FieldResolver
 
-from ...consts import GAME_NAME as GAME
+from ....varis import game_name as ch
 from ...options.options import ContractRequirements, DlcIngredientRequirements
 
 if TYPE_CHECKING:
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True)
-class BaseOptionResolver(FieldResolver, ABC, game=GAME):
+class BaseOptionResolver(FieldResolver, ABC, game=ch):
     _option_name: ClassVar[str]
 
     @override
@@ -27,7 +27,7 @@ class BaseOptionResolver(FieldResolver, ABC, game=GAME):
         return getattr(world.options, self._option_name).value
 
 @dataclass(frozen=True)
-class OptionResolver(FieldResolver, game=GAME):
+class OptionResolver(FieldResolver, game=ch):
     option_name: str
 
     @override
@@ -37,9 +37,9 @@ class OptionResolver(FieldResolver, game=GAME):
         return getattr(world.options, self.option_name).value
 
 @dataclass(frozen=True)
-class ContractReqsResolver(BaseOptionResolver, game=GAME):
+class ContractReqsResolver(BaseOptionResolver, game=ch):
     _option_name: ClassVar[str] = ContractRequirements.name
 
 @dataclass(frozen=True)
-class DlcIngredientReqsResolver(BaseOptionResolver, game=GAME):
+class DlcIngredientReqsResolver(BaseOptionResolver, game=ch):
     _option_name: ClassVar[str] = DlcIngredientRequirements.name

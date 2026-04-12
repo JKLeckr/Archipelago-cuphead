@@ -10,9 +10,10 @@ from typing_extensions import override
 from BaseClasses import CollectionState
 from NetUtils import JSONMessagePart
 from rule_builder.options import OptionFilter
-from rule_builder.rules import Has, HasAny, Rule, WrapperRule
+from rule_builder.rules import Has, HasAny, HasAnyCount, Rule, WrapperRule
 
-from ...consts import GAME_NAME as GAME
+from ....varis import game_name as ch
+from ...enums import WeaponMode
 from ...items import weapons
 from .rbbase import PresetData
 
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
     from .... import CupheadWorld
 
 @dataclass(init=False)
-class Preset(WrapperRule["CupheadWorld"], game=GAME):
+class Preset(WrapperRule["CupheadWorld"], game=ch):
     pname: str
 
     def __init__(
@@ -94,10 +95,10 @@ class Preset(WrapperRule["CupheadWorld"], game=GAME):
             return f"{self.name}[{self.child}]"
 
 @dataclass
-class HasAnyWeapon(Rule["CupheadWorld"], game=GAME):
+class HasAnyWeapon(Rule["CupheadWorld"], game=ch):
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        _weapon_dict = weapons.get_weapon_dict(world.options)
+        _weapon_dict = world.weapon_dict
         return HasAny.Resolved(
             tuple(_weapon_dict.values()),
             player=world.player,
@@ -105,18 +106,26 @@ class HasAnyWeapon(Rule["CupheadWorld"], game=GAME):
         )
 
 @dataclass
-class HasAnyWeaponEx(HasAnyWeapon, game=GAME):
+class HasAnyWeaponEx(HasAnyWeapon, game=ch):
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        _weapon_dict = weapons.get_weapon_ex_dict(world.options)
-        return HasAny.Resolved(
-            tuple(_weapon_dict.values()),
-            player=world.player,
-            caching_enabled=getattr(world, "rule_caching_enabled", False),
-        )
+        _weapon_dict = world.weapon_ex_dict
+        if (world.options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
+            return HasAny.Resolved(
+                tuple(_weapon_dict.values()),
+                player=world.player,
+                caching_enabled=getattr(world, "rule_caching_enabled", False),
+            )
+        if (world.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
+            return HasAnyCount.Resolved(
+                ((w, 2) for w in _weapon_dict.values()),
+                player=world.player,
+                caching_enabled=getattr(world, "rule_caching_enabled", False),
+            )
+        return super()._instantiate(world)
 
 @dataclass
-class HasWeapon(Rule["CupheadWorld"], game=GAME):
+class HasWeapon(Rule["CupheadWorld"], game=ch):
     weapon_name: str
 
     @override
@@ -135,7 +144,7 @@ class HasWeapon(Rule["CupheadWorld"], game=GAME):
         )
 
 @dataclass
-class HasWeaponEx(HasWeapon, game=GAME):
+class HasWeaponEx(HasWeapon, game=ch):
     @override
     def __post_init__(self):
         if self.weapon_name not in weapons.weapon_to_index.keys():
@@ -144,12 +153,18 @@ class HasWeaponEx(HasWeapon, game=GAME):
 
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        if world.options.weapon_mode > 0:
-            _weapon_name = weapons.weapon_ex_dict[weapons.weapon_to_index[self.weapon_name]]
+        if (world.options.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+            _weapon_name = world.weapon_ex_dict[weapons.weapon_to_index[self.weapon_name]]
+            _count = 1
+        elif (world.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
+            _weapon_name = world.weapon_p_dict[weapons.weapon_to_index[self.weapon_name]]
+            _count = 2
         else:
             _weapon_name = self.weapon_name
+            _count = 1
         return Has.Resolved(
             _weapon_name,
+            count=_count,
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )

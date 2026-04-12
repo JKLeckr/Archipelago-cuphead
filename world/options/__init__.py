@@ -75,6 +75,7 @@ class CupheadOptions(PerGameCommonOptions):
     contract_requirements_isle3: iodefs.ContractRequirementsIsle3
     filler_item_weights: iodefs.FillerItemWeights
     shop_map: iodefs.ShopMap
+    test_overrides: iodefs.TestOverrides
     trap_item_weights: iodefs.TrapItemWeights
 
     # Constants (never change)

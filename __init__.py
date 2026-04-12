@@ -6,12 +6,13 @@ from typing import Any, ClassVar, TextIO
 
 from typing_extensions import override
 
-from BaseClasses import CollectionState, Item, ItemClassification, Tutorial
+from BaseClasses import CollectionState, Item, ItemClassification, MultiWorld, Tutorial
 from Options import Option, PerGameCommonOptions
 from rule_builder.cached_world import CachedRuleBuilderWorld
 from worlds.AutoWorld import WebWorld
 
 from . import debug as dbg
+from . import varis
 from .fver import FVersion
 from .world import items, levels, locations, options, regions, slotdata
 from .world.enums import WeaponMode
@@ -105,6 +106,22 @@ class CupheadWorld(CachedRuleBuilderWorld):
     fake_gen: bool = False
     ut_can_gen_without_yaml: ClassVar[bool] = True
 
+    def __init__(self, multiworld: MultiWorld, player: int):
+        varis.game_name = self.__class__.GAME_NAME
+        super().__init__(multiworld, player)
+
+    def _resolve_test_overrides(self):
+        if self.options.test_overrides.value.get("sani"):
+            self._osani_ovrr = True
+        if _ut := self.options.test_overrides.value.get("ut"):
+            if (
+                isinstance(_ut, dict) and
+                self.GAME_NAME in _ut and
+                isinstance(_ut[self.GAME_NAME], dict)
+            ):
+                self.multiworld.re_gen_passthrough = _ut  # pyright: ignore[reportAttributeAccessIssue]
+                self.multiworld.generation_is_fake = True  # pyright: ignore[reportAttributeAccessIssue]
+
     def set_early_items(self):
         if self.options.early_parry.bvalue:
             self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
@@ -176,6 +193,9 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     @override
     def generate_early(self):
+        if varis.testing:
+            self._resolve_test_overrides()
+
         self.fake_gen = getattr(self.multiworld, "generation_is_fake", False)
 
         self.options.version.value = self.APWORLD_VERSION
@@ -186,7 +206,13 @@ class CupheadWorld(CachedRuleBuilderWorld):
         oresolver.resolve_random_options(self.options, self.random)
         oresolver.resolve_dependent_options(self.options)
 
-        self.option_sanitizer = OptionSanitizer(self.player, self.options, self.random)
+        self.option_sanitizer = OptionSanitizer(
+            self.player,
+            self.player_name,
+            self.options,
+            self.random,
+            self.settings.is_debug_bit_on(0) or hasattr(self, "_osani_ovrr")
+        )
 
         self.option_sanitizer.sanitize_options()
 

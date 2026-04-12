@@ -1,21 +1,12 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-import random
 import unittest
-from argparse import Namespace
 from dataclasses import fields
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
-from typing_extensions import override
-
-from BaseClasses import CollectionState, MultiWorld
-from Generate import get_seed_name  # type: ignore
 from Options import PerGameCommonOptions
-from test.general import gen_steps
-from worlds import AutoWorld
-from worlds.AutoWorld import call_all
 
 from ..world.enums import WeaponMode
 from ..world.items import itemdefs as idefs
@@ -114,36 +105,10 @@ class TestAPWorldItemSetup(unittest.TestCase):
                     self.assertEqual(items[itemnames.item_plane_ex].quantity, 0)
 
 class TestAPWorldUTSupport(CupheadTestBase):
-    regen_world = False
-
-    @override
-    def world_setup(self, seed: int | None = None):
-        if self.regen_world:
-            self.multiworld = MultiWorld(1)
-            self.multiworld.game[self.player] = self.game
-            self.multiworld.player_name = {self.player: "Tester"}
-            self.multiworld.set_seed(seed)
-            random.seed(self.multiworld.seed)
-            self.multiworld.seed_name = get_seed_name(random)  # only called to get same RNG progression as Generate.py
-            args = Namespace()
-            for name, option in AutoWorld.AutoWorldRegister.world_types[self.game].options_dataclass.type_hints.items():
-                setattr(args, name, {
-                    1: option.from_any(self.options.get(name, option.default))
-                })
-            self.multiworld.set_options(args)
-            self.multiworld.state = CollectionState(self.multiworld)
-            self.world = self.multiworld.worlds[self.player]
-        else:
-            super().world_setup(seed)
-
-    def run_gen_steps(self):
-        for step in gen_steps:
-            call_all(self.multiworld, step)
-
     def test_sdata_re_gen(self):
         test_world = TestAPWorldUTSupport()
         test_world.options = {
-            "boss_secret_checks": True,
+            "boss_secret_checks": True
         }
         test_world.world_setup()
 
@@ -152,11 +117,10 @@ class TestAPWorldUTSupport(CupheadTestBase):
         slot_data = dict(test_world.world.fill_slot_data())
 
         test_worldb = TestAPWorldUTSupport()
-        test_worldb.regen_world = True
+        test_worldb.options = {
+            "test_overrides": {"ut": {self.game: slot_data}}
+        }
         test_worldb.world_setup()
-        test_worldb.multiworld.generation_is_fake = True  # type: ignore
-        test_worldb.multiworld.re_gen_passthrough = {self.game: slot_data}  # type: ignore
-        test_worldb.run_gen_steps()
 
         #goptionsb = test_world.world.options.dump()
 

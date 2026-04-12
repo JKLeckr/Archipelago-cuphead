@@ -7,8 +7,10 @@ from typing_extensions import override
 
 from test.bases import WorldTestBase
 
-from .. import CupheadWorld
+from .. import CupheadWorld, varis
 
+varis.testing = True
+print("---- Cuphead APWorld Test Mode ----")
 
 class CupheadTestBase(WorldTestBase):
     game: ClassVar[str] = CupheadWorld.GAME_NAME

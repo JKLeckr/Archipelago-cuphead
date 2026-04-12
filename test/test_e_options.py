@@ -271,6 +271,8 @@ class TestOptionBits(CupheadTestBase):
         test_worldb.assertEqual(bitsa, optionbits.bitify(test_worldb.world.options))  # type: ignore
 
 class TestOptionSanitizer(CupheadTestBase):
+    auto_construct = False
+
     def test_dlc_off_sanitizes_dlc_options(self):
         test_world = TestOptionSanitizer()
         test_world.options = {
@@ -308,6 +310,7 @@ class TestOptionSanitizer(CupheadTestBase):
             "boss_grade_checks": "a_grade",
             "pacifist_quest": True,
             "silverworth_quest": True,
+            "test_overrides": {"sani": True}
         }
 
         out = StringIO()

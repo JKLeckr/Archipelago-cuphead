@@ -118,6 +118,26 @@ class ShopMap(Option[list[tuple[int, int]]], NamedOption):
     def get_option_name(cls, value: list[tuple[int, int]]):
         return ", ".join(f"({v1}, {v2})" for v1, v2 in value)
 
+class TestOverrides(Option[dict[str, Any]], NamedOption):
+    """
+    Internal. Only used for unittests
+    """
+    name = "test_overrides"
+    visibility = Visibility.none
+    default: ClassVar[dict[str, Any]] = {}
+
+    def __init__(self, value: dict[str, Any]):
+        self.value = value
+
+    @classmethod
+    @override
+    def from_any(cls, data: Any) -> Self:
+        return cls({str(k): v for k, v in dict(data).items()})
+
+    @classmethod
+    @override
+    def get_option_name(cls, value: dict[str, int]):
+        return ", ".join(f"{key}: {v}" for key, v in value.items())
 
 class TrapItemWeights(Option[dict[str, int]], NamedOption):
     """

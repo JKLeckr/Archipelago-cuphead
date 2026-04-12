@@ -1,10 +1,11 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
-import os
 from typing import Union  # type: ignore
 
 import settings
+
+from .. import varis
 
 
 class CupheadSettings(settings.Group):
@@ -41,6 +42,6 @@ class CupheadSettings(settings.Group):
 
         #print(f"debug_bit_test {bit:f}")
 
-        if "PYTEST_CURRENT_TEST" in os.environ and (int(self.debug) & 1024) == 0:
+        if varis.testing and (int(self.debug) & 1024) == 0:
             return False
         return (int(self.debug) & bit) == bit

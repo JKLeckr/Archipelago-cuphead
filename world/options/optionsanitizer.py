@@ -13,7 +13,9 @@ from .protocols import CupheadNumericOption, CupheadOptionSet
 
 class OptionSanitizer:
     def __init__(
-            self, player: int,
+            self,
+            player: int,
+            player_name: str,
             options: CupheadOptions,
             random: Random,
             log_overrides: bool = True,
@@ -21,6 +23,7 @@ class OptionSanitizer:
         ):
         self.option_overrides: list[str] = []
         self.player = player
+        self.player_name = player_name
         self.options = options
         self.random = random
         self.log_overrides = log_overrides
@@ -28,7 +31,7 @@ class OptionSanitizer:
 
     def print_warning(self, message: str):
         if self.log_overrides:
-            print(f"Warning: For player {self.player}: {message}")
+            print(f"Warning: For player {self.player} ({self.player_name}): {message}")
 
     def override_num_option(
             self,
