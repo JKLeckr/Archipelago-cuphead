@@ -25,7 +25,7 @@ class EnumOption(Generic[TEnum]):
         return self.enum_type(self.value)
 
     @evalue.setter
-    def evalue(self, value: TEnum | int) -> None:
+    def evalue(self, value: TEnum | int):
         self.value = int(value)
 
 class FlagOption(Generic[TFlag]):
@@ -38,7 +38,7 @@ class FlagOption(Generic[TFlag]):
         return self.flag_type(self.value)
 
     @fvalue.setter
-    def fvalue(self, value: TFlag | int) -> None:
+    def fvalue(self, value: TFlag | int):
         self.value = int(value)
 
 class BoolOption:

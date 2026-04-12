@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+from typing import TYPE_CHECKING
+
 from BaseClasses import ItemClassification
 
 from ..enums import ChaliceCheckMode, ChaliceMode, GameMode, GradeCheckMode, ItemGroups, LogicMode, WeaponMode
@@ -9,6 +11,9 @@ from ..options import CupheadOptions
 from . import itemdefs as idef
 from . import weapons
 from .itembase import ItemData
+
+if TYPE_CHECKING:
+    from ... import CupheadWorld
 
 
 def add_item(items_ref: dict[str, ItemData], item: str):
@@ -77,8 +82,7 @@ def setup_no_start_weapons(items_ref: dict[str, ItemData], options: CupheadOptio
         items_ref, itemnames.item_charm_whetstone, ItemClassification.progression | ItemClassification.useful
     )
 
-def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
-    _weapon_dict = weapons.get_weapon_dict(options, options.use_dlc.bvalue)
+def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapon_dict: dict[int, str]):
     silverworth_quest = getattr(getattr(options, "silverworth_quest", None), "bvalue", False)
     _grade_checks_required = (
         options.boss_grade_checks.evalue != GradeCheckMode.DISABLED or
@@ -86,20 +90,20 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
         (options.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0 or
         silverworth_quest
     )
-    for weapon in _weapon_dict.values():
+    for weapon in weapon_dict.values():
         items_ref[weapon] = idef.items_all[weapon]
     if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
         if _grade_checks_required:
             [
                 change_item_type(items_ref, x, ItemClassification.progression_deprioritized | ItemClassification.useful)
-                for i,x in _weapon_dict.items() if i in weapons.weapon_p_dict.keys()
+                for i, x in weapon_dict.items() if i in weapons.weapon_p_dict.keys()
             ]
     if (options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
-        items_ref.update({x: idef.items_all[x] for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()})
+        items_ref.update({x: idef.items_all[x] for i,x in weapons.weapon_ex_dict.items() if i in weapon_dict.keys()})
         if _grade_checks_required:
             [
                 change_item_type(items_ref, x, ItemClassification.progression_deprioritized | ItemClassification.useful)
-                for i,x in weapons.weapon_ex_dict.items() if i in _weapon_dict.keys()
+                for i, x in weapons.weapon_ex_dict.items() if i in weapon_dict.keys()
             ]
     if (options.weapon_mode.evalue & (WeaponMode.PROGRESSIVE | WeaponMode.EX_SEPARATE)) > 0:
         change_item_quantity(items_ref, itemnames.item_plane_ex, 1)
@@ -117,9 +121,10 @@ def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptio
             items_ref, itemnames.item_charm_coffee, ItemClassification.progression | ItemClassification.useful
         )
 
-def setup_items(options: CupheadOptions) -> dict[str, ItemData]:
+def setup_items(world: "CupheadWorld") -> dict[str, ItemData]:
+    options = world.options
     items: dict[str, ItemData] = {**idef.items_base}
-    setup_weapons(items, options)
+    setup_weapons(items, options, world.weapon_dict)
     if options.use_dlc.bvalue:
         setup_dlc_items(items, options)
     if options.weapon_gate.bvalue:

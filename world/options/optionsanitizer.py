@@ -26,7 +26,7 @@ class OptionSanitizer:
         self.log_overrides = log_overrides
         self.strict_goal_options = sanitize_goal_options
 
-    def print_warning(self, message: str) -> None:
+    def print_warning(self, message: str):
         if self.log_overrides:
             print(f"Warning: For player {self.player}: {message}")
 
@@ -87,7 +87,7 @@ class OptionSanitizer:
             self.print_warning(f"{msg} {msg_reason}")
         option.value.clear()
 
-    def _sanitize_dlc_chalice_item_options(self, quiet: bool = False) -> None:
+    def _sanitize_dlc_chalice_item_options(self, quiet: bool = False):
         _options = self.options
         abilities_val = "abilities"
         if len(_options.dlc_chalice_items_separate.value) > 0:
@@ -106,7 +106,7 @@ class OptionSanitizer:
                     True
                 )
 
-    def _sanitize_dlc_chalice_checks(self, quiet: bool = False) -> None:
+    def _sanitize_dlc_chalice_checks(self, quiet: bool = False):
         _options = self.options
         _boss_cchecks = _options.dlc_boss_chalice_checks.value
         _rungun_cchecks = _options.dlc_rungun_chalice_checks.value
@@ -121,7 +121,7 @@ class OptionSanitizer:
                 _options.dlc_rungun_chalice_checks, _rungun_cchecks, "Run n' Gun Grade Checks Disabled", True,
             )
 
-    def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
+    def _sanitize_dlc_chalice_options(self, quiet: bool = False):
         _options = self.options
         _cm_disabled = int(ChaliceMode.DISABLED)
         _cm_chalice_only = int(ChaliceMode.CHALICE_ONLY)
@@ -141,7 +141,7 @@ class OptionSanitizer:
         self._sanitize_dlc_chalice_item_options(quiet)
         self._sanitize_dlc_chalice_checks(quiet)
 
-    def _sanitize_dlc_options(self) -> None:  # noqa: C901
+    def _sanitize_dlc_options(self):  # noqa: C901
         _options = self.options
         use_dlc = _options.use_dlc.value
         if not use_dlc:
@@ -173,7 +173,7 @@ class OptionSanitizer:
                 self.override_num_option(_options.start_weapon, self.random.randint(0,5), dlc_reason)
         self._sanitize_dlc_chalice_options(not use_dlc)
 
-    def _sanitize_goal_requirements(self) -> None:
+    def _sanitize_goal_requirements(self):
         _options = self.options
 
         _goal_reason = "Goal cannot be less than requirements"
@@ -195,7 +195,7 @@ class OptionSanitizer:
                 f"Ingredient {_goal_reason}"
             )
 
-    def _sanitize_level_placement(self) -> None:
+    def _sanitize_level_placement(self):
         options = self.options
         lpvalue = options.level_placements.value
 
@@ -275,7 +275,7 @@ class OptionSanitizer:
         if options.dlc_cactusgirl_quest.value:
             risks_ref.append("dlc_cactusgirl_quest")
 
-    def _warn_accessibility_risks(self) -> None:
+    def _warn_accessibility_risks(self):
         if not self._is_minimal_accessibility():
             return
 
@@ -292,7 +292,7 @@ class OptionSanitizer:
             f"({risk_str}). This combination is known to increase generation failure chance."
         )
 
-    def _warn_risks(self) -> None:
+    def _warn_risks(self):
         options = self.options
 
         self._warn_accessibility_risks()
@@ -300,7 +300,7 @@ class OptionSanitizer:
         if options.start_weapon.is_none() and options.logic_mode != LogicMode.HARD:
             self.print_warning("Currently, setting start_weapon to 'none' may fail unless Logic Mode is set to 'hard'.")
 
-    def sanitize_options(self) -> None:
+    def sanitize_options(self):
         _options = self.options
 
         if self.strict_goal_options:

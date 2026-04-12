@@ -85,7 +85,7 @@ def create_weapongates(multiworld: MultiWorld, player: int, weapon_tiers: dict[i
             _add_rule = add_rule if add_rule else lambda state: True
             return super().__new__(cls, name, (lambda state: _rule(state,player) and _add_rule(state)) if _rule else None)
     class LevelRegionData(RegionData):
-        def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, ignore_freemove_islands: bool = False) -> None:
+        def __init__(self, name: str, add_locations: list[str] = None, connect_to: list[Target] = None, ignore_freemove_islands: bool = False):
             _locations = list(_level_map(name).locations)
             if add_locations:
                 _locations += add_locations

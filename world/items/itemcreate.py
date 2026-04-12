@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import Item, ItemClassification, Location, LocationProgressType
 
-from ..auxiliary import count_in_list
 from ..enums import ChaliceMode, CurseMode, ItemGroups, WeaponMode
 from ..locations import locationdefs as ldef
 from ..names import itemnames, locationnames
@@ -85,12 +84,12 @@ def create_traps(world: "CupheadWorld", trap_count: int, rand: Random) -> list[I
 
     return res
 
-def create_pool_items(world: "CupheadWorld", items: list[str], precollected: list[str]) -> list[Item]:
+def create_pool_items(world: "CupheadWorld", items: list[str], precollected_counts: dict[str, int]) -> list[Item]:
     _itempool: list[Item] = []
     for itemname in items:
         if itemname in world.active_items.keys():
             item = world.active_items[itemname]
-            qty = item.quantity - count_in_list(itemname, precollected)
+            qty = item.quantity - precollected_counts.get(itemname, 0)
             #if qty<0:
             #    print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
             if item.id and qty>0:
@@ -161,7 +160,7 @@ def create_locked_items(world: "CupheadWorld"):
     if world.use_dlc:
         create_dlc_locked_items(world)
 
-def create_special_items(world: "CupheadWorld", precollected: list[str]) -> list[Item]:
+def create_special_items(world: "CupheadWorld", precollected_counts: dict[str, int]) -> list[Item]:
     options = world.options
     items: list[Item] = []
 
@@ -172,13 +171,13 @@ def create_special_items(world: "CupheadWorld", precollected: list[str]) -> list
     if world.use_dlc:
         if (
             options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED and
-            itemnames.item_charm_dlc_cookie not in precollected
+            itemnames.item_charm_dlc_cookie not in precollected_counts
         ):
             items.append(create_active_item(world, itemnames.item_charm_dlc_cookie))
         if ((
                 options.dlc_curse_mode.evalue == CurseMode.VANILLA or
                 options.dlc_curse_mode.evalue == CurseMode.REVERSE
-            ) and itemnames.item_charm_dlc_broken_relic not in precollected
+            ) and itemnames.item_charm_dlc_broken_relic not in precollected_counts
         ):
                 items.append(create_active_item(world, itemnames.item_charm_dlc_broken_relic))
 
@@ -210,12 +209,9 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
             break
     return (total_single_coins, total_double_coins, total_triple_coins)
 
-def create_start_weapons(world: "CupheadWorld") -> set[str]:
+def create_start_weapons(world: "CupheadWorld", weapon: str) -> set[str]:
     options = world.options
-    weapon_dict = weapons.get_weapon_dict(options)
     res: set[str] = set()
-
-    weapon = weapon_dict[options.start_weapon.value]
 
     create_locked_item(world, weapon, locationnames.loc_event_start_weapon, ItemClassification.progression)
     res.add(weapon)
@@ -230,42 +226,50 @@ def create_start_weapons(world: "CupheadWorld") -> set[str]:
         res.add(weapon_ex)
     return res
 
-def setup_weapon_pool(world: "CupheadWorld", precollected_item_names: list[str]) -> list[str]:
+def setup_weapon_pool(world: "CupheadWorld", precollected_counts: dict[str, int]) -> list[str]:
     _weapons: list[str] = []
     _weapon_dict = weapons.get_weapon_dict(world.options)
 
-    if world.options.start_weapon.value in _weapon_dict:
-        _start_weapons = create_start_weapons(world)
-    else:
+    _weapon_index = world.options.start_weapon.value
+    if _weapon_index in _weapon_dict:
+        _weapon = _weapon_dict[world.options.start_weapon.value]
+        _start_weapons = create_start_weapons(world, _weapon)
+    elif world.options.start_weapon.is_none():
         _start_weapons = None
+    else:
+        raise ValueError(f"weapon {_weapon_index} is invalid")
 
-    _no_set = {*precollected_item_names}
-
+    _no_set: set[str] = set()
     if _start_weapons is not None:
-        _no_set.update(*_start_weapons)
+        _no_set.union(_start_weapons)
 
-    _weapons = [x for x in set(_weapon_dict.values()) if x not in _no_set]
+    def _not_in_noset(x: str) -> bool:
+        return x not in precollected_counts and x not in _no_set
+
+    _weapons = [x for x in set(_weapon_dict.values()) if _not_in_noset(x)]
 
     if (world.options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
-        _weapons.extend([x for x in set(idef.item_weapon_ex.keys()) if x not in _no_set])
+        _weapons.extend([x for x in set(idef.item_weapon_ex.keys()) if _not_in_noset(x)])
         if world.use_dlc:
-            _weapons.extend([x for x in set(idef.item_dlc_weapon_ex.keys()) if x not in _no_set])
+            _weapons.extend([x for x in set(idef.item_dlc_weapon_ex.keys()) if _not_in_noset(x)])
 
     return _weapons
 
-def setup_ability_pool(world: "CupheadWorld", precollected_item_names: list[str]) -> list[str]:
-    _precollected = precollected_item_names
+def setup_ability_pool(world: "CupheadWorld", precollected_counts: dict[str, int]) -> list[str]:
     abilities = list(idef.item_abilities.keys())
     # FIXME: Is this needed? If they are not active, they won't be added anyways
     if world.options.dlc_chalice_items_separate.fvalue & ItemGroups.ABILITIES:
         abilities.extend(idef.item_dlc_chalice_abilities.keys())
     else:
         abilities.append(itemnames.item_ability_dlc_cdoublejump)
-    # FIXME: Is checking precollected needed? (it is probably done elsewhere)
-    return abilities
+    return [a for a in abilities if a not in precollected_counts]
 
-def create_coins(world: "CupheadWorld", location_count: int, precollected_item_names: list[str],
-                 coin_items: tuple[str, str, str]) -> list[Item]:
+def create_coins(
+        world: "CupheadWorld",
+        location_count: int,
+        precollected_counts: dict[str, int],
+        coin_items: tuple[str, str, str]
+    ) -> list[Item]:
     res: list[Item] = []
     # Coins
     # TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop.
@@ -276,14 +280,9 @@ def create_coins(world: "CupheadWorld", location_count: int, precollected_item_n
     total_coins = world.total_coins
 
     # Starter Coins
-    start_coins = 0
-    for item in precollected_item_names:
-        if item == coin_items[0]:
-            start_coins += 1
-        elif item == coin_items[1]:
-            start_coins += 2
-        elif item == coin_items[2]:
-            start_coins += 3
+    start_coins = precollected_counts.get(coin_items[0], 0)
+    start_coins += precollected_counts.get(coin_items[1], 0) * 2
+    start_coins += precollected_counts.get(coin_items[2], 0) * 3
 
     total_coins -= start_coins
 
@@ -304,15 +303,13 @@ def create_coins(world: "CupheadWorld", location_count: int, precollected_item_n
 
     return res
 
-def create_items(world: "CupheadWorld") -> None:
+def create_items(world: "CupheadWorld"):
     itempool: list[Item] = []
-
-    precollected_item_names = [x.name for x in world.multiworld.precollected_items[world.player]]
 
     create_locked_items(world)
 
     # Setup Weapons including start weapons
-    weapons = setup_weapon_pool(world, precollected_item_names)
+    weapons = setup_weapon_pool(world, world.precollected_counts)
 
     #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
     #unfilled_locations = list(world.multiworld.get_unfilled_locations(world.player))
@@ -340,16 +337,16 @@ def create_items(world: "CupheadWorld") -> None:
         #supers += list(items.item_dlc_chalice_super) # TODO: Investigate adding this later
 
     # Add the grouped fill items
-    itempool += create_pool_items(world, essential_items, precollected_item_names)
-    itempool += create_pool_items(world, weapons, precollected_item_names)
-    itempool += create_pool_items(world, charms, precollected_item_names)
-    itempool += create_pool_items(world, supers, precollected_item_names)
+    itempool += create_pool_items(world, essential_items, world.precollected_counts)
+    itempool += create_pool_items(world, weapons, world.precollected_counts)
+    itempool += create_pool_items(world, charms, world.precollected_counts)
+    itempool += create_pool_items(world, supers, world.precollected_counts)
     if world.options.randomize_abilities.bvalue:
-        abilities = setup_ability_pool(world, precollected_item_names)
-        itempool += create_pool_items(world, abilities, precollected_item_names)
+        abilities = setup_ability_pool(world, world.precollected_counts)
+        itempool += create_pool_items(world, abilities, world.precollected_counts)
 
     # Add special Items
-    itempool += create_special_items(world, precollected_item_names)
+    itempool += create_special_items(world, world.precollected_counts)
 
     minimum_filler = world.options.minimum_filler.value
 
@@ -368,7 +365,7 @@ def create_items(world: "CupheadWorld") -> None:
     # Add Coins
     leftover_locations = unfilled_location_count - len(itempool) - minimum_filler
 
-    itempool += create_coins(world, leftover_locations, precollected_item_names, coin_items)
+    itempool += create_coins(world, leftover_locations, world.precollected_counts, coin_items)
 
     leftover_locations = unfilled_location_count - len(itempool)
     if (leftover_locations<0):

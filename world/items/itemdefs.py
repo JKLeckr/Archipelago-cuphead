@@ -40,6 +40,7 @@ item_dlc_chalice_essential: dict[str, ItemData] = {
     itemnames.item_dlc_cplane_ex: ItemData(10002001, ItemClassification.progression | ItemClassification.useful, 0),
     itemnames.item_dlc_cplane_bombs: ItemData(10002002, ItemClassification.progression | ItemClassification.useful),
 }
+item_all_essential = {**item_essential, **item_dlc_essential, **item_dlc_chalice_essential}
 
 item_weapons: dict[str, ItemData] = {
     itemnames.item_weapon_peashooter: ItemData(6000, ItemClassification.useful),
@@ -112,6 +113,7 @@ item_dlc_chalice_super: dict[str, ItemData] = {
     itemnames.item_super_dlc_c_iii: ItemData(10012002, ItemClassification.useful),
     itemnames.item_dlc_cplane_super: ItemData(10012003, ItemClassification.useful),
 }
+item_all_super: dict[str, ItemData] = {**item_super, **item_dlc_chalice_super}
 
 item_abilities: dict[str, ItemData] = {
     itemnames.item_ability_duck: ItemData(16000, ItemClassification.progression | ItemClassification.useful),
@@ -127,6 +129,8 @@ item_dlc_chalice_abilities: dict[str, ItemData] = {
     itemnames.item_ability_dlc_cplane_parry: ItemData(10014003, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_dlc_cplane_shrink: ItemData(10014004, ItemClassification.useful),
 }
+item_all_abilities: dict[str, ItemData] = {**item_abilities, **item_dlc_chalice_abilities}
+
 item_abilities_aim: dict[str, ItemData] = {
     itemnames.item_ability_aim_left: ItemData(18000, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_aim_right: ItemData(18001, ItemClassification.progression | ItemClassification.useful),
@@ -147,6 +151,7 @@ item_dlc_chalice_abilities_aim: dict[str, ItemData] = {
     itemnames.item_ability_dlc_c_aim_downleft: ItemData(20006, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_dlc_c_aim_downright: ItemData(20007, ItemClassification.progression | ItemClassification.useful),
 }
+item_all_abilities_aim: dict[str, ItemData] = {**item_abilities_aim, **item_dlc_chalice_abilities_aim}
 
 item_trap: dict[str, ItemData] = {
     itemnames.item_level_trap_fingerjam: ItemData(22000, ItemClassification.trap, 0),
@@ -174,12 +179,19 @@ item_dlc_special: dict[str, ItemData] = {
     itemnames.item_event_dlc_start: ItemData(None, ItemClassification.progression, 0),
     itemnames.item_event_dlc_boss_chaliced: ItemData(None, ItemClassification.progression_deprioritized_skip_balancing, 0),
 }
+item_all_special: dict[str, ItemData] = {**item_special, **item_dlc_special}
 
 item_goal: dict[str, ItemData] = {
     itemnames.item_event_goal_devilko: ItemData(None, ItemClassification.progression, 0),
 }
 item_dlc_goal: dict[str, ItemData] = {
     itemnames.item_event_goal_dlc_saltbakerko: ItemData(None, ItemClassification.progression, 0),
+}
+
+items_all_weapons: dict[str, ItemData] = {
+    **item_all_weapons,
+    **item_all_weapon_ex,
+    **item_all_p_weapons
 }
 
 items_base: dict[str, ItemData] = {
@@ -201,12 +213,7 @@ items_dlc: dict[str, ItemData] = {
 items_all: dict[str, ItemData] = {
     **items_base,
     **items_dlc,
-    **item_weapons,
-    **item_dlc_weapons,
-    **item_weapon_ex,
-    **item_dlc_weapon_ex,
-    **item_p_weapons,
-    **item_dlc_p_weapons,
+    **items_all_weapons,
     **item_dlc_chalice_essential,
     **item_dlc_chalice_super,
     **item_abilities,

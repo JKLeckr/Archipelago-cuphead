@@ -34,7 +34,7 @@ class ShopData:
     shop_map: list[tuple[int, int]]
     shop_locations: dict[str, list[str]]
 
-    def __init__(self, shop_map: list[tuple[int, int]]) -> None:
+    def __init__(self, shop_map: list[tuple[int, int]]):
         shop_locations: dict[str, list[str]] = {}
 
         weapon_index = 0

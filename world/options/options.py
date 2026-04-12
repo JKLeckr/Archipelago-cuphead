@@ -209,7 +209,7 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
         return e.ItemGroups(self._fvalue)
 
     @fvalue.setter
-    def fvalue(self, value: e.ItemGroups | int) -> None:
+    def fvalue(self, value: e.ItemGroups | int):
         self._fvalue = int(value)
 
     def _get_separate_items_mode(self) -> e.ItemGroups:
@@ -234,7 +234,7 @@ class DlcChaliceItemsSeparate(OptionSet, NamedOption):
         return _set
 
     @override
-    def __setattr__(self, name: str, value: Any, /) -> None:
+    def __setattr__(self, name: str, value: Any, /):
         super().__setattr__(name, value)
         if name == "value":
             self._value_set = True

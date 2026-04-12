@@ -27,7 +27,7 @@ _bitifiable_fields: list[str] = [
 def get_bitifiable_options() -> Iterable[str]:
     return frozenset(_bitifiable_fields)
 
-def debitify(options_ref: CupheadOptions, bits: int) -> None:
+def debitify(options_ref: CupheadOptions, bits: int):
     shift = 0
     for bit in _bitifiable_fields:
         if (hasattr(options_ref, bit)):

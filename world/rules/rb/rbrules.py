@@ -97,27 +97,19 @@ class Preset(WrapperRule["CupheadWorld"], game=GAME):
 class HasAnyWeapon(Rule["CupheadWorld"], game=GAME):
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        return self.Resolved(
-            tuple(weapons.weapon_dict.values()),
+        _weapon_dict = weapons.get_weapon_dict(world.options)
+        return HasAny.Resolved(
+            tuple(_weapon_dict.values()),
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
-
-    class Resolved(HasAny.Resolved):
-        @override
-        def item_dependencies(self) -> dict[str, set[int]]:
-            return {
-                item: {id(self)}
-                for items in [self.item_names, weapons.weapon_p_dict.values()]
-                for item in items
-            }
 
 @dataclass
 class HasAnyWeaponEx(HasAnyWeapon, game=GAME):
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        _weapon_dict = weapons.weapon_ex_dict if world.options.weapon_mode > 0 else weapons.weapon_dict
-        return self.Resolved(
+        _weapon_dict = weapons.get_weapon_ex_dict(world.options)
+        return HasAny.Resolved(
             tuple(_weapon_dict.values()),
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
@@ -128,31 +120,24 @@ class HasWeapon(Rule["CupheadWorld"], game=GAME):
     weapon_name: str
 
     @override
-    def __post_init__(self) -> None:
+    def __post_init__(self):
         if self.weapon_name not in weapons.weapon_to_index.keys():
             raise KeyError(f"{self.weapon_name} not in weapon_dict")
         return super().__post_init__()
 
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        return self.Resolved(
-            self.weapon_name,
+        _weapon_name = weapons.weapon_to_index[self.weapon_name]
+        return Has.Resolved(
+            _weapon_name,
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
 
-    class Resolved(Has.Resolved):
-        @override
-        def item_dependencies(self) -> dict[str, set[int]]:
-            return {
-                self.item_name: {id(self)},
-                weapons.weapon_p_dict[weapons.weapon_to_index[self.item_name]]: {id(self)}
-            }
-
 @dataclass
 class HasWeaponEx(HasWeapon, game=GAME):
     @override
-    def __post_init__(self) -> None:
+    def __post_init__(self):
         if self.weapon_name not in weapons.weapon_to_index.keys():
             raise KeyError(f"{self.weapon_name} not in weapon_dict")
         return super().__post_init__()
@@ -163,16 +148,8 @@ class HasWeaponEx(HasWeapon, game=GAME):
             _weapon_name = weapons.weapon_ex_dict[weapons.weapon_to_index[self.weapon_name]]
         else:
             _weapon_name = self.weapon_name
-        return self.Resolved(
+        return Has.Resolved(
             _weapon_name,
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
-
-    class Resolved(HasWeapon.Resolved):
-        @override
-        def item_dependencies(self) -> dict[str, set[int]]:
-            return {
-                self.item_name: {id(self)},
-                weapons.weapon_p_dict[weapons.weapon_ex_to_index[self.item_name]]: {id(self)}
-            }

@@ -15,8 +15,8 @@ from . import debug as dbg
 from .fver import FVersion
 from .world import items, levels, locations, options, regions, slotdata
 from .world.enums import WeaponMode
-from .world.items import itemcreate, itemgroups, weapons
 from .world.items import itemdefs as idef
+from .world.items import itemgroups, weapons
 from .world.items.itembase import ItemData
 from .world.levels.levelbase import LevelData
 from .world.levels.levelids import level_ids
@@ -61,7 +61,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     AUTHORS: ClassVar[list[str]] = ["JKLeckr"]
 
-    SLOT_DATA_VERSION: ClassVar[int] = 5
+    SLOT_DATA_VERSION: ClassVar[int] = 6
 
     game: ClassVar[str] = GAME_NAME # type: ignore
     web: ClassVar[WebWorld] = CupheadWebWorld()
@@ -87,9 +87,16 @@ class CupheadWorld(CachedRuleBuilderWorld):
         itemnames.item_coin3: itemnames.item_coin,
     }
 
+    precollected_counts: dict[str, int]
+
     active_items: dict[str, ItemData]
     active_locations: dict[str, LocationData]
     active_levels: dict[str, LevelData]
+
+    resolved_start_weapon_index: int
+
+    weapon_dict: dict[int, str]
+    weapon_ex_dict: dict[int, str]
 
     level_map: dict[int, int]
 
@@ -98,34 +105,46 @@ class CupheadWorld(CachedRuleBuilderWorld):
     fake_gen: bool = False
     ut_can_gen_without_yaml: ClassVar[bool] = True
 
-    def set_early_items(self) -> None:
+    def set_early_items(self):
         if self.options.early_parry.bvalue:
             self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
 
-    def solo_setup(self) -> None:
+    def count_precollected(self):
+        self.precollected_counts = {}
+
+        for item in self.multiworld.precollected_items[self.player]:
+            if item.name not in self.precollected_counts:
+                self.precollected_counts[item.name] = 1
+                continue
+            self.precollected_counts[item.name] += 1
+
+    def resolve_start_weapon(self):
+        _start_weapon = None
+        _weapons = set(self.weapon_dict.values())
+        for pitem in self.precollected_counts:
+            if pitem in _weapons:
+                _start_weapon = weapons.all_weapon_to_index[pitem]
+        if not _start_weapon:
+            _start_weapon = self.random.choice(tuple(self.weapon_dict.keys()))
+        self.resolved_start_weapon_index = _start_weapon
+
+    def solo_setup(self):
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
         no_weapons = self.options.start_weapon.is_none()
         if self.options.randomize_abilities.value:
             self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
             self.multiworld.early_items[self.player][itemnames.item_ability_dash] = 1
         if (self.options.weapon_mode.value & WeaponMode.PROGRESSIVE) > 0:
-            if no_weapons:
-                _start_weapon = self.random.choice(
-                    weapons.get_weapon_dict(self.options, self.use_dlc)
-                )
-            else:
-                _start_weapon = weapons.weapon_p_dict[self.options.start_weapon.value]
+            _start_weapon = weapons.weapon_p_dict[self.resolved_start_weapon_index]
             self.multiworld.early_items[self.player][_start_weapon] = 2 if no_weapons else 1
         elif no_weapons:
-            _start_weapon = self.random.choice(
-                weapons.get_weapon_dict(self.options, self.use_dlc)
-            )
+            _start_weapon = weapons.weapon_dict[self.resolved_start_weapon_index]
             self.multiworld.early_items[self.player][_start_weapon] = 1
         if (self.options.weapon_mode.value & WeaponMode.EX_SEPARATE) > 0:
             _weapon = self.random.choice(weapons.weapon_ex_dict)
             self.multiworld.early_items[self.player][_weapon] = 1
 
-    def re_gen_setup(self) -> None:
+    def re_gen_setup(self):
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
             slot_data: dict[str, Any] = re_gen_passthrough[self.game]
@@ -153,10 +172,10 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
             self.level_map = slot_data["level_map"]
             self.shop = ShopData(slot_data["shop_map"])
-
+            self.resolved_start_weapon_index = slot_data["start_weapon"]
 
     @override
-    def generate_early(self) -> None:
+    def generate_early(self):
         self.fake_gen = getattr(self.multiworld, "generation_is_fake", False)
 
         self.options.version.value = self.APWORLD_VERSION
@@ -171,22 +190,28 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
         self.option_sanitizer.sanitize_options()
 
-        if not self.fake_gen:
-            #print(self.level_map)
-            self.level_map = levels.setup_level_map(self.options)
-            self.shop = ShopData.create_from_options(self.options)
-
         self.gen_bits = obits.bitify(self.options)
 
         self.topology_present = not self.options.freemove_isles.bvalue
 
+        self.count_precollected()
+
         self.use_dlc = self.options.use_dlc.bvalue
         self.start_weapon = self.options.start_weapon.value
+
+        self.weapon_dict = weapons.get_weapon_dict(self.options)
+        self.weapon_ex_dict = weapons.get_weapon_ex_dict(self.options)
+
+        if not self.fake_gen:
+            #print(self.level_map)
+            self.level_map = levels.setup_level_map(self.options)
+            self.shop = ShopData.create_from_options(self.options)
+            self.resolve_start_weapon()
 
         coin_amounts = self.options.coin_amounts.value
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
 
-        self.active_items = items.setup_items(self.options)
+        self.active_items = items.setup_items(self)
         self.active_locations = locations.setup_locations(self.options)
         self.active_levels = levels.setup_levels(self.settings, self.options, self.active_locations)
 
@@ -206,7 +231,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
         return slotdata.fill_slot_data(self)
 
     @override
-    def create_regions(self) -> None:
+    def create_regions(self):
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
@@ -218,11 +243,11 @@ class CupheadWorld(CachedRuleBuilderWorld):
         return items.create_item(name, self.player, force_classification)
 
     @override
-    def create_items(self) -> None:
+    def create_items(self):
         items.create_items(self)
 
     @override
-    def write_spoiler(self, spoiler_handle: TextIO) -> None:
+    def write_spoiler(self, spoiler_handle: TextIO):
         if len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
             spoiler_handle.write("\n".join(list(self.option_sanitizer.option_overrides)) + "\n")
@@ -244,70 +269,28 @@ class CupheadWorld(CachedRuleBuilderWorld):
     @override
     def collect(self, state: CollectionState, item: Item) -> bool:
         #print(item.name)
-        if item.name in (itemnames.item_coin2, itemnames.item_coin3):
-            amount = 3 if item.name == itemnames.item_coin3 else 2
-            _name = self.collect_item(
-                state,
-                itemcreate.create_item(itemnames.item_coin, self.player)
-            )
-            if _name:
-                state.add_item(_name, self.player, amount)
-                return True
-            return False
-        if item.name in weapons.weapon_p_to_index.keys():
-            _weapon_index = weapons.weapon_p_to_index[item.name]
-            _weapon_dict = (
-                weapons.weapon_ex_dict
-                if state.has(weapons.weapon_dict[_weapon_index], self.player) else
-                weapons.weapon_dict
-            )
-            _name = self.collect_item(
-                state,
-                itemcreate.create_item(_weapon_dict[_weapon_index], self.player),
-            )
-            if _name:
-                state.add_item(_name, self.player)
-                return True
-            return False
-        return super().collect(state, item)
+        changed = super().collect(state, item)
+        if changed and item.name.endswith(" Coins", 1):
+            amount = int(item.name[0])
+            if amount == 2 or amount == 3:
+                state.add_item(itemnames.item_coin, self.player, amount)
+        return changed
 
     @override
     def remove(self, state: CollectionState, item: Item) -> bool:
-        if item.name in (itemnames.item_coin2, itemnames.item_coin3):
-            amount = 3 if item.name == itemnames.item_coin3 else 2
-            _name = self.collect_item(
-                state,
-                itemcreate.create_item(itemnames.item_coin, self.player),
-                True
-            )
-            if _name:
-                state.remove_item(_name, self.player, amount)
-                return True
-            return False
-        if item.name in weapons.weapon_p_to_index.keys():
-            _weapon_index = weapons.weapon_p_to_index[item.name]
-            _weapon_dict = (
-                weapons.weapon_ex_dict
-                if state.has(weapons.weapon_ex_dict[_weapon_index], self.player) else
-                weapons.weapon_dict
-            )
-            _name = self.collect_item(
-                state,
-                itemcreate.create_item(_weapon_dict[_weapon_index], self.player),
-                True
-            )
-            if _name:
-                state.remove_item(_name, self.player)
-                return True
-            return False
-        return super().remove(state, item)
+        changed = super().remove(state, item)
+        if changed and item.name.endswith(" Coins", 1):
+            amount = int(item.name[0])
+            if amount == 2 or amount == 3:
+                state.remove_item(itemnames.item_coin, self.player, amount)
+        return changed
 
     @override
     def get_filler_item_name(self) -> str:
         return items.get_filler_item_name(self)
 
     @override
-    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]) -> None:
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
         hint_dict: dict[int, str] = {}
         if self.level_map:
             for level, lmap in self.level_map.items():
@@ -330,11 +313,11 @@ class CupheadWorld(CachedRuleBuilderWorld):
         hint_data.update({self.player: hint_dict})
 
     @override
-    def set_rules(self) -> None:
+    def set_rules(self):
         rules.set_rules(self)
 
     @override
-    def post_fill(self) -> None:
+    def post_fill(self):
         #debug.print_locations(self)
         if self.settings.is_debug_bit_on(4):
             dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))

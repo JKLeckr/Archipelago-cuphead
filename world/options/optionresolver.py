@@ -75,7 +75,7 @@ def _set_shop_map(options_ref: "CupheadOptions"):
         [(2,2), (2,2), (1,2), (3,2)] if not dlc else [(2,2), (2,2), (2,2), (2,2)]
     )
 
-def resolve_dependent_options(options: "CupheadOptions") -> None:
+def resolve_dependent_options(options: "CupheadOptions"):
     if options.start_maxhealth_p2.value == 0:
         options.start_maxhealth_p2.value = options.start_maxhealth.value
     _set_coin_amounts(options)
@@ -84,7 +84,7 @@ def resolve_dependent_options(options: "CupheadOptions") -> None:
     _set_trap_item_weights(options)
     _set_shop_map(options)
 
-def resolve_random_options(options: "CupheadOptions", rand: Random) -> None:
+def resolve_random_options(options: "CupheadOptions", rand: Random):
     # Resolve Random
     if options.mode.value == -1:
         # TODO: Once modes can be combined, remove this and use randint

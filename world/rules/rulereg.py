@@ -96,9 +96,9 @@ class RuleReg:
             if set_combine:
                 set_combine = False
 
-    def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
+    def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
         self.add_loc_rule(loc, rb.rule_has(item, count), combine_and)
-    def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
+    def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         self.add_rule(loc, SpotType.LOCATION, rule, combine_and)
     def add_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         region = rb.get_region(self._world, region_name)

@@ -119,7 +119,7 @@ def connect_region_targets(world: "CupheadWorld", regc: RegionData, locset: set[
         else:
             print(f"WARNING: For '{regc.name}': a target is None!")
 
-def create_regions(world: "CupheadWorld") -> None:
+def create_regions(world: "CupheadWorld"):
     compile_regions = get_regions(world)
     #debug.print_list(list_regions_names(compile_regions))
 

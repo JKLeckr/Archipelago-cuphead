@@ -92,7 +92,7 @@ def _get_class_def(tree: ast.Module, class_name: str) -> ast.ClassDef | None:
             return node
     return None
 
-def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes) -> None:
+def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes):
     if isinstance(value, tuple) and all(isinstance(x, int) for x in value): # type: ignore
         if key == "APWORLD_SEM_VERSION" and len(value) == 4:
             res_ref["_apworld_sem_version"] = value

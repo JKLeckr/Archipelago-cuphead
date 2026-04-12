@@ -41,10 +41,20 @@ weapon_p_dict: dict[int,str] = {
 weapon_to_index: dict[str, int] = {y:x for x,y in weapon_dict.items()}
 weapon_p_to_index: dict[str, int] = {y:x for x,y in weapon_p_dict.items()}
 weapon_ex_to_index: dict[str, int] = {y:x for x,y in weapon_ex_dict.items()}
+all_weapon_to_index: dict[str, int] = {**weapon_to_index, **weapon_p_to_index, **weapon_ex_to_index}
 
-def get_weapon_dict(options: CupheadOptions, dlc_weapons: bool = True) -> dict[int,str]:
+def _get_weapon_dict(options: CupheadOptions, ex: bool = False, force_dlc_weapons: bool = False) -> dict[int, str]:
+    dlc_weapons = options.use_dlc.bvalue or force_dlc_weapons
     orig_weapon_dict: dict[int,str] = (
-        weapon_p_dict if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 else weapon_dict
+        (weapon_ex_dict if ex else weapon_dict)
+        if (options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0 else
+        weapon_p_dict if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 else
+        weapon_dict
     )
-    nweapon_dict: dict[int,str] = {k: v for k, v in orig_weapon_dict.items() if k < 6 or dlc_weapons}
-    return nweapon_dict
+    return {k: v for k, v in orig_weapon_dict.items() if k < 6 or dlc_weapons}
+
+def get_weapon_dict(options: CupheadOptions, force_dlc_weapons: bool = False) -> dict[int, str]:
+    return _get_weapon_dict(options, False, force_dlc_weapons)
+
+def get_weapon_ex_dict(options: CupheadOptions, force_dlc_weapons: bool = False) -> dict[int, str]:
+    return _get_weapon_dict(options, True, force_dlc_weapons)

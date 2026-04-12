@@ -6,7 +6,7 @@ import unittest
 from argparse import Namespace
 from dataclasses import fields
 from types import SimpleNamespace
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 from typing_extensions import override
 
@@ -22,6 +22,9 @@ from ..world.items import itemdefs as idefs
 from ..world.items import itemsetup, weapons
 from ..world.names import itemnames
 from . import CupheadTestBase
+
+if TYPE_CHECKING:
+    from ..world.options import CupheadOptions
 
 
 def _is_hashable(obj: Any) -> bool:
@@ -87,18 +90,19 @@ class TestAPWorldItemSetup(unittest.TestCase):
 
         for mode_name, mode_value in modes:
             with self.subTest(mode_name):
-                options = self._options_for_weapon_mode(mode_value)
+                options = cast("CupheadOptions", self._options_for_weapon_mode(mode_value))
                 items = {**idefs.items_base}
-                itemsetup.setup_weapons(items, options)  # type: ignore[arg-type]
+                weapon_dict = weapons.get_weapon_dict(options, True)
+                itemsetup.setup_weapons(items, options, weapon_dict)
 
-                expected_weapons = set(weapons.get_weapon_dict(options, True).values())  # type: ignore[arg-type]
+                expected_weapons = set(weapon_dict.values())
                 self.assertTrue(expected_weapons.issubset(items.keys()))
 
                 if (mode_value & WeaponMode.EX_SEPARATE) > 0:
                     expected_ex = {
                         x
                         for i, x in weapons.weapon_ex_dict.items()
-                        if i in weapons.get_weapon_dict(options, True)  # type: ignore[arg-type]
+                        if i in weapons.get_weapon_dict(options, True)
                     }
                     self.assertTrue(expected_ex.issubset(items.keys()))
                 else:

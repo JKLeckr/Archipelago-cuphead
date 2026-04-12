@@ -8,5 +8,5 @@ from . import levelrulecomp as lrc
 if TYPE_CHECKING:
     from .... import CupheadWorld
 
-def set_levelrules(world: "CupheadWorld") -> None:
+def set_levelrules(world: "CupheadWorld"):
     lrc.LevelRuleComp(world).compile_levelrules()
