@@ -24,6 +24,19 @@ on:
 jobs:
   fuzz:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - n_value: "1"
+            runs: "750"
+          - n_value: "2-4"
+            runs: "1250"
+        n_value: ["1", "2-4"]
+      fail-fast: false
+
+    name: fuzz n${{ matrix.n_value }}
+
     env:
       fuzzer_ver: "0.6.1"
     defaults:
@@ -59,13 +72,13 @@ jobs:
           sed -i -E '/^cuphead_options:/,/^[^[:space:]]/ s/^([[:space:]]*debug:).*/\1 128/' host.yaml
 
       - name: "Run fuzzer"
-        run: python ./fuzz.py -g cuphead -j 8 -r 1000 -n 1-4 -m ./worlds/cuphead/.github/fuzz/cuphead-fuzz-meta.yaml
+        run: python ./fuzz.py -g cuphead -j 8 -r 1000 -n ${{ matrix.n_value }} -m ./worlds/cuphead/.github/fuzz/cuphead-fuzz-meta.yaml
 
       - name: "Upload fuzz output"
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: github-fuzz_output
+          name: github-fuzz_n${{ matrix.n_value }}_output
           path: |
             Archipelago/fuzz_output/report.json
             Archipelago/fuzz_output/error
