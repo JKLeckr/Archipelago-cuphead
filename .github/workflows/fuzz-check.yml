@@ -25,7 +25,7 @@ jobs:
   fuzz:
     runs-on: ubuntu-latest
     env:
-      fuzzer_ver: "0.5.1"
+      fuzzer_ver: "0.6.1"
     defaults:
       run:
         working-directory: Archipelago/

@@ -435,6 +435,7 @@ levelrules = LevelRules(
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump),
                     options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                    filtered_resolution=True
                 )
             ),
             locations={
