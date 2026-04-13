@@ -4,6 +4,12 @@
 name: TagRelease
 
 on:
+  workflow_dispatch:
+      inputs:
+        release_tag:
+          description: "Tag to publish draft release assets to (required for manual runs)"
+          required: false
+          type: string
   push:
     tags:
       - "*"
@@ -15,7 +21,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set Env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            TAG="${GITHUB_REF_NAME}"
+          else
+            TAG="${{ github.event.inputs.release_tag }}"
+          fi
+          if [[ -z "${TAG}" ]]; then
+            echo "No release tag available. For workflow_dispatch, provide inputs.release_tag."
+            exit 1
+          fi
+
+          echo "RELEASE_VERSION=${TAG}" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v4
