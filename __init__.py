@@ -211,7 +211,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
             self.player_name,
             self.options,
             self.random,
-            self.settings.is_debug_bit_on(0) or hasattr(self, "_osani_ovrr")
+            not varis.testing or hasattr(self, "_osani_ovrr")
         )
 
         self.option_sanitizer.sanitize_options()

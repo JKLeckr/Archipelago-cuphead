@@ -846,7 +846,7 @@ levelrules = LevelRules(
             access=Preset(lrp.LrpParry),
             locations={
                 l.loc_level_dlc_chesscastle_knight: LocationDef(
-                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
+                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                 ),
                 l.loc_level_dlc_chesscastle_knight_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcDoublejump)),
             },
