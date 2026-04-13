@@ -45,14 +45,14 @@ jobs:
 
     steps:
       - name: Checkout Archipelago
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: JKLeckr/Archipelago
           path: Archipelago
           ref: ${{ vars.AP_BRANCH }}
 
       - name: Checkout Cuphead
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: Archipelago/worlds/cuphead
 
@@ -76,7 +76,7 @@ jobs:
 
       - name: "Upload fuzz output"
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: github-fuzz_n${{ matrix.n_value }}_output
           path: |

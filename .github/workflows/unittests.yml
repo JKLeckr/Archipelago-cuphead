@@ -49,14 +49,14 @@ jobs:
 
     steps:
     - name: Checkout Archipelago
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: JKLeckr/Archipelago
         path: Archipelago
         ref: ${{ vars.AP_BRANCH }}
 
     - name: Checkout Cuphead
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         path: Archipelago/worlds/cuphead
 
