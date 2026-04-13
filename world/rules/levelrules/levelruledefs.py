@@ -829,9 +829,9 @@ levelrules = LevelRules(
                 l.loc_level_rungun_mountain_event_pacifist: LocationDef(),
             },
         ),
-        lv.level_mausoleum_i: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
-        lv.level_mausoleum_ii: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
-        lv.level_mausoleum_iii: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
+        lv.level_mausoleum_i: LevelDef(exit_location=None, access=lrd.LrdMausoleum, locations={}),
+        lv.level_mausoleum_ii: LevelDef(exit_location=None, access=lrd.LrdMausoleum, locations={}),
+        lv.level_mausoleum_iii: LevelDef(exit_location=None, access=lrd.LrdMausoleum, locations={}),
         lv.level_dlc_chesscastle_pawn: LevelDef(
             exit_location=None,
             access=Preset(lrp.LrpParry),

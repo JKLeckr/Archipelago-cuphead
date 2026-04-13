@@ -174,7 +174,7 @@ class TestLogicProgressiveWeaponsNoStartWeapon(CupheadTestBase):
         test.collect_by_name(itemnames.item_weapon_spread)
         test.assertFalse(test.can_reach_location(locationnames.loc_level_boss_veggies))
         test.assertFalse(test.can_reach_location(locationnames.loc_level_boss_veggies_topgrade))
-        test.collect_by_name(itemnames.item_p_weapon_spread)
+        test.collect(test.get_item_by_name(itemnames.item_p_weapon_spread))
         test.assertTrue(test.can_reach_location(locationnames.loc_level_boss_veggies))
         test.assertFalse(test.can_reach_location(locationnames.loc_level_boss_veggies_topgrade))
         test.collect_by_name(itemnames.item_ability_parry)
@@ -222,6 +222,7 @@ class TestLogicProgressiveWeaponsExceptStart(CupheadTestBase):
         test.world_setup()
         test.assertBeatable(False)
 
+        test.assertTrue(test.can_reach_location(locationnames.loc_level_boss_veggies))
         test.assertFalse(test.can_reach_location(locationnames.loc_level_boss_veggies_topgrade))
         test.collect_by_name(itemnames.item_ability_parry)
         test.assertTrue(test.can_reach_location(locationnames.loc_level_boss_veggies_topgrade))

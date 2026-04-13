@@ -118,7 +118,7 @@ class HasAnyWeaponEx(HasAnyWeapon, game=ch):
             )
         if (world.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
             return HasAnyCount.Resolved(
-                ((w, 2) for w in _weapon_dict.values()),
+                tuple((w, 2) for w in _weapon_dict.values()),
                 player=world.player,
                 caching_enabled=getattr(world, "rule_caching_enabled", False),
             )

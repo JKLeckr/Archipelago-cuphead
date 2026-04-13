@@ -77,10 +77,15 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
         if w in items_ref.keys():
             change_item_type(items_ref, w, ItemClassification.progression | ItemClassification.useful)
 
-def setup_no_start_weapons(items_ref: dict[str, ItemData], options: CupheadOptions):
+def setup_no_start_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapon_dict: dict[int, str]):
     change_item_type(
         items_ref, itemnames.item_charm_whetstone, ItemClassification.progression | ItemClassification.useful
     )
+    if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) == 0:
+        [
+            change_item_type(items_ref, w, ItemClassification.progression_deprioritized | ItemClassification.useful)
+            for w in weapon_dict.values()
+        ]
 
 def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapon_dict: dict[int, str]):
     silverworth_quest = getattr(getattr(options, "silverworth_quest", None), "bvalue", False)
@@ -90,10 +95,11 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapo
         (options.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0 or
         silverworth_quest
     )
+    _no_start_weapon = options.start_weapon.is_none()
     for weapon in weapon_dict.values():
         items_ref[weapon] = idef.items_all[weapon]
     if (options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
-        if _grade_checks_required:
+        if _grade_checks_required or _no_start_weapon:
             [
                 change_item_type(items_ref, x, ItemClassification.progression_deprioritized | ItemClassification.useful)
                 for i, x in weapon_dict.items() if i in weapons.weapon_p_dict.keys()
@@ -112,8 +118,8 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapo
                 change_item_type(items_ref, x, ItemClassification.progression | ItemClassification.useful)
                 for x in idef.item_super
             ]
-    if options.start_weapon.is_none():
-        setup_no_start_weapons(items_ref, options)
+    if _no_start_weapon:
+        setup_no_start_weapons(items_ref, options, weapon_dict)
 
 def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptions):
     if options.logic_mode.evalue == LogicMode.HARD or options.start_weapon.is_none():

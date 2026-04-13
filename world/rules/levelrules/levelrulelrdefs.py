@@ -47,6 +47,11 @@ LrdBossTrainChaliced = (
     )
 )
 
+LrdMausoleum = (
+    (Preset(lrp.LrpParryOrPSugar) & DepFilter(deps.dep_hard_logic)) |
+    (Preset(lrp.LrpParry) & DepFilter(deps.dep_hard_logic, False))
+)
+
 LrdDlcBossRumRunnersEarlyPhase = (
     Preset(lrp.LrpDuck) &
     (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
