@@ -433,8 +433,16 @@ levelrules = LevelRules(
             access=Preset(lrp.LrpWeapon),
             base=(
                 Filtered(
-                    Preset(lrp.LrpDlcDoublejump),
-                    options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
+                    Preset(
+                        lrp.LrpDlcDoublejump,
+                        options=[DepFilter(deps.dep_dlc_chalice_only)],
+                    ) |
+                    Filtered(
+                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDash)) |
+                        DepFilter(deps.dep_expert_mode, False),
+                        options=[DepFilter(deps.dep_dlc_chalice_only, False)]
+                    ),
+                    options=[DepFilter(deps.dep_hard_logic, False)],
                     filtered_resolution=True
                 )
             ),

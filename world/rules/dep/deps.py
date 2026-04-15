@@ -45,6 +45,9 @@ def dep_music_quest(c: CupheadOptions) -> bool:
 def dep_dicepalace_sanity(c: CupheadOptions) -> bool:
     return c.kingdice_bosssanity.bvalue
 @dep
+def dep_expert_mode(c: CupheadOptions) -> bool:
+    return c.expert_mode.bvalue
+@dep
 def dep_hard_logic(c: CupheadOptions) -> bool:
     return c.logic_mode.evalue > 0
 @dep

@@ -3,10 +3,11 @@
 
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import TYPE_CHECKING, NamedTuple
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 from typing_extensions import override
 
+from BaseClasses import Entrance, Location
 from rule_builder.rules import And, Or, Rule
 
 from . import rulebase as rb
@@ -118,13 +119,21 @@ class RuleReg:
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(reg = {self._reg!s}, preset_reg = {self._preset_reg!s})"
 
-    def compile_rules(self):
+    def _compile_rules(  # noqa: C901
+        self,
+        rule_output: bool = True,
+        apply_rules: bool = False
+    ) -> dict[Location | Entrance, Rule[Any]] | None:
         # This will iterate through the rules for each type and set the rule for
         # that spot (location or entrance) using self._world.set_rules(). It is done this way
         # because rule_builder Rules cannot be appended to exising world rules.
         # So this will stitch together all the rule_builder rules before setting them.
         if self._debug:
             print(f"rr size: {len(self._reg.keys())}")
+        if rule_output:
+            res: dict[Location | Entrance, Rule[Any]] | None = {}
+        else:
+            res = None
         for (spot_name, spot_type), rules in self._reg.items():
             if len(rules) < 1:
                 print(f"rr: {spot_name} rules is empty")
@@ -153,4 +162,16 @@ class RuleReg:
             _res = And(*_col) if _and else Or(*_col)
             if self._debug:
                 print(f"rr: '{spot}': `{_res}`")
-            self._world.set_rule(spot, _res)
+            if apply_rules:
+                self._world.set_rule(spot, _res)
+            if res is not None:
+                res[spot] = _res
+
+        return res
+
+    def compile_rules(self) -> dict[Location | Entrance, Rule[Any]]:
+        res = self._compile_rules(True, False)
+        return res if res is not None else {}
+
+    def apply_rules(self):
+        return self._compile_rules(False, True)

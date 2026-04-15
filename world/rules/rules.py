@@ -15,7 +15,7 @@ from .rulereg import SpotType
 if TYPE_CHECKING:
     from ... import CupheadWorld
 
-def set_rules(world: "CupheadWorld"):
+def register_rules(world: "CupheadWorld"):
     w = world
     rr = w.rulereg
     options = w.options
@@ -41,9 +41,12 @@ def set_rules(world: "CupheadWorld"):
     if use_dlc:
         set_dlc_rules(w)
 
-    rr.compile_rules()
+def set_rules(world: "CupheadWorld"):
+    register_rules(world)
 
-    set_goal(w)
+    world.rulereg.apply_rules()
+
+    set_goal(world)
 
 def set_dlc_rules(world: "CupheadWorld"):
     w = world
