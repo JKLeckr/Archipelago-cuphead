@@ -54,9 +54,12 @@ class RuleReg:
     def get_rule(self, spot: str, spot_type: SpotType) -> list[RuleData]:
         return self._reg[Spot(spot, spot_type)]
 
-    def _add_rule(self, spot: Spot, rule: Rule["CupheadWorld"], combine_and: bool):
+    def _add_rule(self, spot: Spot, rule: Rule["CupheadWorld"], combine_and: bool, insert: bool = False):
         if spot not in self._reg:
             self._reg[spot] = [RuleData(rule)]
+        elif insert:
+            self._reg[spot][0] = RuleData(self._reg[spot][0].rule, combine_and)
+            self._reg[spot].insert(0, RuleData(rule))
         else:
             self._reg[spot].append(RuleData(rule, combine_and))
 
@@ -64,14 +67,18 @@ class RuleReg:
         spot = Spot(spot_name, spot_type)
         self._add_rule(spot, rule, combine_and)
 
-    def _pop_rule(self, spot: Spot) -> list[RuleData] | None:
+    def insert_rule(self, spot_name: str, spot_type: SpotType, rule: Rule["CupheadWorld"], combine_and: bool = True):
+        spot = Spot(spot_name, spot_type)
+        self._add_rule(spot, rule, combine_and, True)
+
+    def _pop_ruledata(self, spot: Spot) -> list[RuleData] | None:
         if spot not in self._reg:
             return None
         return self._reg.pop(spot)
 
-    def pop_rule(self, spot_name: str, spot_type: SpotType) -> list[RuleData] | None:
+    def pop_ruledata(self, spot_name: str, spot_type: SpotType) -> list[RuleData] | None:
         spot = Spot(spot_name, spot_type)
-        return self._pop_rule(spot)
+        return self._pop_ruledata(spot)
 
     def copy_rule(
         self,
@@ -99,21 +106,33 @@ class RuleReg:
 
     def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
         self.add_loc_rule(loc, rb.rule_has(item, count), combine_and)
+    def insert_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
+        self.insert_loc_rule(loc, rb.rule_has(item, count), combine_and)
     def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         self.add_rule(loc, SpotType.LOCATION, rule, combine_and)
+    def insert_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+        self.insert_rule(loc, SpotType.LOCATION, rule, combine_and)
     def add_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         region = rb.get_region(self._world, region_name)
         for entrance in region.entrances:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
+    def insert_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+        region = rb.get_region(self._world, region_name)
+        for entrance in region.entrances:
+            self.insert_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
     def add_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         region = rb.get_region(self._world, region_name)
         for entrance in region.exits:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
+    def insert_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+        region = rb.get_region(self._world, region_name)
+        for entrance in region.exits:
+            self.insert_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
 
-    def pop_loc_rule(self, loc: str) -> list[RuleData] | None:
-        self.pop_rule(loc, SpotType.LOCATION)
-    def pop_entrance_rule(self, entrance_name: str) -> dict[str, list[RuleData]] | None:
-        self.pop_rule(entrance_name, SpotType.ENTRANCE)
+    def pop_loc_ruledata(self, loc: str) -> list[RuleData] | None:
+        return self.pop_ruledata(loc, SpotType.LOCATION)
+    def pop_entrance_ruledata(self, entrance_name: str) -> list[RuleData] | None:
+        return self.pop_ruledata(entrance_name, SpotType.ENTRANCE)
 
     @override
     def __str__(self) -> str:

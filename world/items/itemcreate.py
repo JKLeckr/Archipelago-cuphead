@@ -241,7 +241,7 @@ def setup_weapon_pool(world: "CupheadWorld", precollected_counts: dict[str, int]
 
     _no_set: set[str] = set()
     if _start_weapons is not None:
-        _no_set.union(_start_weapons)
+        _no_set.update(*_start_weapons)
 
     def _not_in_noset(x: str) -> bool:
         return x not in precollected_counts and x not in _no_set

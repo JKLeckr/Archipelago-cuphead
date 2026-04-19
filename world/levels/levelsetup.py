@@ -67,7 +67,7 @@ def setup_level_map(options: CupheadOptions) -> dict[int,int]:
         )
     )
 
-    for k,v in options.level_placements.value.items():
+    for k, v in options.level_placements.value.items():
         level_map[levelids.level_to_id[k]] = levelids.level_to_id[v]
 
     return level_map

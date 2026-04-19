@@ -100,6 +100,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
     weapon_ex_dict: dict[int, str]
 
     level_map: dict[int, int]
+    rlevel_map: dict[int, int]
 
     rulereg: RuleReg
 
@@ -233,6 +234,8 @@ class CupheadWorld(CachedRuleBuilderWorld):
             self.level_map = levels.setup_level_map(self.options)
             self.shop = ShopData.create_from_options(self.options)
             self.resolve_start_weapon()
+
+        self.rlevel_map = {v: k for k, v in self.level_map.items()}
 
         coin_amounts = self.options.coin_amounts.value
         self.total_coins = coin_amounts[0] + (coin_amounts[1]*2) + (coin_amounts[2]*3)
