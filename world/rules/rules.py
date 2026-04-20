@@ -3,6 +3,7 @@
 
 from typing import TYPE_CHECKING
 
+from rule_builder import rules as rule
 from worlds.generic.Rules import forbid_item
 
 from ..enums import GameMode, ItemGroups
@@ -10,6 +11,7 @@ from ..locations import locationdefs as ld
 from ..names import itemnames, locationnames, regionnames
 from . import levelrules
 from . import rulebase as rb
+from .rb import rbrules
 from .rulereg import SpotType
 
 if TYPE_CHECKING:
@@ -23,11 +25,11 @@ def register_rules(world: "CupheadWorld"):
 
     rr.add_region_rule(
         regionnames.world_inkwell_2,
-        rb.rule_has(itemnames.item_contract, options.contract_requirements_isle2.value)
+        rule.Has(itemnames.item_contract, options.contract_requirements_isle2.value)
     )
     rr.add_region_rule(
         regionnames.world_inkwell_3,
-        rb.rule_has(itemnames.item_contract, options.contract_requirements_isle3.value)
+        rule.Has(itemnames.item_contract, options.contract_requirements_isle3.value)
     )
 
     set_shop_rules(w)
@@ -56,7 +58,7 @@ def set_dlc_rules(world: "CupheadWorld"):
     set_dlc_boat_rules(w)
     rr.add_region_rule(
         regionnames.level_dlc_boss_saltbaker,
-        rb.rule_has(itemnames.item_dlc_ingredient, ingredient_reqs)
+        rule.Has(itemnames.item_dlc_ingredient, ingredient_reqs)
     )
 
 def set_dlc_boat_rules(world: "CupheadWorld"):
@@ -66,9 +68,9 @@ def set_dlc_boat_rules(world: "CupheadWorld"):
     randomize_boat = options.dlc_randomize_boat.bvalue
     require_mausoleum = options.dlc_requires_mausoleum.bvalue
     if require_mausoleum:
-        rr.add_region_rule(regionnames.reg_dlc_boat, rb.rule_has(itemnames.item_event_mausoleum))
+        rr.add_region_rule(regionnames.reg_dlc_boat, rule.Has(itemnames.item_event_mausoleum))
     if randomize_boat:
-        rr.add_region_rule(regionnames.reg_dlc_boat, rb.rule_has(itemnames.item_dlc_boat))
+        rr.add_region_rule(regionnames.reg_dlc_boat, rule.Has(itemnames.item_dlc_boat))
 
 def set_quest_rules(world: "CupheadWorld"):
     w = world
@@ -78,13 +80,13 @@ def set_quest_rules(world: "CupheadWorld"):
         rr.add_item_rule(locationnames.loc_quest_4mel, itemnames.item_event_quest_4mel_4th)
     if options.ginger_quest.bvalue:
         rr.add_item_rule(locationnames.loc_quest_ginger, itemnames.item_event_isle2_shortcut)
-    if options.buster_quest.bvalue and options.randomize_abilities:
+    if options.buster_quest.bvalue and options.randomize_abilities.bvalue:
         rr.add_item_rule(locationnames.loc_quest_buster, itemnames.item_ability_parry)
         if options.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
-            rr.add_loc_rule(locationnames.loc_quest_buster, rb.rule_has_all({
+            rr.add_loc_rule(locationnames.loc_quest_buster, rule.HasAll(
                 itemnames.item_ability_dlc_cdash,
                 itemnames.item_ability_dlc_cparry,
-            }), False)
+            ), False)
     if options.silverworth_quest.bvalue:
         rr.add_item_rule(locationnames.loc_quest_silverworth, itemnames.item_event_agrade, 15)
     if options.pacifist_quest.bvalue:
@@ -147,33 +149,31 @@ def set_shop_cost_rule(world: "CupheadWorld", shop_index: int, shop_costs: list[
     for i in range(shop_index+1):
         cost += shop_costs[i]
     region = rb.get_region(world, regionnames.shop_sets[shop_index])
-    rr.add_region_rule(region.name, rb.rule_has(itemnames.item_coin, cost))
+    rr.add_region_rule(region.name, rule.Has(itemnames.item_coin, cost))
 
 def set_goal(world: "CupheadWorld"):
     w = world
     options = w.options
     w.set_completion_rule(
         (
-            rb.rule_has(itemnames.item_contract, options.contract_goal_requirements.value)
+            rule.Has(itemnames.item_contract, options.contract_goal_requirements.value)
         ) if options.mode.evalue == GameMode.COLLECT_CONTRACTS else (
-            rb.rule_can_reach_all_regions(
-                regionnames.shop_sets if options.use_dlc else regionnames.base_shop_sets
-            )
+            rbrules.CanBuyOutShop()
         ) if options.mode.evalue == GameMode.BUY_OUT_SHOP else (
-            rb.rule_has(itemnames.item_event_goal_dlc_saltbakerko)
+            rule.Has(itemnames.item_event_goal_dlc_saltbakerko)
         ) if (
             options.mode.evalue == GameMode.DLC_BEAT_SALTBAKER or
             options.mode.evalue == GameMode.DLC_BEAT_SALTBAKER_ISLE4_ONLY
         ) else (
-            rb.rule_has_all({itemnames.item_event_goal_devilko, itemnames.item_event_goal_dlc_saltbakerko})
+            rule.HasAll(itemnames.item_event_goal_devilko, itemnames.item_event_goal_dlc_saltbakerko)
         ) if options.mode.evalue == GameMode.DLC_BEAT_BOTH else (
-            rb.rule_has(itemnames.item_dlc_ingredient, options.dlc_ingredient_goal_requirements.value)
+            rule.Has(itemnames.item_dlc_ingredient, options.dlc_ingredient_goal_requirements.value)
         ) if options.mode.evalue == GameMode.DLC_COLLECT_INGREDIENTS else (
-            rb.rule_and(
-                rb.rule_has(itemnames.item_contract, options.contract_goal_requirements.value),
-                rb.rule_has(itemnames.item_dlc_ingredient, options.dlc_ingredient_goal_requirements.value)
-            )
+            rule.HasAllCounts({
+                itemnames.item_contract: options.contract_goal_requirements.value,
+                itemnames.item_dlc_ingredient: options.dlc_ingredient_goal_requirements.value
+            })
         ) if options.mode.evalue == GameMode.DLC_COLLECT_BOTH else (
-            rb.rule_has(itemnames.item_event_goal_devilko)
+            rule.Has(itemnames.item_event_goal_devilko)
         )
     )

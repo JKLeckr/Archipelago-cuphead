@@ -243,4 +243,61 @@ class RBRule(RuleExpr):
             object.__setattr__(self, "_fr_auto", True)
             filtered_resolution = _FR_DEFAULT
         object.__setattr__(self, "filtered_resolution", filtered_resolution)
+
+
+@dataclass
+class CanReachAllRegions(Rule["CupheadWorld"], game=ch):
+    """A rule that checks if the all the given region are reachable by the current player"""
+
+    region_names: tuple[str, ...]
+    """The name of the region to test access to"""
+
+    @override
+    def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
+        return self.Resolved(
+            self.region_names,
+            player=world.player,
+            caching_enabled=getattr(world, "rule_caching_enabled", False),
+        )
+
+    @override
+    def __str__(self) -> str:
+        options = f", options={self.options}" if self.options else ""
+        return f"{self.__class__.__name__}({self.region_names}{options})"
+
+    class Resolved(Rule.Resolved):
+        region_names: tuple[str, ...]
+
+        @override
+        def _evaluate(self, state: CollectionState) -> bool:
+            return all(state.can_reach_region(rname, self.player) for rname in self.region_names)
+
+        @override
+        def region_dependencies(self) -> dict[str, set[int]]:
+            return {rname: {id(self)} for rname in self.region_names}
+
+        @override
+        def explain_json(self, state: CollectionState | None = None) -> list[JSONMessagePart]:
+            if state is None:
+                verb = "Can reach"
+            elif self(state):
+                verb = "Reached"
+            else:
+                verb = "Cannot reach"
+            return [
+                {"type": "text", "text": f"{verb} all regions "},
+                {"type": "color", "color": "yellow", "text": str(self.region_names)},
+            ]
+
+        @override
+        def explain_str(self, state: CollectionState | None = None) -> str:
+            if state is None:
+                return str(self)
+            prefix = "Reached" if self(state) else "Cannot reach"
+            return f"{prefix} all regions {self.region_names!s}"
+
+        @override
+        def __str__(self) -> str:
+            return f"Can reach all regions {self.region_names!s}"
+
 ```

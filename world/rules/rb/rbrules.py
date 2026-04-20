@@ -15,6 +15,7 @@ from rule_builder.rules import Has, HasAny, HasAnyCount, Rule, WrapperRule
 from ....varis import game_name as ch
 from ...enums import WeaponMode
 from ...items import weapons
+from ...names import itemnames, regionnames
 from .rbbase import PresetData
 
 if TYPE_CHECKING:
@@ -153,7 +154,7 @@ class HasWeaponEx(HasWeapon, game=ch):
 
     @override
     def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
-        if (world.options.weapon_mode & WeaponMode.EX_SEPARATE) > 0:
+        if (world.options.weapon_mode.value & WeaponMode.EX_SEPARATE) > 0:
             _weapon_name = world.weapon_ex_dict[weapons.weapon_to_index[self.weapon_name]]
             _count = 1
         elif (world.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0:
@@ -168,3 +169,48 @@ class HasWeaponEx(HasWeapon, game=ch):
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
+
+@dataclass
+class CanBuyOutShop(Rule["CupheadWorld"], game=ch):
+    @override
+    def _instantiate(self, world: "CupheadWorld") -> Rule.Resolved:
+        return self.Resolved(
+            regionnames.shop_sets if world.use_dlc else regionnames.base_shop_sets,
+            player=world.player,
+            caching_enabled=getattr(world, "rule_caching_enabled", False),
+        )
+
+    class Resolved(Rule.Resolved):
+        region_names: tuple[str, ...]
+
+        @override
+        def _evaluate(self, state: CollectionState) -> bool:
+            return all(state.can_reach_region(rname, self.player) for rname in self.region_names)
+
+        @override
+        def item_dependencies(self) -> dict[str, set[int]]:
+            return {itemnames.item_coin: {id(self)}}
+
+        @override
+        def region_dependencies(self) -> dict[str, set[int]]:
+            return {rname: {id(self)} for rname in self.region_names}
+
+        @override
+        def explain_json(self, state: CollectionState | None = None) -> list[JSONMessagePart]:
+            if state is None:
+                return [{"type": "text", "text": "Can buy out shop"}]
+            msg: list[JSONMessagePart] = [{"type": "text", "text": "Can buy out shop: "}]
+            ans = ("green", "Yes") if self(state) else ("salmon", "No")
+            msg.append({"type": "color", "color": ans[0], "text": ans[1]})
+            return msg
+
+        @override
+        def explain_str(self, state: CollectionState | None = None) -> str:
+            if state is None:
+                return str(self)
+            ans = "Yes" if self(state) else "No"
+            return f"Can buy out shop: {ans}"
+
+        @override
+        def __str__(self) -> str:
+            return "Can buy out shop"

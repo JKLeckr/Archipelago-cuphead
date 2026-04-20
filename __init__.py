@@ -158,7 +158,10 @@ class CupheadWorld(CachedRuleBuilderWorld):
         elif no_weapons:
             _start_weapon = weapons.weapon_dict[self.resolved_start_weapon_index]
             self.multiworld.early_items[self.player][_start_weapon] = 1
-        if (self.options.weapon_mode.value & WeaponMode.EX_SEPARATE) > 0:
+        if (
+            (self.options.weapon_mode.value & WeaponMode.EX_SEPARATE) > 0 and
+            not self.options.randomize_abilities.bvalue
+        ):
             _weapon = self.random.choice(weapons.weapon_ex_dict)
             self.multiworld.early_items[self.player][_weapon] = 1
 

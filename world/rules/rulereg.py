@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any, NamedTuple
 from typing_extensions import override
 
 from BaseClasses import Entrance, Location
-from rule_builder.rules import And, Or, Rule
+from rule_builder.rules import And, Has, Or, Rule
 
 from . import rulebase as rb
 from .rulepresetreg import RulePresetReg
@@ -105,9 +105,9 @@ class RuleReg:
                 set_combine = False
 
     def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
-        self.add_loc_rule(loc, rb.rule_has(item, count), combine_and)
+        self.add_loc_rule(loc, Has(item, count), combine_and)
     def insert_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
-        self.insert_loc_rule(loc, rb.rule_has(item, count), combine_and)
+        self.insert_loc_rule(loc, Has(item, count), combine_and)
     def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
         self.add_rule(loc, SpotType.LOCATION, rule, combine_and)
     def insert_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
