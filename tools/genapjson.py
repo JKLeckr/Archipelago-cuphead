@@ -75,6 +75,9 @@ def _sem_version_to_tuple_version(version: tuple[int, int, int, int], pofx: int 
     _format = 1
     if version[0] > 0:
         raise NotImplementedError("Version tuple parser not implemented for full versions!")
+    if pofx < 0 or pofx > 255:
+        raise ValueError("pofx can only be between 0 and 255!")
+    _pofx = 255 if pofx == 0 else pofx - 1
     return (
         version[0],
         version[1],
@@ -82,7 +85,7 @@ def _sem_version_to_tuple_version(version: tuple[int, int, int, int], pofx: int 
             ((_format & 0xFF) << 24) |
             ((version[2] & 0xFF) << 16) |
             ((version[3] & 0xFF) << 8) |
-            (pofx & 0xFF)
+            (_pofx & 0xFF)
         )
     )
 
