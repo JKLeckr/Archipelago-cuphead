@@ -29,9 +29,11 @@ jobs:
       matrix:
         include:
           - n_value: "1"
-            runs: "750"
+            runs: "250"
+            meta: "cuphead-fuzz-meta"
           - n_value: "2-4"
-            runs: "1250"
+            runs: "1000"
+            meta: "cuphead-fuzz-meta-solo"
         n_value: ["1", "2-4"]
       fail-fast: false
 
@@ -72,7 +74,7 @@ jobs:
           sed -i -E '/^cuphead_options:/,/^[^[:space:]]/ s/^([[:space:]]*debug:).*/\1 128/' host.yaml
 
       - name: "Run fuzzer"
-        run: python ./fuzz.py -g cuphead -j 8 -r 1000 -n ${{ matrix.n_value }} -m ./worlds/cuphead/.github/fuzz/cuphead-fuzz-meta.yaml
+        run: python ./fuzz.py -g cuphead -j 8 -r ${{ matrix.runs }} -n ${{ matrix.n_value }} -m ./worlds/cuphead/.github/fuzz/${{ matrix.meta }}.yaml
 
       - name: "Upload fuzz output"
         if: always()

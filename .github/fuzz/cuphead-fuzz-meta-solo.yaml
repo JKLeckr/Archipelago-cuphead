@@ -1,8 +1,5 @@
 Cuphead:
   fuzz_constraints:
-    - sum_cap:
-        - extra_coins
-      max_capacity: 2
     - option: accessibility
       if_value: minimal
       then:
@@ -17,6 +14,7 @@ Cuphead:
         dlc_kingdice_chalice_checks: disabled
         dlc_chess_chalice_checks: disabled
         dlc_cactusgirl_quest: "false"
+        extra_coins: 0
     - option: use_dlc
       if_value: "false"
       then:
@@ -32,3 +30,4 @@ Cuphead:
       if_value: none
       then:
         logic_mode: hard
+        randomize_abilities: "false"

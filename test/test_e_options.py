@@ -301,6 +301,34 @@ class TestOptionSanitizer(CupheadTestBase):
         self.assertEqual(world_options.dlc_chess_chalice_checks.value, int(e.ChaliceCheckMode.DISABLED))
         self.assertFalse(world_options.dlc_cactusgirl_quest.value)
 
+    def test_dlc_off_preserves_no_start_weapon(self):
+        test_world = TestOptionSanitizer()
+        test_world.options = {
+            "use_dlc": False,
+            "start_weapon": "none",
+        }
+        test_world.world_setup()
+        world_options = test_world.world.options
+        assert isinstance(world_options, CupheadOptions)
+
+        self.assertTrue(world_options.start_weapon.is_none())
+
+    def test_single_player_no_start_weapon_warns(self):
+        test_world = TestOptionSanitizer()
+        test_world.options = {
+            "logic_mode": "hard",
+            "start_weapon": "none",
+            "randomize_abilities": False,
+            "test_overrides": {"sani": True},
+        }
+
+        out = StringIO()
+        with redirect_stdout(out):
+            test_world.world_setup()
+
+        output = out.getvalue()
+        assert "single-player generation with start_weapon set to 'none' may fail" in output
+
     def test_minimal_accessibility_warns_on_risky_combo(self):
         test_world = TestOptionSanitizer()
         test_world.options = {

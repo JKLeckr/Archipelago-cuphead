@@ -18,14 +18,16 @@ class OptionSanitizer:
             player_name: str,
             options: CupheadOptions,
             random: Random,
+            solo: bool,
             log_overrides: bool = True,
-            sanitize_goal_options: bool = False
+            sanitize_goal_options: bool = False,
         ):
         self.option_overrides: list[str] = []
         self.player = player
         self.player_name = player_name
         self.options = options
         self.random = random
+        self.solo = solo
         self.log_overrides = log_overrides
         self.strict_goal_options = sanitize_goal_options
 
@@ -172,7 +174,7 @@ class OptionSanitizer:
                 _mode_choices = [1, 2, 4]
                 self.override_num_option(_options.mode, self.random.choice(_mode_choices), dlc_reason)
             # Sanitize start_weapon
-            if _options.start_weapon.value > 5:
+            if _options.start_weapon.value > 5 and not _options.start_weapon.is_none():
                 self.override_num_option(_options.start_weapon, self.random.randint(0,5), dlc_reason)
         self._sanitize_dlc_chalice_options(not use_dlc)
 
@@ -302,6 +304,11 @@ class OptionSanitizer:
 
         if options.start_weapon.is_none() and options.logic_mode != LogicMode.HARD:
             self.print_warning("Currently, setting start_weapon to 'none' may fail unless Logic Mode is set to 'hard'.")
+        if self.solo and options.start_weapon.is_none():
+            self.print_warning(
+                "Currently, single-player generation with start_weapon set to 'none' may fail because the first sphere "
+                "can have too few valid early locations."
+            )
 
     def sanitize_options(self):
         _options = self.options

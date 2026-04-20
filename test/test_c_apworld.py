@@ -104,6 +104,18 @@ class TestAPWorldItemSetup(unittest.TestCase):
                 else:
                     self.assertEqual(items[itemnames.item_plane_ex].quantity, 0)
 
+class TestAPWorldStartWeapon(CupheadTestBase):
+    def test_explicit_start_weapon_is_resolved(self):
+        for start_weapon, expected_index in (("peashooter", 0), ("chaser", 2)):
+            with self.subTest(start_weapon):
+                test_world = TestAPWorldStartWeapon()
+                test_world.options = {
+                    "start_weapon": start_weapon,
+                }
+                test_world.world_setup()
+
+                self.assertEqual(expected_index, test_world.world.resolved_start_weapon_index)
+
 class TestAPWorldUTSupport(CupheadTestBase):
     def test_sdata_re_gen(self):
         test_world = TestAPWorldUTSupport()

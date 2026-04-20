@@ -137,13 +137,19 @@ class CupheadWorld(CachedRuleBuilderWorld):
             self.precollected_counts[item.name] += 1
 
     def resolve_start_weapon(self):
-        _start_weapon = None
+        if not self.options.start_weapon.is_none():
+            self.resolved_start_weapon_index = self.options.start_weapon.value
+            return
+
+        _start_weapon: int | None = None
         _weapons = set(self.weapon_dict.values())
         for pitem in self.precollected_counts:
             if pitem in _weapons:
                 _start_weapon = weapons.all_weapon_to_index[pitem]
-        if not _start_weapon:
+                break
+        if _start_weapon is None:
             _start_weapon = self.random.choice(tuple(self.weapon_dict.keys()))
+
         self.resolved_start_weapon_index = _start_weapon
 
     def solo_setup(self):
@@ -215,6 +221,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
             self.player_name,
             self.options,
             self.random,
+            self.multiworld.players < 2,
             not varis.testing or hasattr(self, "_osani_ovrr")
         )
 
