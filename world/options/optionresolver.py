@@ -45,6 +45,8 @@ def _set_filler_item_weights(options_ref: "CupheadOptions"):
         for item, weight in zip(filler_items, filler_item_weights, strict=True)
         if weight > 0
     }
+    if len(options_ref.filler_item_weights.value) == 0:
+        raise ValueError("Filler Item Weights cannot all be zero.")
 
 
 def _set_trap_item_weights(options_ref: "CupheadOptions"):
@@ -67,6 +69,8 @@ def _set_trap_item_weights(options_ref: "CupheadOptions"):
         for trap, weight in zip(trap_items, trap_item_weights, strict=True)
         if weight > 0
     }
+    if options_ref.traps.value > 0 and len(options_ref.trap_item_weights.value) == 0:
+        raise ValueError("Trap Item Weights cannot all be zero.")
 
 # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
 def _set_shop_map(options_ref: "CupheadOptions"):

@@ -1,5 +1,13 @@
 Cuphead:
   fuzz_constraints:
+    - option: filler_weight_extrahealth
+      if_value: 0
+      then:
+        filler_weight_supercharge: 1
+    - option: trap_weight_fingerjam
+      if_value: 0
+      then:
+        trap_weight_slowfire: 1
     - option: accessibility
       if_value: minimal
       then:
