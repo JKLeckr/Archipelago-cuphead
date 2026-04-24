@@ -199,7 +199,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
             self.level_map = slot_data["level_map"]
             self.shop = ShopData(slot_data["shop_map"])
-            self.resolved_start_weapon_index = slot_data["start_weapon"]
+            self.resolved_start_weapon_index = slot_data["resolved_start_weapon"]
 
     @override
     def generate_early(self):
