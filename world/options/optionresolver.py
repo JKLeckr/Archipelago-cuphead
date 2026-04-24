@@ -79,6 +79,17 @@ def _set_shop_map(options_ref: "CupheadOptions"):
         [(2,2), (2,2), (1,2), (3,2)] if not dlc else [(2,2), (2,2), (2,2), (2,2)]
     )
 
+def _get_random_start_weapon_pool(options: "CupheadOptions") -> list[int]:
+    start_weapon = options.start_weapon
+    max_weapon = start_weapon.option_dlc_twistup if options.use_dlc.value else start_weapon.option_roundabout
+    explicit_weapons = list(range(start_weapon.option_peashooter, max_weapon + 1))
+
+    if start_weapon.value == start_weapon.option_random_weapon:
+        return explicit_weapons
+    if start_weapon.value == start_weapon.random_value:
+        return [*explicit_weapons, start_weapon.option_none]
+    return []
+
 def resolve_dependent_options(options: "CupheadOptions"):
     if options.start_maxhealth_p2.value == 0:
         options.start_maxhealth_p2.value = options.start_maxhealth.value
@@ -94,9 +105,9 @@ def resolve_random_options(options: "CupheadOptions", rand: Random):
         # TODO: Once modes can be combined, remove this and use randint
         _mode_choices = [1, 2, 4] + ([8, 9, 16, 18] if options.use_dlc else [])
         options.mode.value = rand.choice(_mode_choices)
-    if options.start_weapon.value == -1 or options.start_weapon.value == -2:
-        _newval = rand.randint(-2 + abs(options.start_weapon.value), 8 if options.use_dlc else 5)
-        options.start_weapon.value = options.start_weapon.option_dlc_twistup if _newval == -1 else _newval
+    _start_weapon_pool = _get_random_start_weapon_pool(options)
+    if _start_weapon_pool:
+        options.start_weapon.value = rand.choice(_start_weapon_pool)
     if options.boss_grade_checks.value == -1:
         options.boss_grade_checks.value = rand.randint(0, 4 if options.use_dlc else 3)
     if options.level_shuffle_seed.value == "":

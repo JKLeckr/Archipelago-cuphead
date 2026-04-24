@@ -107,22 +107,27 @@ def get_class_attrs(node: ast.ClassDef) -> dict[str, typing.Any]:
     """Extract top-level assignments from the class body."""
     attrs: dict[str, typing.Any] = {}
     for stmt in node.body:
+        target: ast.expr | None = None
+        value_node: ast.expr | None = None
         if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1:
             target = stmt.targets[0]
-            if isinstance(target, ast.Name):
-                name = target.id
-                value_node = stmt.value
-                value = None
-                if isinstance(value_node, ast.Constant):
-                    value = value_node.value
-                elif isinstance(value_node, ast.Name):
+            value_node = stmt.value
+        elif isinstance(stmt, ast.AnnAssign):
+            target = stmt.target
+            value_node = stmt.value
+
+        if isinstance(target, ast.Name) and value_node is not None:
+            name = target.id
+            value = None
+            try:
+                value = ast.literal_eval(value_node)
+            except (ValueError, SyntaxError):
+                if isinstance(value_node, ast.Name):
                     value = value_node.id
-                elif isinstance(value_node, ast.BinOp):
+                elif isinstance(value_node, (ast.BinOp, ast.Attribute)):
                     # For things like Visibility.spoiler | Visibility.template
                     value = ast.unparse(value_node)
-                elif isinstance(value_node, ast.Attribute):
-                    value = ast.unparse(value_node)
-                attrs[name] = value
+            attrs[name] = value
     return attrs
 
 def get_option_fields(node: ast.ClassDef) -> dict[str, int]:
@@ -134,8 +139,12 @@ def get_option_fields(node: ast.ClassDef) -> dict[str, int]:
             if isinstance(target, ast.Name) and target.id.startswith("option_"):
                 opt_name = target.id[len("option_"):]
                 val_node = stmt.value
-                if isinstance(val_node, ast.Constant) and isinstance(val_node.value, int):
-                    opt_val_to_name[opt_name] = val_node.value
+                try:
+                    value = ast.literal_eval(val_node)
+                except (ValueError, SyntaxError):
+                    continue
+                if isinstance(value, int):
+                    opt_val_to_name[opt_name] = value
     return dict(sorted(opt_val_to_name.items(), key=lambda item: item[1]))
 
 def get_option_range(

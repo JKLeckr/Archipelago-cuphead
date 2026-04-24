@@ -48,9 +48,9 @@ Cuphead:
   # Choose weapon to start with.
   # NOTE: If DLC is not enabled, picking DLC weapons will pick a random base game weapon instead.
   #
-  # Values: peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup
-  # Default: random
-  start_weapon: random
+  # Values: random_weapon, peashooter, spread, chaser, lobber, charge, roundabout, dlc_crackshot, dlc_converge, dlc_twistup, none
+  # Default: random_weapon
+  start_weapon: random_weapon
 
   ## Weapon Mode
   #
