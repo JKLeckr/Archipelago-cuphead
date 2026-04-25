@@ -54,6 +54,9 @@ def dep_hard_logic(c: CupheadOptions) -> bool:
 def dep_is_pacifist(c: CupheadOptions) -> bool:
     return dep_pacifist_quest(c) or c.rungun_grade_checks == GradeCheckMode.PACIFIST
 @dep
+def dep_is_any_pacifist(c: CupheadOptions) -> bool:
+    return dep_pacifist_quest(c) or dep_is_pacifist(c)
+@dep
 def dep_rando_abilities(c: CupheadOptions) -> bool:
     return c.randomize_abilities.bvalue
 @dep

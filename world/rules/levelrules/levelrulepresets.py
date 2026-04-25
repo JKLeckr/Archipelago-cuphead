@@ -164,7 +164,11 @@ LrpPlaneTopgrade = PresetData(
 )
 
 LrpRungunTopgrade = PresetData(
-    Preset(LrpParryOrPSugar),
+    Preset(
+        LrpParryOrPSugar,
+        options=[DepFilter(deps.dep_hard_logic, False), DepFilter(deps.dep_is_pacifist, False)],
+        filtered_resolution=True
+    ),
     "Run n Gun Topgrade"
 )
 
