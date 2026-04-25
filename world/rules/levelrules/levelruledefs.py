@@ -141,6 +141,7 @@ levelrules = LevelRules(
         lv.level_boss_bee: LevelDef(
             exit_location=l.loc_level_boss_bee,
             access=Preset(lrp.LrpWeapon),
+            base=(Preset(lrp.LrpDashOrDlcDoublejump) | DepFilter(deps.dep_hard_logic)),
             locations={
                 l.loc_level_boss_bee: LocationDef(),
                 l.loc_level_boss_bee_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
@@ -682,6 +683,7 @@ levelrules = LevelRules(
             base=(
                 Preset(lrp.LrpRungunWeapon) &
                 Preset(lrp.LrpParryOrPSugar) &
+                (Preset(lrp.LrpDash) | DepFilter(deps.dep_hard_logic)) &
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump),
                     options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],

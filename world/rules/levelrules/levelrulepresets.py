@@ -220,7 +220,7 @@ LrpDashOrDlcDoublejump = PresetData(
         i.item_ability_dash,
         options=[DepFilter(deps.dep_dlc_chalice, False)]
     ) |
-    HasAll(
+    HasAny(
         i.item_ability_dash,
         i.item_ability_dlc_cdoublejump,
         options=[DepFilter(deps.dep_dlc_chalice)]
