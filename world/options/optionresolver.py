@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 from ..names import itemnames
 
 if TYPE_CHECKING:
+    from ... import CupheadWorld
     from . import CupheadOptions
 
 def _set_coin_amounts(options_ref: "CupheadOptions"):
@@ -29,16 +30,16 @@ def _set_contract_requirements(options_ref: "CupheadOptions"):
     options_ref.contract_requirements_isle3.value = die2
 
 
-def _set_filler_item_weights(options_ref: "CupheadOptions"):
+def _set_filler_item_weights(options_ref: "CupheadOptions", player: int, player_name: str):
     filler_items: list[str] = [
         itemnames.item_level_extrahealth,
         itemnames.item_level_supercharge,
-        itemnames.item_level_fastfire,
+        #itemnames.item_level_fastfire,
     ]
     filler_item_weights: list[int] = [
         options_ref.filler_weight_extrahealth.value,
         options_ref.filler_weight_supercharge.value,
-        options_ref.filler_weight_fastfire.value,
+        #options_ref.filler_weight_fastfire.value,
     ]
     options_ref.filler_item_weights.value = {
         item: weight
@@ -46,23 +47,27 @@ def _set_filler_item_weights(options_ref: "CupheadOptions"):
         if weight > 0
     }
     if len(options_ref.filler_item_weights.value) == 0:
-        raise ValueError("Filler Item Weights cannot all be zero.")
+        print(
+                f"Warning: For player {player} ({player_name}): Filler item weights cannot be all zero."
+                f"{filler_items} will have a weight of 1"
+        )
+        options_ref.filler_item_weights.value = dict.fromkeys(filler_items, 1)
 
 
-def _set_trap_item_weights(options_ref: "CupheadOptions"):
+def _set_trap_item_weights(options_ref: "CupheadOptions", player: int, player_name: str):
     trap_items: list[str] = [
-        itemnames.item_level_trap_fingerjam,
-        itemnames.item_level_trap_slowfire,
+        #itemnames.item_level_trap_fingerjam,
+        #itemnames.item_level_trap_slowfire,
         itemnames.item_level_trap_superdrain,
-        itemnames.item_level_trap_loadout,
-        itemnames.item_level_trap_screen,
+        #itemnames.item_level_trap_loadout,
+        #itemnames.item_level_trap_screen,
     ]
     trap_item_weights: list[int] = [
-        options_ref.trap_weight_fingerjam.value,
-        options_ref.trap_weight_slowfire.value,
+        #options_ref.trap_weight_fingerjam.value,
+        #options_ref.trap_weight_slowfire.value,
         options_ref.trap_weight_superdrain.value,
-        options_ref.trap_weight_loadout.value,
-        0,
+        #options_ref.trap_weight_loadout.value,
+        #0,
     ]
     options_ref.trap_item_weights.value = {
         trap: weight
@@ -70,7 +75,11 @@ def _set_trap_item_weights(options_ref: "CupheadOptions"):
         if weight > 0
     }
     if options_ref.traps.value > 0 and len(options_ref.trap_item_weights.value) == 0:
-        raise ValueError("Trap Item Weights cannot all be zero.")
+        print(
+                f"Warning: For player {player} ({player_name}): Trap item weights cannot be all zero."
+                f"{trap_items} will have a weight of 1"
+        )
+        options_ref.trap_item_weights.value = dict.fromkeys(trap_items, 1)
 
 # Shop Map (shop_index(weapons, charms)) # TODO: Maybe shuffle the amounts later
 def _set_shop_map(options_ref: "CupheadOptions"):
@@ -90,13 +99,14 @@ def _get_random_start_weapon_pool(options: "CupheadOptions") -> list[int]:
         return [*explicit_weapons, start_weapon.option_none]
     return []
 
-def resolve_dependent_options(options: "CupheadOptions"):
+def resolve_dependent_options(world: "CupheadWorld"):
+    options = world.options
     if options.start_maxhealth_p2.value == 0:
         options.start_maxhealth_p2.value = options.start_maxhealth.value
     _set_coin_amounts(options)
     _set_contract_requirements(options)
-    _set_filler_item_weights(options)
-    _set_trap_item_weights(options)
+    _set_filler_item_weights(options, world.player, world.player_name)
+    _set_trap_item_weights(options, world.player, world.player_name)
     _set_shop_map(options)
 
 def resolve_random_options(options: "CupheadOptions", rand: Random):

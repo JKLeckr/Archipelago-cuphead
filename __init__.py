@@ -215,7 +215,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
             self.re_gen_setup()
 
         oresolver.resolve_random_options(self.options, self.random)
-        oresolver.resolve_dependent_options(self.options)
+        oresolver.resolve_dependent_options(self)
 
         self.option_sanitizer = OptionSanitizer(
             self.player,
