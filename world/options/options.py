@@ -283,7 +283,6 @@ class DlcChessCastle(EnumOption[e.ChessCastleMode], Choice, NamedOption):
 
 class DlcChessChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
-    --NOT YET IMPLEMENTED--
     -DLC ONLY-
     -REQUIRES CHALICE-
     -REQUIRES THE KING'S LEAP-

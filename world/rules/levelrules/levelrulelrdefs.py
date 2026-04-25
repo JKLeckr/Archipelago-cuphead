@@ -76,3 +76,7 @@ LrdDlcBossAirplaneChaliced = (
         filtered_resolution=True
     )
 )
+
+LrdDlcChessCastleChaliced = (
+    Preset(lrp.LrpDash) | DepFilter(deps.dep_dlc_chalice_only)
+)
