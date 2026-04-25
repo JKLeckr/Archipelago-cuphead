@@ -2,11 +2,15 @@
 ### SPDX-License-Identifier: MPL-2.0
 
 import unittest
-from typing import cast
+from typing import Any, cast
+
+from rule_builder.rules import Has, Rule
 
 from ..world.rules.dep import deps
 from ..world.rules.dep.depbase import Dep
 from ..world.rules.dep.depfilter import DepFilter
+from ..world.rules.levelrules.levelrulebase import InheritMode, LevelDef, LocationDef
+from ..world.rules.levelrules.levelrulecomp import LevelRuleComp
 
 
 class TestDepFilter(unittest.TestCase):
@@ -105,3 +109,54 @@ class TestDepFilter(unittest.TestCase):
             str(DepFilter((deps.dep_hard_logic, deps.dep_rando_abilities), value=False, any=True)),
             "!(hard_logic|rando_abilities)",
         )
+
+
+class _TestableLevelRuleComp(LevelRuleComp):
+    def compile_location_rule_for_test(
+        self,
+        inherit: InheritMode,
+        base: Rule[Any] | None = None,
+        loc_rule: Rule[Any] | None = None,
+    ) -> Rule[Any] | None:
+        return self._compile_location_rule(
+            LevelDef(locations={}, base=base),
+            LocationDef(rule=loc_rule, inherit=inherit),
+        )
+
+
+class TestLevelRuleComp(unittest.TestCase):
+    @staticmethod
+    def _compile_location_rule(
+        inherit: InheritMode,
+        base: Rule[Any] | None = None,
+        loc_rule: Rule[Any] | None = None,
+    ) -> Rule[Any] | None:
+        comp = _TestableLevelRuleComp.__new__(_TestableLevelRuleComp)
+        return comp.compile_location_rule_for_test(inherit, base=base, loc_rule=loc_rule)
+
+    def test_compile_location_rule_inherit_and(self):
+        base = Has("base")
+        loc_rule = Has("loc")
+
+        self.assertIsNone(self._compile_location_rule(InheritMode.AND))
+        self.assertEqual(self._compile_location_rule(InheritMode.AND, loc_rule=loc_rule), loc_rule)
+        self.assertEqual(self._compile_location_rule(InheritMode.AND, base=base), base)
+        self.assertEqual(self._compile_location_rule(InheritMode.AND, base=base, loc_rule=loc_rule), base & loc_rule)
+
+    def test_compile_location_rule_inherit_or(self):
+        base = Has("base")
+        loc_rule = Has("loc")
+
+        self.assertIsNone(self._compile_location_rule(InheritMode.OR))
+        self.assertIsNone(self._compile_location_rule(InheritMode.OR, loc_rule=loc_rule))
+        self.assertIsNone(self._compile_location_rule(InheritMode.OR, base=base))
+        self.assertEqual(self._compile_location_rule(InheritMode.OR, base=base, loc_rule=loc_rule), base | loc_rule)
+
+    def test_compile_location_rule_inherit_none(self):
+        base = Has("base")
+        loc_rule = Has("loc")
+
+        self.assertIsNone(self._compile_location_rule(InheritMode.NONE))
+        self.assertEqual(self._compile_location_rule(InheritMode.NONE, loc_rule=loc_rule), loc_rule)
+        self.assertIsNone(self._compile_location_rule(InheritMode.NONE, base=base))
+        self.assertEqual(self._compile_location_rule(InheritMode.NONE, base=base, loc_rule=loc_rule), loc_rule)

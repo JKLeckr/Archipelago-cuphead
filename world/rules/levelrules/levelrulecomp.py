@@ -26,18 +26,19 @@ class LevelRuleComp:
         level: lrb.LevelDef,
         loc: lrb.LocationDef,
     ) -> Rule["CupheadWorld"] | None:
-        if level.base is None:
-            return loc.rule
-        if loc.rule is None:
-            return level.base
-
         match loc.inherit:
-            case lrb.InheritMode.AND:
-                return level.base & loc.rule
-            case lrb.InheritMode.OR:
-                return level.base | loc.rule
             case lrb.InheritMode.NONE:
                 return loc.rule
+            case lrb.InheritMode.AND:
+                if level.base is None:
+                    return loc.rule
+                if loc.rule is None:
+                    return level.base
+                return level.base & loc.rule
+            case lrb.InheritMode.OR:
+                if level.base is None or loc.rule is None:
+                    return None
+                return level.base | loc.rule
 
     def _compile_level_loc(
         self,
