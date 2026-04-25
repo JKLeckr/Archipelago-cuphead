@@ -33,7 +33,6 @@ class CupheadOptions(PerGameCommonOptions):
     level_shuffle_seed: odefs.LevelShuffleSeed
     level_placements: odefs.LevelPlacements
     freemove_isles: odefs.FreeMoveIsles
-    #hard_logic: odefs.HardLogic
     deathlink: odefs.DeathLink
     deathlink_mode: odefs.DeathLinkMode
     deathlink_grace_count: odefs.DeathLinkGraceCount
@@ -148,7 +147,7 @@ cuphead_option_groups = [
         odefs.LevelShuffleSeed,
         odefs.LevelPlacements,
         odefs.FreeMoveIsles,
-        odefs.HardLogic,
+        odefs.LogicMode,
         #odefs.ShopMode,
         #odefs.WeaponGate,
         odefs.RandomizeAbilities,

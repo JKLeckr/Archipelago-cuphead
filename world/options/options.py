@@ -492,19 +492,6 @@ class GameMode(EnumOption[e.GameMode], ChoiceEx, NamedOption):
     default = 1
 
 
-# UNUSED
-class HardLogic(BToggle, NamedOption):
-    """
-    -WORKS, BUT INCOMPLETE-
-    Use more difficult logic that may require doing unconventional things that make the randomizer more difficult.
-    Examples include requiring jumping into pits to get across gaps and requiring avoiding King Dice bosses that
-    requires certain abilities to beat King Dice in logic.
-    """
-    name = "hard_logic"
-    display_name = "Hard Logic"
-    visibility = Visibility.none
-
-
 class LevelPlacements(LevelDict, NamedOption):
     """
     Define which levels will be placed in which spots when shuffling the levels.
