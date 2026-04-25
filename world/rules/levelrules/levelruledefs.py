@@ -682,7 +682,7 @@ levelrules = LevelRules(
             exit_location=l.loc_level_rungun_circus,
             base=(
                 Preset(lrp.LrpRungunWeapon) &
-                Preset(lrp.LrpParryOrPSugar) &
+                (Preset(lrp.LrpParryOrPSugar) | Preset(lrp.LrpDlcDoublejump)) &
                 (Preset(lrp.LrpDash) | DepFilter(deps.dep_hard_logic)) &
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump),
