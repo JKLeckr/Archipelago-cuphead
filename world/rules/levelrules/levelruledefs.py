@@ -31,7 +31,7 @@ levelrules = LevelRules(
         lv.level_boss_slime: LevelDef(
             exit_location=l.loc_level_boss_slime,
             access=Preset(lrp.LrpWeapon),
-            base=Preset(lrp.LrpDuckOrDash),
+            base=Preset(lrp.LrpCrouchOrDash),
             locations={
                 l.loc_level_boss_slime: LocationDef(),
                 l.loc_level_boss_slime_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
@@ -154,7 +154,7 @@ levelrules = LevelRules(
             exit_location=l.loc_level_boss_pirate,
             access=Preset(lrp.LrpWeapon),
             base=(
-                Preset(lrp.LrpDuck) |
+                Preset(lrp.LrpCrouch) |
                 (Preset(lrp.LrpDashAndParry) &
                     (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False)))
             ),
@@ -180,7 +180,7 @@ levelrules = LevelRules(
             exit_location=l.loc_level_boss_mouse,
             access=Preset(lrp.LrpWeapon),
             base=(
-                Preset(lrp.LrpDuck) &
+                Preset(lrp.LrpCrouch) &
                 ((Preset(lrp.LrpParry) & DepFilter(deps.dep_dlc_chalice_only)) |
                     (Preset(lrp.LrpParryOrPSugar) & DepFilter(deps.dep_dlc_chalice_only, False)))
             ),
@@ -214,7 +214,7 @@ levelrules = LevelRules(
             base=(
                 Preset(lrp.LrpParry) &
                 Filtered(
-                    Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck),
+                    Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpCrouch),
                     options=[DepFilter(deps.dep_dlc_chalice_only)],
                     filtered_resolution=True
                 )
@@ -250,14 +250,14 @@ levelrules = LevelRules(
                 l.loc_level_boss_sallystageplay_dlc_chaliced: LocationDef(
                     rule=(
                         Preset(lrp.LrpDlcBossChalicedParry) &
-                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck))
+                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpCrouch))
                     ),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_boss_sallystageplay_event_dlc_chaliced: LocationDef(
                     rule=(
                         Preset(lrp.LrpDlcBossChalicedParry) &
-                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDuck))
+                        (Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpCrouch))
                     ),
                     inherit=InheritMode.NONE
                 ),
@@ -405,7 +405,7 @@ levelrules = LevelRules(
             exit_location=l.loc_level_dlc_boss_rumrunners,
             access=Preset(lrp.LrpWeapon),
             base=(
-                Preset(lrp.LrpDuckAndParry) &
+                Preset(lrp.LrpCrouchAndParry) &
                 (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
@@ -458,11 +458,11 @@ levelrules = LevelRules(
             exit_location=l.loc_level_dlc_boss_airplane,
             access=Preset(lrp.LrpWeapon),
             base=(
-                Preset(lrp.LrpDuckOrDash, options=[DepFilter(deps.dep_dlc_chalice_only, False)]) |
+                Preset(lrp.LrpCrouchOrDash, options=[DepFilter(deps.dep_dlc_chalice_only, False)]) |
                 Filtered(
-                    Preset(lrp.LrpDuckOrDash, options=[DepFilter(deps.dep_hard_logic)]) |
+                    Preset(lrp.LrpCrouchOrDash, options=[DepFilter(deps.dep_hard_logic)]) |
                     Filtered(
-                        Preset(lrp.LrpDuck) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump)),
+                        Preset(lrp.LrpCrouch) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump)),
                         options=[DepFilter(deps.dep_hard_logic, False)]
                     ),
                     options=[DepFilter(deps.dep_dlc_chalice_only)],
@@ -903,7 +903,7 @@ levelrules = LevelRules(
         ),
         lv.level_tutorial: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpWeapon) & Preset(lrp.LrpDuckDashAndParry),
+            access=Preset(lrp.LrpWeapon) & Preset(lrp.LrpCrouchDashAndParry),
             locations={}
         ),
         lv.level_dlc_tutorial: LevelDef(

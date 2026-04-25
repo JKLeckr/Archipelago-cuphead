@@ -392,7 +392,7 @@ class DuckLockPlatDrop(BToggle, NamedOption):
     """
     name = "ducklock_platdrop"
     display_name = "DuckLock PlatDrop"
-    visibility = Visibility.spoiler | Visibility.template | Visibility.complex_ui
+    visibility = Visibility.spoiler
 
 
 class EarlyParry(BToggle, NamedOption):
@@ -604,7 +604,7 @@ class PacifistQuest(BToggle, NamedOption):
 
 class RandomizeAbilities(BDefaultOnToggle, NamedOption):
     """
-    Randomize essential abilities like Duck, Parry, Dash, etc.
+    Randomize essential abilities like Crouch, Parry, Dash, etc.
     """
     name = "randomize_abilities"
     display_name = "Randomize Abilities"

@@ -116,14 +116,14 @@ item_dlc_chalice_super: dict[str, ItemData] = {
 item_all_super: dict[str, ItemData] = {**item_super, **item_dlc_chalice_super}
 
 item_abilities: dict[str, ItemData] = {
-    itemnames.item_ability_duck: ItemData(16000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_crouch: ItemData(16000, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_dash: ItemData(16001, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_parry: ItemData(16002, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_plane_parry: ItemData(16003, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_plane_shrink: ItemData(16004, ItemClassification.useful),
 }
 item_dlc_chalice_abilities: dict[str, ItemData] = {
-    itemnames.item_ability_dlc_cduck: ItemData(10014000, ItemClassification.progression | ItemClassification.useful),
+    itemnames.item_ability_dlc_ccrouch: ItemData(10014000, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_dlc_p_cdash: ItemData(10014001, ItemClassification.progression | ItemClassification.useful, 2),
     itemnames.item_ability_dlc_cdoublejump: ItemData(10014002, ItemClassification.progression | ItemClassification.useful),
     itemnames.item_ability_dlc_cplane_parry: ItemData(10014003, ItemClassification.progression | ItemClassification.useful),

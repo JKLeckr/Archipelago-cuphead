@@ -11,7 +11,7 @@ from . import levelrulepresets as lrp
 LrdBossBaronessChalice = (
     Preset(lrp.LrpDlcDoublejump) #&
     ## Maybe need duck?
-    #(Preset(lrp.LrpDuck) | DepFilter(deps.dep_hard_logic))
+    #(Preset(lrp.LrpCrouch) | DepFilter(deps.dep_hard_logic))
 )
 
 LrdBossBaronessChaliceOnly = (
@@ -29,7 +29,7 @@ LrdBossDragonChaliced = (
 )
 
 LrdBossPirateChalice = (
-    (Preset(lrp.LrpDuck) | (Preset(lrp.LrpDashAndParry) & Preset(lrp.LrpDlcDoublejump))) |
+    (Preset(lrp.LrpCrouch) | (Preset(lrp.LrpDashAndParry) & Preset(lrp.LrpDlcDoublejump))) |
     DepFilter(deps.dep_rando_abilities, False)
 )
 
@@ -53,7 +53,7 @@ LrdParryLogic = (
 )
 
 LrdDlcBossRumRunnersEarlyPhase = (
-    Preset(lrp.LrpDuck) &
+    Preset(lrp.LrpCrouch) &
     (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
 )
 
@@ -70,8 +70,8 @@ LrdDlcBossSnowCultChaliced = (
 LrdDlcBossAirplaneChaliced = (
     Preset(lrp.LrpDlcCookie) &
     Filtered(
-        Preset(lrp.LrpDuckOrDash) &
-        (Preset(lrp.LrpDuck) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump))),
+        Preset(lrp.LrpCrouchOrDash) &
+        (Preset(lrp.LrpCrouch) | (Preset(lrp.LrpDash) & Preset(lrp.LrpDlcDoublejump))),
         options=[DepFilter(deps.dep_hard_logic, False)],
         filtered_resolution=True
     )

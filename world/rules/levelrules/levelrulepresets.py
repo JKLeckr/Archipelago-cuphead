@@ -15,9 +15,9 @@ LrpPlane = PresetData(
     "Plane"
 )
 
-LrpDuck = PresetData(
-    Has(i.item_ability_duck) | DepFilter(deps.dep_rando_abilities, False),
-    "Duck"
+LrpCrouch = PresetData(
+    Has(i.item_ability_crouch) | DepFilter(deps.dep_rando_abilities, False),
+    "Crouch"
 )
 
 LrpDash = PresetData(
@@ -49,14 +49,14 @@ LrpPlaneShrink = PresetData(
     "Plane Shrink"
 )
 
-LrpDuckOrDash = PresetData(
-    HasAny(i.item_ability_duck, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
-    "Duck or Dash"
+LrpCrouchOrDash = PresetData(
+    HasAny(i.item_ability_crouch, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
+    "Crouch or Dash"
 )
 
-LrpDuckAndDash = PresetData(
-    HasAll(i.item_ability_duck, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
-    "Duck and Dash"
+LrpCrouchAndDash = PresetData(
+    HasAll(i.item_ability_crouch, i.item_ability_dash) | DepFilter(deps.dep_rando_abilities, False),
+    "Crouch and Dash"
 )
 
 LrpParryOrPSugar = PresetData(
@@ -108,26 +108,26 @@ LrpDashParryOrPSugar = PresetData(
     "Dash, Parry, or P. Sugar"
 )
 
-LrpDuckAndParry = PresetData(
+LrpCrouchAndParry = PresetData(
     (
         HasAll(
-            i.item_ability_duck,
+            i.item_ability_crouch,
             i.item_ability_parry,
         ) &
         (Has(i.item_ability_dash) | DepFilter(deps.dep_dlc_chalice_only, False))
     ) |
     DepFilter(deps.dep_rando_abilities, False),
-    "Duck and Parry"
+    "Crouch and Parry"
 )
 
-LrpDuckDashAndParry = PresetData(
+LrpCrouchDashAndParry = PresetData(
     HasAll(
-        i.item_ability_duck,
+        i.item_ability_crouch,
         i.item_ability_dash,
         i.item_ability_parry,
     ) |
     DepFilter(deps.dep_rando_abilities, False),
-    "Duck, Dash and Parry"
+    "Crouch, Dash and Parry"
 )
 
 LrpAnySuper = PresetData(
