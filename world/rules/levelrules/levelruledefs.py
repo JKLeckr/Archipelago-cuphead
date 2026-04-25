@@ -633,7 +633,10 @@ levelrules = LevelRules(
                 l.loc_level_rungun_forest_pacifist: LocationDef(),
                 l.loc_level_rungun_forest_coin1: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_forest_coin2: LocationDef(inherit=InheritMode.NONE),
-                l.loc_level_rungun_forest_coin3: LocationDef(rule=Preset(lrp.LrpParry), inherit=InheritMode.NONE),
+                l.loc_level_rungun_forest_coin3: LocationDef(
+                    rule=Preset(lrp.LrpParryOrPSugar),
+                    inherit=InheritMode.NONE
+                ),
                 l.loc_level_rungun_forest_coin4: LocationDef(rule=Preset(lrp.LrpDash), inherit=InheritMode.NONE),
                 l.loc_level_rungun_forest_coin5: LocationDef(
                     rule=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpDash),
@@ -656,7 +659,7 @@ levelrules = LevelRules(
                     rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpRungunTopgrade))
                 ),
                 l.loc_level_rungun_tree_pacifist: LocationDef(),
-                l.loc_level_rungun_tree_coin1: LocationDef(rule=Preset(lrp.LrpParry), inherit=InheritMode.NONE),
+                l.loc_level_rungun_tree_coin1: LocationDef(rule=Preset(lrp.LrpParryOrPSugar), inherit=InheritMode.NONE),
                 l.loc_level_rungun_tree_coin2: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_tree_coin3: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_tree_coin4: LocationDef(),
@@ -687,9 +690,7 @@ levelrules = LevelRules(
             ),
             locations={
                 l.loc_level_rungun_circus: LocationDef(),
-                l.loc_level_rungun_circus_agrade: LocationDef(
-                    rule=(Preset(lrp.LrpRungunTopgrade) | DepFilter(deps.dep_hard_logic))
-                ),
+                l.loc_level_rungun_circus_agrade: LocationDef(),
                 l.loc_level_rungun_circus_pacifist: LocationDef(),
                 l.loc_level_rungun_circus_coin1: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_circus_coin2: LocationDef(inherit=InheritMode.NONE),
@@ -711,9 +712,7 @@ levelrules = LevelRules(
                     ),
                     inherit=InheritMode.NONE,
                 ),
-                l.loc_level_rungun_circus_event_agrade: LocationDef(
-                    rule=(Preset(lrp.LrpRungunTopgrade) | DepFilter(deps.dep_hard_logic))
-                ),
+                l.loc_level_rungun_circus_event_agrade: LocationDef(),
                 l.loc_level_rungun_circus_event_pacifist: LocationDef(),
             },
         ),
@@ -731,7 +730,7 @@ levelrules = LevelRules(
             ),
             locations={
                 l.loc_level_rungun_funhouse: LocationDef(),
-                l.loc_level_rungun_funhouse_agrade: LocationDef(rule=Preset(lrp.LrpRungunTopgrade)),
+                l.loc_level_rungun_funhouse_agrade: LocationDef(),
                 l.loc_level_rungun_funhouse_pacifist: LocationDef(),
                 l.loc_level_rungun_funhouse_coin1: LocationDef(
                     rule=Preset(lrp.LrpParryOrPSugar),
@@ -764,7 +763,7 @@ levelrules = LevelRules(
             ),
             locations={
                 l.loc_level_rungun_harbour: LocationDef(),
-                l.loc_level_rungun_harbour_agrade: LocationDef(rule=Preset(lrp.LrpRungunTopgrade)),
+                l.loc_level_rungun_harbour_agrade: LocationDef(),
                 l.loc_level_rungun_harbour_pacifist: LocationDef(),
                 l.loc_level_rungun_harbour_coin1: LocationDef(
                     rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpDashParryOrPSugar)),
@@ -838,12 +837,12 @@ levelrules = LevelRules(
                 l.loc_level_rungun_mountain_event_pacifist: LocationDef(),
             },
         ),
-        lv.level_mausoleum_i: LevelDef(exit_location=None, access=lrd.LrdMausoleum, locations={}),
-        lv.level_mausoleum_ii: LevelDef(exit_location=None, access=lrd.LrdMausoleum, locations={}),
-        lv.level_mausoleum_iii: LevelDef(exit_location=None, access=lrd.LrdMausoleum, locations={}),
+        lv.level_mausoleum_i: LevelDef(exit_location=None, access=Preset(lrp.LrpParryOrPSugar), locations={}),
+        lv.level_mausoleum_ii: LevelDef(exit_location=None, access=lrd.LrdParryLogic, locations={}),
+        lv.level_mausoleum_iii: LevelDef(exit_location=None, access=lrd.LrdParryLogic, locations={}),
         lv.level_dlc_chesscastle_pawn: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpParry),
+            access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_pawn: LocationDef(),
                 l.loc_level_dlc_chesscastle_pawn_dlc_chaliced: LocationDef(),
@@ -861,7 +860,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_bishop: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpParry),
+            access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_bishop: LocationDef(),
                 l.loc_level_dlc_chesscastle_bishop_dlc_chaliced: LocationDef(),
@@ -869,7 +868,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_rook: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpParry),
+            access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_rook: LocationDef(),
                 l.loc_level_dlc_chesscastle_rook_dlc_chaliced: LocationDef(),
@@ -877,7 +876,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_queen: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpParry),
+            access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_queen: LocationDef(),
                 l.loc_level_dlc_chesscastle_queen_dlc_chaliced: LocationDef(),

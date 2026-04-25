@@ -141,7 +141,7 @@ LrpWeaponEx = PresetData(
 )
 
 LrpTopgrade = PresetData(
-    Preset(LrpParry) &
+    Preset(LrpParryOrPSugar) &
     Filtered(
         Preset(LrpAnySuper) | Preset(LrpWeaponEx),
         options=[DepFilter(deps.dep_weapon_ex_rando)],
@@ -164,7 +164,7 @@ LrpPlaneTopgrade = PresetData(
 )
 
 LrpRungunTopgrade = PresetData(
-    Preset(LrpParry),
+    Preset(LrpParryOrPSugar),
     "Run n Gun Topgrade"
 )
 

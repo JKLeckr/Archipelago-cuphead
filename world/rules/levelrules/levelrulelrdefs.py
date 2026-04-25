@@ -47,7 +47,7 @@ LrdBossTrainChaliced = (
     )
 )
 
-LrdMausoleum = (
+LrdParryLogic = (
     (Preset(lrp.LrpParryOrPSugar) & DepFilter(deps.dep_hard_logic)) |
     (Preset(lrp.LrpParry) & DepFilter(deps.dep_hard_logic, False))
 )
