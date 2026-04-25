@@ -760,7 +760,9 @@ levelrules = LevelRules(
             exit_location=l.loc_level_rungun_harbour,
             base=(
                 Preset(lrp.LrpRungunWeapon) &
-                Preset(lrp.LrpDashAndParry) &
+                Preset(lrp.LrpDash) &
+                (Preset(lrp.LrpParry) | DepFilter(deps.dep_hard_logic)) &
+                (Preset(lrp.LrpParryOrPSugar) | DepFilter(deps.dep_hard_logic, False)) &
                 (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
@@ -781,8 +783,13 @@ levelrules = LevelRules(
                 ),
                 l.loc_level_rungun_harbour_coin4: LocationDef(
                     rule=(
-                        Preset(lrp.LrpRungunWeapon) &
-                        (Preset(lrp.LrpParry) | (Has(i.item_charm_psugar) & Preset(lrp.LrpDash))) &
+                        Preset(lrp.LrpRungunWeapon) & (
+                            Preset(lrp.LrpParry) |
+                            Filtered(
+                                Has(i.item_charm_psugar) & Preset(lrp.LrpDash),
+                                options=[DepFilter(deps.dep_hard_logic)]
+                            )
+                        ) &
                         (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                     ),
                     inherit=InheritMode.NONE,
