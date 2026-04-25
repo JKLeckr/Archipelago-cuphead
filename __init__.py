@@ -384,9 +384,14 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
         _world_version = slot_data["world_version"]
 
-        # FIXME: Add option to enable/disable logging
         print(f"SlotData version: {_version}")
         print(f"Server APWorld Version: {_world_version}")
         print(f"This APWorld Version: {CupheadWorld.APWORLD_VERSION}")
+
+        if _world_version != CupheadWorld.APWORLD_VERSION:
+            print(
+                "WARNING: Server version is different than client version. "
+                "Logic may be different in tracker compared to actual logic in server."
+            )
 
         return slot_data

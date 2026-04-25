@@ -48,7 +48,7 @@ def _set_filler_item_weights(options_ref: "CupheadOptions", player: int, player_
     }
     if len(options_ref.filler_item_weights.value) == 0:
         print(
-                f"Warning: For player {player} ({player_name}): Filler item weights cannot be all zero."
+                f"Warning: For player {player} ({player_name}): Filler item weights cannot be all zero. "
                 f"{filler_items} will have a weight of 1"
         )
         options_ref.filler_item_weights.value = dict.fromkeys(filler_items, 1)
@@ -76,7 +76,7 @@ def _set_trap_item_weights(options_ref: "CupheadOptions", player: int, player_na
     }
     if options_ref.traps.value > 0 and len(options_ref.trap_item_weights.value) == 0:
         print(
-                f"Warning: For player {player} ({player_name}): Trap item weights cannot be all zero."
+                f"Warning: For player {player} ({player_name}): Trap item weights cannot be all zero. "
                 f"{trap_items} will have a weight of 1"
         )
         options_ref.trap_item_weights.value = dict.fromkeys(trap_items, 1)
