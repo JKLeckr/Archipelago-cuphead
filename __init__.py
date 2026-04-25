@@ -197,7 +197,8 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
             obits.debitify(self.options, bits)
 
-            self.level_map = slot_data["level_map"]
+            # Keys for level_map in slot data are strings, so convert them to ints
+            self.level_map = {int(k): v for k, v in slot_data["level_map"].items()}
             self.shop = ShopData(slot_data["shop_map"])
             self.resolved_start_weapon_index = slot_data["resolved_start_weapon"]
 
