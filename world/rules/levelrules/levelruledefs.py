@@ -470,7 +470,7 @@ levelrules = LevelRules(
             ),
             locations={
                 l.loc_level_dlc_boss_airplane: LocationDef(),
-                l.loc_level_dlc_boss_airplane_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_dlc_boss_airplane_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_dlc_boss_airplane_secret: LocationDef(),
                 l.loc_level_dlc_boss_airplane_dlc_chaliced: LocationDef(rule=lrd.LrdDlcBossAirplaneChaliced),
                 l.loc_level_dlc_boss_airplane_event_dlc_chaliced: LocationDef(rule=lrd.LrdDlcBossAirplaneChaliced),
