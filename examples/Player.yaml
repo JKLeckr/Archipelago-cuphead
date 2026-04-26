@@ -171,7 +171,7 @@ Cuphead:
 
   ## Randomize Abilities
   #
-  # Randomize essential abilities like Duck, Parry, Dash, etc.
+  # Randomize essential abilities like Crouch, Parry, Dash, etc.
   #
   # Values: true, false
   # Default: true
