@@ -55,14 +55,14 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     GAME_NAME: ClassVar[str] = "Cuphead"
 
-    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 3)
+    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 3, 0, 0)
     APWORLD_VERSION_POSTFIX: str = ""
     APWORLD_VERSION_POSTFIX_NO: int = 0
     APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_SEM_VERSION, APWORLD_VERSION_POSTFIX))
 
     AUTHORS: ClassVar[list[str]] = ["JKLeckr"]
 
-    SLOT_DATA_VERSION: ClassVar[int] = 6
+    SLOT_DATA_VERSION: ClassVar[int] = 7
 
     game: ClassVar[str] = GAME_NAME # type: ignore
     web: ClassVar[WebWorld] = CupheadWebWorld()
