@@ -14,6 +14,8 @@ from . import levelrulelrdefs as lrd
 from . import levelrulepresets as lrp
 from .levelrulebase import InheritMode, LevelDef, LevelRules, LocationDef
 
+# TODO: Add missing phase logic
+
 levelrules = LevelRules(
     {
         lv.level_boss_veggies: LevelDef(
