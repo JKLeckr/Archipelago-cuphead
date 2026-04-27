@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 
 ## Currently, with shuffling levels, locations are relocated onto static regions.
 ## Eventually, it might be better (maybe) to properly map regions
+# TODO: Properly map regions!
 
 def get_regions(world: "CupheadWorld") -> list[RegionData]:
     shop_locations = world.shop.shop_locations

@@ -55,7 +55,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     GAME_NAME: ClassVar[str] = "Cuphead"
 
-    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 11)
+    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 3, 0, 0)
     APWORLD_VERSION_POSTFIX: ClassVar[str] = ""
     APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 10
 
@@ -72,7 +72,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
     APWORLD_FLAGS: ClassVar[list[str]] = ["supports_deathlink"]
     GAME_IGDB_ID: ClassVar[int] = 9061
 
-    SLOT_DATA_VERSION: ClassVar[int] = 6
+    SLOT_DATA_VERSION: ClassVar[int] = 7
 
     game: ClassVar[str] = GAME_NAME # type: ignore
     web: ClassVar[WebWorld] = CupheadWebWorld()
