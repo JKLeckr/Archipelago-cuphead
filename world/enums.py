@@ -33,11 +33,6 @@ class WeaponMode(IntEnum):
     EX_SEPARATE = 2
     EX_SEPARATE_EXCEPT_START = 6
 
-class BossPhaseCheckMode(IntEnum):
-    DISABLED = 0
-    ENABLED = 1
-    SECRET_SEPERATE = 2
-
 class ShopMode(IntEnum):
     TIERS = 0
     STRICT_TIERS = 1
