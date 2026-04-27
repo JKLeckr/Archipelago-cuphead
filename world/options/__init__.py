@@ -40,6 +40,7 @@ class CupheadOptions(PerGameCommonOptions):
     boss_secret_checks: odefs.BossSecretChecks
     boss_grade_checks: odefs.BossGradeChecks
     rungun_grade_checks: odefs.RunGunGradeChecks
+    boss_phase_checks: odefs.BossPhaseChecks
     kingdice_bosssanity: odefs.DicePalaceBossSanity
     dlc_boss_chalice_checks: odefs.DlcBossChaliceChecks
     dlc_rungun_chalice_checks: odefs.DlcRunGunChaliceChecks
@@ -78,7 +79,6 @@ class CupheadOptions(PerGameCommonOptions):
     trap_item_weights: iodefs.TrapItemWeights
 
     # Constants (never change)
-    boss_phase_checks: codefs.BossPhaseChecks
     buster_quest: codefs.BusterQuest
     dlc_randomize_boat: codefs.DlcRandomizeBoat
     dlc_requires_mausoleum: codefs.DlcRequiresMausoleum
@@ -165,6 +165,7 @@ cuphead_option_groups = [
         odefs.BossSecretChecks,
         odefs.BossGradeChecks,
         odefs.RunGunGradeChecks,
+        odefs.BossPhaseChecks,
         odefs.SilverworthQuest,
         odefs.PacifistQuest,
         odefs.DicePalaceBossSanity,

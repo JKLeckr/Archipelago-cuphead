@@ -9,18 +9,6 @@ from .protocols import NamedOption
 ## They can never be set by the user. If set by the user, it will be
 ## ignored.
 
-class BossPhaseChecks(EnumOption[e.BossPhaseCheckMode], ConstNumericOption, NamedOption):
-    """
-    --NOT SUPPORTED OPTION--
-    Enable phase checks for Boss Levels.
-    Completing the phases in the fight will be a check.
-    This excludes the final phase.
-    """
-    name = "boss_phase_checks"
-    display_name = "Boss Phase Checks"
-    enum_type = e.BossPhaseCheckMode
-    value = 0
-
 
 class BusterQuest(BoolOption, ConstToggle, NamedOption):
     """
