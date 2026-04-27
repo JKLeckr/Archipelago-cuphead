@@ -30,11 +30,23 @@ class BossGradeChecks(EnumOption[e.GradeCheckMode], ChoiceEx, NamedOption):
     default = 1
 
 
+class BossPhaseChecks(BToggle, NamedOption):
+    """
+    Enable phase checks for Boss Levels.
+    Completing the phases in the fight will be a check.
+    This excludes the final phase.
+    Secret phases are separate checks (included when Boss Secret Checks are on).
+    """
+    name = "boss_phase_checks"
+    display_name = "Boss Phase Checks"
+
+
 class BossSecretChecks(BToggle, NamedOption):
     """
-    Also include beating the secret phases that certain bosses have as checks.
+    Also include beating the secret phase routes that certain bosses have as checks.
     The boss levels include: Botanic Panic, Pyramid Peril, Dramatic Fanatic, and Doggone Dogfight (DLC).
-    The secret phases are generally more difficult than the normal fight.
+    The secret route fights are generally more difficult than the normal fight.
+    Turning this off will exclude those locations.
     """
     name = "boss_secret_checks"
     display_name = "Boss Secret Checks"
