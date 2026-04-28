@@ -51,7 +51,7 @@ jobs:
         with:
           repository: JKLeckr/Archipelago
           path: Archipelago
-          ref: ${{ vars.AP_BRANCH }}
+          ref: ${{ (github.ref_name == 'dev' || github.head_ref == 'dev') && 'base-dev' || 'base' }}
 
       - name: Checkout Cuphead
         uses: actions/checkout@v6
