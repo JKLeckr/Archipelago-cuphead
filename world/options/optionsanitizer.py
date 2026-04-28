@@ -5,7 +5,7 @@ from collections.abc import Iterable
 from random import Random
 
 from ..auxiliary import format_list
-from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LevelShuffleMode, LogicMode, WeaponMode
+from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LogicMode, WeaponMode
 from ..levels import levelshuffle, leveltype
 from . import CupheadOptions
 from .protocols import CupheadNumericOption, CupheadOptionSet
@@ -212,7 +212,7 @@ class OptionSanitizer:
             for y in
                 levelshuffle.get_level_shuffle_lists(
                     bool(options.use_dlc),
-                    LevelShuffleMode(options.mode),
+                    options.level_shuffle.evalue,
                     bool(options.level_shuffle_kingdice)
                 )
             for x in y[0] if x not in y[1]
