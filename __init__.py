@@ -64,10 +64,10 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     SLOT_DATA_VERSION: ClassVar[int] = 7
 
-    game: ClassVar[str] = GAME_NAME # type: ignore
+    game: ClassVar[str] = GAME_NAME  # pyright: ignore[reportIncompatibleVariableOverride]
     web: ClassVar[WebWorld] = CupheadWebWorld()
     options_dataclass: ClassVar[type[PerGameCommonOptions]] = CupheadOptions
-    options: CupheadOptions # type: ignore
+    options: CupheadOptions  # pyright: ignore[reportIncompatibleVariableOverride]
     origin_region_name: str = "Start"
 
     required_client_version: tuple[int, int, int] = (0, 6, 7)
@@ -81,7 +81,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
     item_names: ClassVar[set[str]] = set(idef.items_all.keys())
     location_names: ClassVar[set[str]] = set(ld.locations_all.keys())
 
-    settings: CupheadSettings # type: ignore
+    settings: CupheadSettings  # pyright: ignore[reportIncompatibleVariableOverride]
 
     item_mapping: ClassVar[dict[str, str]] = {
         itemnames.item_coin2: itemnames.item_coin,
