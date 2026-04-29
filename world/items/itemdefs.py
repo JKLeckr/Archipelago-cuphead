@@ -73,17 +73,17 @@ item_dlc_weapon_ex: dict[str, ItemData] = {
 item_all_weapon_ex: dict[str, ItemData] = {**item_weapon_ex, **item_dlc_weapon_ex}
 
 item_p_weapons: dict[str, ItemData] = {
-    itemnames.item_p_weapon_peashooter: ItemData(10000, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_spread: ItemData(10001, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_chaser: ItemData(10002, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_lobber: ItemData(10003, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_charge: ItemData(10004, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_roundabout: ItemData(10005, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_peashooter: ItemData(10000, ItemClassification.useful),
+    itemnames.item_p_weapon_spread: ItemData(10001, ItemClassification.useful),
+    itemnames.item_p_weapon_chaser: ItemData(10002, ItemClassification.useful),
+    itemnames.item_p_weapon_lobber: ItemData(10003, ItemClassification.useful),
+    itemnames.item_p_weapon_charge: ItemData(10004, ItemClassification.useful),
+    itemnames.item_p_weapon_roundabout: ItemData(10005, ItemClassification.useful),
 }
 item_dlc_p_weapons: dict[str, ItemData] = {
-    itemnames.item_p_weapon_dlc_crackshot: ItemData(10008000, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_dlc_converge: ItemData(10008001, ItemClassification.useful, 2),
-    itemnames.item_p_weapon_dlc_twistup: ItemData(10008002, ItemClassification.useful, 2),
+    itemnames.item_p_weapon_dlc_crackshot: ItemData(10008000, ItemClassification.useful),
+    itemnames.item_p_weapon_dlc_converge: ItemData(10008001, ItemClassification.useful),
+    itemnames.item_p_weapon_dlc_twistup: ItemData(10008002, ItemClassification.useful),
 }
 item_all_p_weapons: dict[str, ItemData] = {**item_p_weapons, **item_dlc_p_weapons}
 

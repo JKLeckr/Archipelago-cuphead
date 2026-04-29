@@ -84,12 +84,21 @@ def create_traps(world: "CupheadWorld", trap_count: int, rand: Random) -> list[I
 
     return res
 
-def create_pool_items(world: "CupheadWorld", items: list[str], precollected_counts: dict[str, int]) -> list[Item]:
+def create_pool_items(
+    world: "CupheadWorld",
+    items: list[str],
+    precollected_counts: dict[str, int],
+    item_qty_overrides: dict[str, int] | None = None
+) -> list[Item]:
+    if item_qty_overrides is None:
+        item_qty_overrides = {}
     _itempool: list[Item] = []
     for itemname in items:
-        if itemname in world.active_items.keys():
+        if itemname in world.active_items:
             item = world.active_items[itemname]
-            qty = item.quantity - precollected_counts.get(itemname, 0)
+            _item_qty = item_qty_overrides.get(itemname, item.quantity)
+            # FIXME: This will break if there are multiple instances of an item.
+            qty = _item_qty - precollected_counts.get(itemname, 0)
             #if qty<0:
             #    print(f"WARNING: \"{items}\" has quantity of {str(qty)}!")
             if item.id and qty>0:
@@ -209,12 +218,12 @@ def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> t
             break
     return (total_single_coins, total_double_coins, total_triple_coins)
 
-def create_start_weapons(world: "CupheadWorld", weapon: str) -> set[str]:
+def create_start_weapons(world: "CupheadWorld", weapon: str) -> list[str]:
     options = world.options
-    res: set[str] = set()
+    res: list[str] = []
 
     create_locked_item(world, weapon, locationnames.loc_event_start_weapon, ItemClassification.progression)
-    res.add(weapon)
+    res.append(weapon)
     if locationnames.loc_event_start_weapon_ex in world.active_locations:
         if options.weapon_mode.evalue == WeaponMode.PROGRESSIVE_EXCEPT_START:
             weapon_ex = weapons.weapon_p_dict[options.start_weapon.value]
@@ -223,37 +232,41 @@ def create_start_weapons(world: "CupheadWorld", weapon: str) -> set[str]:
         else:
             weapon_ex = ""
         create_locked_item(world, weapon_ex, locationnames.loc_event_start_weapon_ex, ItemClassification.progression)
-        res.add(weapon_ex)
+        res.append(weapon_ex)
     return res
 
-def setup_weapon_pool(world: "CupheadWorld", precollected_counts: dict[str, int]) -> list[str]:
+## Returns a tuple with the list of weapon items and a dict representing their counts
+def setup_weapon_pool(world: "CupheadWorld") -> tuple[list[str], dict[str, int]]:
     _weapons: list[str] = []
     _weapon_dict = weapons.get_weapon_dict(world.options)
 
-    _weapon_index = world.options.start_weapon.value
-    if _weapon_index in _weapon_dict:
+    _weapon_counts: dict[str, int] = {}
+
+    def _push_weapon_counts(w: str, v: int = 1):
+        _weapon_counts[w] = _weapon_counts.get(w, 0) + v
+
+    _start_weapon_index = world.options.start_weapon.value
+    if _start_weapon_index in _weapon_dict:
         _weapon = _weapon_dict[world.options.start_weapon.value]
         _start_weapons = create_start_weapons(world, _weapon)
-    elif world.options.start_weapon.is_none():
-        _start_weapons = None
-    else:
-        raise ValueError(f"weapon {_weapon_index} is invalid")
+        for w in _start_weapons:
+            _push_weapon_counts(w, -1)
+    elif not world.options.start_weapon.is_none():
+        raise ValueError(f"weapon {_start_weapon_index} is invalid")
 
-    _no_set: set[str] = set()
-    if _start_weapons is not None:
-        _no_set.update(_start_weapons)
+    _weapons = list(_weapon_dict.values())
 
-    def _not_in_noset(x: str) -> bool:
-        return x not in precollected_counts and x not in _no_set
-
-    _weapons = [x for x in set(_weapon_dict.values()) if _not_in_noset(x)]
+    _weapon_qty = 2 if (world.options.weapon_mode.evalue & WeaponMode.PROGRESSIVE) > 0 else 1
 
     if (world.options.weapon_mode.evalue & WeaponMode.EX_SEPARATE) > 0:
-        _weapons.extend([x for x in set(idef.item_weapon_ex.keys()) if _not_in_noset(x)])
+        _weapons.extend(idef.item_weapon_ex.keys())
         if world.use_dlc:
-            _weapons.extend([x for x in set(idef.item_dlc_weapon_ex.keys()) if _not_in_noset(x)])
+            _weapons.extend(idef.item_dlc_weapon_ex.keys())
 
-    return _weapons
+    for w in _weapons:
+        _push_weapon_counts(w, _weapon_qty if weapons.all_weapon_to_index[w] in _weapon_dict else 1)
+
+    return (_weapons, _weapon_counts)
 
 def setup_ability_pool(world: "CupheadWorld", precollected_counts: dict[str, int]) -> list[str]:
     abilities = list(idef.item_abilities.keys())
@@ -309,7 +322,7 @@ def create_items(world: "CupheadWorld"):
     create_locked_items(world)
 
     # Setup Weapons including start weapons
-    weapons = setup_weapon_pool(world, world.precollected_counts)
+    weapons, weapon_counts = setup_weapon_pool(world)
 
     #total_locations = len([x.name for x in world.multiworld.get_locations(world.player) if not x.is_event])
     #unfilled_locations = list(world.multiworld.get_unfilled_locations(world.player))
@@ -338,7 +351,7 @@ def create_items(world: "CupheadWorld"):
 
     # Add the grouped fill items
     itempool += create_pool_items(world, essential_items, world.precollected_counts)
-    itempool += create_pool_items(world, weapons, world.precollected_counts)
+    itempool += create_pool_items(world, weapons, world.precollected_counts, weapon_counts)
     itempool += create_pool_items(world, charms, world.precollected_counts)
     itempool += create_pool_items(world, supers, world.precollected_counts)
     if world.options.randomize_abilities.bvalue:
