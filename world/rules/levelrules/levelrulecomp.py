@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from rule_builder.rules import Rule, True_
 
-from ...levels import levelids
+from ... import levels
 from . import levelrulebase as lrb
 from .levelruledefs import levelrules
 
@@ -43,7 +43,6 @@ class LevelRuleComp:
     def _compile_level_loc(
         self,
         rlname: str,
-        mrlname: str,
         ldef: lrb.LevelDef,
         locname: str,
         loc: lrb.LocationDef,
@@ -54,7 +53,7 @@ class LevelRuleComp:
                 _rule = True_()
             self._world.rulereg.add_loc_rule(locname, _rule)
             if locname == ldef.exit_location:
-                self._world.rulereg.add_region_exit_rule(mrlname, _rule)
+                self._world.rulereg.add_region_exit_rule(rlname, _rule)
         else:
             if self._debug_on():
                 print(f"Skipping rules for location '{locname}'")
@@ -62,17 +61,6 @@ class LevelRuleComp:
                 raise ValueError(
                     f"level '{rlname}' exit_location '{ldef.exit_location}' is an inactive location."
                 )
-
-    def _get_rmapped_level_name(self, lname: str) -> str:
-        if lname not in levelids.level_to_id:
-            #print(f"WARNING: levelrulecomp: {lname} does not have an id. Not mapping.")
-            return lname
-        _rlevel_map = self._world.rlevel_map
-        level_id = levelids.level_to_id[lname]
-        if level_id not in _rlevel_map:
-            #print(f"WARNING: levelrulecomp: {lname} is not mapped. Not mapping.")
-            return lname
-        return levelids.level_ids[_rlevel_map[level_id]]
 
     def compile_levelrules(self):
         active_levels = self._world.active_levels
@@ -87,14 +75,14 @@ class LevelRuleComp:
 
                 _prule = ldef.physical_access
                 if _prule is not None:
-                    self._world.rulereg.insert_region_rule(lname, _prule)
+                    preg = levels.get_mapped_level_name(self._world, lname)
+                    self._world.rulereg.insert_region_rule(preg, _prule)
 
                 _rule = ldef.access
-                rmlname = self._get_rmapped_level_name(lname)
-                self._world.rulereg.add_region_rule(rmlname, _rule if _rule is not None else True_())
+                self._world.rulereg.add_region_rule(lname, _rule if _rule is not None else True_())
 
                 for locname, loc in ldef.locations.items():
-                    self._compile_level_loc(lname, rmlname, ldef, locname, loc)
+                    self._compile_level_loc(lname, ldef, locname, loc)
             elif self._debug_on():
                 print(f"Skipping rules for level '{lname}'")
 

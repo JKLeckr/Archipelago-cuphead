@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from rule_builder import rules as rule
 from worlds.generic.Rules import forbid_item
 
+from .. import levels
 from ..enums import GameMode, ItemGroups
 from ..locations import locationdefs as ld
 from ..names import itemnames, locationnames, regionnames
@@ -106,10 +107,11 @@ def set_level_rules(world: "CupheadWorld"):
         locationnames.loc_event_isle1_secret_prereq5: regionnames.level_boss_flower
     }
     for llrl, llrr in level_loc_rule_map.items():
-        locs = rb.get_region(world, llrr).get_locations()
+        preg = levels.get_mapped_level_name(world, llrr)
+        locs = rb.get_region(world, preg).get_locations()
         loc = locs[0].name
         if not loc.endswith("Complete"):
-            raise ValueError(f"{loc} is not the correct 'Complete' location for region {llrr}")
+            raise ValueError(f"{loc} is not the correct 'Complete' location for region {preg}")
         if rr.contains(loc, SpotType.LOCATION):
             rr.copy_rule(loc, SpotType.LOCATION, llrl, SpotType.LOCATION)
 
