@@ -18,9 +18,11 @@ from .regiondefs import RegionData
 if TYPE_CHECKING:
     from ... import CupheadWorld
 
-## Currently, with shuffling levels, locations are relocated onto static regions.
-## Eventually, it might be better (maybe) to properly map regions
-# TODO: Properly map regions!
+
+def get_mapped_region_name(world: "CupheadWorld", name: str, def_type: DefType) -> str:
+    if def_type == DefType.LEVEL:
+        return levels.get_mapped_level_name(world, name)
+    return name
 
 def get_regions(world: "CupheadWorld") -> list[RegionData]:
     shop_locations = world.shop.shop_locations
@@ -46,7 +48,7 @@ def get_region_locations(world: "CupheadWorld", regc: RegionData) -> list[str]:
     locations: list[str] = []
 
     if regc.region_type == DefType.LEVEL:
-        _level_name = levels.get_mapped_level_name(world, regc.name)
+        _level_name = get_mapped_region_name(world, regc.name, regc.region_type)
         _level = levels.get_level(world, _level_name, False)
         locations = _level.locations
         if regc.locations:
@@ -60,7 +62,12 @@ def get_region_locations(world: "CupheadWorld", regc: RegionData) -> list[str]:
     return locations
 
 def _create_new_region(world: "CupheadWorld", regc: RegionData) -> Region:
-    return Region(regc.name, world.player, world.multiworld, None)
+    return Region(
+        get_mapped_region_name(world, regc.name, regc.region_type),
+        world.player,
+        world.multiworld,
+        None
+    )
 
 def create_region(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None):
     multiworld = world.multiworld
@@ -94,13 +101,20 @@ def create_region(world: "CupheadWorld", regc: RegionData, locset: set[str] | No
     if world.settings.is_debug_bit_on(2):
         debug.debug_print_regions(world)
 
-def connect_target(world: "CupheadWorld", region_name: str, target: Target, locset: set[str] | None = None):
+def connect_target(
+    world: "CupheadWorld",
+    region_name: str,
+    region_type: DefType,
+    target: Target,
+    locset: set[str] | None = None
+):
     multiworld = world.multiworld
     player = world.player
-    target_name = target.name
-    src = multiworld.get_region(region_name, player)
+    source_name = get_mapped_region_name(world, region_name, region_type)
+    target_name = get_mapped_region_name(world, target.name, target.tgt_type)
+    src = multiworld.get_region(source_name, player)
     tgt = multiworld.get_region(target_name, player)
-    name = f"({region_name})->({target_name})"
+    name = f"({source_name})->({target_name})"
     if locset:
         for loc in tgt.locations:
             if loc.name not in locset:
@@ -114,7 +128,7 @@ def connect_region_targets(world: "CupheadWorld", regc: RegionData, locset: set[
     for target in regc.connect_to:
         if target:
             if target.depends(world.options):
-                connect_target(world, regc.name, target, locset)
+                connect_target(world, regc.name, regc.region_type, target, locset)
             elif world.settings.is_debug_bit_on(1):
                 print(f"Skipping Target {target.name}")
         else:
