@@ -5,8 +5,8 @@ from collections.abc import Iterable
 from random import Random
 
 from ..auxiliary import format_list
-from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LogicMode, WeaponMode
-from ..levels import levelshuffle, leveltype
+from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LevelShuffleMode, LogicMode, WeaponMode
+from ..levels import leveldefs, levelshuffle, leveltype
 from . import CupheadOptions
 from .protocols import CupheadNumericOption, CupheadOptionSet
 
@@ -200,12 +200,39 @@ class OptionSanitizer:
                 f"Ingredient {_goal_reason}"
             )
 
+    def _sanitize_level_placement_plane_separate(self):
+        options = self.options
+
+        if options.level_shuffle.evalue == LevelShuffleMode.PLANE_SEPARATE:
+            lpvalue = options.level_placements.value
+
+            regular_bosses = set(leveldefs.level_boss_regular)
+            plane_bosses = set(leveldefs.level_boss_plane)
+            if options.use_dlc.bvalue:
+                regular_bosses.update(leveldefs.level_dlc_boss_regular)
+                plane_bosses.update(leveldefs.level_dlc_boss_plane)
+            boss_levels = regular_bosses | plane_bosses
+
+            if any(
+                k in boss_levels and
+                v in boss_levels and
+                (k in plane_bosses) != (v in plane_bosses)
+                for k, v in lpvalue.items()
+            ):
+                self.override_num_option(
+                    options.level_shuffle,
+                    int(LevelShuffleMode.ENABLED),
+                    "Level Placements cross plane-separated boss groups"
+                )
+
     def _sanitize_level_placement(self):
         options = self.options
         lpvalue = options.level_placements.value
 
         if len(lpvalue) < 1:
             return
+
+        self._sanitize_level_placement_plane_separate()
 
         valid_levels = {
             x
@@ -220,8 +247,10 @@ class OptionSanitizer:
 
         invalid_level_reason = "Invalid level"
         invalid_level_combo_reason = "Invalid level combination"
+        duplicate_target_reason = "Duplicate target level"
 
         nlpvalue: dict[str, str] = {}
+        used_targets: set[str] = set()
         for k,v in lpvalue.items():
             drop = False
             drop_reason = ""
@@ -231,6 +260,9 @@ class OptionSanitizer:
             elif leveltype.get_level_type(k) != leveltype.get_level_type(v):
                 drop = True
                 drop_reason = invalid_level_combo_reason
+            elif v in used_targets:
+                drop = True
+                drop_reason = duplicate_target_reason
             if drop:
                 string = f"level_placements: '{k}: {v}' removed from dict. Reason: {drop_reason}."
                 self.option_overrides.append(string)
@@ -240,6 +272,7 @@ class OptionSanitizer:
                     self.print_warning(f"{msg} {msg_reason}")
             else:
                 nlpvalue[k] = v
+                used_targets.add(v)
         options.level_placements.value = nlpvalue
 
     def _is_minimal_accessibility(self) -> bool:
