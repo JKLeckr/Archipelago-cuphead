@@ -5,8 +5,8 @@ from collections.abc import Iterable
 from random import Random
 
 from ..auxiliary import format_list
-from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LogicMode, WeaponMode
-from ..levels import levelshuffle, leveltype
+from ..enums import ChaliceCheckMode, ChaliceMode, ChessCastleMode, CurseMode, LevelShuffleMode, LogicMode, WeaponMode
+from ..levels import leveldefs, levelshuffle, leveltype
 from . import CupheadOptions
 from .protocols import CupheadNumericOption, CupheadOptionSet
 
@@ -200,12 +200,39 @@ class OptionSanitizer:
                 f"Ingredient {_goal_reason}"
             )
 
+    def _sanitize_level_placement_plane_separate(self) -> None:
+        options = self.options
+
+        if options.level_shuffle.evalue == LevelShuffleMode.PLANE_SEPARATE:
+            lpvalue = options.level_placements.value
+
+            regular_bosses = set(leveldefs.level_boss_regular)
+            plane_bosses = set(leveldefs.level_boss_plane)
+            if options.use_dlc.bvalue:
+                regular_bosses.update(leveldefs.level_dlc_boss_regular)
+                plane_bosses.update(leveldefs.level_dlc_boss_plane)
+            boss_levels = regular_bosses | plane_bosses
+
+            if any(
+                k in boss_levels and
+                v in boss_levels and
+                (k in plane_bosses) != (v in plane_bosses)
+                for k, v in lpvalue.items()
+            ):
+                self.override_num_option(
+                    options.level_shuffle,
+                    int(LevelShuffleMode.ENABLED),
+                    "Level Placements cross plane-separated boss groups"
+                )
+
     def _sanitize_level_placement(self) -> None:
         options = self.options
         lpvalue = options.level_placements.value
 
         if len(lpvalue) < 1:
             return
+
+        self._sanitize_level_placement_plane_separate()
 
         valid_levels = {
             x
