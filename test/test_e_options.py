@@ -14,6 +14,7 @@ from Options import PerGameCommonOptions
 
 from .. import options
 from ..world import enums as e
+from ..world.names import regionnames
 from ..world.options import CupheadOptions, optionbits
 from . import CupheadTestBase
 
@@ -347,3 +348,39 @@ class TestOptionSanitizer(CupheadTestBase):
 
         output = out.getvalue()
         assert "Accessibility is set to 'minimal' with high-risk options enabled" in output
+
+    def test_level_placements_duplicate_targets_are_sanitized(self):
+        test_world = TestOptionSanitizer()
+        test_world.options = {
+            "level_shuffle": "enabled",
+            "level_placements": {
+                regionnames.level_boss_veggies: regionnames.level_boss_slime,
+                regionnames.level_boss_frogs: regionnames.level_boss_slime,
+            },
+        }
+        test_world.world_setup()
+        world_options = test_world.world.options
+        assert isinstance(world_options, CupheadOptions)
+
+        self.assertEqual(
+            world_options.level_placements.value,
+            {regionnames.level_boss_veggies: regionnames.level_boss_slime},
+        )
+
+    def test_level_placements_crossing_plane_groups_disable_plane_separate(self):
+        test_world = TestOptionSanitizer()
+        test_world.options = {
+            "level_shuffle": "plane_separate",
+            "level_placements": {
+                regionnames.level_boss_veggies: regionnames.level_boss_plane_blimp,
+            },
+        }
+        test_world.world_setup()
+        world_options = test_world.world.options
+        assert isinstance(world_options, CupheadOptions)
+
+        self.assertEqual(world_options.level_shuffle.value, int(e.LevelShuffleMode.ENABLED))
+        self.assertEqual(
+            world_options.level_placements.value,
+            {regionnames.level_boss_veggies: regionnames.level_boss_plane_blimp},
+        )
