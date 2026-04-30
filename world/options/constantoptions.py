@@ -87,6 +87,7 @@ class RandomizeAimAbilities(BoolOption, ConstToggle, NamedOption):
     value = 0
 
 
+# TODO: Implement
 class ShopMode(EnumOption[e.ShopMode], ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
