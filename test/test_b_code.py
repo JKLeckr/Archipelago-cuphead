@@ -110,29 +110,99 @@ class TestCodeOptionResolver(unittest.TestCase):
         self.assertEqual(options.start_weapon.value, 127)
 
 class TestCodeLevelShuffle(unittest.TestCase):
-    def _check_level_shuffle_map(self, shuffle_map: dict[int, int]) -> None:
+    def assertNoDuplicateTargets(self, level_map: dict[int, int]) -> None:  # noqa: N802
         used_k: set[int] = set()
         used_v: set[int] = set()
 
-        for k, v in shuffle_map.items():
+        for k, v in level_map.items():
             self.assertNotIn(k, used_k)
             self.assertNotIn(v, used_v)
 
             used_k.add(k)
             used_v.add(v)
 
-    def test_level_shuffle_no_dupes(self) -> None:
-        rand = Random(655)
-        shuffle_map = levelshuffle.get_level_shuffle_map(rand, True, LevelShuffleMode.ENABLED, True)
+    def assertPlacement(self, level_map: dict[int, int], source: str, target: str) -> None:  # noqa: N802
+        self.assertEqual(level_map[levelids.level_to_id[source]], levelids.level_to_id[target])
 
-        self._check_level_shuffle_map(shuffle_map)
+    def test_enabled_without_placements_has_unique_targets(self) -> None:
+        level_map = levelshuffle.get_level_shuffle_map(
+            Random("seed"),
+            False,
+            LevelShuffleMode.ENABLED,
+            False,
+        )
 
-    def test_level_shuffle_w_level_placements(self) -> None:
-        rand = Random(655)
-        level_placements = {regionnames.level_boss_clown: regionnames.level_boss_clown}
-        shuffle_map = levelshuffle.get_level_shuffle_map(rand, True, LevelShuffleMode.ENABLED, True, level_placements)
+        self.assertNoDuplicateTargets(level_map)
 
-        self._check_level_shuffle_map(shuffle_map)
+    def test_enabled_boss_placement_reserves_target(self) -> None:
+        source = regionnames.level_boss_veggies
+        target = regionnames.level_boss_slime
+        level_map = levelshuffle.get_level_shuffle_map(
+            Random("seed"),
+            False,
+            LevelShuffleMode.ENABLED,
+            False,
+            {source: target},
+        )
+
+        self.assertPlacement(level_map, source, target)
+        self.assertNoDuplicateTargets(level_map)
+
+    def test_enabled_rungun_placement_reserves_target(self) -> None:
+        source = regionnames.level_rungun_forest
+        target = regionnames.level_rungun_tree
+        level_map = levelshuffle.get_level_shuffle_map(
+            Random("seed"),
+            False,
+            LevelShuffleMode.ENABLED,
+            False,
+            {source: target},
+        )
+
+        self.assertPlacement(level_map, source, target)
+        self.assertNoDuplicateTargets(level_map)
+
+    def test_plane_separate_regular_boss_placement_reserves_target(self) -> None:
+        source = regionnames.level_boss_veggies
+        target = regionnames.level_boss_slime
+        level_map = levelshuffle.get_level_shuffle_map(
+            Random("seed"),
+            False,
+            LevelShuffleMode.PLANE_SEPARATE,
+            False,
+            {source: target},
+        )
+
+        self.assertPlacement(level_map, source, target)
+        self.assertNoDuplicateTargets(level_map)
+
+    def test_plane_separate_plane_boss_placement_reserves_target(self) -> None:
+        source = regionnames.level_boss_plane_blimp
+        target = regionnames.level_boss_plane_genie
+        level_map = levelshuffle.get_level_shuffle_map(
+            Random("seed"),
+            False,
+            LevelShuffleMode.PLANE_SEPARATE,
+            False,
+            {source: target},
+        )
+
+        self.assertPlacement(level_map, source, target)
+        self.assertNoDuplicateTargets(level_map)
+
+    def test_kingdice_placement_reserves_target(self) -> None:
+        source = regionnames.level_dicepalace_boss_booze
+        target = regionnames.level_dicepalace_boss_chips
+        level_map = levelshuffle.get_level_shuffle_map(
+            Random("seed"),
+            False,
+            LevelShuffleMode.DISABLED,
+            True,
+            {source: target},
+        )
+
+        self.assertPlacement(level_map, source, target)
+        self.assertNoDuplicateTargets(level_map)
 
 class TestCodeGenTemplateYaml(unittest.TestCase):
     def test_start_weapon_keeps_negative_option_values(self) -> None:
