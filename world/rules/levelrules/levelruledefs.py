@@ -14,8 +14,6 @@ from . import levelrulelrdefs as lrd
 from . import levelrulepresets as lrp
 from .levelrulebase import InheritMode, LevelDef, LevelRules, LocationDef
 
-# TODO: Add missing phase logic
-
 levelrules = LevelRules(
     {
         lv.level_boss_veggies: LevelDef(
@@ -24,6 +22,11 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_veggies: LocationDef(),
                 l.loc_level_boss_veggies_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_veggies_phase1: LocationDef(),
+                l.loc_level_boss_veggies_phase2: LocationDef(),
+                l.loc_level_boss_veggies_phase2s: LocationDef(),
+                l.loc_level_boss_veggies_phase3: LocationDef(),
+                l.loc_level_boss_veggies_phase3s: LocationDef(),
                 l.loc_level_boss_veggies_secret: LocationDef(),
                 l.loc_level_boss_veggies_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_veggies_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChaliced)),
@@ -37,6 +40,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_slime: LocationDef(),
                 l.loc_level_boss_slime_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_slime_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_slime_phase2: LocationDef(),
+                l.loc_level_boss_slime_phase3: LocationDef(),
                 l.loc_level_boss_slime_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_slime_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
                 l.loc_level_boss_slime_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
@@ -49,6 +55,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_frogs: LocationDef(),
                 l.loc_level_boss_frogs_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_frogs_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_frogs_phase2: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_frogs_phase3: LocationDef(),
                 l.loc_level_boss_frogs_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_frogs_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
                 l.loc_level_boss_frogs_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
@@ -60,6 +69,10 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_flower: LocationDef(),
                 l.loc_level_boss_flower_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_flower_phase1: LocationDef(),
+                l.loc_level_boss_flower_phase2: LocationDef(),
+                l.loc_level_boss_flower_phase3: LocationDef(),
+                l.loc_level_boss_flower_phase4: LocationDef(),
                 l.loc_level_boss_flower_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_flower_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChaliced)),
                 l.loc_level_boss_flower_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChaliced)),
@@ -111,6 +124,10 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_clown: LocationDef(),
                 l.loc_level_boss_clown_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_clown_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_clown_phase2: LocationDef(),
+                l.loc_level_boss_clown_phase3: LocationDef(),
+                l.loc_level_boss_clown_phase4: LocationDef(),
                 l.loc_level_boss_clown_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_clown_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
                 l.loc_level_boss_clown_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
@@ -129,6 +146,10 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_dragon: LocationDef(),
                 l.loc_level_boss_dragon_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_dragon_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_dragon_phase2: LocationDef(),
+                l.loc_level_boss_dragon_phase3: LocationDef(),
+                l.loc_level_boss_dragon_phase4: LocationDef(),
                 l.loc_level_boss_dragon_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_dragon_dlc_chaliced: LocationDef(
                     rule=lrd.LrdBossDragonChaliced,
@@ -147,6 +168,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_bee: LocationDef(),
                 l.loc_level_boss_bee_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_bee_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_bee_phase2: LocationDef(),
+                l.loc_level_boss_bee_phase3: LocationDef(),
                 l.loc_level_boss_bee_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_bee_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChaliced)),
                 l.loc_level_boss_bee_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChaliced)),
@@ -182,31 +206,34 @@ levelrules = LevelRules(
             exit_location=l.loc_level_boss_mouse,
             access=Preset(lrp.LrpWeapon),
             base=(
+                Preset(lrp.LrpParryOrPSugar) &
                 Preset(lrp.LrpCrouch) &
-                ((Preset(lrp.LrpParry) & DepFilter(deps.dep_dlc_chalice_only)) |
-                    (Preset(lrp.LrpParryOrPSugar) & DepFilter(deps.dep_dlc_chalice_only, False)))
+                (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
             ),
             locations={
-                l.loc_level_boss_mouse: LocationDef(
-                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
+                l.loc_level_boss_mouse: LocationDef(),
+                l.loc_level_boss_mouse_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_mouse_phase1: LocationDef(
+                    rule=Preset(lrp.LrpParryOrPSugar),
+                    inherit=InheritMode.NONE
                 ),
-                l.loc_level_boss_mouse_topgrade: LocationDef(
-                    rule=(
-                        Preset(lrp.LrpTopgrade) &
-                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
-                    )
-                ),
-                l.loc_level_boss_mouse_phase1: LocationDef(),
                 l.loc_level_boss_mouse_phase2: LocationDef(
-                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
+                    rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False)),
+                    inherit=InheritMode.NONE
                 ),
                 l.loc_level_boss_mouse_phase3: LocationDef(),
                 l.loc_level_boss_mouse_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_mouse_dlc_chaliced: LocationDef(
-                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump))
+                    rule=(
+                        Preset(lrp.LrpDlcBossChalicedParry) &
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
+                    )
                 ),
                 l.loc_level_boss_mouse_event_dlc_chaliced: LocationDef(
-                    rule=(Preset(lrp.LrpDlcBossChalicedParry) & Preset(lrp.LrpDlcDoublejump))
+                    rule=(
+                        Preset(lrp.LrpDlcBossChalicedParry) &
+                        (Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only))
+                    )
                 ),
             },
         ),
@@ -269,7 +296,7 @@ levelrules = LevelRules(
             exit_location=l.loc_level_boss_train,
             access=Preset(lrp.LrpWeapon),
             base=(
-                Preset(lrp.LrpParry) &
+                Preset(lrp.LrpParryOrPSugar) &
                 Filtered(
                     Preset(lrp.LrpDlcDoublejump),
                     options=[DepFilter(deps.dep_dlc_chalice_only), DepFilter(deps.dep_hard_logic, False)],
@@ -279,6 +306,19 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_train: LocationDef(),
                 l.loc_level_boss_train_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_train_phase1: LocationDef(
+                    rule=Preset(lrp.LrpParryOrPSugar),
+                    inherit=InheritMode.NONE
+                ),
+                l.loc_level_boss_train_phase2: LocationDef(
+                    rule=Preset(lrp.LrpParryOrPSugar),
+                    inherit=InheritMode.NONE
+                ),
+                l.loc_level_boss_train_phase3: LocationDef(
+                    rule=Preset(lrp.LrpParryOrPSugar),
+                    inherit=InheritMode.NONE
+                ),
+                l.loc_level_boss_train_phase4: LocationDef(),
                 l.loc_level_boss_train_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_train_dlc_chaliced: LocationDef(rule=(lrd.LrdBossTrainChaliced)),
                 l.loc_level_boss_train_event_dlc_chaliced: LocationDef(rule=(lrd.LrdBossTrainChaliced)),
@@ -291,10 +331,18 @@ levelrules = LevelRules(
                 Preset(lrp.LrpWeapon) &
                 Preset(lrp.LrpParryOrPSugar)
             ),
-            base=(Preset(lrp.LrpPlane) & Preset(lrp.LrpDashAndParry)),
+            base=(
+                Preset(lrp.LrpDashAndParry) &
+                (Preset(lrp.LrpPlane) | DepFilter(deps.dep_hard_logic))
+            ),
             locations={
                 l.loc_level_boss_kingdice: LocationDef(),
                 l.loc_level_boss_kingdice_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_kingdice_phase1: LocationDef(
+                    rule=(Preset(lrp.LrpPlane) | DepFilter(deps.dep_hard_logic)),
+                    inherit=InheritMode.NONE
+                ),
+                l.loc_level_boss_kingdice_phase2: LocationDef(),
                 l.loc_level_boss_kingdice_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_kingdice_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
                 l.loc_level_boss_kingdice_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
@@ -306,6 +354,12 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_plane_blimp: LocationDef(),
                 l.loc_level_boss_plane_blimp_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_boss_plane_blimp_phase1: LocationDef(),
+                l.loc_level_boss_plane_blimp_phase2: LocationDef(),
+                l.loc_level_boss_plane_blimp_phase3: LocationDef(),
+                l.loc_level_boss_plane_blimp_phase4: LocationDef(),
+                l.loc_level_boss_plane_blimp_phase5: LocationDef(),
+                l.loc_level_boss_plane_blimp_phase6: LocationDef(),
                 l.loc_level_boss_plane_blimp_event_agrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
                 l.loc_level_boss_plane_blimp_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
                 l.loc_level_boss_plane_blimp_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
@@ -317,6 +371,13 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_plane_genie: LocationDef(),
                 l.loc_level_boss_plane_genie_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_boss_plane_genie_phase1: LocationDef(),
+                l.loc_level_boss_plane_genie_phase2: LocationDef(),
+                l.loc_level_boss_plane_genie_phase3: LocationDef(),
+                l.loc_level_boss_plane_genie_phase4: LocationDef(),
+                l.loc_level_boss_plane_genie_phase4s: LocationDef(rule=Preset(lrp.LrpPlaneShrink)),
+                l.loc_level_boss_plane_genie_phase5: LocationDef(),
+                l.loc_level_boss_plane_genie_phase5s: LocationDef(rule=Preset(lrp.LrpPlaneShrink)),
                 l.loc_level_boss_plane_genie_secret: LocationDef(rule=Preset(lrp.LrpPlaneShrink)),
                 l.loc_level_boss_plane_genie_event_agrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
                 l.loc_level_boss_plane_genie_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
@@ -330,6 +391,11 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_plane_bird: LocationDef(),
                 l.loc_level_boss_plane_bird_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_boss_plane_bird_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_plane_bird_phase2: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_plane_bird_phase3: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_plane_bird_phase4: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_boss_plane_bird_phase5: LocationDef(),
                 l.loc_level_boss_plane_bird_event_agrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
                 l.loc_level_boss_plane_bird_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
                 l.loc_level_boss_plane_bird_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
@@ -341,6 +407,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_plane_mermaid: LocationDef(),
                 l.loc_level_boss_plane_mermaid_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_boss_plane_mermaid_phase1: LocationDef(),
+                l.loc_level_boss_plane_mermaid_phase2: LocationDef(),
+                l.loc_level_boss_plane_mermaid_phase3: LocationDef(),
                 l.loc_level_boss_plane_mermaid_event_agrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
                 l.loc_level_boss_plane_mermaid_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
                 l.loc_level_boss_plane_mermaid_event_dlc_chaliced: LocationDef(
@@ -354,6 +423,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_plane_robot: LocationDef(),
                 l.loc_level_boss_plane_robot_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_boss_plane_robot_phase1: LocationDef(),
+                l.loc_level_boss_plane_robot_phase2: LocationDef(),
+                l.loc_level_boss_plane_robot_phase3: LocationDef(),
                 l.loc_level_boss_plane_robot_event_agrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
                 l.loc_level_boss_plane_robot_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
                 l.loc_level_boss_plane_robot_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
@@ -386,6 +458,13 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_boss_devil: LocationDef(),
                 l.loc_level_boss_devil_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_boss_devil_phase1: LocationDef(
+                    rule=(Preset(lrp.LrpDlcDoublejump) | Preset(lrp.LrpDash)),
+                    inherit=InheritMode.NONE
+                ),
+                l.loc_level_boss_devil_phase2: LocationDef(),
+                l.loc_level_boss_devil_phase3: LocationDef(),
+                l.loc_level_boss_devil_phase4: LocationDef(),
                 l.loc_level_boss_devil_event_agrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
                 l.loc_level_boss_devil_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
                 l.loc_level_boss_devil_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
@@ -399,6 +478,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_dlc_boss_oldman: LocationDef(),
                 l.loc_level_dlc_boss_oldman_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_dlc_boss_oldman_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_dlc_boss_oldman_phase2: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_dlc_boss_oldman_phase3: LocationDef(),
                 l.loc_level_dlc_boss_oldman_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
                 l.loc_level_dlc_boss_oldman_event_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossChalicedParry)),
             },
@@ -452,6 +534,9 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_dlc_boss_snowcult: LocationDef(),
                 l.loc_level_dlc_boss_snowcult_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_dlc_boss_snowcult_phase1: LocationDef(inherit=InheritMode.NONE),
+                l.loc_level_dlc_boss_snowcult_phase2: LocationDef(),
+                l.loc_level_dlc_boss_snowcult_phase3: LocationDef(),
                 l.loc_level_dlc_boss_snowcult_dlc_chaliced: LocationDef(rule=lrd.LrdDlcBossSnowCultChaliced),
                 l.loc_level_dlc_boss_snowcult_event_dlc_chaliced: LocationDef(rule=lrd.LrdDlcBossSnowCultChaliced),
             },
@@ -473,6 +558,11 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_dlc_boss_airplane: LocationDef(),
                 l.loc_level_dlc_boss_airplane_topgrade: LocationDef(rule=Preset(lrp.LrpTopgrade)),
+                l.loc_level_dlc_boss_airplane_phase1: LocationDef(),
+                l.loc_level_dlc_boss_airplane_phase2: LocationDef(),
+                l.loc_level_dlc_boss_airplane_phase2s: LocationDef(),
+                l.loc_level_dlc_boss_airplane_phase3: LocationDef(),
+                l.loc_level_dlc_boss_airplane_phase3s: LocationDef(),
                 l.loc_level_dlc_boss_airplane_secret: LocationDef(),
                 l.loc_level_dlc_boss_airplane_dlc_chaliced: LocationDef(rule=lrd.LrdDlcBossAirplaneChaliced),
                 l.loc_level_dlc_boss_airplane_event_dlc_chaliced: LocationDef(rule=lrd.LrdDlcBossAirplaneChaliced),
@@ -484,6 +574,10 @@ levelrules = LevelRules(
             locations={
                 l.loc_level_dlc_boss_plane_cowboy: LocationDef(),
                 l.loc_level_dlc_boss_plane_cowboy_topgrade: LocationDef(rule=Preset(lrp.LrpPlaneTopgrade)),
+                l.loc_level_dlc_boss_plane_cowboy_phase1: LocationDef(),
+                l.loc_level_dlc_boss_plane_cowboy_phase2: LocationDef(),
+                l.loc_level_dlc_boss_plane_cowboy_phase3: LocationDef(),
+                l.loc_level_dlc_boss_plane_cowboy_phase4: LocationDef(),
                 l.loc_level_dlc_boss_plane_cowboy_dlc_chaliced: LocationDef(rule=Preset(lrp.LrpDlcBossPlaneChaliced)),
                 l.loc_level_dlc_boss_plane_cowboy_event_dlc_chaliced: LocationDef(
                     rule=Preset(lrp.LrpDlcBossPlaneChaliced)
@@ -581,7 +675,7 @@ levelrules = LevelRules(
         lv.level_dicepalace_boss_rabbit: LevelDef(
             exit_location=None,
             access=Preset(lrp.LrpWeapon),
-            base=Preset(lrp.LrpParry),
+            base=Preset(lrp.LrpParryOrPSugar),
             locations={
                 l.loc_level_dicepalace_boss_rabbit: LocationDef(
                     rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
@@ -856,6 +950,7 @@ levelrules = LevelRules(
             access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_pawn: LocationDef(),
+                l.loc_level_dlc_chesscastle_pawn_phase1: LocationDef(),
                 l.loc_level_dlc_chesscastle_pawn_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
             },
         ),
@@ -866,6 +961,7 @@ levelrules = LevelRules(
                 l.loc_level_dlc_chesscastle_knight: LocationDef(
                     rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
                 ),
+                l.loc_level_dlc_chesscastle_knight_phase1: LocationDef(),
                 l.loc_level_dlc_chesscastle_knight_dlc_chaliced: LocationDef(
                     rule=(Preset(lrp.LrpDlcDoublejump) & lrd.LrdDlcChessCastleChaliced)
                 ),
@@ -876,6 +972,10 @@ levelrules = LevelRules(
             access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_bishop: LocationDef(),
+                l.loc_level_dlc_chesscastle_bishop_phase1: LocationDef(),
+                l.loc_level_dlc_chesscastle_bishop_phase2: LocationDef(),
+                l.loc_level_dlc_chesscastle_bishop_phase3: LocationDef(),
+                l.loc_level_dlc_chesscastle_bishop_phase4: LocationDef(),
                 l.loc_level_dlc_chesscastle_bishop_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
             },
         ),
@@ -884,6 +984,10 @@ levelrules = LevelRules(
             access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_rook: LocationDef(),
+                l.loc_level_dlc_chesscastle_rook_phase1: LocationDef(),
+                l.loc_level_dlc_chesscastle_rook_phase2: LocationDef(),
+                l.loc_level_dlc_chesscastle_rook_phase3: LocationDef(),
+                l.loc_level_dlc_chesscastle_rook_phase4: LocationDef(),
                 l.loc_level_dlc_chesscastle_rook_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
             },
         ),
@@ -892,6 +996,9 @@ levelrules = LevelRules(
             access=lrd.LrdParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_queen: LocationDef(),
+                l.loc_level_dlc_chesscastle_queen_phase1: LocationDef(),
+                l.loc_level_dlc_chesscastle_queen_phase2: LocationDef(),
+                l.loc_level_dlc_chesscastle_queen_phase3: LocationDef(),
                 l.loc_level_dlc_chesscastle_queen_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
             },
         ),
@@ -900,6 +1007,12 @@ levelrules = LevelRules(
             access=Preset(lrp.LrpParry),
             locations={
                 l.loc_level_dlc_chesscastle_run: LocationDef(),
+                l.loc_level_dlc_chesscastle_run_phase1: LocationDef(),
+                l.loc_level_dlc_chesscastle_run_phase2: LocationDef(),
+                l.loc_level_dlc_chesscastle_run_phase3: LocationDef(),
+                l.loc_level_dlc_chesscastle_run_phase4: LocationDef(),
+                l.loc_level_dlc_chesscastle_run_phase5: LocationDef(),
+                l.loc_level_dlc_chesscastle_run_phase6: LocationDef(),
                 l.loc_level_dlc_chesscastle_run_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
             },
         ),
