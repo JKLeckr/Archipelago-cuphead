@@ -35,8 +35,7 @@ class WeaponMode(IntEnum):
 
 class ShopMode(IntEnum):
     TIERS = 0
-    STRICT_TIERS = 1
-    INDEPENDENT = 2
+    INDEPENDENT = 1
 
 class LevelShuffleMode(IntEnum):
     DISABLED = 0
