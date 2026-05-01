@@ -109,6 +109,7 @@ class TestCodeOptionResolver(unittest.TestCase):
         self.assertEqual(rand.pools, [(*range(0, 9), 127)])
         self.assertEqual(options.start_weapon.value, 127)
 
+
 class TestCodeLevelShuffle(unittest.TestCase):
     def assertNoDuplicateTargets(self, level_map: dict[int, int]) -> None:  # noqa: N802
         used_k: set[int] = set()
@@ -203,6 +204,7 @@ class TestCodeLevelShuffle(unittest.TestCase):
 
         self.assertPlacement(level_map, source, target)
         self.assertNoDuplicateTargets(level_map)
+
 
 class TestCodeGenTemplateYaml(unittest.TestCase):
     def test_start_weapon_keeps_negative_option_values(self) -> None:
