@@ -10,11 +10,12 @@ from dataclasses import fields
 from io import StringIO
 from typing import Any
 
+from BaseClasses import ItemClassification
 from Options import PerGameCommonOptions
 
 from .. import options
 from ..world import enums as e
-from ..world.names import regionnames
+from ..world.names import itemnames, regionnames
 from ..world.options import CupheadOptions, optionbits
 from . import CupheadTestBase
 
@@ -270,6 +271,23 @@ class TestOptionBits(CupheadTestBase):
 
         optionbits.debitify(test_worldb.world.options, bitsa)  # type: ignore
         test_worldb.assertEqual(bitsa, optionbits.bitify(test_worldb.world.options))  # type: ignore
+
+class TestItemProgression(CupheadTestBase):
+    def test_boss_phase_checks_make_plane_shrink_progression(self):
+        test_world = TestItemProgression()
+        test_world.options = {
+            "boss_phase_checks": True,
+            "boss_secret_checks": False,
+            "randomize_abilities": True,
+        }
+        test_world.world_setup()
+
+        plane_shrink = test_world.world.active_items[itemnames.item_ability_plane_shrink]  # type: ignore
+
+        self.assertEqual(
+            ItemClassification.progression_deprioritized | ItemClassification.useful,
+            plane_shrink.item_type,
+        )
 
 class TestOptionSanitizer(CupheadTestBase):
     auto_construct = False
