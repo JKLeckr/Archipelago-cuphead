@@ -1,5 +1,5 @@
 # Template YAML generated with gentemplateyaml
-# alpha03a
+# beta01a
 
 name: Player
 game: Cuphead
@@ -179,9 +179,10 @@ Cuphead:
 
   ## Boss Secret Checks
   #
-  # Also include beating the secret phases that certain bosses have as checks.
+  # Also include beating the secret phase routes that certain bosses have as checks.
   # The boss levels include: Botanic Panic, Pyramid Peril, Dramatic Fanatic, and Doggone Dogfight (DLC).
-  # The secret phases are generally more difficult than the normal fight.
+  # The secret route fights are generally more difficult than the normal fight.
+  # Turning this off will exclude those locations.
   #
   # Values: false, true
   # Default: false
@@ -204,6 +205,17 @@ Cuphead:
   # Values: disabled, a_minus_grade, a_grade, a_plus_grade, p_grade
   # Default: a_minus_grade
   rungun_grade_checks: a_minus_grade
+
+  ## Boss Phase Checks
+  #
+  # Enable phase checks for Boss Levels.
+  # Completing the phases in the fight will be a check.
+  # This excludes the final phase.
+  # Secret phases are separate checks (included when Boss Secret Checks are on).
+  #
+  # Values: false, true
+  # Default: false
+  boss_phase_checks: 'false'
 
   ## [DLC] Boss Chalice Checks
   #
