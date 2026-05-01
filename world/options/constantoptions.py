@@ -85,7 +85,6 @@ class RandomizeAimAbilities(BoolOption, ConstToggle, NamedOption):
     value = 0
 
 
-# TODO: Implement
 class ShopMode(EnumOption[e.ShopMode], ConstNumericOption, NamedOption):
     """
     --NOT SUPPORTED OPTION--
@@ -98,8 +97,7 @@ class ShopMode(EnumOption[e.ShopMode], ConstNumericOption, NamedOption):
     enum_type = e.ShopMode
     #visibility = Visibility.spoiler
     option_tiers = 0
-    #option_strict_tiers = 1
-    option_independent = 2
+    option_independent = 1
     default = 0
     value = 0
 
