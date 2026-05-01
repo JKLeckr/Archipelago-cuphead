@@ -90,49 +90,49 @@ location_level_boss_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_phase1: LocationData(8000),
     locationnames.loc_level_boss_veggies_phase2: LocationData(8002),
     locationnames.loc_level_boss_veggies_phase2s: LocationData(8004),
-    locationnames.loc_level_boss_veggies_phase3: LocationData(8006),
-    locationnames.loc_level_boss_veggies_phase3s: LocationData(8008),
+    #locationnames.loc_level_boss_veggies_phase3: LocationData(8006),
+    #locationnames.loc_level_boss_veggies_phase3s: LocationData(8008),
 
     locationnames.loc_level_boss_slime_phase1: LocationData(8010),
     locationnames.loc_level_boss_slime_phase2: LocationData(8012),
-    locationnames.loc_level_boss_slime_phase3: LocationData(8014),
+    #locationnames.loc_level_boss_slime_phase3: LocationData(8014),
 
     locationnames.loc_level_boss_frogs_phase1: LocationData(8016),
     locationnames.loc_level_boss_frogs_phase2: LocationData(8018),
-    locationnames.loc_level_boss_frogs_phase3: LocationData(8020),
+    #locationnames.loc_level_boss_frogs_phase3: LocationData(8020),
 
     locationnames.loc_level_boss_flower_phase1: LocationData(8022),
     locationnames.loc_level_boss_flower_phase2: LocationData(8024),
     locationnames.loc_level_boss_flower_phase3: LocationData(8026),
-    locationnames.loc_level_boss_flower_phase4: LocationData(8028),
+    #locationnames.loc_level_boss_flower_phase4: LocationData(8028),
 
     locationnames.loc_level_boss_baroness_phase1: LocationData(8030),
     locationnames.loc_level_boss_baroness_phase2: LocationData(8032),
     locationnames.loc_level_boss_baroness_phase3: LocationData(8034),
-    locationnames.loc_level_boss_baroness_phase4: LocationData(8036),
+    #locationnames.loc_level_boss_baroness_phase4: LocationData(8036),
 
     locationnames.loc_level_boss_clown_phase1: LocationData(8038),
     locationnames.loc_level_boss_clown_phase2: LocationData(8040),
     locationnames.loc_level_boss_clown_phase3: LocationData(8042),
-    locationnames.loc_level_boss_clown_phase4: LocationData(8044),
+    #locationnames.loc_level_boss_clown_phase4: LocationData(8044),
 
     locationnames.loc_level_boss_dragon_phase1: LocationData(8046),
     locationnames.loc_level_boss_dragon_phase2: LocationData(8048),
     locationnames.loc_level_boss_dragon_phase3: LocationData(8050),
-    locationnames.loc_level_boss_dragon_phase4: LocationData(8052),
+    #locationnames.loc_level_boss_dragon_phase4: LocationData(8052),
 
     locationnames.loc_level_boss_bee_phase1: LocationData(8054),
     locationnames.loc_level_boss_bee_phase2: LocationData(8056),
-    locationnames.loc_level_boss_bee_phase3: LocationData(8058),
+    #locationnames.loc_level_boss_bee_phase3: LocationData(8058),
 
     locationnames.loc_level_boss_pirate_phase1: LocationData(8060),
     locationnames.loc_level_boss_pirate_phase2: LocationData(8062),
     locationnames.loc_level_boss_pirate_phase3: LocationData(8064),
-    locationnames.loc_level_boss_pirate_phase4: LocationData(8066),
+    #locationnames.loc_level_boss_pirate_phase4: LocationData(8066),
 
     locationnames.loc_level_boss_mouse_phase1: LocationData(8068),
     locationnames.loc_level_boss_mouse_phase2: LocationData(8070),
-    locationnames.loc_level_boss_mouse_phase3: LocationData(8072),
+    #locationnames.loc_level_boss_mouse_phase3: LocationData(8072),
 
     locationnames.loc_level_boss_sallystageplay_phase1: LocationData(8074),
     locationnames.loc_level_boss_sallystageplay_phase1s: LocationData(8076),
@@ -140,46 +140,46 @@ location_level_boss_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_sallystageplay_phase2s: LocationData(8080),
     locationnames.loc_level_boss_sallystageplay_phase3: LocationData(8082),
     locationnames.loc_level_boss_sallystageplay_phase3s: LocationData(8084),
-    locationnames.loc_level_boss_sallystageplay_phase4: LocationData(8086),
-    locationnames.loc_level_boss_sallystageplay_phase4s: LocationData(8088),
+    #locationnames.loc_level_boss_sallystageplay_phase4: LocationData(8086),
+    #locationnames.loc_level_boss_sallystageplay_phase4s: LocationData(8088),
 
     locationnames.loc_level_boss_train_phase1: LocationData(8090),
     locationnames.loc_level_boss_train_phase2: LocationData(8092),
     locationnames.loc_level_boss_train_phase3: LocationData(8094),
-    locationnames.loc_level_boss_train_phase4: LocationData(8096),
+    #locationnames.loc_level_boss_train_phase4: LocationData(8096),
 
     locationnames.loc_level_boss_plane_blimp_phase1: LocationData(8102),
     locationnames.loc_level_boss_plane_blimp_phase2: LocationData(8104),
     locationnames.loc_level_boss_plane_blimp_phase3: LocationData(8106),
     locationnames.loc_level_boss_plane_blimp_phase4: LocationData(8108),
     locationnames.loc_level_boss_plane_blimp_phase5: LocationData(8110),
-    locationnames.loc_level_boss_plane_blimp_phase6: LocationData(8112),
+    #locationnames.loc_level_boss_plane_blimp_phase6: LocationData(8112),
 
     locationnames.loc_level_boss_plane_genie_phase1: LocationData(8114),
     locationnames.loc_level_boss_plane_genie_phase2: LocationData(8116),
     locationnames.loc_level_boss_plane_genie_phase3: LocationData(8118),
     locationnames.loc_level_boss_plane_genie_phase4: LocationData(8120),
     locationnames.loc_level_boss_plane_genie_phase4s: LocationData(8122),
-    locationnames.loc_level_boss_plane_genie_phase5: LocationData(8124),
-    locationnames.loc_level_boss_plane_genie_phase5s: LocationData(8126),
+    #locationnames.loc_level_boss_plane_genie_phase5: LocationData(8124),
+    #locationnames.loc_level_boss_plane_genie_phase5s: LocationData(8126),
 
     locationnames.loc_level_boss_plane_bird_phase1: LocationData(8128),
     locationnames.loc_level_boss_plane_bird_phase2: LocationData(8130),
     locationnames.loc_level_boss_plane_bird_phase3: LocationData(8132),
     locationnames.loc_level_boss_plane_bird_phase4: LocationData(8134),
-    locationnames.loc_level_boss_plane_bird_phase5: LocationData(8136),
+    #locationnames.loc_level_boss_plane_bird_phase5: LocationData(8136),
 
     locationnames.loc_level_boss_plane_mermaid_phase1: LocationData(8138),
     locationnames.loc_level_boss_plane_mermaid_phase2: LocationData(8140),
-    locationnames.loc_level_boss_plane_mermaid_phase3: LocationData(8142),
+    #locationnames.loc_level_boss_plane_mermaid_phase3: LocationData(8142),
 
     locationnames.loc_level_boss_plane_robot_phase1: LocationData(8144),
     locationnames.loc_level_boss_plane_robot_phase2: LocationData(8146),
-    locationnames.loc_level_boss_plane_robot_phase3: LocationData(8148),
+    #locationnames.loc_level_boss_plane_robot_phase3: LocationData(8148),
 }
 location_level_boss_kingdice_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_kingdice_phase1: LocationData(8098),
-    locationnames.loc_level_boss_kingdice_phase2: LocationData(8100),
+    #locationnames.loc_level_boss_kingdice_phase2: LocationData(8100),
 }
 location_level_boss_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_veggies_event_agrade: LocationData(None),
@@ -235,7 +235,7 @@ location_level_boss_final_phases: dict[str, LocationData] = {
     locationnames.loc_level_boss_devil_phase1: LocationData(12000),
     locationnames.loc_level_boss_devil_phase2: LocationData(12002),
     locationnames.loc_level_boss_devil_phase3: LocationData(12004),
-    locationnames.loc_level_boss_devil_phase4: LocationData(12006),
+    #locationnames.loc_level_boss_devil_phase4: LocationData(12006),
 }
 location_level_boss_final_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_boss_devil_event_agrade: LocationData(None)
@@ -273,27 +273,27 @@ location_level_dlc_boss_dlc_chaliced: dict[str, LocationData] = {
 location_level_dlc_boss_phases: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_oldman_phase1: LocationData(10014000),
     locationnames.loc_level_dlc_boss_oldman_phase2: LocationData(10014002),
-    locationnames.loc_level_dlc_boss_oldman_phase3: LocationData(10014004),
+    #locationnames.loc_level_dlc_boss_oldman_phase3: LocationData(10014004),
 
     locationnames.loc_level_dlc_boss_rumrunners_phase1: LocationData(10014006),
     locationnames.loc_level_dlc_boss_rumrunners_phase2: LocationData(10014008),
     locationnames.loc_level_dlc_boss_rumrunners_phase3: LocationData(10014010),
-    locationnames.loc_level_dlc_boss_rumrunners_phase4: LocationData(10014012),
+    #locationnames.loc_level_dlc_boss_rumrunners_phase4: LocationData(10014012),
 
     locationnames.loc_level_dlc_boss_snowcult_phase1: LocationData(10014014),
     locationnames.loc_level_dlc_boss_snowcult_phase2: LocationData(10014016),
-    locationnames.loc_level_dlc_boss_snowcult_phase3: LocationData(10014018),
+    #locationnames.loc_level_dlc_boss_snowcult_phase3: LocationData(10014018),
 
     locationnames.loc_level_dlc_boss_airplane_phase1: LocationData(10014020),
     locationnames.loc_level_dlc_boss_airplane_phase2: LocationData(10014022),
     locationnames.loc_level_dlc_boss_airplane_phase2s: LocationData(10014024),
-    locationnames.loc_level_dlc_boss_airplane_phase3: LocationData(10014026),
-    locationnames.loc_level_dlc_boss_airplane_phase3s: LocationData(10014028),
+    #locationnames.loc_level_dlc_boss_airplane_phase3: LocationData(10014026),
+    #locationnames.loc_level_dlc_boss_airplane_phase3s: LocationData(10014028),
 
     locationnames.loc_level_dlc_boss_plane_cowboy_phase1: LocationData(10014030),
     locationnames.loc_level_dlc_boss_plane_cowboy_phase2: LocationData(10014032),
     locationnames.loc_level_dlc_boss_plane_cowboy_phase3: LocationData(10014034),
-    locationnames.loc_level_dlc_boss_plane_cowboy_phase4: LocationData(10014036),
+    #locationnames.loc_level_dlc_boss_plane_cowboy_phase4: LocationData(10014036),
 }
 location_level_dlc_boss_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_oldman_event_agrade: LocationData(None),
@@ -319,7 +319,7 @@ location_level_dlc_boss_final_phases: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_saltbaker_phase1: LocationData(10020000),
     locationnames.loc_level_dlc_boss_saltbaker_phase2: LocationData(10020002),
     locationnames.loc_level_dlc_boss_saltbaker_phase3: LocationData(10020004),
-    locationnames.loc_level_dlc_boss_saltbaker_phase4: LocationData(10020006),
+    #locationnames.loc_level_dlc_boss_saltbaker_phase4: LocationData(10020006),
 }
 location_level_dlc_boss_final_event_agrade: dict[str, LocationData] = {
     locationnames.loc_level_dlc_boss_saltbaker_event_agrade: LocationData(None),
@@ -458,30 +458,30 @@ location_level_dlc_chesscastle_dlc_chaliced: dict[str, LocationData] = {
     locationnames.loc_level_dlc_chesscastle_run_dlc_chaliced: LocationData(10028005),
 }
 location_level_dlc_chesscastle_phases: dict[str, LocationData] = {
-    locationnames.loc_level_dlc_chesscastle_pawn_phase1: LocationData(10030000),
+    #locationnames.loc_level_dlc_chesscastle_pawn_phase1: LocationData(10030000),
 
-    locationnames.loc_level_dlc_chesscastle_knight_phase1: LocationData(10030002),
+    #locationnames.loc_level_dlc_chesscastle_knight_phase1: LocationData(10030002),
 
     locationnames.loc_level_dlc_chesscastle_bishop_phase1: LocationData(10030004),
     locationnames.loc_level_dlc_chesscastle_bishop_phase2: LocationData(10030006),
     locationnames.loc_level_dlc_chesscastle_bishop_phase3: LocationData(10030008),
-    locationnames.loc_level_dlc_chesscastle_bishop_phase4: LocationData(10030010),
+    #locationnames.loc_level_dlc_chesscastle_bishop_phase4: LocationData(10030010),
 
     locationnames.loc_level_dlc_chesscastle_rook_phase1: LocationData(10030012),
     locationnames.loc_level_dlc_chesscastle_rook_phase2: LocationData(10030014),
     locationnames.loc_level_dlc_chesscastle_rook_phase3: LocationData(10030016),
-    locationnames.loc_level_dlc_chesscastle_rook_phase4: LocationData(10030018),
+    #locationnames.loc_level_dlc_chesscastle_rook_phase4: LocationData(10030018),
 
     locationnames.loc_level_dlc_chesscastle_queen_phase1: LocationData(10030020),
     locationnames.loc_level_dlc_chesscastle_queen_phase2: LocationData(10030022),
-    locationnames.loc_level_dlc_chesscastle_queen_phase3: LocationData(10030024),
+    #locationnames.loc_level_dlc_chesscastle_queen_phase3: LocationData(10030024),
 
     locationnames.loc_level_dlc_chesscastle_run_phase1: LocationData(10030026),
     locationnames.loc_level_dlc_chesscastle_run_phase2: LocationData(10030028),
     locationnames.loc_level_dlc_chesscastle_run_phase3: LocationData(10030030),
     locationnames.loc_level_dlc_chesscastle_run_phase4: LocationData(10030032),
     locationnames.loc_level_dlc_chesscastle_run_phase5: LocationData(10030034),
-    locationnames.loc_level_dlc_chesscastle_run_phase6: LocationData(10030036),
+    #locationnames.loc_level_dlc_chesscastle_run_phase6: LocationData(10030036),
 }
 
 location_level_dlc_special: dict[str, LocationData] = {
