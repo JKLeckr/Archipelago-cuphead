@@ -39,7 +39,15 @@ def setup_grade_check_locations(locations_ref: dict[str,LocationData], options: 
             locations_ref.update(ld.location_level_rungun_pacifist)
 
 def setup_boss_phase_check_locations(locations_ref: dict[str, LocationData], options: CupheadOptions):
-    pass # TODO: Finish
+    if options.boss_phase_checks.bvalue:
+        locations_ref.update(ld.location_level_boss_phases)
+        locations_ref.update(ld.location_level_boss_kingdice_phases)
+        locations_ref.update(ld.location_level_boss_final_phases)
+
+        if options.use_dlc:
+            locations_ref.update(ld.location_level_dlc_boss_phases)
+            locations_ref.update(ld.location_level_dlc_boss_final_phases)
+            locations_ref.update(ld.location_level_dlc_chesscastle_phases)
 
 def setup_quest_locations(locations_ref: dict[str,LocationData], options: CupheadOptions):
     def _add_location(name: str):
