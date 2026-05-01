@@ -10,8 +10,7 @@ from typing import TYPE_CHECKING, cast
 
 from ..tools import gentemplateyaml
 from ..world.enums import LevelShuffleMode
-from ..world.levels import levelids
-from ..world.levels import levelshuffle
+from ..world.levels import levelids, levelshuffle
 from ..world.names import regionnames
 from ..world.options import optionresolver
 from ..world.options.optionbase import _levelset
@@ -28,10 +27,10 @@ class TestCode(unittest.TestCase):
 
 
 class TestCodeLevelShuffle(unittest.TestCase):
-    def assertNoDuplicateTargets(self, level_map: dict[int, int]) -> None:
+    def assertNoDuplicateTargets(self, level_map: dict[int, int]) -> None:  # noqa: N802
         self.assertEqual(len(level_map.values()), len(set(level_map.values())))
 
-    def assertPlacement(self, level_map: dict[int, int], source: str, target: str) -> None:
+    def assertPlacement(self, level_map: dict[int, int], source: str, target: str) -> None:  # noqa: N802
         self.assertEqual(level_map[levelids.level_to_id[source]], levelids.level_to_id[target])
 
     def test_enabled_without_placements_has_unique_targets(self) -> None:
