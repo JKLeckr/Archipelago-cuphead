@@ -55,7 +55,7 @@ def setup_abilities(items_ref: dict[str, ItemData], options: CupheadOptions):
         else:
             add_item(items_ref, itemnames.item_ability_dlc_cdoublejump)
     change_item_type(items_ref, itemnames.item_charm_psugar, ItemClassification.progression | ItemClassification.useful)
-    if options.boss_secret_checks.value:
+    if options.boss_secret_checks.value or options.boss_phase_checks.value:
         change_item_type(
             items_ref,
             itemnames.item_ability_plane_shrink,
