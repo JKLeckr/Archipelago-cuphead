@@ -10,7 +10,7 @@ Cuphead is a classic run and gun action game heavily focused on boss battles. Th
 
 This randomizer randomizes multiple aspects of the game depending on the options.
 
-Also, this game is in alpha, so beware of the icky sticky stuff!
+Also, this game is in beta, so beware of the icky sticky stuff!
 
 Feel free to speak out in the Cuphead thread on the [Archipelago Discord](https://discord.com/channels/731205301247803413/1497318235438186566) if you have any question or concerns.
 
