@@ -58,6 +58,7 @@ jobs:
           rm -rf .git .github .gitignore
           rm -rf extras
           rm -rf tools
+          rm -f .apignore
           rm -f ruff.toml
           rm -f pyrightconfig.json
 

@@ -1,0 +1,20 @@
+# This file specifies patterns that are ignored for this apworld by the "Build APWorlds" component.
+
+# Auto-created folders
+__MACOSX
+.DS_Store
+__pycache__
+
+# Unneeded files
+/archipelago.json
+/.apignore
+/.git
+/.gitignore
+
+.ruff_cache
+
+/examples
+/extras
+/tools
+/ruff.toml
+/pyrightconfig.json
