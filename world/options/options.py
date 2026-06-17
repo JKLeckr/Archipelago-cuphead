@@ -9,7 +9,7 @@ from typing_extensions import override
 from Options import Choice, FreeText, OptionSet, Range, Visibility
 
 from .. import enums as e
-from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, LaxRange, LevelDict
+from .optionbase import BDefaultOnToggle, BToggle, ChoiceEx, EnumOption, FlagOption, LaxRange, LevelDict
 from .protocols import NamedOption
 
 ## Option classes
@@ -127,7 +127,7 @@ class DicePalaceBossSanity(BToggle, NamedOption):
     visibility = Visibility.spoiler | Visibility.template
 
 
-class DlcBossChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
+class DlcBossChaliceChecks(FlagOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
@@ -137,12 +137,12 @@ class DlcBossChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     name = "dlc_boss_chalice_checks"
     display_name = "[DLC] Boss Chalice Checks"
-    enum_type = e.ChaliceCheckMode
+    flag_type = e.ChaliceCheckMode
     option_disabled = 0
     option_enabled = 1
-    option_separate = 2
-    option_grade_required = 4
-    option_separate_grade_required = 6
+    option_separate = 3
+    option_grade_required = 5
+    option_separate_grade_required = 7
     default = 0
 
 
@@ -281,7 +281,7 @@ class DlcChessCastle(EnumOption[e.ChessCastleMode], Choice, NamedOption):
     default = 1
 
 
-class DlcChessChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
+class DlcChessChaliceChecks(FlagOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
@@ -290,11 +290,10 @@ class DlcChessChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption)
     """
     name = "dlc_chess_chalice_checks"
     display_name = "[DLC] Chess Chalice Checks"
-    enum_type = e.ChaliceCheckMode
-    visibility = Visibility.template | Visibility.spoiler
+    flag_type = e.ChaliceCheckMode
     option_disabled = 0
     option_enabled = 1
-    option_separate = 2
+    option_separate = 3
     default = 0
 
 
@@ -322,7 +321,7 @@ class DlcCurseMode(EnumOption[e.CurseMode], Choice, NamedOption):
     default = 0
 
 
-class DlcDicePalaceChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
+class DlcDicePalaceChaliceChecks(FlagOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     --NOT YET IMPLEMENTED--
     -DLC ONLY-
@@ -332,11 +331,11 @@ class DlcDicePalaceChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOp
     """
     name = "dlc_kingdice_chalice_checks"
     display_name = "[DLC] King Dice Chalice Checks"
-    enum_type = e.ChaliceCheckMode
+    flag_type = e.ChaliceCheckMode
     visibility = Visibility.template | Visibility.spoiler
     option_disabled = 0
     option_enabled = 1
-    option_separate = 2
+    option_separate = 3
     default = 0
 
 
@@ -365,7 +364,7 @@ class DlcIngredientRequirements(Range, NamedOption):
     default = 5
 
 
-class DlcRunGunChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):
+class DlcRunGunChaliceChecks(FlagOption[e.ChaliceCheckMode], Choice, NamedOption):
     """
     -DLC ONLY-
     -REQUIRES CHALICE-
@@ -375,12 +374,12 @@ class DlcRunGunChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption
     """
     name = "dlc_rungun_chalice_checks"
     display_name = "[DLC] Run n' Gun Chalice Checks"
-    enum_type = e.ChaliceCheckMode
+    flag_type = e.ChaliceCheckMode
     option_disabled = 0
     option_enabled = 1
-    option_separate = 2
-    option_grade_required = 4
-    option_separate_grade_required = 6
+    option_separate = 3
+    option_grade_required = 5
+    option_separate_grade_required = 7
     default = 0
 
 

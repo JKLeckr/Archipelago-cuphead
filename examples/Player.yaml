@@ -1,5 +1,5 @@
 # Template YAML generated with gentemplateyaml
-# alpha03a
+# alpha03e
 
 name: Player
 game: Cuphead
@@ -228,6 +228,17 @@ Cuphead:
   # Values: disabled, enabled, separate, grade_required, separate_grade_required
   # Default: disabled
   dlc_rungun_chalice_checks: disabled
+
+  ## [DLC] Chess Chalice Checks
+  #
+  # -DLC ONLY-
+  # -REQUIRES CHALICE-
+  # -REQUIRES THE KING'S LEAP-
+  # Enable checks for completing The King's Leap checks as Ms. Chalice.
+  #
+  # Values: disabled, enabled, separate
+  # Default: disabled
+  dlc_chess_chalice_checks: disabled
 
   ## Silverworth Quest
   #

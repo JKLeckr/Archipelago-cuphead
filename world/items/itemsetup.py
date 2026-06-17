@@ -92,7 +92,7 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapo
     _grade_checks_required = (
         options.boss_grade_checks.evalue != GradeCheckMode.DISABLED or
         options.rungun_grade_checks.evalue != GradeCheckMode.DISABLED or
-        (options.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0 or
+        (options.dlc_boss_chalice_checks.fvalue & ChaliceCheckMode.GRADE_REQUIRED) > 0 or
         silverworth_quest
     )
     _no_start_weapon = options.start_weapon.is_none()

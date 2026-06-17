@@ -63,7 +63,7 @@ class ChaliceMode(IntEnum):
     RANDOMIZED = 3
     CHALICE_ONLY = 4
 
-class ChaliceCheckMode(IntEnum):
+class ChaliceCheckMode(IntFlag):
     DISABLED = 0
     ENABLED = 1
     SEPARATE = 2
