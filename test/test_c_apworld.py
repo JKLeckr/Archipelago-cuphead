@@ -63,7 +63,7 @@ class TestAPWorldItemSetup(unittest.TestCase):
             use_dlc=SimpleNamespace(bvalue=True),
             boss_grade_checks=SimpleNamespace(evalue=0),
             rungun_grade_checks=SimpleNamespace(evalue=0),
-            dlc_boss_chalice_checks=SimpleNamespace(fvalue=0),
+            dlc_boss_chalice_checks=SimpleNamespace(evalue=0),
         )
 
     def test_setup_weapons(self):

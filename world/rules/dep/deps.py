@@ -96,10 +96,10 @@ def dep_dlc_cookie(c: CupheadOptions) -> bool:
     )
 @dep
 def dep_dlc_chaliced_grade_required(c: CupheadOptions) -> bool:
-    return c.use_dlc.bvalue and (c.dlc_boss_chalice_checks.fvalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
+    return c.use_dlc.bvalue and (c.dlc_boss_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
 def dep_dlc_rungun_chaliced_grade_required(c: CupheadOptions) -> bool:
-    return c.use_dlc.bvalue and (c.dlc_rungun_chalice_checks.fvalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
+    return c.use_dlc.bvalue and (c.dlc_rungun_chalice_checks.evalue & ChaliceCheckMode.GRADE_REQUIRED) > 0
 @dep
 def dep_dlc_boatitem(c: CupheadOptions) -> bool:
     return c.use_dlc.bvalue and c.dlc_randomize_boat.bvalue
