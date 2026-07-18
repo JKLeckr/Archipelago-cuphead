@@ -630,8 +630,13 @@ levelrules = LevelRules(
             base=Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpDash),
             locations={
                 l.loc_level_rungun_forest: LocationDef(),
-                l.loc_level_rungun_forest_agrade: LocationDef(rule=Preset(lrp.LrpRungunTopgrade)),
-                l.loc_level_rungun_forest_pacifist: LocationDef(),
+                l.loc_level_rungun_forest_agrade: LocationDef(
+                    rule=(
+                        Preset(lrp.LrpRungunTopgrade) &
+                        (Preset(lrp.LrpParryOrPSugar) | DepFilter(deps.dep_hard_logic, False))
+                    )
+                ),
+                l.loc_level_rungun_forest_pacifist: LocationDef(rule=Preset(lrp.LrpParryOrPSugar)),
                 l.loc_level_rungun_forest_coin1: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_forest_coin2: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_forest_coin3: LocationDef(

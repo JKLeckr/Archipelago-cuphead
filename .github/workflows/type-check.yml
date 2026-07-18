@@ -41,7 +41,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          python -m pip install --upgrade pip pyright==1.1.410
+          python -m pip install --upgrade pip pyright==1.1.411
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
 
       - name: "Run pyright"

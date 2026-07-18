@@ -64,7 +64,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          python -m pip install --upgrade pip pyright==1.1.408
+          python -m pip install --upgrade pip
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
           python Launcher.py --update_settings  # make sure host.yaml exists for tests
           wget "https://raw.githubusercontent.com/Eijebong/Archipelago-fuzzer/refs/tags/$fuzzer_ver/fuzz.py"
