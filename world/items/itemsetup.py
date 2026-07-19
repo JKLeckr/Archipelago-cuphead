@@ -122,10 +122,17 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapo
         setup_no_start_weapons(items_ref, options, weapon_dict)
 
 def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptions):
-    if options.logic_mode.evalue == LogicMode.HARD or options.start_weapon.is_none():
+    # TODO: Logic for super II. Also take all sources of super to consideration (coffee, parry, psugar, etc)
+    #_pacifist = (options.rungun_grade_checks.evalue == GradeCheckMode.PACIFIST or options.PacifistQuest.bvalue)
+    _pacifist = False
+    if options.logic_mode.evalue == LogicMode.HARD or _pacifist or options.start_weapon.is_none():
         change_item_type(
             items_ref, itemnames.item_charm_coffee, ItemClassification.progression | ItemClassification.useful
         )
+    #if _pacifist or (options.logic_mode.evalue == LogicMode.HARD and options.rungun_grade_checks.evalue > 0):
+    #    change_item_type(
+    #        items_ref, itemnames.item_super_ii, ItemClassification.progression | ItemClassification.useful
+    #    )
 
 def setup_items(world: "CupheadWorld") -> dict[str, ItemData]:
     options = world.options
