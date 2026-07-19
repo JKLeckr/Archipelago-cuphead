@@ -665,7 +665,10 @@ levelrules = LevelRules(
                     rule=(Preset(lrp.LrpRungunWeapon) & Preset(lrp.LrpRungunTopgrade))
                 ),
                 l.loc_level_rungun_tree_pacifist: LocationDef(),
-                l.loc_level_rungun_tree_coin1: LocationDef(rule=Preset(lrp.LrpParryOrPSugar), inherit=InheritMode.NONE),
+                l.loc_level_rungun_tree_coin1: LocationDef(
+                    rule=(Preset(lrp.LrpParryOrPSugar) | Preset(lrp.LrpDlcDoublejump)),
+                    inherit=InheritMode.NONE
+                ),
                 l.loc_level_rungun_tree_coin2: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_tree_coin3: LocationDef(inherit=InheritMode.NONE),
                 l.loc_level_rungun_tree_coin4: LocationDef(),
@@ -740,7 +743,10 @@ levelrules = LevelRules(
                 l.loc_level_rungun_funhouse_agrade: LocationDef(),
                 l.loc_level_rungun_funhouse_pacifist: LocationDef(),
                 l.loc_level_rungun_funhouse_coin1: LocationDef(
-                    rule=Preset(lrp.LrpParryOrPSugar),
+                    rule=(
+                        Preset(lrp.LrpParryOrPSugar) |
+                        Preset(lrp.LrpDlcDoublejump)
+                    ),
                     inherit=InheritMode.NONE
                 ),
                 l.loc_level_rungun_funhouse_coin2: LocationDef(
