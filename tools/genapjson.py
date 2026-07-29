@@ -72,20 +72,24 @@ class InlineListEncoder(json.JSONEncoder):
         return _iterencode(o, 0)
 
 def _sem_version_to_tuple_version(version: tuple[int, int, int, int], pofx: int = 0) -> tuple[int, int, int]:
-    _format = 1
+    _format = 2
     if version[0] > 0:
         raise NotImplementedError("Version tuple parser not implemented for full versions!")
-    if pofx < 0 or pofx > 255:
-        raise ValueError("pofx can only be between 0 and 255!")
-    _pofx = 255 if pofx == 0 else pofx - 1
+    if version[2] > 999:
+        raise NotImplementedError("Version tuple parser not implemented for revisions higher than 999!")
+    if version[3] > 99:
+        raise NotImplementedError("Version tuple parser not implemented for hotfixes higher than 99!")
+    if pofx < 0 or pofx > 10:
+        raise ValueError("pofx can only be between 0 and 10!")
+    _pofx = 10 if pofx == 0 else pofx - 1
     return (
         version[0],
         version[1],
         (
-            ((_format & 0xFF) << 24) |
-            ((version[2] & 0xFF) << 16) |
-            ((version[3] & 0xFF) << 8) |
-            (_pofx & 0xFF)
+            (_format * 10000000) +
+            (version[2] * 10000) +
+            (version[3] * 100) +
+            _pofx
         )
     )
 
