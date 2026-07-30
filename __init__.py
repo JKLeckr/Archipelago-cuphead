@@ -57,8 +57,13 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 7)
     APWORLD_VERSION_POSTFIX: ClassVar[str] = ""
-    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 13
-    APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_SEM_VERSION, APWORLD_VERSION_POSTFIX))
+    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 14
+
+    # For the time being, POSTFIX_NO is also used to indicate release/hotfix number. >10 indicates hotfix.
+    APWORLD_REL_NO: ClassVar[int] = max(0, APWORLD_VERSION_POSTFIX_NO - 10)
+    APWORLD_VERSION: ClassVar[str] = str(
+        FVersion.from_int_tuple(APWORLD_SEM_VERSION, APWORLD_REL_NO, APWORLD_VERSION_POSTFIX)
+    )
 
     AUTHORS: ClassVar[list[str]] = ["JKLeckr"]
 

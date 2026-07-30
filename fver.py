@@ -21,7 +21,7 @@ class FVersion:
         self.postfix = postfix
 
     @classmethod
-    def from_int_tuple(cls, version: tuple[int, int, int, int], postfix: str = "") -> Self:
+    def from_int_tuple(cls, version: tuple[int, int, int, int], release: int = 0, postfix: str = "") -> Self:
         if version[0] == 0:
             match version[1]:
                 case 1:
@@ -36,7 +36,7 @@ class FVersion:
                     branch = "unknown"
         else:
             branch = "v"
-        return cls(version[2], version[3], 0, branch, postfix)
+        return cls(version[2], version[3], release, branch, postfix)
 
     def get_revision_letter(self) -> str:
         if self.revision < 0:
