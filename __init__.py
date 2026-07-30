@@ -57,7 +57,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 7)
     APWORLD_VERSION_POSTFIX: ClassVar[str] = ""
-    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 0
+    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 13
     APWORLD_VERSION: ClassVar[str] = str(FVersion.from_int_tuple(APWORLD_SEM_VERSION, APWORLD_VERSION_POSTFIX))
 
     AUTHORS: ClassVar[list[str]] = ["JKLeckr"]

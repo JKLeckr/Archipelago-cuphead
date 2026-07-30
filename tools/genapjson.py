@@ -84,9 +84,9 @@ def _sem_version_to_tuple_version(version: tuple[int, int, int, int], pofx: int 
         raise NotImplementedError("Version tuple parser not implemented for revisions higher than 999!")
     if version[3] > 99:
         raise NotImplementedError("Version tuple parser not implemented for hotfixes higher than 99!")
-    if pofx < 0 or pofx > 10:
-        raise ValueError("pofx can only be between 0 and 10!")
-    _pofx = 10 if pofx == 0 else pofx - 1
+    if pofx < 0 or pofx > 99:
+        raise ValueError("pofx can only be between 0 and 99!")
+    _pofx = 10 if pofx == 0 else (pofx - 1 if pofx < 10 else pofx)
     return (
         version[0],
         version[1],
