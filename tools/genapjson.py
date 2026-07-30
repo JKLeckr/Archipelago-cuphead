@@ -35,6 +35,7 @@ APWORLD_FIELDS: dict[str, str] = {
     "GAME_IGDB_ID": "igdb_id",
 }
 APWORLD_INTERNAL_FIELDS: set[str] = {
+    "APWORLD_VERSION_POSTFIX",
     "APWORLD_VERSION_POSTFIX_NO",
 }
 
@@ -104,6 +105,16 @@ def _get_class_def(tree: ast.Module, class_name: str) -> ast.ClassDef | None:
             return node
     return None
 
+def _get_apworld_pofx_no(values: dict[str, Any]) -> int:
+    postfix_no = values.get("_apworld_version_postfix_no", 0)
+    if not isinstance(postfix_no, int):
+        raise TypeError(f"Unsupported value type for 'APWORLD_VERSION_POSTFIX_NO': {type(postfix_no)}")
+    return postfix_no
+
+# For the time being, POSTFIX_NO is also used to indicate release/hotfix number. >10 indicates hotfix.
+def _get_ver_rel_from_pofx_no(pofx_no: int) -> int:
+    return max(0, pofx_no - 10)
+
 def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes):
     if isinstance(value, tuple) and all(isinstance(x, int) for x in value): # type: ignore
         if key == "APWORLD_SEM_VERSION" and len(value) == 4:
@@ -113,6 +124,8 @@ def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes
         res_ref[key] = ".".join(map(str, _value))
     elif isinstance(value, list):
         res_ref[key] = value
+    elif key == "APWORLD_VERSION_POSTFIX" and isinstance(value, str):
+        res_ref["_apworld_version_postfix"] = value
     elif key == "APWORLD_VERSION_POSTFIX_NO" and isinstance(value, int):
         res_ref["_apworld_version_postfix_no"] = value
     elif isinstance(value, FieldTypeTuple):
@@ -150,9 +163,7 @@ def get_apworld_fields(
 
     sem_version = res.get("_apworld_sem_version")
     if isinstance(sem_version, tuple) and len(sem_version) == 4:
-        postfix_no = res.get("_apworld_version_postfix_no", 0)
-        if not isinstance(postfix_no, int):
-            raise TypeError(f"Unsupported value type for 'APWORLD_VERSION_POSTFIX_NO': {type(postfix_no)}")
+        postfix_no = _get_apworld_pofx_no(res)
         res["APWORLD_SEM_VERSION"] = ".".join(map(str, _sem_version_to_tuple_version(sem_version, postfix_no)))
 
     return res
@@ -197,7 +208,11 @@ def main():
         field = APWORLD_FIELDS[k]
         njson[field] = v
         if field == "world_version":
-            ver = module.FVersion.from_int_tuple(_values["_apworld_sem_version"])
+            ver = module.FVersion.from_int_tuple(
+                _values["_apworld_sem_version"],
+                _get_ver_rel_from_pofx_no(_get_apworld_pofx_no(_values)),
+                _values["_apworld_version_postfix"]
+            )
             if args.ignore_version_postfix:
                 ver.postfix = ""
             njson[world_fver_field] = str(ver)

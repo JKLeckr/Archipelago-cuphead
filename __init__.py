@@ -57,7 +57,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 7)
     APWORLD_VERSION_POSTFIX: ClassVar[str] = ""
-    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 14
+    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 15
 
     # For the time being, POSTFIX_NO is also used to indicate release/hotfix number. >10 indicates hotfix.
     APWORLD_REL_NO: ClassVar[int] = max(0, APWORLD_VERSION_POSTFIX_NO - 10)

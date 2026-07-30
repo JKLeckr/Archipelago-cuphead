@@ -20,6 +20,7 @@ class FVersion:
         self.release = release
         self.postfix = postfix
 
+    # This method will be handled differently when out of prerelease branches.
     @classmethod
     def from_int_tuple(cls, version: tuple[int, int, int, int], release: int = 0, postfix: str = "") -> Self:
         if version[0] == 0:
