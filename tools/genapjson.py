@@ -28,6 +28,11 @@ APWORLD_FIELDS: dict[str, str] = {
     "required_server_version": "minimum_ap_version",
     "AUTHORS": "authors",
     "APWORLD_SEM_VERSION": "world_version",
+
+    "APWORLD_LICENSE": "license",
+    "APWORLD_REPO": "repo_url",
+    "APWORLD_FLAGS": "flags",
+    "GAME_IGDB_ID": "igdb_id",
 }
 APWORLD_INTERNAL_FIELDS: set[str] = {
     "APWORLD_VERSION_POSTFIX_NO",
