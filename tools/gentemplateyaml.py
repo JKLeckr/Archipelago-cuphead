@@ -94,7 +94,7 @@ def parse_apworld_version(world_init_path: str, world_class_name: str = "Cuphead
                         values.append(elt.value)
                     else:
                         return None
-                return format_apworld_version(tuple(values))  # pyright: ignore[reportArgumentType]
+                return format_apworld_version(tuple(values))  # pyright: ignore[reportArgumentType]  # ty: ignore[invalid-argument-type]
     return None
 
 
@@ -212,7 +212,7 @@ def generate_comments(  # noqa: C901
             _spaced = True
         lines.append(f"# Range: {ranges[0]}-{ranges[1]}")
         if len(ranges) > 3:
-            lines.append(f"# Recommended Range: {ranges[2]}-{ranges[3]}")
+            lines.append(f"# Recommended Range: {ranges[2]}-{ranges[3]}")  # ty: ignore[index-out-of-bounds]
     if _default is not None:
         if lines and not _spaced:
             lines.append("#")

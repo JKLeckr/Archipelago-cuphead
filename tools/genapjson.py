@@ -155,7 +155,7 @@ def get_apworld_fields(
                 key: str = target.id
                 if key in APWORLD_FIELDS or key in APWORLD_INTERNAL_FIELDS:
                     try:
-                        value = ast.literal_eval(node.value) # type: ignore
+                        value = ast.literal_eval(node.value) # type: ignore  # ty: ignore[invalid-argument-type]
                     except Exception as e:
                         raise ValueError(f"Failed to evaluate value for '{key}': {e}") from e
 
@@ -185,7 +185,7 @@ def main():
     module = importlib.util.module_from_spec(spec) if spec else None
 
     if spec and module:
-        spec.loader.exec_module(module) # type: ignore
+        spec.loader.exec_module(module) # type: ignore  # ty: ignore[unresolved-attribute]
     else:
         raise ImportError("Could not import the fver module.")
 
