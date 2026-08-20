@@ -16,6 +16,7 @@ on:
       - ".github/workflows/type-check.yml"
 
 jobs:
+  # TODO: Deprecate pyright in actions after 3 releases
   pyright:
     runs-on: ubuntu-latest
     defaults:
