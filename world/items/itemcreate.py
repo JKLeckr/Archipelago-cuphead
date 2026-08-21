@@ -32,11 +32,11 @@ def create_active_item(
     return create_item_ext(name, world.player, world.active_items, force_classification)
 
 def create_item_ext(
-        name: str,
-        player: int,
-        item_defs: dict[str, ItemData],
-        force_classification: ItemClassification | None = None
-    ) -> Item:
+    name: str,
+    player: int,
+    item_defs: dict[str, ItemData],
+    force_classification: ItemClassification | None = None
+) -> Item:
     data = item_defs[name]
 
     if force_classification:
@@ -105,30 +105,31 @@ def create_pool_items(
                 _itempool += [create_active_item(world, itemname, item.item_type) for _ in range(qty)]
     return _itempool
 
-def place_locked_item(world: "CupheadWorld", item: Item, location: str):
-    world.multiworld.get_location(location, world.player) \
-        .place_locked_item(item)
+def place_locked_item(world: "CupheadWorld", item: Item, location: str) -> None:
+    world.multiworld.get_location(location, world.player).place_locked_item(item)
+
 def create_locked_item(
-        world: "CupheadWorld",
-        name: str,
-        location: str,
-        force_classification: ItemClassification | None = None
-    ):
+    world: "CupheadWorld",
+    name: str,
+    location: str,
+    force_classification: ItemClassification | None = None
+) -> None:
     #print(f"Create locked item: '{name}' at '{location}'")
     place_locked_item(world, create_active_item(world, name, force_classification), location)
+
 def create_locked_items_at(
-        world: "CupheadWorld",
-        name: str,
-        locations: Iterable[str],
-        force_classification: ItemClassification | None = None
-    ):
+    world: "CupheadWorld",
+    name: str,
+    locations: Iterable[str],
+    force_classification: ItemClassification | None = None
+) -> None:
     for loc in locations:
         if loc in world.active_locations.keys():
             create_locked_item(world, name, loc, force_classification)
         elif world.settings.is_debug_bit_on(1):
             print(f"Skipped {name} for {loc}")
 
-def create_dlc_locked_items(world: "CupheadWorld"):
+def create_dlc_locked_items(world: "CupheadWorld") -> None:
     if world.options.dlc_requires_mausoleum.bvalue:
         create_locked_item(world, itemnames.item_event_mausoleum, locationnames.loc_event_mausoleum)
     if world.options.dlc_chalice.evalue == ChaliceMode.VANILLA:
@@ -144,7 +145,7 @@ def create_dlc_locked_items(world: "CupheadWorld"):
         ldef.locations_dlc_event_boss_final_chaliced
     )
 
-def create_locked_items(world: "CupheadWorld"):
+def create_locked_items(world: "CupheadWorld") -> None:
     # Locked Items
     for i in range(1,6):
         _loc = getattr(locationnames, f"loc_event_isle1_secret_prereq{i}")
@@ -194,8 +195,10 @@ def create_special_items(world: "CupheadWorld", precollected_counts: dict[str, i
 
 def compress_coins(coin_amounts: tuple[int, int, int], location_count: int) -> tuple[int, int, int]:
     total_single_coins, total_double_coins, total_triple_coins = coin_amounts
-    def _total_coins():
+
+    def _total_coins() -> int:
         return total_single_coins + total_double_coins + total_triple_coins
+
     while _total_coins() >= location_count:
         if total_single_coins >= 2 and _total_coins():
             total_single_coins -= 2
@@ -242,7 +245,7 @@ def setup_weapon_pool(world: "CupheadWorld") -> tuple[list[str], dict[str, int]]
 
     _weapon_counts: dict[str, int] = {}
 
-    def _push_weapon_counts(w: str, v: int = 1):
+    def _push_weapon_counts(w: str, v: int = 1) -> None:
         _weapon_counts[w] = _weapon_counts.get(w, 0) + v
 
     _start_weapon_index = world.options.start_weapon.value
@@ -278,11 +281,11 @@ def setup_ability_pool(world: "CupheadWorld", precollected_counts: dict[str, int
     return [a for a in abilities if a not in precollected_counts]
 
 def create_coins(
-        world: "CupheadWorld",
-        location_count: int,
-        precollected_counts: dict[str, int],
-        coin_items: tuple[str, str, str]
-    ) -> list[Item]:
+    world: "CupheadWorld",
+    location_count: int,
+    precollected_counts: dict[str, int],
+    coin_items: tuple[str, str, str]
+) -> list[Item]:
     res: list[Item] = []
     # Coins
     # TODO: Start inventory from pool vs start inventory. Allow for extra coins depending on shop.
@@ -316,7 +319,7 @@ def create_coins(
 
     return res
 
-def create_items(world: "CupheadWorld"):
+def create_items(world: "CupheadWorld") -> None:
     itempool: list[Item] = []
 
     create_locked_items(world)

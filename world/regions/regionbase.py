@@ -22,11 +22,11 @@ class Target:
     depends: Dep
     tgt_type: DefType
     def __init__(
-            self,
-            name: str,
-            depends: Dep | None = None,
-            tgt_type: DefType = DefType.SIMPLE
-        ):
+        self,
+        name: str,
+        depends: Dep | None = None,
+        tgt_type: DefType = DefType.SIMPLE
+    ) -> None:
         self.name = name
         self.depends = depends if depends else deps.dep_none
         self.tgt_type = tgt_type
@@ -34,8 +34,9 @@ class Target:
     def __str__(self) -> str:
         return self.name
 class LevelTarget(Target):
-    def __init__(self, name: str, depends: Dep | None = None):
+    def __init__(self, name: str, depends: Dep | None = None) -> None:
         super().__init__(name, depends, DefType.LEVEL)
+
 class RegionData:
     name: str
     locations: list[str] | None
@@ -44,37 +45,43 @@ class RegionData:
     region_type: DefType
     flags: DefFlags
     def __init__(
-            self,
-            name: str,
-            locations: list[str] | None = None,
-            connect_to: list[Target] | None = None,
-            depends: Dep | None = None,
-            region_type: DefType = DefType.SIMPLE,
-            flags: DefFlags = DefFlags.NONE):
+        self,
+        name: str,
+        locations: list[str] | None = None,
+        connect_to: list[Target] | None = None,
+        depends: Dep | None = None,
+        region_type: DefType = DefType.SIMPLE,
+        flags: DefFlags = DefFlags.NONE
+    ) -> None:
         self.name = name
         self.locations = locations
         self.connect_to = connect_to
         self.depends = depends if depends else deps.dep_none
         self.region_type = region_type
         self.flags = flags
+
     @override
     def __str__(self) -> str:
         return self.name
+
 class LevelRegionData(RegionData):
     def __init__(
-            self,
-            name: str,
-            add_locations: list[str] | None = None,
-            connect_to: list[Target] | None = None,
-            depends: Dep | None = None,
-            flags: DefFlags = DefFlags.NONE):
+        self,
+        name: str,
+        add_locations: list[str] | None = None,
+        connect_to: list[Target] | None = None,
+        depends: Dep | None = None,
+        flags: DefFlags = DefFlags.NONE
+    ) -> None:
         super().__init__(name, add_locations, connect_to, depends, DefType.LEVEL, flags)
+
 class WorldRegionData(RegionData):
     def __init__(
-            self,
-            name: str,
-            add_locations: list[str] | None = None,
-            connect_to: list[Target] | None = None,
-            depends: Dep | None = None,
-            flags: DefFlags = DefFlags.TGT_IGNORE_FREEMOVE):
+        self,
+        name: str,
+        add_locations: list[str] | None = None,
+        connect_to: list[Target] | None = None,
+        depends: Dep | None = None,
+        flags: DefFlags = DefFlags.TGT_IGNORE_FREEMOVE
+    ) -> None:
         super().__init__(name, add_locations, connect_to, depends, DefType.WORLD, flags)

@@ -45,7 +45,7 @@ WORLD_MOD_PATH = os.path.join(WORLD_MOD, "__init__.py")
 OUTPUT_DIR = os.path.join(THIS_DIR, "output")
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "APObject.cs")
 
-def main():
+def main() -> None:
     _fate_desc = (f"that files will be read from '{ROOT_DIR}'."
         " This directory must be the Archipelago root directory!"
         f" Files will be written to '{OUTPUT_FILE}'."
@@ -138,7 +138,7 @@ def main():
         "",
     ] + [
         ind(2)+f"public static readonly APItem {var.removeprefix('item_')} = new({data[1].id}, true);"
-        for var,data in sorted(item_var_dict.items(), key=lambda item: item[1][1])
+        for var,data in sorted(item_var_dict.items(), key=lambda item: item[1][1])  # pyrefly: ignore[implicit-any-lambda]
     ] + [
         "",
         ind(2)+"public static void Register(APItem item) => id_map.Add(item.id, item);",
@@ -162,7 +162,7 @@ def main():
         ""
     ] + [
         ind(2)+f"public static readonly APLocation {var.removeprefix('loc_')} = new({data[1].id}, true);"
-        for var,data in sorted(location_var_dict.items(), key=lambda loc: loc[1][1])
+        for var,data in sorted(location_var_dict.items(), key=lambda loc: loc[1][1])  # pyrefly: ignore[implicit-any-lambda]
     ] + [
         "",
         ind(2)+"public static void Register(APLocation loc) => id_map.Add(loc.id, loc);",

@@ -44,13 +44,13 @@ FieldTypeTuple = (str , int)
 
 class InlineListEncoder(json.JSONEncoder):
     @override
-    def iterencode(self, o: Any, _one_shot: bool=False):
+    def iterencode(self, o: Any, _one_shot: bool=False):  # noqa: ANN201
         if self.indent is None or isinstance(self.indent, str): # type: ignore
             indent = self.indent
         else:
             indent = " " * self.indent
 
-        def _iterencode(obj: Any, level: int) -> Generator[str]:
+        def _iterencode(obj: Any, level: int) -> Generator[str]:  # noqa: ANN401
             if isinstance(obj, list):
                 # Inline list regardless of nesting
                 yield "["
@@ -115,7 +115,7 @@ def _get_apworld_pofx_no(values: dict[str, Any]) -> int:
 def _get_ver_rel_from_pofx_no(pofx_no: int) -> int:
     return max(0, pofx_no - 10)
 
-def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes):
+def _add_field_value(res_ref: dict[str, FieldTypes], key: str, value: FieldTypes) -> None:
     if isinstance(value, tuple) and all(isinstance(x, int) for x in value): # type: ignore
         if key == "APWORLD_SEM_VERSION" and len(value) == 4:
             res_ref["_apworld_sem_version"] = value
@@ -168,7 +168,7 @@ def get_apworld_fields(
 
     return res
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Generate archipelago.json from file")
     parser.add_argument("dir", help="Directory where the Python script containing the APWorld class is")
     parser.add_argument("-c", "--classname", default=APWORLD_CLASS, help="Name of the APWorld class")

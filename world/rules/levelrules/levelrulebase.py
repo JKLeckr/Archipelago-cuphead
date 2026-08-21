@@ -39,7 +39,7 @@ class LevelDef:
         access: Rule["CupheadWorld"] | None = None,
         physical_access: Rule["CupheadWorld"] | None = None,
         base: Rule["CupheadWorld"] | None = None,
-    ):
+    ) -> None:
         object.__setattr__(self, "locations", locations)
         object.__setattr__(self, "exit_location", exit_location if exit_location else "")
         object.__setattr__(self, "access", access)

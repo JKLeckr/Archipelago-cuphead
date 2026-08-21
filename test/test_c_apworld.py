@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from ..world.options import CupheadOptions
 
 
-def _is_hashable(obj: Any) -> bool:
+def _is_hashable(obj: Any) -> bool:  # noqa: ANN401
     try:
         hash(obj)
         return True
@@ -56,7 +56,7 @@ class TestAPWorldOptionsWConf(unittest.TestCase):
 
 class TestAPWorldItemSetup(unittest.TestCase):
     @staticmethod
-    def _options_for_weapon_mode(mode: WeaponMode):
+    def _options_for_weapon_mode(mode: WeaponMode) -> SimpleNamespace:
         return SimpleNamespace(
             weapon_mode=SimpleNamespace(evalue=mode),
             start_weapon=SimpleNamespace(value=0, is_none=lambda: False),
@@ -66,7 +66,7 @@ class TestAPWorldItemSetup(unittest.TestCase):
             dlc_boss_chalice_checks=SimpleNamespace(evalue=0),
         )
 
-    def test_setup_weapons(self):
+    def test_setup_weapons(self) -> None:
         _start_weapon = itemnames.item_weapon_peashooter
 
         self.assertEqual(weapons.weapon_dict[0], _start_weapon)
@@ -105,7 +105,7 @@ class TestAPWorldItemSetup(unittest.TestCase):
                     self.assertEqual(items[itemnames.item_plane_ex].quantity, 0)
 
 class TestAPWorldStartWeapon(CupheadTestBase):
-    def test_explicit_start_weapon_is_resolved(self):
+    def test_explicit_start_weapon_is_resolved(self) -> None:
         for start_weapon, expected_index in (("peashooter", 0), ("chaser", 2)):
             with self.subTest(start_weapon):
                 test_world = TestAPWorldStartWeapon()
@@ -117,7 +117,7 @@ class TestAPWorldStartWeapon(CupheadTestBase):
                 self.assertEqual(expected_index, test_world.world.resolved_start_weapon_index)
 
 class TestAPWorldUTSupport(CupheadTestBase):
-    def test_sdata_re_gen(self):
+    def test_sdata_re_gen(self) -> None:
         test_world = TestAPWorldUTSupport()
         test_world.options = {
             "boss_secret_checks": True

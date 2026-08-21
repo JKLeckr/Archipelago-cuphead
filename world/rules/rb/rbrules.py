@@ -33,7 +33,7 @@ class Preset(WrapperRule["CupheadWorld"], game=ch):
         *,
         options: Iterable[OptionFilter] = (),
         filtered_resolution: bool = False
-    ):
+    ) -> None:
         self.pname = preset.name
         self.child = preset.rule
         self.options = options
@@ -130,7 +130,7 @@ class HasWeapon(Rule["CupheadWorld"], game=ch):
     weapon_name: str
 
     @override
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.weapon_name not in weapons.weapon_to_index.keys():
             raise KeyError(f"{self.weapon_name} not in weapon_dict")
         return super().__post_init__()
@@ -147,7 +147,7 @@ class HasWeapon(Rule["CupheadWorld"], game=ch):
 @dataclass
 class HasWeaponEx(HasWeapon, game=ch):
     @override
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.weapon_name not in weapons.weapon_to_index.keys():
             raise KeyError(f"{self.weapon_name} not in weapon_dict")
         return super().__post_init__()

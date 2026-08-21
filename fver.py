@@ -13,7 +13,7 @@ class FVersion:
     release: int
     postfix: str
 
-    def __init__(self, baseline: int, revision: int, release: int, branch: str = "v", postfix: str = ""):
+    def __init__(self, baseline: int, revision: int, release: int, branch: str = "v", postfix: str = "") -> None:
         self.branch = branch
         self.baseline = baseline
         self.revision = revision

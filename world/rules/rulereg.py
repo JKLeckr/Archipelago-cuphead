@@ -35,7 +35,7 @@ class RuleReg:
     _preset_reg: RulePresetReg
     _world: "CupheadWorld"
 
-    def __init__(self, world: "CupheadWorld"):
+    def __init__(self, world: "CupheadWorld") -> None:
         self._debug = world.settings.is_debug_bit_on(256)
         self._reg = {}
         self._preset_reg = RulePresetReg()
@@ -45,7 +45,7 @@ class RuleReg:
     def presets(self) -> RulePresetReg:
         return self._preset_reg
 
-    def clear_all_rules(self):
+    def clear_all_rules(self) -> None:
         self._reg.clear()
 
     def contains(self, spot: str, spot_type: SpotType) -> bool:
@@ -54,7 +54,7 @@ class RuleReg:
     def get_rule(self, spot: str, spot_type: SpotType) -> list[RuleData]:
         return self._reg[Spot(spot, spot_type)]
 
-    def _add_rule(self, spot: Spot, rule: Rule["CupheadWorld"], combine_and: bool, insert: bool = False):
+    def _add_rule(self, spot: Spot, rule: Rule["CupheadWorld"], combine_and: bool, insert: bool = False) -> None:
         if spot not in self._reg:
             self._reg[spot] = [RuleData(rule)]
         elif insert:
@@ -63,11 +63,23 @@ class RuleReg:
         else:
             self._reg[spot].append(RuleData(rule, combine_and))
 
-    def add_rule(self, spot_name: str, spot_type: SpotType, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def add_rule(
+        self,
+        spot_name: str,
+        spot_type: SpotType,
+        rule: Rule["CupheadWorld"],
+        combine_and: bool = True
+    ) -> None:
         spot = Spot(spot_name, spot_type)
         self._add_rule(spot, rule, combine_and)
 
-    def insert_rule(self, spot_name: str, spot_type: SpotType, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def insert_rule(
+        self,
+        spot_name: str,
+        spot_type: SpotType,
+        rule: Rule["CupheadWorld"],
+        combine_and: bool = True
+    ) -> None:
         spot = Spot(spot_name, spot_type)
         self._add_rule(spot, rule, combine_and, True)
 
@@ -87,7 +99,7 @@ class RuleReg:
         dest_spot_name: str,
         dest_spot_type: SpotType,
         combine_and: bool = True
-    ):
+    ) -> None:
         sspot = Spot(src_spot_name, src_spot_type)
         if sspot not in self._reg:
             raise KeyError(f"{sspot} is not in the rulereg")
@@ -104,27 +116,27 @@ class RuleReg:
             if set_combine:
                 set_combine = False
 
-    def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
+    def add_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
         self.add_loc_rule(loc, Has(item, count), combine_and)
-    def insert_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True):
+    def insert_item_rule(self, loc: str, item: str, count: int = 1, combine_and: bool = True) -> None:
         self.insert_loc_rule(loc, Has(item, count), combine_and)
-    def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def add_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         self.add_rule(loc, SpotType.LOCATION, rule, combine_and)
-    def insert_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def insert_loc_rule(self, loc: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         self.insert_rule(loc, SpotType.LOCATION, rule, combine_and)
-    def add_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def add_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         region = rb.get_region(self._world, region_name)
         for entrance in region.entrances:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
-    def insert_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def insert_region_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         region = rb.get_region(self._world, region_name)
         for entrance in region.entrances:
             self.insert_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
-    def add_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def add_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         region = rb.get_region(self._world, region_name)
         for entrance in region.exits:
             self.add_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
-    def insert_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True):
+    def insert_region_exit_rule(self, region_name: str, rule: Rule["CupheadWorld"], combine_and: bool = True) -> None:
         region = rb.get_region(self._world, region_name)
         for entrance in region.exits:
             self.insert_rule(entrance.name, SpotType.ENTRANCE, rule, combine_and)
@@ -192,5 +204,6 @@ class RuleReg:
         res = self._compile_rules(True, False)
         return res if res is not None else {}
 
-    def apply_rules(self):
-        return self._compile_rules(False, True)
+    def apply_rules(self) -> bool:
+        _res = self._compile_rules(False, True)
+        return _res is not None

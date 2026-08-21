@@ -4,6 +4,6 @@
 from typing import Any
 
 
-def p(v: Any) -> Any:
+def p(v: Any) -> Any:  # noqa: ANN401
     print(v)
     return v

@@ -6,7 +6,7 @@ from typing import TypeVar
 
 T = TypeVar("T")
 
-def count_in_list(e: T, ls: Iterable[T]):
+def count_in_list(e: T, ls: Iterable[T]) -> int:
     count = 0
     for el in ls:
         if el == e:
@@ -14,13 +14,13 @@ def count_in_list(e: T, ls: Iterable[T]):
     return count
 
 def format_list(
-        ls: Iterable[T],
-        ls_start: str = "[",
-        ls_end: str = "]",
-        sep: str = ",",
-        enc_start: str = "",
-        enc_end: str = ""
-    ) -> str:
+    ls: Iterable[T],
+    ls_start: str = "[",
+    ls_end: str = "]",
+    sep: str = ",",
+    enc_start: str = "",
+    enc_end: str = ""
+) -> str:
     res = ls_start
     first = True
     if ls:

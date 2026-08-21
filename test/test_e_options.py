@@ -19,7 +19,7 @@ from . import CupheadTestBase
 
 
 class TestOptionNames(unittest.TestCase):
-    def test_option_names(self):
+    def test_option_names(self) -> None:
         common_fieldnames = set(fields(PerGameCommonOptions))
         option_fields = [f for f in fields(options.CupheadOptions) if f not in common_fieldnames]
 
@@ -204,7 +204,7 @@ class TestOptions(CupheadTestBase):
         }
     }
 
-    def _check_all_items_are_active(self, option_set_name: str):
+    def _check_all_items_are_active(self, option_set_name: str) -> None:
         game_players = set(self.multiworld.get_game_players(self.game))
         player_items = {p: [x.name for x in self.multiworld.get_items() if x.player == p] for p in game_players}
         for items in player_items.values():
@@ -218,7 +218,7 @@ class TestOptions(CupheadTestBase):
             assert len(remaining_items.keys()) == 0, \
                 f"{option_set_name}: The following items are active but have not been created: {remaining_items}"
 
-    def _check_all_locations_are_active(self, option_set_name: str):
+    def _check_all_locations_are_active(self, option_set_name: str) -> None:
         for player in self.multiworld.get_game_players(self.game):
             remaining_locs = set(self.multiworld.worlds[player].active_locations.keys())
             for region in self.multiworld.get_regions(player):
@@ -229,7 +229,7 @@ class TestOptions(CupheadTestBase):
             assert len(remaining_locs) == 0, \
                 f"{option_set_name}: The following locations are active but have not been created: {remaining_locs}"
 
-    def test_default_options(self):
+    def test_default_options(self) -> None:
         option_set_name = "Default Options"
         test_world = TestOptions()
         test_world.world_setup()
@@ -240,7 +240,7 @@ class TestOptions(CupheadTestBase):
             print(f"Seed of '{option_set_name}': {test_world.multiworld.seed}")
         test_world.test_fill()
 
-    def test_options(self):
+    def test_options(self) -> None:
         for option_set, opts in self.option_dict.items():
             with self.subTest(option_set):
                 test_world = TestOptions()
@@ -258,7 +258,7 @@ class TestOptions(CupheadTestBase):
                 test_world.test_all_state_can_reach_everything()
 
 class TestOptionBits(CupheadTestBase):
-    def test_option_bits(self):
+    def test_option_bits(self) -> None:
         test_world = TestOptionBits()
         test_world.options = {
             "boss_secret_checks": True,
@@ -276,7 +276,7 @@ class TestOptionBits(CupheadTestBase):
 class TestOptionSanitizer(CupheadTestBase):
     auto_construct = False
 
-    def test_dlc_off_sanitizes_dlc_options(self):
+    def test_dlc_off_sanitizes_dlc_options(self) -> None:
         test_world = TestOptionSanitizer()
         test_world.options = {
             "use_dlc": False,
@@ -304,7 +304,7 @@ class TestOptionSanitizer(CupheadTestBase):
         self.assertEqual(world_options.dlc_chess_chalice_checks.value, int(e.ChaliceCheckMode.DISABLED))
         self.assertFalse(world_options.dlc_cactusgirl_quest.value)
 
-    def test_dlc_off_preserves_no_start_weapon(self):
+    def test_dlc_off_preserves_no_start_weapon(self) -> None:
         test_world = TestOptionSanitizer()
         test_world.options = {
             "use_dlc": False,
@@ -316,7 +316,7 @@ class TestOptionSanitizer(CupheadTestBase):
 
         self.assertTrue(world_options.start_weapon.is_none())
 
-    def test_single_player_no_start_weapon_warns(self):
+    def test_single_player_no_start_weapon_warns(self) -> None:
         test_world = TestOptionSanitizer()
         test_world.options = {
             "logic_mode": "hard",
@@ -332,7 +332,7 @@ class TestOptionSanitizer(CupheadTestBase):
         output = out.getvalue()
         assert "single-player generation with start_weapon set to 'none' may fail" in output
 
-    def test_minimal_accessibility_warns_on_risky_combo(self):
+    def test_minimal_accessibility_warns_on_risky_combo(self) -> None:
         test_world = TestOptionSanitizer()
         test_world.options = {
             "accessibility": "minimal",

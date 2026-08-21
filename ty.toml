@@ -11,6 +11,9 @@ respect-type-ignore-comments = false
 missing-override-decorator = "error"
 deprecated = "error"
 missing-type-argument = "error"
+unresolved-import = "error"
+#unsound-return-statement = "error"
+possibly-unresolved-reference = "warn"
 
 [environment]
 python-version = "3.11"

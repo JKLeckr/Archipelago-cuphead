@@ -12,10 +12,10 @@ from rule_builder.rules import Rule
 class RulePresetReg:
     _reg: dict[str, Rule.Resolved]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._reg = {}
 
-    def clear_reg(self):
+    def clear_reg(self) -> None:
         self._reg.clear()
 
     def in_reg(self, pname: str) -> bool:
@@ -24,10 +24,10 @@ class RulePresetReg:
     def get(self, pname: str) -> Rule.Resolved | None:
         return self._reg.get(pname)
 
-    def set(self, pname: str, rule: Rule.Resolved):
+    def set(self, pname: str, rule: Rule.Resolved) -> None:
         self._reg[pname] = rule
 
-    def update(self, **kwargs: Rule.Resolved):
+    def update(self, **kwargs: Rule.Resolved) -> None:
         self._reg.update(**kwargs)
 
     def pop(self, pname: str) -> Rule.Resolved | None:

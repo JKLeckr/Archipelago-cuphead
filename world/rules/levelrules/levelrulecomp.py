@@ -47,7 +47,7 @@ class LevelRuleComp:
         ldef: lrb.LevelDef,
         locname: str,
         loc: lrb.LocationDef,
-    ):
+    ) -> None:
         if locname in self._world.active_locations:
             _rule = self._compile_location_rule(ldef, loc)
             if _rule is None:
@@ -74,7 +74,7 @@ class LevelRuleComp:
             return lname
         return levelids.level_ids[_rlevel_map[level_id]]
 
-    def compile_levelrules(self):
+    def compile_levelrules(self) -> None:
         active_levels = self._world.active_levels
 
         for lname, ldef in levelrules.levels.items():
@@ -98,6 +98,6 @@ class LevelRuleComp:
             elif self._debug_on():
                 print(f"Skipping rules for level '{lname}'")
 
-    def __init__(self, world: "CupheadWorld"):
+    def __init__(self, world: "CupheadWorld") -> None:
         self._world = world
         self._options = world.options

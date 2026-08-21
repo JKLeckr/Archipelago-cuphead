@@ -23,7 +23,7 @@ class TestDepFilter(unittest.TestCase):
     def _dep_false(_: object) -> bool:
         return False
 
-    def test_depfilter_all_mode(self):
+    def test_depfilter_all_mode(self) -> None:
         true_dep: Dep = cast(Dep, self._dep_true)
         false_dep: Dep = cast(Dep, self._dep_false)
 
@@ -32,7 +32,7 @@ class TestDepFilter(unittest.TestCase):
         self.assertFalse(DepFilter((true_dep, false_dep), value=False, any=False)(object()))  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
         self.assertTrue(DepFilter((false_dep, false_dep), value=False, any=False)(object()))  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
 
-    def test_depfilter_any_mode(self):
+    def test_depfilter_any_mode(self) -> None:
         true_dep: Dep = cast(Dep, self._dep_true)
         false_dep: Dep = cast(Dep, self._dep_false)
 
@@ -41,7 +41,7 @@ class TestDepFilter(unittest.TestCase):
         self.assertTrue(DepFilter((true_dep, false_dep), value=False, any=True)(object()))  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
         self.assertTrue(DepFilter((false_dep, false_dep), value=False, any=True)(object()))  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
 
-    def test_depfilter_dict_roundtrip(self):
+    def test_depfilter_dict_roundtrip(self) -> None:
         single = DepFilter(deps.dep_hard_logic)
         single_roundtrip = DepFilter.from_dict(single.to_dict())
         self.assertEqual(single.to_dict(), single_roundtrip.to_dict())
@@ -50,7 +50,7 @@ class TestDepFilter(unittest.TestCase):
         multi_roundtrip = DepFilter.from_dict(multi.to_dict())
         self.assertEqual(multi.to_dict(), multi_roundtrip.to_dict())
 
-    def test_depfilter_to_dict_shapes(self):
+    def test_depfilter_to_dict_shapes(self) -> None:
         single = DepFilter(deps.dep_hard_logic).to_dict()
         self.assertEqual(single["when"], "hard_logic")
         self.assertIs(single["condition"], True)
@@ -61,11 +61,11 @@ class TestDepFilter(unittest.TestCase):
         self.assertIs(multi["condition"], False)
         self.assertIs(multi["any"], True)
 
-    def test_depfilter_from_dict_defaults(self):
+    def test_depfilter_from_dict_defaults(self) -> None:
         parsed = DepFilter.from_dict({"when": "hard_logic"})
         self.assertEqual(parsed.to_dict(), {"when": "hard_logic", "condition": True, "any": False})
 
-    def test_depfilter_from_dict_invalid_when(self):
+    def test_depfilter_from_dict_invalid_when(self) -> None:
         with self.assertRaisesRegex(ValueError, "^Dep dict must contain a non-empty string 'when' value\\.$"):
             DepFilter.from_dict({"when": " "})
         with self.assertRaisesRegex(ValueError, "^Dep dict 'when' tuple/list cannot be empty\\.$"):
@@ -81,7 +81,7 @@ class TestDepFilter(unittest.TestCase):
         ):
             DepFilter.from_dict({"when": 7})  # type: ignore[arg-type]
 
-    def test_depfilter_from_dict_invalid_flags_and_unknown(self):
+    def test_depfilter_from_dict_invalid_flags_and_unknown(self) -> None:
         with self.assertRaisesRegex(ValueError, "^Dep dict 'condition' must be a bool\\.$"):
             DepFilter.from_dict({"when": "hard_logic", "condition": 1})  # type: ignore[arg-type]
         with self.assertRaisesRegex(ValueError, "^Dep dict 'any' must be a bool\\.$"):
@@ -89,17 +89,17 @@ class TestDepFilter(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "^Unknown dep name\\(s\\): not_real_dep\\.$"):
             DepFilter.from_dict({"when": "not_real_dep"})
 
-    def test_depfilter_init_validation(self):
+    def test_depfilter_init_validation(self) -> None:
         with self.assertRaisesRegex(ValueError, "^DepFilter requires at least one dep\\.$"):
             DepFilter(())  # type: ignore[arg-type]
         with self.assertRaisesRegex(ValueError, "^DepFilter deps must be callable\\.$"):
             DepFilter((deps.dep_hard_logic, cast(Dep, 5)))  # type: ignore[arg-type]
 
-    def test_depfilter_check_invalid_options(self):
+    def test_depfilter_check_invalid_options(self) -> None:
         with self.assertRaisesRegex(ValueError, "^DepFilter options is invalid\\.$"):
             DepFilter(deps.dep_hard_logic).check(cast(CommonOptions, object()))
 
-    def test_depfilter_str(self):
+    def test_depfilter_str(self) -> None:
         self.assertEqual(str(DepFilter(deps.dep_hard_logic)), "hard_logic")
         self.assertEqual(str(DepFilter(deps.dep_hard_logic, value=False)), "!hard_logic")
         self.assertEqual(
@@ -135,7 +135,7 @@ class TestLevelRuleComp(unittest.TestCase):
         comp = _TestableLevelRuleComp.__new__(_TestableLevelRuleComp)
         return comp.compile_location_rule_for_test(inherit, base=base, loc_rule=loc_rule)
 
-    def test_compile_location_rule_inherit_and(self):
+    def test_compile_location_rule_inherit_and(self) -> None:
         base = Has("base")
         loc_rule = Has("loc")
 
@@ -144,7 +144,7 @@ class TestLevelRuleComp(unittest.TestCase):
         self.assertEqual(self._compile_location_rule(InheritMode.AND, base=base), base)
         self.assertEqual(self._compile_location_rule(InheritMode.AND, base=base, loc_rule=loc_rule), base & loc_rule)
 
-    def test_compile_location_rule_inherit_or(self):
+    def test_compile_location_rule_inherit_or(self) -> None:
         base = Has("base")
         loc_rule = Has("loc")
 
@@ -153,7 +153,7 @@ class TestLevelRuleComp(unittest.TestCase):
         self.assertIsNone(self._compile_location_rule(InheritMode.OR, base=base))
         self.assertEqual(self._compile_location_rule(InheritMode.OR, base=base, loc_rule=loc_rule), base | loc_rule)
 
-    def test_compile_location_rule_inherit_none(self):
+    def test_compile_location_rule_inherit_none(self) -> None:
         base = Has("base")
         loc_rule = Has("loc")
 

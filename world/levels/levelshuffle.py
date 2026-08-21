@@ -10,10 +10,10 @@ from . import levelids as lmap
 
 
 def get_level_shuffle_lists(
-        use_dlc: bool,
-        mode: LevelShuffleMode,
-        shuffle_kingdice: bool
-    ) -> list[tuple[list[str],list[str]]]:
+    use_dlc: bool,
+    mode: LevelShuffleMode,
+    shuffle_kingdice: bool
+) -> list[tuple[list[str],list[str]]]:
     enabled = mode > 0
     separate_plane = mode == LevelShuffleMode.PLANE_SEPARATE
 

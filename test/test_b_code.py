@@ -110,7 +110,7 @@ class TestCodeOptionResolver(unittest.TestCase):
         self.assertEqual(options.start_weapon.value, 127)
 
 class TestCodeLevelShuffle(unittest.TestCase):
-    def _check_level_shuffle_map(self, shuffle_map: dict[int, int]):
+    def _check_level_shuffle_map(self, shuffle_map: dict[int, int]) -> None:
         used_k: set[int] = set()
         used_v: set[int] = set()
 
@@ -121,13 +121,13 @@ class TestCodeLevelShuffle(unittest.TestCase):
             used_k.add(k)
             used_v.add(v)
 
-    def test_level_shuffle_no_dupes(self):
+    def test_level_shuffle_no_dupes(self) -> None:
         rand = Random(655)
         shuffle_map = levelshuffle.get_level_shuffle_map(rand, True, LevelShuffleMode.ENABLED, True)
 
         self._check_level_shuffle_map(shuffle_map)
 
-    def test_level_shuffle_w_level_placements(self):
+    def test_level_shuffle_w_level_placements(self) -> None:
         rand = Random(655)
         level_placements = {regionnames.level_boss_clown: regionnames.level_boss_clown}
         shuffle_map = levelshuffle.get_level_shuffle_map(rand, True, LevelShuffleMode.ENABLED, True, level_placements)

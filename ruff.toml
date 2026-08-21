@@ -1,6 +1,8 @@
 ## ruff.toml
 
-lint.select = ["B", "C", "E", "F", "W", "I", "N", "Q", "UP", "RET", "RSE", "RUF", "ISC", "PLC", "PLE", "PLW", "T20", "PERF"]
+lint.select = [
+    "B", "C", "E", "F", "W", "I", "N", "Q", "UP", "RET", "RSE", "RUF", "ISC", "PLC", "PLE", "PLW", "T20", "PERF", "ANN"
+]
 
 lint.ignore = [
     #"C901",  # AP Author disagrees with limiting branch complexity
@@ -17,6 +19,8 @@ indent-width = 4
 # Allow autofix for all enabled rules (when `--fix`) is provided.
 lint.fixable = ["ALL"]
 lint.unfixable = ["B", "C901"]
+
+preview = false
 
 # Exclude a variety of commonly ignored directories.
 extend-exclude = ["**/__pycache__"]

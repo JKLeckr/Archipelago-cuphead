@@ -16,7 +16,7 @@ class PresetData:
 
     _used_preset_names: ClassVar[set[str]] = set()
 
-    def __init__(self, rule: Rule["CupheadWorld"], name: str):
+    def __init__(self, rule: Rule["CupheadWorld"], name: str) -> None:
         if name in self.__class__._used_preset_names:
             raise ValueError(f"Preset name '{name}' already exists!")
         object.__setattr__(self, "rule", rule)

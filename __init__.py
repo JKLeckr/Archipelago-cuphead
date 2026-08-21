@@ -55,7 +55,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     GAME_NAME: ClassVar[str] = "Cuphead"
 
-    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 8)
+    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 9)
     APWORLD_VERSION_POSTFIX: ClassVar[str] = ""
     APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 10
 
@@ -117,11 +117,11 @@ class CupheadWorld(CachedRuleBuilderWorld):
     fake_gen: bool = False
     ut_can_gen_without_yaml: ClassVar[bool] = True
 
-    def __init__(self, multiworld: MultiWorld, player: int):
+    def __init__(self, multiworld: MultiWorld, player: int) -> None:
         varis.game_name = self.__class__.GAME_NAME
         super().__init__(multiworld, player)
 
-    def _resolve_test_overrides(self):
+    def _resolve_test_overrides(self) -> None:
         if self.options.test_overrides.value.get("sani"):
             self._osani_ovrr = True
         if _ut := self.options.test_overrides.value.get("ut"):
@@ -133,11 +133,11 @@ class CupheadWorld(CachedRuleBuilderWorld):
                 setattr(self.multiworld, "re_gen_passthrough", _ut)  # noqa: B010
                 setattr(self.multiworld, "generation_is_fake", True)  # noqa: B010
 
-    def set_early_items(self):
+    def set_early_items(self) -> None:
         if self.options.early_parry.bvalue:
             self.multiworld.early_items[self.player][itemnames.item_ability_parry] = 1
 
-    def count_precollected(self):
+    def count_precollected(self) -> None:
         self.precollected_counts = {}
 
         for item in self.multiworld.precollected_items[self.player]:
@@ -146,7 +146,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
                 continue
             self.precollected_counts[item.name] += 1
 
-    def resolve_start_weapon(self):
+    def resolve_start_weapon(self) -> None:
         if not self.options.start_weapon.is_none():
             self.resolved_start_weapon_index = self.options.start_weapon.value
             return
@@ -162,7 +162,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
         self.resolved_start_weapon_index = _start_weapon
 
-    def solo_setup(self):
+    def solo_setup(self) -> None:
         # Put items in early to prevent fill errors. TODO: Make this more elegant.
         no_weapons = self.options.start_weapon.is_none()
         if self.options.randomize_abilities.value:
@@ -181,7 +181,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
             _weapon = self.random.choice(weapons.weapon_ex_dict)
             self.multiworld.early_items[self.player][_weapon] = 1
 
-    def re_gen_setup(self):
+    def re_gen_setup(self) -> None:
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
             slot_data: dict[str, Any] = re_gen_passthrough[self.game]
@@ -213,7 +213,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
             self.resolved_start_weapon_index = slot_data["resolved_start_weapon"]
 
     @override
-    def generate_early(self):
+    def generate_early(self) -> None:
         if varis.testing:
             self._resolve_test_overrides()
 
@@ -281,7 +281,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
         return slotdata.fill_slot_data(self)
 
     @override
-    def create_regions(self):
+    def create_regions(self) -> None:
         regions.create_regions(self)
         #print(self.multiworld.get_locations(self.player))
         #print(regions.list_multiworld_regions_names(self.multiworld))
@@ -293,11 +293,11 @@ class CupheadWorld(CachedRuleBuilderWorld):
         return items.create_item(name, self.player, force_classification)
 
     @override
-    def create_items(self):
+    def create_items(self) -> None:
         items.create_items(self)
 
     @override
-    def write_spoiler(self, spoiler_handle: TextIO):
+    def write_spoiler(self, spoiler_handle: TextIO) -> None:
         if len(self.option_sanitizer.option_overrides)>0:
             spoiler_handle.write(f"\n{self.player_name} Option Changes:\n\n")
             spoiler_handle.write("\n".join(list(self.option_sanitizer.option_overrides)) + "\n")
@@ -340,7 +340,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
         return items.get_filler_item_name(self)
 
     @override
-    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]) -> None:
         hint_dict: dict[int, str] = {}
         if self.level_map:
             for level, lmap in self.level_map.items():
@@ -363,11 +363,11 @@ class CupheadWorld(CachedRuleBuilderWorld):
         hint_data.update({self.player: hint_dict})
 
     @override
-    def set_rules(self):
+    def set_rules(self) -> None:
         rules.set_rules(self)
 
     @override
-    def post_fill(self):
+    def post_fill(self) -> None:
         #debug.print_locations(self)
         if self.settings.is_debug_bit_on(4):
             dbg.debug_visualize_regions(self, self.settings.is_debug_bit_on(8))

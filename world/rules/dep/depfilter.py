@@ -28,10 +28,10 @@ class DepFilter(OptionFilter):
             if (dep_name := getattr(dep, "__name__", "").removeprefix("dep_"))
         )
 
-    def __init__(self, fns: Dep | tuple[Dep, ...], value: bool = True, any: bool = False):
+    def __init__(self, fns: Dep | tuple[Dep, ...], value: bool = True, any: bool = False) -> None:
         dep_args: tuple[Dep, ...]
         if isinstance(fns, tuple):
-            dep_args = cast(tuple[Dep, ...], fns)
+            dep_args = fns  # pyright: ignore[reportUnknownVariableType]
         else:
             dep_args = (fns,)
 
@@ -40,7 +40,7 @@ class DepFilter(OptionFilter):
         if not all(callable(dep) for dep in dep_args):
             raise ValueError("DepFilter deps must be callable.")
 
-        super().__init__(None, None)  # pyright: ignore[reportArgumentType]  # ty: ignore[invalid-argument-type]
+        super().__init__(None, None)  # pyright: ignore[reportArgumentType]  # ty: ignore[invalid-argument-type]  # pyrefly: ignore[bad-argument-type]
         object.__setattr__(self, "fns", dep_args)
         object.__setattr__(self, "value", value)
         object.__setattr__(self, "any", any)

@@ -94,7 +94,7 @@ def parse_apworld_version(world_init_path: str, world_class_name: str = "Cuphead
                         values.append(elt.value)
                     else:
                         return None
-                return format_apworld_version(tuple(values))  # pyright: ignore[reportArgumentType]  # ty: ignore[invalid-argument-type]
+                return format_apworld_version(tuple(values))  # pyright: ignore[reportArgumentType]  # ty: ignore[invalid-argument-type]  # pyrefly: ignore[bad-argument-type]
     return None
 
 
@@ -145,7 +145,7 @@ def get_option_fields(node: ast.ClassDef) -> dict[str, int]:
                     continue
                 if isinstance(value, int):
                     opt_val_to_name[opt_name] = value
-    return dict(sorted(opt_val_to_name.items(), key=lambda item: item[1]))
+    return dict(sorted(opt_val_to_name.items(), key=lambda item: item[1]))  # pyrefly: ignore[implicit-any-lambda]
 
 def get_option_range(
         attrs: dict[str, typing.Any],
@@ -178,7 +178,7 @@ def generate_comments(  # noqa: C901
         attrs: dict[str, typing.Any],
         base_names: list[str],
         option_names: Iterable[str],
-        default: typing.Any
+        default: typing.Any  # noqa: ANN401
     ) -> list[str]:
     lines: list[str] = []
 
@@ -221,7 +221,7 @@ def generate_comments(  # noqa: C901
 
     return lines
 
-def get_default_option(attrs: dict[str, typing.Any], base_names: list[str], options: dict[str, int]) -> typing.Any:
+def get_default_option(attrs: dict[str, typing.Any], base_names: list[str], options: dict[str, int]) -> typing.Any:  # noqa: ANN401
     default = attrs.get("default", None)
     if default is None:
         if "BDefaultOnToggle" in base_names or "DefaultOnToggle" in base_names:
@@ -237,11 +237,11 @@ def get_default_option(attrs: dict[str, typing.Any], base_names: list[str], opti
             return str(next((k for k, v in options.items() if v == default), default))
     return default
 
-def should_skip_visibility(visibility_value: str):
+def should_skip_visibility(visibility_value: str) -> bool:
     """Return True if visibility attribute includes disallowed flags."""
     if not visibility_value:
         return False
-    vis_str = str(visibility_value).lower()
+    vis_str = visibility_value.lower()
     return any(flag in vis_str for flag in VISIBILITY_SKIP_KEYWORDS)
 
 
@@ -286,14 +286,14 @@ def generate_yaml_data(classes: Iterable[ast.ClassDef], allowed_classes: list[st
 
     return yaml_data
 
-def get_value_string(value: typing.Any) -> str:
+def get_value_string(value: typing.Any) -> str:  # noqa: ANN401
     if isinstance(value, str):
         return value if value else "''"
     if isinstance(value, bool):
         return "'true'" if value else "'false'"
     return f"'{value!s}'"
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="generate the Player.yaml file")
     parser.add_argument("world_init", help="Path to world __init__ py")
     parser.add_argument("-O", "--options", default="", help="Path to the options __init__ py")

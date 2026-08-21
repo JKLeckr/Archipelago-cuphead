@@ -17,7 +17,7 @@ from .rulereg import SpotType
 if TYPE_CHECKING:
     from ... import CupheadWorld
 
-def register_rules(world: "CupheadWorld"):
+def register_rules(world: "CupheadWorld") -> None:
     w = world
     rr = w.rulereg
     options = w.options
@@ -43,14 +43,14 @@ def register_rules(world: "CupheadWorld"):
     if use_dlc:
         set_dlc_rules(w)
 
-def set_rules(world: "CupheadWorld"):
+def set_rules(world: "CupheadWorld") -> None:
     register_rules(world)
 
     world.rulereg.apply_rules()
 
     set_goal(world)
 
-def set_dlc_rules(world: "CupheadWorld"):
+def set_dlc_rules(world: "CupheadWorld") -> None:
     w = world
     rr = w.rulereg
     options = w.options
@@ -61,7 +61,7 @@ def set_dlc_rules(world: "CupheadWorld"):
         rule.Has(itemnames.item_dlc_ingredient, ingredient_reqs)
     )
 
-def set_dlc_boat_rules(world: "CupheadWorld"):
+def set_dlc_boat_rules(world: "CupheadWorld") -> None:
     w = world
     rr = w.rulereg
     options = w.options
@@ -72,7 +72,7 @@ def set_dlc_boat_rules(world: "CupheadWorld"):
     if randomize_boat:
         rr.add_region_rule(regionnames.reg_dlc_boat, rule.Has(itemnames.item_dlc_boat))
 
-def set_quest_rules(world: "CupheadWorld"):
+def set_quest_rules(world: "CupheadWorld") -> None:
     w = world
     rr = w.rulereg
     options = w.options
@@ -94,7 +94,7 @@ def set_quest_rules(world: "CupheadWorld"):
     if options.music_quest.bvalue:
         rr.add_item_rule(locationnames.loc_quest_music, itemnames.item_event_ludwig)
 
-def set_level_rules(world: "CupheadWorld"):
+def set_level_rules(world: "CupheadWorld") -> None:
     w = world
     rr = w.rulereg
     levelrules.set_levelrules(w)
@@ -113,7 +113,7 @@ def set_level_rules(world: "CupheadWorld"):
         if rr.contains(loc, SpotType.LOCATION):
             rr.copy_rule(loc, SpotType.LOCATION, llrl, SpotType.LOCATION)
 
-def set_shop_rules(world: "CupheadWorld"):
+def set_shop_rules(world: "CupheadWorld") -> None:
     w = world
     player = w.player
     use_dlc = w.use_dlc
@@ -143,7 +143,7 @@ def set_shop_rules(world: "CupheadWorld"):
     for i in range(4 if use_dlc else 3):
         set_shop_cost_rule(w, i, shop_costs)
 
-def set_shop_cost_rule(world: "CupheadWorld", shop_index: int, shop_costs: list[int]):
+def set_shop_cost_rule(world: "CupheadWorld", shop_index: int, shop_costs: list[int]) -> None:
     rr = world.rulereg
     cost = 0
     for i in range(shop_index+1):
@@ -151,7 +151,7 @@ def set_shop_cost_rule(world: "CupheadWorld", shop_index: int, shop_costs: list[
     region = rb.get_region(world, regionnames.shop_sets[shop_index])
     rr.add_region_rule(region.name, rule.Has(itemnames.item_coin, cost))
 
-def set_goal(world: "CupheadWorld"):
+def set_goal(world: "CupheadWorld") -> None:
     w = world
     options = w.options
     w.set_completion_rule(

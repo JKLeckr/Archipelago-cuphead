@@ -29,31 +29,31 @@ def test_duplicates(ls: Iterable[T]) -> int:
     print("Total Duplicates: "+str(len(dups)))
     return len(dups)
 
-def print_list_each_line(ls: Iterable[T]):
+def print_list_each_line(ls: Iterable[T]) -> None:
     for item in ls:
         print(item)
 
-def print_list(ls: Iterable[T]):
+def print_list(ls: Iterable[T]) -> None:
     print(format_list(ls))
 
-def print_locations(world: World):
+def print_locations(world: World) -> None:
     locations = world.multiworld.get_locations(world.player)
     for loc in locations:
         print(f"{loc.name}: {loc.access_rule}")
 
-def print_all_items():
+def print_all_items() -> None:
     print("-- Items --")
     for item, data in items_all.items():
         print(f"{item}: {data.id} | {data.item_type}")
     print("")
 
-def print_all_locations():
+def print_all_locations() -> None:
     print("-- Locations --")
     for item, data in locations_all.items():
         print(f"{item}: {data.id} | {data.progress_type}")
     print("")
 
-def debug_print_regions(world: "CupheadWorld"):
+def debug_print_regions(world: "CupheadWorld") -> None:
     for rname,r in world.multiworld.regions.region_cache[world.player].items():
         print(f"{rname}:")
         for loc in r.locations:
@@ -67,7 +67,7 @@ def visualize_regions_ext(
         show_locations: bool = True,
         show_other_regions: bool = True,
         linetype_ortho: bool = True,
-    ):
+) -> None:
     Utils.visualize_regions(
         root_region,
         file_name,
@@ -78,14 +78,18 @@ def visualize_regions_ext(
         regions_to_highlight=highlight_regions
     )
 
-def visualize_regions(root_region: Region, highlight_regions: set[Region] | None, file_name: str):
+def visualize_regions(root_region: Region, highlight_regions: set[Region] | None, file_name: str) -> None:
     visualize_regions_ext(
         root_region,
         highlight_regions,
         file_name,
     )
 
-def debug_visualize_regions(world: "CupheadWorld", highlight_reachable: bool = False, output_name: str | None = None):
+def debug_visualize_regions(
+    world: "CupheadWorld",
+    highlight_reachable: bool = False,
+    output_name: str | None = None
+) -> None:
     state = world.multiworld.get_all_state(allow_partial_entrances=True)
     output_name = f"_{output_name}" if output_name else ""
     visualize_regions(

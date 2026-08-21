@@ -1,0 +1,21 @@
+#project-includes = ["**/*.py"]
+#project-excludes = ["**/__pycache__"]
+
+python-platform = "win32"
+python-version = "3.11.0"
+
+site-package-path = ["../../typings"]
+search-path = ["../.."]
+
+use-ignore-files = false
+
+infer-with-first-use = false
+preset = "strict"
+
+[errors]
+deprecated = "error"
+missing-import = "error"
+missing-override-decorator = "error"
+
+[[sub-config]]
+matches = "../.."

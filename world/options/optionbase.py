@@ -25,7 +25,8 @@ class EnumOption(Generic[TEnum]):
         return self.enum_type(self.value)
 
     @evalue.setter
-    def evalue(self, value: TEnum | int):
+    def evalue(self, value: TEnum | int) -> None:
+        """enum value"""
         self.value = int(value)
 
 class FlagOption(Generic[TFlag]):
@@ -38,7 +39,8 @@ class FlagOption(Generic[TFlag]):
         return self.flag_type(self.value)
 
     @fvalue.setter
-    def fvalue(self, value: TFlag | int):
+    def fvalue(self, value: TFlag | int) -> None:
+        """flag value"""
         self.value = int(value)
 
 class BoolOption:
@@ -68,11 +70,14 @@ class ChoiceEx(Choice):
 
 class ConstOption(Option[Any], Generic[T]):
     value: T
-    default: Any = 0  # ty: ignore[invalid-attribute-override]
+    default: Any = 0  # ty: ignore[invalid-attribute-override]  # pyrefly: ignore[bad-override]
     visibility = Visibility.none
 
-    def __init__(self):
-        self.value = getattr(self.__class__, "value", self.default)
+    def __init__(self) -> None:
+        _value = self.__class__.value
+        if _value is None:
+            raise AttributeError("value must be defined")
+        self.value = _value
         self.default = self.value
 
     @classmethod
@@ -84,10 +89,10 @@ class ConstOption(Option[Any], Generic[T]):
 
 class ConstNumericOption(NumericOption):
     value: int
-    default: int = 0  # ty: ignore[invalid-attribute-override]
+    default: int = 0  # ty: ignore[invalid-attribute-override]  # pyrefly: ignore[bad-override]
     visibility = Visibility.none
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.value = int(getattr(self.__class__, "value", self.default))
         self.default = self.value
 
@@ -105,7 +110,7 @@ class ConstToggle(ConstNumericOption):
 
     @classmethod
     @override
-    def get_option_name(cls, value: int):
+    def get_option_name(cls, value: int) -> str:
         return "Yes" if value != 0 else "No"
 
     __hash__ = Option.__hash__  # type: ignore
@@ -114,7 +119,7 @@ class LevelDict(OptionDict):
     valid_keys: Iterable[str] = frozenset(_levelset.levels)
     valid_values: Iterable[str] = valid_keys
 
-    def __init__(self, value: dict[str, Any]):
+    def __init__(self, value: dict[str, Any]) -> None:
         res: dict[str, str] = {}
         for x, y in value.items():
             if x in self.valid_keys and y in self.valid_values:
@@ -129,7 +134,7 @@ class LaxRange(Range):
     hard_min = 0
     hard_max = 100
 
-    def __init__(self, value: int):
+    def __init__(self, value: int) -> None:
         if value < self.hard_min:
             raise OptionError(f"Option {self.__class__.__name__} cannot be less than {self.hard_min}!")
         if value > self.hard_max:

@@ -49,6 +49,38 @@ jobs:
         working-directory: Archipelago/worlds/cuphead
         run: pyright -p pyrightconfig.json
 
+  pyrefly:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Archipelago/
+
+    steps:
+      - name: Checkout Archipelago
+        uses: actions/checkout@v6
+        with:
+          repository: JKLeckr/Archipelago
+          path: Archipelago
+          ref: ${{ (github.ref_name == 'dev' || github.head_ref == 'dev') && 'base-dev' || 'base' }}
+
+      - name: Checkout Cuphead
+        uses: actions/checkout@v6
+        with:
+          path: Archipelago/worlds/cuphead
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: "Install dependencies"
+        run: |
+          python -m pip install --upgrade pip pyrefly==1.2.0
+          python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
+
+      - name: "Run pyrefly"
+        working-directory: Archipelago/worlds/cuphead
+        run: pyrefly check --min-severity=warn
+
   ty:
     runs-on: ubuntu-latest
     defaults:

@@ -9,15 +9,15 @@ from . import locationsetup
 class CupheadLocation(Location):
     game: str = "Cuphead"
     def __init__(
-            self,
-            player: int,
-            name: str = "",
-            id: int | None = None,
-            parent: Region | None = None,
-            event: bool = False,
-            progress_type: LocationProgressType = LocationProgressType.DEFAULT,
-            show_in_spoiler: bool = True
-        ):
+        self,
+        player: int,
+        name: str = "",
+        id: int | None = None,
+        parent: Region | None = None,
+        event: bool = False,
+        progress_type: LocationProgressType = LocationProgressType.DEFAULT,
+        show_in_spoiler: bool = True
+    ) -> None:
         super().__init__(player, name, id, parent)
         self.event = event
         self.progress_type = progress_type

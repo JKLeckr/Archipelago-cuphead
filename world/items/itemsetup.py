@@ -16,16 +16,16 @@ if TYPE_CHECKING:
     from ... import CupheadWorld
 
 
-def add_item(items_ref: dict[str, ItemData], item: str):
+def add_item(items_ref: dict[str, ItemData], item: str) -> None:
     items_ref[item] = idef.items_all[item]
 
-def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification):
+def change_item_type(items_ref: dict[str, ItemData], item: str, item_type: ItemClassification) -> None:
     items_ref[item] = items_ref[item].with_item_type(item_type)
 
-def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int):
+def change_item_quantity(items_ref: dict[str, ItemData], item: str, quantity: int) -> None:
     items_ref[item] = items_ref[item].with_quantity(quantity)
 
-def setup_dlc_items(items_ref: dict[str, ItemData], options: CupheadOptions):
+def setup_dlc_items(items_ref: dict[str, ItemData], options: CupheadOptions) -> None:
     items_ref.update(idef.items_dlc)
     if options.dlc_chalice.evalue == ChaliceMode.VANILLA or options.dlc_chalice.evalue == ChaliceMode.RANDOMIZED:
         add_item(items_ref, itemnames.item_charm_dlc_cookie)
@@ -47,7 +47,7 @@ def setup_dlc_items(items_ref: dict[str, ItemData], options: CupheadOptions):
     ):
         change_item_quantity(items_ref, itemnames.item_dlc_cplane_ex, 1)
 
-def setup_abilities(items_ref: dict[str, ItemData], options: CupheadOptions):
+def setup_abilities(items_ref: dict[str, ItemData], options: CupheadOptions) -> None:
     items_ref.update(idef.item_abilities)
     if options.use_dlc.value:
         if options.is_dlc_chalice_items_separate(ItemGroups.ABILITIES):
@@ -68,7 +68,7 @@ def setup_abilities(items_ref: dict[str, ItemData], options: CupheadOptions):
                 ItemClassification.progression_deprioritized | ItemClassification.useful
             )
 
-def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
+def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions) -> None:
     weapon_keys = {
         **idef.item_weapons,
         **idef.item_dlc_weapons,
@@ -77,7 +77,11 @@ def setup_weapon_gate(items_ref: dict[str, ItemData], options: CupheadOptions):
         if w in items_ref.keys():
             change_item_type(items_ref, w, ItemClassification.progression | ItemClassification.useful)
 
-def setup_no_start_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapon_dict: dict[int, str]):
+def setup_no_start_weapons(
+    items_ref: dict[str, ItemData],
+    options: CupheadOptions,
+    weapon_dict: dict[int, str]
+) -> None:
     change_item_type(
         items_ref, itemnames.item_charm_whetstone, ItemClassification.progression | ItemClassification.useful
     )
@@ -87,7 +91,7 @@ def setup_no_start_weapons(items_ref: dict[str, ItemData], options: CupheadOptio
             for w in weapon_dict.values()
         ]
 
-def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapon_dict: dict[int, str]):
+def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapon_dict: dict[int, str]) -> None:
     silverworth_quest = getattr(getattr(options, "silverworth_quest", None), "bvalue", False)
     _grade_checks_required = (
         options.boss_grade_checks.evalue != GradeCheckMode.DISABLED or
@@ -121,7 +125,7 @@ def setup_weapons(items_ref: dict[str, ItemData], options: CupheadOptions, weapo
     if _no_start_weapon:
         setup_no_start_weapons(items_ref, options, weapon_dict)
 
-def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptions):
+def setup_item_progression(items_ref: dict[str, ItemData], options: CupheadOptions) -> None:
     if options.logic_mode.evalue == LogicMode.HARD or options.start_weapon.is_none():
         change_item_type(
             items_ref, itemnames.item_charm_coffee, ItemClassification.progression | ItemClassification.useful

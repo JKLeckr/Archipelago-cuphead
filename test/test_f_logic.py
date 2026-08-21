@@ -8,7 +8,7 @@ from . import CupheadTestBase
 
 
 class TestLogicBasic(CupheadTestBase):
-    def test_default(self):
+    def test_default(self) -> None:
         test = TestLogicBasic()
         test.world_setup()
         test.assertBeatable(False)
@@ -29,7 +29,7 @@ class TestLogicBasicDlc(CupheadTestBase):
         "mode": "dlc_beat_both",
     }
 
-    def test_dlc(self):
+    def test_dlc(self) -> None:
         test = TestLogicBasicDlc()
         test.world_setup()
         test.assertBeatable(False)
@@ -57,7 +57,7 @@ class TestLogicTopGrade(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_topgrade(self):
+    def test_topgrade(self) -> None:
         test = TestLogicTopGrade()
         test.world_setup()
         test.assertBeatable(False)
@@ -86,7 +86,7 @@ class TestLogicNoStartWeapon(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_no_start_weapon(self):
+    def test_no_start_weapon(self) -> None:
         test = TestLogicNoStartWeapon()
         test.world_setup()
         test.assertBeatable(False)
@@ -111,7 +111,7 @@ class TestLogicProgressiveWeapons(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_progressive_weapons(self):
+    def test_progressive_weapons(self) -> None:
         test = TestLogicProgressiveWeapons()
         test.world_setup()
         test.assertBeatable(False)
@@ -164,7 +164,7 @@ class TestLogicProgressiveWeaponsNoStartWeapon(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_progressive_weapons_no_start_weapon(self):
+    def test_progressive_weapons_no_start_weapon(self) -> None:
         test = TestLogicProgressiveWeaponsNoStartWeapon()
         test.world_setup()
         test.assertBeatable(False)
@@ -217,7 +217,7 @@ class TestLogicProgressiveWeaponsExceptStart(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_progressive_weapons_except_start(self):
+    def test_progressive_weapons_except_start(self) -> None:
         test = TestLogicProgressiveWeaponsExceptStart()
         test.world_setup()
         test.assertBeatable(False)
@@ -239,7 +239,7 @@ class TestLogicWeaponEx(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_weapon_ex(self):
+    def test_weapon_ex(self) -> None:
         test = TestLogicWeaponEx()
         test.world_setup()
         test.assertBeatable(False)
@@ -286,7 +286,7 @@ class TestLogicWeaponExNoStartWeapon(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_weapon_ex(self):
+    def test_weapon_ex(self) -> None:
         test = TestLogicWeaponExNoStartWeapon()
         test.world_setup()
         test.assertBeatable(False)
@@ -323,7 +323,7 @@ class TestLogicWeaponExExceptStart(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_weapon_ex_except_start(self):
+    def test_weapon_ex_except_start(self) -> None:
         test = TestLogicWeaponExExceptStart()
         test.world_setup()
         test.assertBeatable(False)
@@ -344,7 +344,7 @@ class TestLogicParry(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_parry(self):
+    def test_parry(self) -> None:
         test = TestLogicParry()
         test.world_setup()
         test.assertBeatable(False)
@@ -376,7 +376,7 @@ class TestLogicDash(CupheadTestBase):
         "rungun_grade_checks": "a_minus_grade"
     }
 
-    def test_dash(self):
+    def test_dash(self) -> None:
         test = TestLogicDash()
         test.world_setup()
         test.assertBeatable(False)
@@ -404,7 +404,7 @@ class TestLogicChalice(CupheadTestBase):
         "dlc_rungun_chalice_checks": "enabled"
     }
 
-    def test_chalice(self):
+    def test_chalice(self) -> None:
         test = TestLogicChalice()
         test.world_setup()
         test.assertBeatable(False)
@@ -434,7 +434,7 @@ class TestLogicChaliceStart(CupheadTestBase):
         "dlc_rungun_chalice_checks": "enabled"
     }
 
-    def test_chalice_start(self):
+    def test_chalice_start(self) -> None:
         test = TestLogicChaliceStart()
         test.world_setup()
         test.assertBeatable(False)
@@ -454,7 +454,7 @@ class TestLogicChalicedGradeRequired(CupheadTestBase):
         "dlc_rungun_chalice_checks": "grade_required"
     }
 
-    def test_chaliced_grade_required(self):
+    def test_chaliced_grade_required(self) -> None:
         test = TestLogicChalicedGradeRequired()
         test.world_setup()
         test.assertBeatable(False)
@@ -494,7 +494,7 @@ class TestLogicChalicedGradeRequiredSeparate(CupheadTestBase):
         "dlc_rungun_chalice_checks": "separate_grade_required"
     }
 
-    def test_chaliced_grade_required_separate(self):
+    def test_chaliced_grade_required_separate(self) -> None:
         test = TestLogicChalicedGradeRequiredSeparate()
         test.world_setup()
         test.assertBeatable(False)

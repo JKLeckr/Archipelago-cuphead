@@ -21,7 +21,7 @@ class OptionSanitizer:
             solo: bool,
             log_overrides: bool = True,
             sanitize_goal_options: bool = False,
-        ):
+    ) -> None:
         self.option_overrides: list[str] = []
         self.player = player
         self.player_name = player_name
@@ -31,17 +31,17 @@ class OptionSanitizer:
         self.log_overrides = log_overrides
         self.strict_goal_options = sanitize_goal_options
 
-    def print_warning(self, message: str):
+    def print_warning(self, message: str) -> None:
         if self.log_overrides:
             print(f"Warning: For player {self.player} ({self.player_name}): {message}")
 
     def override_num_option(
-            self,
-            option: CupheadNumericOption,
-            value: int,
-            reason: str | None = None,
-            quiet: bool = False
-        ):
+        self,
+        option: CupheadNumericOption,
+        value: int,
+        reason: str | None = None,
+        quiet: bool = False
+    ) -> None:
         _old_value_key = option.current_key
         option.value = value
         string = f'{option.name}: "{_old_value_key}" -> "{option.current_key}".'
@@ -54,13 +54,13 @@ class OptionSanitizer:
             self.print_warning(f"{msg} {msg_reason}")
 
     def override_option_set(
-            self,
-            option: CupheadOptionSet,
-            values: Iterable[str],
-            add_mode: bool = False,
-            reason: str | None = None,
-            quiet: bool = False
-        ):
+        self,
+        option: CupheadOptionSet,
+        values: Iterable[str],
+        add_mode: bool = False,
+        reason: str | None = None,
+        quiet: bool = False
+    ) -> None:
         values_str = format_list(values, enc_start="'", enc_end="'")
         mode_str = "added to" if add_mode else "removed from"
         string = f"{option.name}: '{values_str}' {mode_str} set."
@@ -77,11 +77,11 @@ class OptionSanitizer:
             option.value.difference_update(values)
 
     def override_option_set_clear(
-            self,
-            option: CupheadOptionSet,
-            reason: str | None = None,
-            quiet: bool = False
-        ):
+        self,
+        option: CupheadOptionSet,
+        reason: str | None = None,
+        quiet: bool = False
+    ) -> None:
         string = f"{option.name}: Set cleared."
         if reason:
             string += f" Reason: {reason}"
@@ -92,7 +92,7 @@ class OptionSanitizer:
             self.print_warning(f"{msg} {msg_reason}")
         option.value.clear()
 
-    def _sanitize_dlc_chalice_item_options(self, quiet: bool = False):
+    def _sanitize_dlc_chalice_item_options(self, quiet: bool = False) -> None:
         _options = self.options
         abilities_val = "abilities"
         if len(_options.dlc_chalice_items_separate.value) > 0:
@@ -111,7 +111,7 @@ class OptionSanitizer:
                     True
                 )
 
-    def _sanitize_dlc_chalice_checks(self, quiet: bool = False):
+    def _sanitize_dlc_chalice_checks(self, quiet: bool = False) -> None:
         _options = self.options
         _boss_cchecks = _options.dlc_boss_chalice_checks.value
         _rungun_cchecks = _options.dlc_rungun_chalice_checks.value
@@ -126,7 +126,7 @@ class OptionSanitizer:
                 _options.dlc_rungun_chalice_checks, _rungun_cchecks, "Run n' Gun Grade Checks Disabled", True,
             )
 
-    def _sanitize_dlc_chalice_options(self, quiet: bool = False):
+    def _sanitize_dlc_chalice_options(self, quiet: bool = False) -> None:
         _options = self.options
         _cm_disabled = int(ChaliceMode.DISABLED)
         _cm_chalice_only = int(ChaliceMode.CHALICE_ONLY)
@@ -146,7 +146,7 @@ class OptionSanitizer:
         self._sanitize_dlc_chalice_item_options(quiet)
         self._sanitize_dlc_chalice_checks(quiet)
 
-    def _sanitize_dlc_options(self):  # noqa: C901
+    def _sanitize_dlc_options(self) -> None:  # noqa: C901
         _options = self.options
         use_dlc = _options.use_dlc.value
         if not use_dlc:
@@ -178,7 +178,7 @@ class OptionSanitizer:
                 self.override_num_option(_options.start_weapon, self.random.randint(0,5), dlc_reason)
         self._sanitize_dlc_chalice_options(not use_dlc)
 
-    def _sanitize_goal_requirements(self):
+    def _sanitize_goal_requirements(self) -> None:
         _options = self.options
 
         _goal_reason = "Goal cannot be less than requirements"
@@ -200,7 +200,7 @@ class OptionSanitizer:
                 f"Ingredient {_goal_reason}"
             )
 
-    def _sanitize_level_placement(self):
+    def _sanitize_level_placement(self) -> None:
         options = self.options
         lpvalue = options.level_placements.value
 
@@ -259,7 +259,7 @@ class OptionSanitizer:
         value = getattr(accessibility, "value", None)
         return isinstance(value, str) and value.lower() == "minimal"
 
-    def _populate_accessibility_risks(self, risks_ref: list[str]):  # noqa: C901
+    def _populate_accessibility_risks(self, risks_ref: list[str]) -> None:  # noqa: C901
         options = self.options
 
         if options.randomize_abilities.value:
@@ -287,7 +287,7 @@ class OptionSanitizer:
         if options.dlc_cactusgirl_quest.value:
             risks_ref.append("dlc_cactusgirl_quest")
 
-    def _warn_accessibility_risks(self):
+    def _warn_accessibility_risks(self) -> None:
         if not self._is_minimal_accessibility():
             return
 
@@ -304,7 +304,7 @@ class OptionSanitizer:
             f"({risk_str}). This combination is known to increase generation failure chance."
         )
 
-    def _warn_risks(self):
+    def _warn_risks(self) -> None:
         options = self.options
 
         self._warn_accessibility_risks()
@@ -317,7 +317,7 @@ class OptionSanitizer:
                 "can have too few valid early locations."
             )
 
-    def sanitize_options(self):
+    def sanitize_options(self) -> None:
         _options = self.options
 
         if self.strict_goal_options:

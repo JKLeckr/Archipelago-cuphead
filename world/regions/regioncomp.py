@@ -61,7 +61,7 @@ def get_region_locations(world: "CupheadWorld", regc: RegionData) -> list[str]:
 def _create_new_region(world: "CupheadWorld", regc: RegionData) -> Region:
     return Region(regc.name, world.player, world.multiworld, None)
 
-def create_region(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None):
+def create_region(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None) -> None:
     multiworld = world.multiworld
     locations = world.active_locations
     player = world.player
@@ -93,7 +93,7 @@ def create_region(world: "CupheadWorld", regc: RegionData, locset: set[str] | No
     if world.settings.is_debug_bit_on(2):
         debug.debug_print_regions(world)
 
-def connect_target(world: "CupheadWorld", region_name: str, target: Target, locset: set[str] | None = None):
+def connect_target(world: "CupheadWorld", region_name: str, target: Target, locset: set[str] | None = None) -> None:
     multiworld = world.multiworld
     player = world.player
     target_name = target.name
@@ -107,7 +107,7 @@ def connect_target(world: "CupheadWorld", region_name: str, target: Target, locs
     src.connect(tgt, name, None)
     #print(f"{name} | {regc.region_type} | {target.tgt_type}")
 
-def connect_region_targets(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None):
+def connect_region_targets(world: "CupheadWorld", regc: RegionData, locset: set[str] | None = None) -> None:
     if not regc.connect_to:
         raise ValueError(f"For {regc.name}: connect_to cannot be None!")
     for target in regc.connect_to:
@@ -119,7 +119,7 @@ def connect_region_targets(world: "CupheadWorld", regc: RegionData, locset: set[
         else:
             print(f"WARNING: For '{regc.name}': a target is None!")
 
-def create_regions(world: "CupheadWorld"):
+def create_regions(world: "CupheadWorld") -> None:
     compile_regions = get_regions(world)
     #debug.print_list(list_regions_names(compile_regions))
 

@@ -16,16 +16,16 @@ from .levelbase import LevelData
 if TYPE_CHECKING:
     from ..settings import CupheadSettings
 
-def _add_level(level_ref: dict[str, LevelData], lname: str, level_def: dict[str, LevelData]):
+def _add_level(level_ref: dict[str, LevelData], lname: str, level_def: dict[str, LevelData]) -> None:
     if lname in level_ref:
         raise KeyError(f"Level '{lname}' already exists")
     level_ref[lname] = level_def[lname]
 
 def setup_levels(
-        settings: "CupheadSettings",
-        options: CupheadOptions,
-        active_locations: dict[str,LocationData]
-    ) -> dict[str,LevelData]:
+    settings: "CupheadSettings",
+    options: CupheadOptions,
+    active_locations: dict[str,LocationData]
+) -> dict[str,LevelData]:
     use_dlc = options.use_dlc.bvalue
     levels: dict[str, LevelData] = {}
 
