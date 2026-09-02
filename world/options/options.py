@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# ty: ignore[conflicting-metaclass]
+
 from collections.abc import Mapping
 from typing import Any
 
@@ -280,6 +282,16 @@ class DlcChessCastle(EnumOption[e.ChessCastleMode], Choice, NamedOption):
     option_exclude_gauntlet = 1
     option_include_all = 3
     default = 1
+
+
+class DlcChessCastlePSugar(BToggle, NamedOption):
+    """
+    -DLC ONLY-
+    -REQUIRES THE KING'S LEAP-
+    Allow P. Sugar to be used in the King's Leap levels. Vanilla behavior only allows Parry.
+    """
+    name = "dlc_kingsleap_psugar"
+    display_name = "[DLC] The King's Leap P. Sugar"
 
 
 class DlcChessChaliceChecks(EnumOption[e.ChaliceCheckMode], Choice, NamedOption):

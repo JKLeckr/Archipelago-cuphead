@@ -20,6 +20,7 @@ _slot_data_options: list[str] = [
     "dlc_curse_mode",
     "dlc_ingredient_goal_requirements",
     "dlc_kingsleap",
+    "dlc_kingsleap_psugar",
     "dlc_rungun_chalice_checks",
     "ducklock_platdrop",
     "expert_mode",

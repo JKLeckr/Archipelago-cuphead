@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# ty: ignore[conflicting-metaclass]
+
 from typing import Any, ClassVar, Self
 
 from typing_extensions import override

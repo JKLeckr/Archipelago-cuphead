@@ -3,6 +3,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# ty: ignore[deprecated] TODO: will fix this later.
+
 """
 gencs_apobject.py - Generate an APObject.cs file that contains all the location
                     and item ids used by the client.

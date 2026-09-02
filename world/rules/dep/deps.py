@@ -86,6 +86,10 @@ def dep_dlc_chalice_not_separate(c: CupheadOptions) -> bool:
     )
 
 @dep
+def dep_dlc_chesscastle_psugar_allowed(c: CupheadOptions) -> bool:
+    return c.dlc_kingsleap_psugar.bvalue
+
+@dep
 def dep_dlc_cookie(c: CupheadOptions) -> bool:
     return (
         c.use_dlc.bvalue and

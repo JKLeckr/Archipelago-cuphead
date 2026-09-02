@@ -50,6 +50,7 @@ class CupheadOptions(PerGameCommonOptions):
     dlc_chalice: odefs.DlcChaliceMode
     dlc_chalice_items_separate: odefs.DlcChaliceItemsSeparate
     dlc_kingsleap: odefs.DlcChessCastle
+    dlc_kingsleap_psugar: odefs.DlcChessCastlePSugar
     dlc_cactusgirl_quest: odefs.DlcCactusGirlQuest
     dlc_curse_mode: odefs.DlcCurseMode
     early_parry: odefs.EarlyParry
@@ -171,6 +172,7 @@ cuphead_option_groups = [
     ]),
     OptionGroup("DLC Checks", [
         odefs.DlcChessCastle,
+        odefs.DlcChessCastlePSugar,
         odefs.DlcBossChaliceChecks,
         odefs.DlcRunGunChaliceChecks,
         odefs.DlcDicePalaceChaliceChecks,

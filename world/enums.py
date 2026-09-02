@@ -12,8 +12,8 @@ class GameMode(IntEnum):
     DLC_BEAT_BOTH = 9
     DLC_COLLECT_INGREDIENTS = 16
     DLC_COLLECT_BOTH = 18
-    DLC_NO_ISLE4 = 32
-    DLC_ISLE4_ONLY = 64
+    DLC_NO_ISLE4 = 32 # Not functional on its own.
+    DLC_ISLE4_ONLY = 64 # Not functional on its own.
     DLC_BEAT_DEVIL_NO_ISLE4 = 33
     DLC_COLLECT_CONTRACTS_NO_ISLE4 = 34
     DLC_BUY_OUT_SHOP_NO_ISLE4 = 36
@@ -70,11 +70,10 @@ class ChaliceCheckMode(IntEnum):
     GRADE_REQUIRED = 4
     SEPARATE_GRADE_REQUIRED = 6
 
-# TODO: Switch to Flag format
 class ChessCastleMode(IntEnum):
     EXCLUDE = 0
-    EXCLUDE_GAUNTLET = 1
-    GAUNTLET_ONLY = 2
+    INCLUDE_MAIN = 1
+    INCLUDE_GAUNTLET = 2
     INCLUDE_ALL = 3
 
 class CurseMode(IntEnum):

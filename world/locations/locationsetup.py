@@ -131,25 +131,30 @@ def setup_dlc_locations(locations_ref: dict[str,LocationData], options: CupheadO
         if (options.mode.evalue & GameMode.DLC_NO_ISLE4) == 0:
             locations_ref.update(ld.location_level_dlc_tutorial)
         setup_dlc_chalice_locations(locations_ref, options)
-    if options.dlc_kingsleap.evalue != ChessCastleMode.INCLUDE_ALL:
+    if (options.dlc_kingsleap.evalue & ChessCastleMode.INCLUDE_ALL) != ChessCastleMode.INCLUDE_ALL:
         _kingsleap_locs = [x for x in [
             *ld.location_level_dlc_chesscastle.keys(), *ld.location_level_dlc_chesscastle_dlc_chaliced.keys()
         ] if x in locations_ref]
         for loc in ld.location_level_dlc_chesscastle.keys():
             if (
                 (
-                    options.dlc_kingsleap.evalue == ChessCastleMode.EXCLUDE_GAUNTLET and
+                    # No gauntlet
+                    (options.dlc_kingsleap.evalue & ChessCastleMode.INCLUDE_GAUNTLET) == 0 and
                     (
                         loc == locationnames.loc_level_dlc_chesscastle_run or
                         loc == locationnames.loc_level_dlc_chesscastle_run_dlc_chaliced
                     )
                 ) or (
-                    options.dlc_kingsleap.evalue == ChessCastleMode.GAUNTLET_ONLY and
+                    # No main
+                    (options.dlc_kingsleap.evalue & ChessCastleMode.INCLUDE_MAIN) == 0 and
                     (
                         loc != locationnames.loc_level_dlc_chesscastle_run and
                         loc != locationnames.loc_level_dlc_chesscastle_run_dlc_chaliced
                     )
-                ) or options.dlc_kingsleap.evalue == ChessCastleMode.EXCLUDE
+                ) or (
+                    # Nothing at all
+                    (options.dlc_kingsleap.evalue & ChessCastleMode.INCLUDE_ALL) == 0
+                )
             ):
                 exclude_location(locations_ref, loc)
 

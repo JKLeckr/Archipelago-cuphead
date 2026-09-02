@@ -277,8 +277,9 @@ Cuphead:
   # -DLC ONLY-
   # Choose how to handle the locations of The King's Leap.
   # Gauntlet is the run where you have to defeat all the King's Leap bosses in succession.
+  # PSugar options allow for P. Sugar to be used in most King's Leap levels instead of Parry.
   #
-  # Values: exclude, exclude_gauntlet, include_all
+  # Values: exclude, exclude_gauntlet, include_all, exclude_gauntlet_psugar, include_all_psugar
   # Default: exclude_gauntlet
   dlc_kingsleap: exclude_gauntlet
 

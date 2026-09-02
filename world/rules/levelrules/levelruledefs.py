@@ -862,7 +862,7 @@ levelrules = LevelRules(
         lv.level_mausoleum_iii: LevelDef(exit_location=None, access=lrd.LrdParryLogic, locations={}),
         lv.level_dlc_chesscastle_pawn: LevelDef(
             exit_location=None,
-            access=lrd.LrdParryLogic,
+            access=lrd.LrdDlcChessParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_pawn: LocationDef(),
                 l.loc_level_dlc_chesscastle_pawn_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
@@ -870,7 +870,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_knight: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpParry),
+            access=lrd.LrdDlcChessBossKnightParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_knight: LocationDef(
                     rule=(Preset(lrp.LrpDlcDoublejump) | DepFilter(deps.dep_dlc_chalice_only, False))
@@ -882,7 +882,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_bishop: LevelDef(
             exit_location=None,
-            access=lrd.LrdParryLogic,
+            access=lrd.LrdDlcChessParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_bishop: LocationDef(),
                 l.loc_level_dlc_chesscastle_bishop_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
@@ -890,7 +890,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_rook: LevelDef(
             exit_location=None,
-            access=lrd.LrdParryLogic,
+            access=lrd.LrdDlcChessParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_rook: LocationDef(),
                 l.loc_level_dlc_chesscastle_rook_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
@@ -898,7 +898,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_queen: LevelDef(
             exit_location=None,
-            access=lrd.LrdParryLogic,
+            access=lrd.LrdDlcChessParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_queen: LocationDef(),
                 l.loc_level_dlc_chesscastle_queen_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),
@@ -906,7 +906,7 @@ levelrules = LevelRules(
         ),
         lv.level_dlc_chesscastle_run: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpParry),
+            access=lrd.LrdDlcChessBossKnightParryLogic,
             locations={
                 l.loc_level_dlc_chesscastle_run: LocationDef(),
                 l.loc_level_dlc_chesscastle_run_dlc_chaliced: LocationDef(rule=lrd.LrdDlcChessCastleChaliced),

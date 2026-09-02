@@ -1,6 +1,8 @@
 ### Copyright 2025-2026 JKLeckr
 ### SPDX-License-Identifier: MPL-2.0
 
+# ty: ignore[conflicting-metaclass]
+
 from .. import enums as e
 from .optionbase import BoolOption, ConstNumericOption, ConstToggle, EnumOption
 from .protocols import NamedOption

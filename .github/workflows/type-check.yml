@@ -106,7 +106,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          python -m pip install --upgrade pip ty==0.0.73
+          python -m pip install --upgrade pip ty==0.0.75
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
 
       - name: "Run ty"

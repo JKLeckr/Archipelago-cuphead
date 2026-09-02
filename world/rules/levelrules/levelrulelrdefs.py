@@ -77,6 +77,16 @@ LrdDlcBossAirplaneChaliced = (
     )
 )
 
+LrdDlcChessParryLogic = (
+    (Preset(lrp.LrpParryOrPSugar) & DepFilter(deps.dep_dlc_chesscastle_psugar_allowed)) |
+    (Preset(lrp.LrpParry) & DepFilter(deps.dep_dlc_chesscastle_psugar_allowed, False))
+)
+
+LrdDlcChessBossKnightParryLogic = (
+    (LrdDlcChessParryLogic & DepFilter(deps.dep_hard_logic)) |
+    (Preset(lrp.LrpParry) & DepFilter(deps.dep_hard_logic, False))
+)
+
 LrdDlcChessCastleChaliced = (
     Preset(lrp.LrpDash) | DepFilter(deps.dep_dlc_chalice_only)
 )
