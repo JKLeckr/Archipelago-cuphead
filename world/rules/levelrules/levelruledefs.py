@@ -914,8 +914,12 @@ levelrules = LevelRules(
         ),
         lv.level_tutorial: LevelDef(
             exit_location=None,
-            access=Preset(lrp.LrpWeapon) & Preset(lrp.LrpCrouchDashAndParry),
-            locations={}
+            access=(
+                Preset(lrp.LrpWeapon) & Preset(lrp.LrpCrouchAndDash) & Preset(lrp.LrpParryOrPSugar)
+            ),
+            locations={
+                l.loc_level_tutorial_coin: LocationDef()
+            }
         ),
         lv.level_dlc_tutorial: LevelDef(
             exit_location=None,
