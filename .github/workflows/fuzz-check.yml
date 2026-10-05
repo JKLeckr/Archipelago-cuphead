@@ -39,8 +39,6 @@ jobs:
 
     name: fuzz n${{ matrix.n_value }}
 
-    env:
-      fuzzer_ver: "0.6.2"
     defaults:
       run:
         working-directory: Archipelago/
@@ -67,7 +65,7 @@ jobs:
           python -m pip install --upgrade pip
           python ModuleUpdate.py --append "WebHostLib/requirements.txt" --force --yes
           python Launcher.py --update_settings  # make sure host.yaml exists for tests
-          wget "https://raw.githubusercontent.com/Eijebong/Archipelago-fuzzer/refs/tags/$fuzzer_ver/fuzz.py"
+          wget "https://raw.githubusercontent.com/JKLeckr/Archipelago-fuzzer/refs/heads/base/fuzz.py"
 
       - name: "Set Cuphead to debug levelrules system in host.yaml"
         run: |
