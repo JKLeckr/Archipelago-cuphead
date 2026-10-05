@@ -40,7 +40,7 @@ jobs:
     name: fuzz n${{ matrix.n_value }}
 
     env:
-      fuzzer_ver: "0.6.1"
+      fuzzer_ver: "0.6.2"
     defaults:
       run:
         working-directory: Archipelago/
