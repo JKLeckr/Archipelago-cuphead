@@ -23,13 +23,12 @@ def format_list(
 ) -> str:
     res = ls_start
     first = True
-    if ls:
-        for item in ls:
-            if not first:
-                res += sep
-            else:
-                first = False
-            res += f"{enc_start}{item!s}{enc_end}"
+    for item in ls:
+        if not first:
+            res += sep
+        else:
+            first = False
+        res += f"{enc_start}{item!s}{enc_end}"
     res += ls_end
     return res
 

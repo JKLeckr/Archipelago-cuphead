@@ -16,6 +16,7 @@ preset = "strict"
 deprecated = "error"
 missing-import = "error"
 missing-override-decorator = "error"
+invalid-inheritance = "ignore" # This is because of how Options are defined that this must be ignored.
 
 [[sub-config]]
 matches = "../.."

@@ -140,7 +140,7 @@ def main() -> None:
         "",
     ] + [
         ind(2)+f"public static readonly APItem {var.removeprefix('item_')} = new({data[1].id}, true);"
-        for var,data in sorted(item_var_dict.items(), key=lambda item: item[1][1])  # pyrefly: ignore[implicit-any-lambda]
+        for var,data in sorted(item_var_dict.items(), key=lambda item: item[1][1])
     ] + [
         "",
         ind(2)+"public static void Register(APItem item) => id_map.Add(item.id, item);",
@@ -164,7 +164,7 @@ def main() -> None:
         ""
     ] + [
         ind(2)+f"public static readonly APLocation {var.removeprefix('loc_')} = new({data[1].id}, true);"
-        for var,data in sorted(location_var_dict.items(), key=lambda loc: loc[1][1])  # pyrefly: ignore[implicit-any-lambda]
+        for var,data in sorted(location_var_dict.items(), key=lambda loc: loc[1][1])
     ] + [
         "",
         ind(2)+"public static void Register(APLocation loc) => id_map.Add(loc.id, loc);",

@@ -11,7 +11,7 @@ import argparse
 import ast
 import textwrap
 import typing
-from collections.abc import Iterable
+from collections.abc import Collection, Iterable
 from pathlib import Path
 
 # --- CONFIG ---
@@ -145,7 +145,7 @@ def get_option_fields(node: ast.ClassDef) -> dict[str, int]:
                     continue
                 if isinstance(value, int):
                     opt_val_to_name[opt_name] = value
-    return dict(sorted(opt_val_to_name.items(), key=lambda item: item[1]))  # pyrefly: ignore[implicit-any-lambda]
+    return dict(sorted(opt_val_to_name.items(), key=lambda item: item[1]))
 
 def get_option_range(
         attrs: dict[str, typing.Any],
@@ -177,7 +177,7 @@ def generate_comments(  # noqa: C901
         node: ast.ClassDef,
         attrs: dict[str, typing.Any],
         base_names: list[str],
-        option_names: Iterable[str],
+        option_names: Collection[str],
         default: typing.Any  # noqa: ANN401
     ) -> list[str]:
     lines: list[str] = []
@@ -212,7 +212,7 @@ def generate_comments(  # noqa: C901
             _spaced = True
         lines.append(f"# Range: {ranges[0]}-{ranges[1]}")
         if len(ranges) > 3:
-            lines.append(f"# Recommended Range: {ranges[2]}-{ranges[3]}")  # ty: ignore[index-out-of-bounds]
+            lines.append(f"# Recommended Range: {ranges[2]}-{ranges[3]}")
     if _default is not None:
         if lines and not _spaced:
             lines.append("#")
