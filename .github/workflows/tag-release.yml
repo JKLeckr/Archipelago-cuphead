@@ -59,6 +59,8 @@ jobs:
           rm -rf extras
           rm -rf tools
           rm -f ruff.toml
+          rm -f pyproject.toml
+          rm -f pyrefly.toml
           rm -f pyrightconfig.json
 
       - name: Generate archipelago.json
