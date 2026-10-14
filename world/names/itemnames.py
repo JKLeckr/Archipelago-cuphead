@@ -15,6 +15,7 @@ item_group_weapon = "Weapon"
 item_group_weapon_ex = "Weapon EX"
 item_group_charm = "Charm"
 item_group_super = "Super"
+item_group_lsuper = "Land Super"
 item_group_ability = "Ability"
 item_group_aim_ability = "Aim Ability"
 

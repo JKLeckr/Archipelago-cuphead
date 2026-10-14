@@ -135,6 +135,16 @@ LrpAnySuper = PresetData(
     "Any Super"
 )
 
+LrpAnyLandSuper = PresetData(
+    HasGroup(i.item_group_lsuper, 1),
+    "Any Land Super"
+)
+
+LrpPlaneSuper = PresetData(
+    Has(i.item_plane_super),
+    "Plane Super"
+)
+
 LrpWeaponEx = PresetData(
     HasAnyWeaponEx(),
     "Weapon EX"
@@ -143,7 +153,7 @@ LrpWeaponEx = PresetData(
 LrpTopgrade = PresetData(
     Preset(LrpParryOrPSugar) &
     Filtered(
-        Preset(LrpAnySuper) | Preset(LrpWeaponEx),
+        Preset(LrpAnyLandSuper) | Preset(LrpWeaponEx),
         options=[DepFilter(deps.dep_weapon_ex_rando)],
         filtered_resolution=True
     ),

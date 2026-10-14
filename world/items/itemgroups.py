@@ -25,6 +25,10 @@ item_groups: dict[str, set[str]] = {
         *idefs.item_super.keys(),
         *idefs.item_dlc_chalice_super.keys()
     },
+    itemnames.item_group_lsuper: {
+        *idefs.item_land_super.keys(),
+        *idefs.item_dlc_chalice_land_super.keys(),
+    },
     itemnames.item_group_ability: {
         *idefs.item_abilities.keys(),
         *idefs.item_dlc_chalice_abilities.keys(),

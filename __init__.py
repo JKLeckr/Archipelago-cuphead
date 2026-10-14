@@ -55,9 +55,9 @@ class CupheadWorld(CachedRuleBuilderWorld):
 
     GAME_NAME: ClassVar[str] = "Cuphead"
 
-    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 11)
+    APWORLD_SEM_VERSION: ClassVar[tuple[int, int, int, int]] = (0, 2, 2, 12)
     APWORLD_VERSION_POSTFIX: ClassVar[str] = ""
-    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 12
+    APWORLD_VERSION_POSTFIX_NO: ClassVar[int] = 10
 
     # For the time being, POSTFIX_NO is also used to indicate release/hotfix number. >10 indicates hotfix.
     APWORLD_REL_NO: ClassVar[int] = max(0, APWORLD_VERSION_POSTFIX_NO - 10)
@@ -77,7 +77,7 @@ class CupheadWorld(CachedRuleBuilderWorld):
     game: ClassVar[str] = GAME_NAME # type: ignore
     web: ClassVar[WebWorld] = CupheadWebWorld()
     options_dataclass: ClassVar[type[PerGameCommonOptions]] = CupheadOptions
-    options: CupheadOptions # type: ignore
+    options: CupheadOptions # ty: ignore[invalid-mutable-override] # type: ignore
     origin_region_name: str = "Start"
 
     required_client_version: tuple[int, int, int] = (0, 6, 7)

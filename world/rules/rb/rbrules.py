@@ -72,7 +72,7 @@ class Preset(WrapperRule["CupheadWorld"], game=ch):
     def __str__(self) -> str:
         return f"{self.__class__.__name__}[{self.child}]"
 
-    class Resolved(WrapperRule.Resolved):
+    class Resolved(WrapperRule.Resolved):  # ty: ignore[invalid-attribute-override]
         name: str
 
         @override
@@ -180,7 +180,7 @@ class CanBuyOutShop(Rule["CupheadWorld"], game=ch):
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
 
-    class Resolved(Rule.Resolved):
+    class Resolved(Rule.Resolved):  # ty: ignore[invalid-attribute-override]
         region_names: tuple[str, ...]
 
         @override

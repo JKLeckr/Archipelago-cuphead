@@ -113,7 +113,9 @@ class ConstToggle(ConstNumericOption):
     def get_option_name(cls, value: int) -> str:
         return "Yes" if value != 0 else "No"
 
-    __hash__ = Option.__hash__  # type: ignore
+    @override
+    def __hash__(self) -> int:  # ty: ignore[invalid-attribute-override]
+        return hash(self.value)
 
 class LevelDict(OptionDict):
     valid_keys: Iterable[str] = frozenset(_levelset.levels)

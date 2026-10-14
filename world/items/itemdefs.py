@@ -101,16 +101,24 @@ item_dlc_charms: dict[str, ItemData] = {
 }
 item_all_charms: dict[str, ItemData] = {**item_charms, **item_dlc_charms}
 
-item_super: dict[str, ItemData] = {
+item_land_super: dict[str, ItemData] = {
     itemnames.item_super_i: ItemData(14000, ItemClassification.useful),
     itemnames.item_super_ii: ItemData(14001, ItemClassification.useful),
     itemnames.item_super_iii: ItemData(14002, ItemClassification.useful),
+}
+item_super: dict[str, ItemData] = {
+    **item_land_super,
+
     itemnames.item_plane_super: ItemData(14003, ItemClassification.useful),
 }
-item_dlc_chalice_super: dict[str, ItemData] = {
+item_dlc_chalice_land_super: dict[str, ItemData] = {
     itemnames.item_super_dlc_c_i: ItemData(10012000, ItemClassification.useful),
     itemnames.item_super_dlc_c_ii: ItemData(10012001, ItemClassification.useful),
     itemnames.item_super_dlc_c_iii: ItemData(10012002, ItemClassification.useful),
+}
+item_dlc_chalice_super: dict[str, ItemData] = {
+    **item_dlc_chalice_land_super,
+
     itemnames.item_dlc_cplane_super: ItemData(10012003, ItemClassification.useful),
 }
 item_all_super: dict[str, ItemData] = {**item_super, **item_dlc_chalice_super}
